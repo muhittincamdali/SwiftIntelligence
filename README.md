@@ -1,5 +1,11 @@
 # SwiftIntelligence
 
+[![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org)
+[![Platforms](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20visionOS-blue.svg)](https://developer.apple.com)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-1.0.0-brightgreen.svg)](https://github.com/muhittincamdali/SwiftIntelligence/releases)
+[![CI](https://github.com/muhittincamdali/SwiftIntelligence/workflows/Swift%20CI/badge.svg)](https://github.com/muhittincamdali/SwiftIntelligence/actions)
+
 A comprehensive AI/ML framework for Apple platforms, providing state-of-the-art machine learning capabilities with native Swift implementation.
 
 ## Overview
