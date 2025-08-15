@@ -17,7 +17,7 @@ Add SwiftIntelligence to your project using Xcode's Swift Package Manager:
 
 1. Open your project in Xcode
 2. Go to **File → Add Package Dependencies**
-3. Enter the repository URL: `https://github.com/your-org/SwiftIntelligence.git`
+3. Enter the repository URL: `https://github.com/muhittincamdali/SwiftIntelligence.git`
 4. Choose the version constraint (latest is recommended)
 5. Click **Add Package**
 
