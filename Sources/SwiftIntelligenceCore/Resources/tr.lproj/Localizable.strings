@@ -1,0 +1,113 @@
+/* SwiftIntelligence Framework - Turkish Localization */
+
+/* Core Framework */
+"framework.name" = "SwiftIntelligence";
+"framework.description" = "Apple Platformları için Gelişmiş AI/ML Framework'ü";
+"framework.version" = "Sürüm";
+
+/* Initialization */
+"initialization.starting" = "SwiftIntelligence başlatılıyor...";
+"initialization.complete" = "SwiftIntelligence başarıyla başlatıldı";
+"initialization.failed" = "SwiftIntelligence başlatılamadı";
+
+/* Engine Status */
+"engine.ready" = "Motor Hazır";
+"engine.initializing" = "Motor Başlatılıyor";
+"engine.error" = "Motor Hatası";
+"engine.shutdown" = "Motor Kapatıldı";
+"engine.unavailable" = "Motor Kullanılamıyor";
+
+/* NLP Module */
+"nlp.analyzing" = "Metin analiz ediliyor...";
+"nlp.sentiment.positive" = "Pozitif";
+"nlp.sentiment.negative" = "Negatif";
+"nlp.sentiment.neutral" = "Nötr";
+"nlp.language.detected" = "Dil tespit edildi";
+"nlp.entities.found" = "varlık bulundu";
+"nlp.processing.complete" = "Metin işleme tamamlandı";
+
+/* Vision Module */
+"vision.processing" = "Görüntü işleniyor...";
+"vision.objects.detected" = "nesne tespit edildi";
+"vision.faces.detected" = "yüz tespit edildi";
+"vision.text.recognized" = "Metin tanındı";
+"vision.classification.complete" = "Görüntü sınıflandırması tamamlandı";
+
+/* Speech Module */
+"speech.listening" = "Dinleniyor...";
+"speech.recognition.starting" = "Konuşma tanıma başlatılıyor";
+"speech.recognition.stopped" = "Konuşma tanıma durduruldu";
+"speech.synthesis.starting" = "Metin-konuşma başlatılıyor";
+"speech.synthesis.complete" = "Konuşma sentezi tamamlandı";
+"speech.permission.required" = "Konuşma tanıma izni gerekli";
+
+/* ML Module */
+"ml.training" = "Model eğitiliyor...";
+"ml.prediction" = "Tahmin yapılıyor...";
+"ml.model.loaded" = "Model başarıyla yüklendi";
+"ml.model.failed" = "Model yüklenemedi";
+
+/* Privacy Module */
+"privacy.protecting" = "Hassas veriler korunuyor...";
+"privacy.anonymizing" = "Veriler anonimleştiriliyor...";
+"privacy.encrypting" = "Veriler şifreleniyor...";
+"privacy.compliance.check" = "Uyumluluk kontrol ediliyor";
+
+/* Error Messages */
+"error.general" = "Bir hata oluştu";
+"error.network" = "Ağ hatası";
+"error.permission.denied" = "İzin reddedildi";
+"error.invalid.input" = "Geçersiz giriş";
+"error.processing.failed" = "İşlem başarısız";
+"error.model.unavailable" = "Model kullanılamıyor";
+"error.unsupported.platform" = "Desteklenmeyen platform";
+
+/* Performance */
+"performance.excellent" = "Mükemmel";
+"performance.good" = "İyi";
+"performance.average" = "Ortalama";
+"performance.poor" = "Zayıf";
+"performance.measuring" = "Performans ölçülüyor...";
+
+/* Cache */
+"cache.loading" = "Önbellekten yükleniyor...";
+"cache.saving" = "Önbelleğe kaydediliyor...";
+"cache.cleared" = "Önbellek temizlendi";
+"cache.full" = "Önbellek dolu";
+
+/* Network */
+"network.connecting" = "Bağlanıyor...";
+"network.connected" = "Bağlandı";
+"network.disconnected" = "Bağlantı kesildi";
+"network.slow" = "Yavaş bağlantı tespit edildi";
+
+/* Validation */
+"validation.success" = "Doğrulama başarılı";
+"validation.failed" = "Doğrulama başarısız";
+"validation.warning" = "Doğrulama uyarısı";
+
+/* User Interface */
+"ui.loading" = "Yükleniyor...";
+"ui.processing" = "İşleniyor...";
+"ui.complete" = "Tamamlandı";
+"ui.cancel" = "İptal";
+"ui.retry" = "Tekrar Dene";
+"ui.settings" = "Ayarlar";
+
+/* Time */
+"time.seconds" = "saniye";
+"time.minutes" = "dakika";
+"time.hours" = "saat";
+"time.estimated" = "Tahmini süre";
+
+/* Data Sizes */
+"data.bytes" = "bayt";
+"data.kb" = "KB";
+"data.mb" = "MB";
+"data.gb" = "GB";
+
+/* Accessibility */
+"accessibility.ai.processing" = "AI işlemi devam ediyor";
+"accessibility.image.analyzing" = "Görüntü içeriği analiz ediliyor";
+"accessibility.speech.listening" = "Konuşma girişi dinleniyor";
+"accessibility.text.processing" = "Metin içeriği işleniyor";

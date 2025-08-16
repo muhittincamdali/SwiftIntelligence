@@ -1,0 +1,216 @@
+name: ⚡ Performance Issue
+description: Report performance problems or optimization opportunities
+title: "[PERFORMANCE] "
+labels: ["performance", "needs-investigation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us optimize SwiftIntelligence! ⚡
+        Performance issues help us make the framework faster and more efficient.
+
+  - type: textarea
+    id: performance-issue
+    attributes:
+      label: Performance Issue Description
+      description: Describe the performance problem you're experiencing
+      placeholder: The operation takes too long, uses too much memory, etc.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: performance-type
+    attributes:
+      label: Performance Issue Type
+      description: What type of performance issue is this?
+      options:
+        - Slow execution time
+        - High memory usage
+        - High CPU usage
+        - Battery drain
+        - Network performance
+        - Storage/disk usage
+        - Startup time
+        - Memory leaks
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Affected Module
+      description: Which module is experiencing performance issues?
+      options:
+        - Core
+        - NLP (Natural Language Processing)
+        - Vision
+        - Speech
+        - ML (Machine Learning)
+        - Privacy
+        - Network
+        - Cache
+        - Metrics
+        - Reasoning
+        - Image Generation
+        - visionOS
+        - Multiple modules
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-performance
+    attributes:
+      label: Current Performance
+      description: Provide specific metrics about current performance
+      placeholder: |
+        - Execution time: 5 seconds
+        - Memory usage: 500MB
+        - CPU usage: 80%
+        - Battery impact: High
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-performance
+    attributes:
+      label: Expected Performance
+      description: What performance would you expect?
+      placeholder: |
+        - Expected execution time: < 1 second
+        - Expected memory usage: < 100MB
+        - Expected CPU usage: < 30%
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-code
+    attributes:
+      label: Code to Reproduce Performance Issue
+      description: Provide code that demonstrates the performance problem
+      render: swift
+      placeholder: |
+        import SwiftIntelligence
+        
+        // Code that demonstrates the performance issue
+        let startTime = Date()
+        let result = try await slowOperation()
+        let duration = Date().timeIntervalSince(startTime)
+        print("Duration: \(duration) seconds")
+    validations:
+      required: true
+
+  - type: dropdown
+    id: data-size
+    attributes:
+      label: Data Size
+      description: What size of data are you processing?
+      options:
+        - Small (< 1MB)
+        - Medium (1-10MB)
+        - Large (10-100MB)
+        - Very Large (> 100MB)
+        - Variable
+        - Not applicable
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device-type
+    attributes:
+      label: Device Type
+      description: What type of device are you testing on?
+      options:
+        - iPhone (recent models)
+        - iPhone (older models)
+        - iPad
+        - Apple Watch
+        - Apple TV
+        - Apple Vision Pro
+        - Mac (Apple Silicon)
+        - Mac (Intel)
+        - Multiple devices
+    validations:
+      required: true
+
+  - type: input
+    id: platform-version
+    attributes:
+      label: Platform Version
+      description: What platform version are you using?
+      placeholder: e.g., iOS 17.2, macOS 14.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: profiling-data
+    attributes:
+      label: Profiling Data
+      description: Include any profiling data from Instruments or other tools
+      placeholder: |
+        Time Profiler results:
+        - Function A: 60% of time
+        - Function B: 30% of time
+        
+        Memory analysis:
+        - Peak memory usage: 500MB
+        - Memory leaks detected: None
+    validations:
+      required: false
+
+  - type: textarea
+    id: workarounds
+    attributes:
+      label: Current Workarounds
+      description: Have you found any workarounds for this performance issue?
+      placeholder: Currently using... but it's not ideal because...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact Level
+      description: How severely does this impact your app?
+      options:
+        - Critical - App unusable
+        - High - Major user experience issues
+        - Medium - Noticeable performance degradation
+        - Low - Minor performance impact
+    validations:
+      required: true
+
+  - type: textarea
+    id: optimization-suggestions
+    attributes:
+      label: Optimization Suggestions
+      description: Do you have any suggestions for optimization?
+      placeholder: This could be optimized by...
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other relevant information, screenshots, or data
+      placeholder: Include any additional context that might help
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please verify the following before submitting
+      options:
+        - label: I tested on the latest version of SwiftIntelligence
+          required: true
+        - label: I provided specific performance metrics
+          required: true
+        - label: I tested on appropriate hardware for my use case
+          required: true
+        - label: I'm willing to test proposed optimizations
+          required: true

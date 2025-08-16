@@ -65,6 +65,12 @@ let package = Package(
         .library(
             name: "SwiftIntelligenceMetrics",
             targets: ["SwiftIntelligenceMetrics"]
+        ),
+        
+        // Performance and Testing
+        .library(
+            name: "SwiftIntelligenceBenchmarks",
+            targets: ["SwiftIntelligenceBenchmarks"]
         )
     ],
     dependencies: [
@@ -85,7 +91,8 @@ let package = Package(
                 "SwiftIntelligencePrivacy",
                 "SwiftIntelligenceNetwork",
                 "SwiftIntelligenceCache",
-                "SwiftIntelligenceMetrics"
+                "SwiftIntelligenceMetrics",
+                "SwiftIntelligenceBenchmarks"
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency"),
@@ -178,6 +185,14 @@ let package = Package(
         
         .target(
             name: "SwiftIntelligenceMetrics",
+            dependencies: ["SwiftIntelligenceCore"],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
+        ),
+        
+        .target(
+            name: "SwiftIntelligenceBenchmarks",
             dependencies: ["SwiftIntelligenceCore"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")

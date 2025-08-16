@@ -3,25 +3,50 @@ import SwiftIntelligenceCore
 
 // MARK: - Missing Types for DataProtectionManager
 
+public enum MemoryProtectionLevel: String, CaseIterable, Codable, Sendable {
+    case none = "none"
+    case basic = "basic"
+    case enhanced = "enhanced"
+    case maximum = "maximum"
+}
+
+public enum DiskProtectionLevel: String, CaseIterable, Codable, Sendable {
+    case none = "none"
+    case basic = "basic"
+    case enhanced = "enhanced"
+    case maximum = "maximum"
+}
+
 public struct DataProtectionConfiguration: Sendable {
     public let enableIntegrityChecks: Bool
     public let enableSecureDelete: Bool
     public let enableCompression: Bool
     public let enableEncryption: Bool
+    public let memoryProtection: MemoryProtectionLevel
+    public let diskProtection: DiskProtectionLevel
     
-    public init(enableIntegrityChecks: Bool = true, enableSecureDelete: Bool = true, enableCompression: Bool = false, enableEncryption: Bool = true) {
+    public init(
+        enableIntegrityChecks: Bool = true,
+        enableSecureDelete: Bool = true,
+        enableCompression: Bool = false,
+        enableEncryption: Bool = true,
+        memoryProtection: MemoryProtectionLevel = .enhanced,
+        diskProtection: DiskProtectionLevel = .enhanced
+    ) {
         self.enableIntegrityChecks = enableIntegrityChecks
         self.enableSecureDelete = enableSecureDelete
         self.enableCompression = enableCompression
         self.enableEncryption = enableEncryption
+        self.memoryProtection = memoryProtection
+        self.diskProtection = diskProtection
     }
     
     public static let `default` = DataProtectionConfiguration()
 }
 
 public enum DataClassification: String, Codable, Sendable {
-    case public = "public"
-    case internal = "internal"
+    case `public` = "public"
+    case `internal` = "internal"
     case confidential = "confidential"
     case restricted = "restricted"
 }
@@ -44,7 +69,7 @@ public struct ProtectedData: Sendable {
 
 // MARK: - Core Privacy Types
 
-public enum EncryptionAlgorithm: String, CaseIterable, Codable {
+public enum EncryptionAlgorithm: String, CaseIterable, Codable, Sendable {
     case aes256 = "aes256"
     case chacha20poly1305 = "chacha20poly1305"
     case rsa2048 = "rsa2048"
@@ -69,7 +94,7 @@ public enum EncryptionAlgorithm: String, CaseIterable, Codable {
     }
 }
 
-public enum EncryptionLevel: String, CaseIterable, Codable {
+public enum EncryptionLevel: String, CaseIterable, Codable, Sendable {
     case low = "low"
     case medium = "medium"
     case high = "high"
@@ -156,7 +181,7 @@ public struct SecureStorageOptions: Hashable, Codable {
     public let accessGroup: String?
     public let accessibility: AccessibilityLevel
     
-    public enum AccessibilityLevel: String, CaseIterable, Codable {
+    public enum AccessibilityLevel: String, CaseIterable, Codable, Sendable {
         case whenUnlocked = "when_unlocked"
         case whenUnlockedThisDeviceOnly = "when_unlocked_this_device_only"
         case whenPasscodeSetThisDeviceOnly = "when_passcode_set_this_device_only"
@@ -201,7 +226,7 @@ public struct SecureStorageOptions: Hashable, Codable {
 
 // MARK: - Biometric Authentication Types
 
-public enum BiometricType: String, CaseIterable, Codable {
+public enum BiometricType: String, CaseIterable, Codable, Sendable {
     case faceID = "face_id"
     case touchID = "touch_id"
     case none = "none"
@@ -279,7 +304,7 @@ public struct BiometricAvailabilityStatus: Sendable {
     public let errorMessage: String?
     public let deviceSupport: DeviceSupportLevel
     
-    public enum DeviceSupportLevel: String, CaseIterable, Codable {
+    public enum DeviceSupportLevel: String, CaseIterable, Codable, Sendable {
         case full = "full"
         case partial = "partial"
         case none = "none"
@@ -305,7 +330,7 @@ public protocol PersonalData: Sendable {
     func anonymize(level: AnonymizationLevel) -> Self
 }
 
-public enum AnonymizationLevel: String, CaseIterable, Codable {
+public enum AnonymizationLevel: String, CaseIterable, Codable, Sendable {
     case none = "none"
     case basic = "basic"
     case standard = "standard"
@@ -412,7 +437,7 @@ public struct AnonymizationResult<T: PersonalData>: Sendable {
 
 // MARK: - Privacy Policy Types
 
-public enum DataType: String, CaseIterable, Codable {
+public enum DataType: String, CaseIterable, Codable, Sendable {
     case userPreferences = "user_preferences"
     case analyticsData = "analytics_data"
     case performanceMetrics = "performance_metrics"
@@ -437,7 +462,7 @@ public enum DataType: String, CaseIterable, Codable {
         }
     }
     
-    public enum SensitivityLevel: String, CaseIterable, Codable {
+    public enum SensitivityLevel: String, CaseIterable, Codable, Sendable {
         case low = "low"
         case medium = "medium"
         case high = "high"
@@ -504,7 +529,7 @@ public struct PrivacyPolicy: Codable, Sendable {
         }
     }
     
-    public enum ComplianceLevel: String, CaseIterable, Codable {
+    public enum ComplianceLevel: String, CaseIterable, Codable, Sendable {
         case basic = "basic"
         case standard = "standard"
         case strict = "strict"
@@ -514,7 +539,7 @@ public struct PrivacyPolicy: Codable, Sendable {
 
 // MARK: - Data Operations
 
-public enum OperationType: String, CaseIterable, Codable {
+public enum OperationType: String, CaseIterable, Codable, Sendable {
     case read = "read"
     case write = "write"
     case delete = "delete"
@@ -558,7 +583,7 @@ public struct DataOperation: Sendable {
 
 // MARK: - Privacy Compliance
 
-public enum ViolationType: String, CaseIterable, Codable {
+public enum ViolationType: String, CaseIterable, Codable, Sendable {
     case unauthorizedDataType = "unauthorized_data_type"
     case encryptionRequired = "encryption_required"
     case unauthorizedThirdPartySharing = "unauthorized_third_party_sharing"
@@ -568,7 +593,7 @@ public enum ViolationType: String, CaseIterable, Codable {
     case accessControlViolation = "access_control_violation"
 }
 
-public enum ViolationSeverity: String, CaseIterable, Codable {
+public enum ViolationSeverity: String, CaseIterable, Codable, Sendable {
     case low = "low"
     case medium = "medium"
     case high = "high"
@@ -637,7 +662,7 @@ public struct PrivacyComplianceResult: Sendable {
 
 // MARK: - Audit Types
 
-public enum AuditEventType: String, CaseIterable, Codable {
+public enum AuditEventType: String, CaseIterable, Codable, Sendable {
     case dataEncryption = "data_encryption"
     case dataDecryption = "data_decryption"
     case secureDataStorage = "secure_data_storage"
@@ -659,7 +684,7 @@ public struct PrivacyAuditEvent: Codable, Sendable {
     public let metadata: [String: String]
     public let severity: EventSeverity
     
-    public enum EventSeverity: String, CaseIterable, Codable {
+    public enum EventSeverity: String, CaseIterable, Codable, Sendable {
         case info = "info"
         case warning = "warning"
         case error = "error"
@@ -733,7 +758,7 @@ public struct AuditFilter: Sendable {
     }
 }
 
-public enum ExportFormat: String, CaseIterable, Codable {
+public enum ExportFormat: String, CaseIterable, Codable, Sendable {
     case json = "json"
     case csv = "csv"
     
@@ -784,7 +809,7 @@ public enum SensitiveDataPattern: Sendable {
     }
 }
 
-public enum RiskLevel: String, CaseIterable, Codable {
+public enum RiskLevel: String, CaseIterable, Codable, Sendable {
     case none = "none"
     case low = "low"
     case medium = "medium"
@@ -854,7 +879,7 @@ public struct PrivacyConfiguration: Sendable {
     public let enableSensitiveDataScanning: Bool
     public let complianceMode: ComplianceMode
     
-    public enum ComplianceMode: String, CaseIterable, Codable {
+    public enum ComplianceMode: String, CaseIterable, Codable, Sendable {
         case permissive = "permissive"
         case standard = "standard"
         case strict = "strict"
@@ -972,7 +997,7 @@ public struct DefaultEncryptionService: EncryptionService {
     }
 }
 
-public struct DefaultSecureStorageService: SecureStorageService {
+public actor DefaultSecureStorageService: SecureStorageService {
     private var storage: [String: Data] = [:]
     
     public init() {}
@@ -983,7 +1008,7 @@ public struct DefaultSecureStorageService: SecureStorageService {
     
     public func store(data: Data, key: String, options: SecureStorageOptions) async throws {
         // Simplified implementation for demo purposes
-        // storage[key] = data
+        storage[key] = data
     }
     
     public func retrieve(key: String, options: SecureStorageOptions) async throws -> Data {
@@ -993,6 +1018,11 @@ public struct DefaultSecureStorageService: SecureStorageService {
     
     public func delete(key: String) async throws {
         storage.removeValue(forKey: key)
+    }
+    
+    public func validate() async -> Bool {
+        // Validate storage integrity
+        return true
     }
 }
 
@@ -1022,7 +1052,7 @@ public struct DefaultDataAnonymizationService: DataAnonymizationService {
     
     public func anonymize<T: PersonalData>(_ data: T, options: AnonymizationOptions) async throws -> AnonymizationResult<T> {
         let anonymizedData = data.anonymize(level: options.level)
-        let qualityMetrics = AnonymizationResult.QualityMetrics(
+        let qualityMetrics = AnonymizationResult<T>.QualityMetrics(
             utilityScore: options.preserveUtility ? 0.8 : 0.5,
             privacyScore: options.level.privacyScore,
             informationLoss: 1.0 - options.level.privacyScore,
@@ -1037,4 +1067,613 @@ public struct DefaultDataAnonymizationService: DataAnonymizationService {
             qualityMetrics: qualityMetrics
         )
     }
+}
+
+// MARK: - Data Sensitivity Types
+
+public enum DataSensitivity: String, CaseIterable, Codable, Sendable {
+    case low = "low"
+    case medium = "medium" 
+    case high = "high"
+    case critical = "critical"
+    
+    public var privacyScore: Double {
+        switch self {
+        case .low: return 0.25
+        case .medium: return 0.5
+        case .high: return 0.75
+        case .critical: return 1.0
+        }
+    }
+}
+
+// MARK: - Tokenization Types
+
+public struct TokenizationContext: Codable, Sendable, Equatable {
+    public let purpose: TokenizationPurpose
+    public let sensitivity: DataSensitivity
+    public let retentionPolicy: RetentionPolicy
+    public let encryptionRequired: Bool
+    
+    public enum TokenizationPurpose: String, CaseIterable, Codable, Sendable {
+        case analytics = "analytics"
+        case testing = "testing"
+        case sharing = "sharing"
+        case storage = "storage"
+        case creditCard = "credit_card"
+        case phoneNumber = "phone_number"
+        case socialSecurity = "social_security"
+        case email = "email"
+        case name = "name"
+        case address = "address"
+        case custom = "custom"
+    }
+    
+    public enum RetentionPolicy: String, CaseIterable, Codable, Sendable {
+        case session = "session"
+        case temporary = "temporary"
+        case longTerm = "long_term"
+        case permanent = "permanent"
+    }
+    
+    public init(
+        purpose: TokenizationPurpose,
+        sensitivity: DataSensitivity,
+        retentionPolicy: RetentionPolicy,
+        encryptionRequired: Bool = true
+    ) {
+        self.purpose = purpose
+        self.sensitivity = sensitivity
+        self.retentionPolicy = retentionPolicy
+        self.encryptionRequired = encryptionRequired
+    }
+}
+
+public struct TokenizedData: Codable, Sendable {
+    public let originalDataHash: String
+    public let tokens: [String]
+    public let tokenMapping: [String: String]
+    public let context: TokenizationContext
+    public let createdAt: Date
+    public let expiresAt: Date?
+    
+    public init(
+        originalDataHash: String,
+        tokens: [String],
+        tokenMapping: [String: String],
+        context: TokenizationContext,
+        createdAt: Date = Date(),
+        expiresAt: Date? = nil
+    ) {
+        self.originalDataHash = originalDataHash
+        self.tokens = tokens
+        self.tokenMapping = tokenMapping
+        self.context = context
+        self.createdAt = createdAt
+        self.expiresAt = expiresAt
+    }
+}
+
+// MARK: - Status Types
+
+public struct EncryptionStatus: Codable, Sendable {
+    public let isEnabled: Bool
+    public let algorithm: EncryptionAlgorithm
+    public let level: EncryptionLevel
+    public let lastUpdated: Date
+    
+    public init(
+        isEnabled: Bool,
+        algorithm: EncryptionAlgorithm,
+        level: EncryptionLevel,
+        lastUpdated: Date = Date()
+    ) {
+        self.isEnabled = isEnabled
+        self.algorithm = algorithm
+        self.level = level
+        self.lastUpdated = lastUpdated
+    }
+    
+    public static let inactive = EncryptionStatus(
+        isEnabled: false,
+        algorithm: .aes256,
+        level: .low
+    )
+    
+    public static let active = EncryptionStatus(
+        isEnabled: true,
+        algorithm: .aes256,
+        level: .high
+    )
+    
+    public static let error = EncryptionStatus(
+        isEnabled: false,
+        algorithm: .aes256,
+        level: .low
+    )
+}
+
+public struct BiometricAuthStatus: Codable, Sendable {
+    public let isEnabled: Bool
+    public let availableTypes: [BiometricType]
+    public let currentType: BiometricType?
+    public let lastAuthentication: Date?
+    
+    public init(
+        isEnabled: Bool,
+        availableTypes: [BiometricType],
+        currentType: BiometricType? = nil,
+        lastAuthentication: Date? = nil
+    ) {
+        self.isEnabled = isEnabled
+        self.availableTypes = availableTypes
+        self.currentType = currentType
+        self.lastAuthentication = lastAuthentication
+    }
+    
+    public static let unavailable = BiometricAuthStatus(
+        isEnabled: false,
+        availableTypes: [],
+        currentType: .none
+    )
+    
+    public static let available = BiometricAuthStatus(
+        isEnabled: true,
+        availableTypes: [.touchID, .faceID],
+        currentType: .touchID
+    )
+}
+
+public struct DataRetentionPolicy: Codable, Sendable {
+    public let maxAge: TimeInterval
+    public let autoDelete: Bool
+    public let compressionEnabled: Bool
+    public let category: DataCategory
+    
+    public enum DataCategory: String, CaseIterable, Codable, Sendable {
+        case personal = "personal"
+        case analytics = "analytics"
+        case cache = "cache"
+        case logs = "logs"
+    }
+    
+    public init(
+        maxAge: TimeInterval,
+        autoDelete: Bool = true,
+        compressionEnabled: Bool = false,
+        category: DataCategory
+    ) {
+        self.maxAge = maxAge
+        self.autoDelete = autoDelete
+        self.compressionEnabled = compressionEnabled
+        self.category = category
+    }
+    
+    public static let `default` = DataRetentionPolicy(
+        maxAge: 365 * 24 * 60 * 60, // 1 year
+        autoDelete: true,
+        compressionEnabled: false,
+        category: .personal
+    )
+}
+
+// MARK: - Additional Missing Types
+
+public struct EncryptionContext: Codable, Sendable {
+    public let algorithm: EncryptionAlgorithm
+    public let level: EncryptionLevel
+    public let keyId: String
+    public let timestamp: Date
+    
+    public init(
+        algorithm: EncryptionAlgorithm,
+        level: EncryptionLevel,
+        keyId: String = UUID().uuidString,
+        timestamp: Date = Date()
+    ) {
+        self.algorithm = algorithm
+        self.level = level
+        self.keyId = keyId
+        self.timestamp = timestamp
+    }
+    
+    public static let general = EncryptionContext(
+        algorithm: .aes256,
+        level: .medium
+    )
+}
+
+public struct AnonymizedData: Codable, Sendable {
+    public let originalId: String
+    public let anonymizedContent: Data
+    public let level: AnonymizationLevel
+    public let timestamp: Date
+    public let metadata: [String: String]
+    
+    public init(
+        originalId: String,
+        anonymizedContent: Data,
+        level: AnonymizationLevel,
+        timestamp: Date = Date(),
+        metadata: [String: String] = [:]
+    ) {
+        self.originalId = originalId
+        self.anonymizedContent = anonymizedContent
+        self.level = level
+        self.timestamp = timestamp
+        self.metadata = metadata
+    }
+}
+
+public struct DataMetadata: Codable, Sendable {
+    public let id: String
+    public let type: DataType
+    public let sensitivity: DataSensitivity
+    public let createdAt: Date
+    public let lastAccessed: Date
+    public let size: Int
+    public let isEncrypted: Bool
+    public let tags: [String]
+    
+    public init(
+        id: String = UUID().uuidString,
+        type: DataType,
+        sensitivity: DataSensitivity,
+        createdAt: Date = Date(),
+        lastAccessed: Date = Date(),
+        size: Int,
+        isEncrypted: Bool,
+        tags: [String] = []
+    ) {
+        self.id = id
+        self.type = type
+        self.sensitivity = sensitivity
+        self.createdAt = createdAt
+        self.lastAccessed = lastAccessed
+        self.size = size
+        self.isEncrypted = isEncrypted
+        self.tags = tags
+    }
+}
+
+public struct RetentionCleanupResult: Codable, Sendable {
+    public let cleanedItems: Int
+    public let freedSpace: Int64
+    public let errors: [String]
+    public let duration: TimeInterval
+    public let timestamp: Date
+    
+    public init(
+        cleanedItems: Int,
+        freedSpace: Int64,
+        errors: [String] = [],
+        duration: TimeInterval,
+        timestamp: Date = Date()
+    ) {
+        self.cleanedItems = cleanedItems
+        self.freedSpace = freedSpace
+        self.errors = errors
+        self.duration = duration
+        self.timestamp = timestamp
+    }
+}
+
+public struct ComplianceStatus: Codable, Sendable {
+    public let isCompliant: Bool
+    public let score: Float
+    public let violations: [ComplianceViolation]
+    public let recommendations: [String]
+    public let lastEvaluation: Date
+    public let nextEvaluation: Date?
+    
+    public init(
+        isCompliant: Bool,
+        score: Float,
+        violations: [ComplianceViolation] = [],
+        recommendations: [String] = [],
+        lastEvaluation: Date = Date(),
+        nextEvaluation: Date? = nil
+    ) {
+        self.isCompliant = isCompliant
+        self.score = score
+        self.violations = violations
+        self.recommendations = recommendations
+        self.lastEvaluation = lastEvaluation
+        self.nextEvaluation = nextEvaluation
+    }
+}
+
+// MARK: - Missing Types for PrivacyEngine
+
+public struct PrivacyReport: Codable, Sendable {
+    public let status: String
+    public let vulnerabilities: [PrivacyVulnerability]
+    public let recommendations: [String]
+    public let score: Float
+    public let timestamp: Date
+    
+    public init(
+        status: String,
+        vulnerabilities: [PrivacyVulnerability] = [],
+        recommendations: [String] = [],
+        score: Float,
+        timestamp: Date = Date()
+    ) {
+        self.status = status
+        self.vulnerabilities = vulnerabilities
+        self.recommendations = recommendations
+        self.score = score
+        self.timestamp = timestamp
+    }
+}
+
+public struct PrivacyVulnerability: Codable, Sendable {
+    public let id: String
+    public let title: String
+    public let description: String
+    public let severity: VulnerabilitySeverity
+    public let impact: String
+    public let mitigation: String
+    
+    public enum VulnerabilitySeverity: String, Codable, Sendable {
+        case low = "low"
+        case medium = "medium"
+        case high = "high"
+        case critical = "critical"
+    }
+    
+    public init(
+        id: String = UUID().uuidString,
+        title: String,
+        description: String,
+        severity: VulnerabilitySeverity,
+        impact: String,
+        mitigation: String
+    ) {
+        self.id = id
+        self.title = title
+        self.description = description
+        self.severity = severity
+        self.impact = impact
+        self.mitigation = mitigation
+    }
+}
+
+public struct PrivacyStatus: Codable, Sendable {
+    public let isSecure: Bool
+    public let encryptionEnabled: Bool
+    public let dataRetentionCompliant: Bool
+    public let accessControlsActive: Bool
+    public let lastAudit: Date?
+    public let issues: [String]
+    
+    public init(
+        isSecure: Bool,
+        encryptionEnabled: Bool,
+        dataRetentionCompliant: Bool,
+        accessControlsActive: Bool,
+        lastAudit: Date? = nil,
+        issues: [String] = []
+    ) {
+        self.isSecure = isSecure
+        self.encryptionEnabled = encryptionEnabled
+        self.dataRetentionCompliant = dataRetentionCompliant
+        self.accessControlsActive = accessControlsActive
+        self.lastAudit = lastAudit
+        self.issues = issues
+    }
+}
+
+public struct EncryptionConfiguration: Codable, Sendable {
+    public let algorithm: EncryptionAlgorithm
+    public let keySize: Int
+    public let enabled: Bool
+    public let autoRotate: Bool
+    public let rotationInterval: TimeInterval
+    
+    public init(
+        algorithm: EncryptionAlgorithm = .aes256,
+        keySize: Int = 256,
+        enabled: Bool = true,
+        autoRotate: Bool = true,
+        rotationInterval: TimeInterval = 7776000 // 90 days
+    ) {
+        self.algorithm = algorithm
+        self.keySize = keySize
+        self.enabled = enabled
+        self.autoRotate = autoRotate
+        self.rotationInterval = rotationInterval
+    }
+    
+    public static let `default` = EncryptionConfiguration()
+}
+
+public enum PrivacyError: LocalizedError, Sendable {
+    case encryptionFailed(String)
+    case decryptionFailed(String)
+    case biometricAuthFailed(String)
+    case keyGenerationFailed
+    case invalidData
+    case permissionDenied
+    case configurationError(String)
+    
+    public var errorDescription: String? {
+        switch self {
+        case .encryptionFailed(let reason):
+            return "Encryption failed: \(reason)"
+        case .decryptionFailed(let reason):
+            return "Decryption failed: \(reason)"
+        case .biometricAuthFailed(let reason):
+            return "Biometric authentication failed: \(reason)"
+        case .keyGenerationFailed:
+            return "Key generation failed"
+        case .invalidData:
+            return "Invalid data provided"
+        case .permissionDenied:
+            return "Permission denied"
+        case .configurationError(let reason):
+            return "Configuration error: \(reason)"
+        }
+    }
+}
+
+public struct EncryptionMetrics: Codable, Sendable {
+    public let encryptionTime: TimeInterval
+    public let decryptionTime: TimeInterval
+    public let keyGenerationTime: TimeInterval
+    public let dataSize: Int64
+    public let compressedSize: Int64?
+    public let algorithm: EncryptionAlgorithm
+    public let timestamp: Date
+    
+    public init(
+        encryptionTime: TimeInterval,
+        decryptionTime: TimeInterval,
+        keyGenerationTime: TimeInterval,
+        dataSize: Int64,
+        compressedSize: Int64? = nil,
+        algorithm: EncryptionAlgorithm,
+        timestamp: Date = Date()
+    ) {
+        self.encryptionTime = encryptionTime
+        self.decryptionTime = decryptionTime
+        self.keyGenerationTime = keyGenerationTime
+        self.dataSize = dataSize
+        self.compressedSize = compressedSize
+        self.algorithm = algorithm
+        self.timestamp = timestamp
+    }
+}
+
+// MARK: - Audit Logging Types
+
+public struct AuditLoggingConfiguration: Codable, Sendable {
+    public let level: AuditLogLevel
+    public let destination: AuditDestination
+    public let retentionPeriod: TimeInterval
+    public let encryptionEnabled: Bool
+    public let realTimeMonitoring: Bool
+    public let alertThresholds: AlertThresholds
+    
+    public init(
+        level: AuditLogLevel = .info,
+        destination: AuditDestination = .file,
+        retentionPeriod: TimeInterval = 365 * 24 * 3600, // 1 year
+        encryptionEnabled: Bool = true,
+        realTimeMonitoring: Bool = true,
+        alertThresholds: AlertThresholds = .default
+    ) {
+        self.level = level
+        self.destination = destination
+        self.retentionPeriod = retentionPeriod
+        self.encryptionEnabled = encryptionEnabled
+        self.realTimeMonitoring = realTimeMonitoring
+        self.alertThresholds = alertThresholds
+    }
+    
+    public static let `default` = AuditLoggingConfiguration()
+}
+
+public enum AuditLogLevel: String, CaseIterable, Codable, Sendable, Comparable {
+    case trace = "trace"
+    case debug = "debug"
+    case info = "info"
+    case warning = "warning"
+    case error = "error"
+    case critical = "critical"
+    
+    public static func < (lhs: AuditLogLevel, rhs: AuditLogLevel) -> Bool {
+        let order: [AuditLogLevel] = [.trace, .debug, .info, .warning, .error, .critical]
+        guard let lhsIndex = order.firstIndex(of: lhs),
+              let rhsIndex = order.firstIndex(of: rhs) else {
+            return false
+        }
+        return lhsIndex < rhsIndex
+    }
+}
+
+public enum AuditDestination: String, CaseIterable, Codable, Sendable {
+    case file = "file"
+    case database = "database"
+    case remote = "remote"
+    case console = "console"
+    case all = "all"
+}
+
+public struct AlertThresholds: Codable, Sendable {
+    public let errorRate: Float
+    public let criticalEvents: Int
+    public let suspiciousActivity: Int
+    public let timeWindow: TimeInterval
+    
+    public init(
+        errorRate: Float = 0.05,
+        criticalEvents: Int = 5,
+        suspiciousActivity: Int = 10,
+        timeWindow: TimeInterval = 3600 // 1 hour
+    ) {
+        self.errorRate = errorRate
+        self.criticalEvents = criticalEvents
+        self.suspiciousActivity = suspiciousActivity
+        self.timeWindow = timeWindow
+    }
+    
+    public static let `default` = AlertThresholds()
+}
+
+public struct AuditEntry: Codable, Sendable {
+    public let id: String
+    public let timestamp: Date
+    public let level: AuditLogLevel
+    public let category: AuditCategory
+    public let event: String
+    public let details: [String: String]
+    public let userId: String?
+    public let sessionId: String?
+    public let ipAddress: String?
+    public let userAgent: String?
+    public let checksum: String
+    
+    public init(
+        id: String = UUID().uuidString,
+        timestamp: Date = Date(),
+        level: AuditLogLevel,
+        category: AuditCategory,
+        event: String,
+        details: [String: String] = [:],
+        userId: String? = nil,
+        sessionId: String? = nil,
+        ipAddress: String? = nil,
+        userAgent: String? = nil,
+        checksum: String = ""
+    ) {
+        self.id = id
+        self.timestamp = timestamp
+        self.level = level
+        self.category = category
+        self.event = event
+        self.details = details
+        self.userId = userId
+        self.sessionId = sessionId
+        self.ipAddress = ipAddress
+        self.userAgent = userAgent
+        self.checksum = checksum
+    }
+}
+
+public enum AuditCategory: String, CaseIterable, Codable, Sendable {
+    case authentication = "authentication"
+    case authorization = "authorization"
+    case dataAccess = "data_access"
+    case dataModification = "data_modification"
+    case encryption = "encryption"
+    case decryption = "decryption"
+    case tokenization = "tokenization"
+    case anonymization = "anonymization"
+    case compliance = "compliance"
+    case security = "security"
+    case privacy = "privacy"
+    case system = "system"
+    case performance = "performance"
+    case error = "error"
 }

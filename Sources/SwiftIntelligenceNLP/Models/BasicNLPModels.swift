@@ -54,12 +54,17 @@ public struct NGramLanguageModel: NLPModelProtocol, Sendable {
         let totalProcessingTime = Date().timeIntervalSince(startTime)
         
         return NLPAnalysisResult(
-            embeddings: embeddingResult,
-            processingTime: totalProcessingTime
+            sentiment: nil,
+            entities: [],
+            keywords: [],
+            topics: [],
+            languageConfidence: [],
+            readability: nil,
+            summary: nil
         )
     }
     
-    public func train(with data: NLPTrainingData) async throws -> NLPTrainingResult {
+    public mutating func train(with data: NLPTrainingData) async throws -> NLPTrainingResult {
         let startTime = Date()
         
         // Build n-gram model from training texts
@@ -81,16 +86,11 @@ public struct NGramLanguageModel: NLPModelProtocol, Sendable {
         let accuracy = Float(coveredTokens) / Float(totalTokens)
         
         return NLPTrainingResult(
+            modelId: "ngram_\(n)",
             accuracy: min(accuracy, 1.0),
             loss: 1.0 - min(accuracy, 1.0),
-            epochs: 1, // Single pass for n-gram model
-            duration: duration,
-            modelType: .languageModel,
-            metadata: [
-                "n": String(n),
-                "vocabulary_size": String(vocabulary.count),
-                "ngram_count": String(ngramCounts.count)
-            ]
+            epochs: 1,
+            trainingTime: duration
         )
     }
     
@@ -177,12 +177,17 @@ public struct SimpleWordEmbeddingModel: NLPModelProtocol, Sendable {
         let totalProcessingTime = Date().timeIntervalSince(startTime)
         
         return NLPAnalysisResult(
-            embeddings: embeddingResult,
-            processingTime: totalProcessingTime
+            sentiment: nil,
+            entities: [],
+            keywords: [],
+            topics: [],
+            languageConfidence: [],
+            readability: nil,
+            summary: nil
         )
     }
     
-    public func train(with data: NLPTrainingData) async throws -> NLPTrainingResult {
+    public mutating func train(with data: NLPTrainingData) async throws -> NLPTrainingResult {
         let startTime = Date()
         
         // Simple training: create random embeddings for each unique word
@@ -207,16 +212,11 @@ public struct SimpleWordEmbeddingModel: NLPModelProtocol, Sendable {
         let accuracy = Float(wordVectors.count) / Float(uniqueWords.count)
         
         return NLPTrainingResult(
+            modelId: "embedding_\(dimension)",
             accuracy: min(accuracy, 1.0),
             loss: 1.0 - min(accuracy, 1.0),
-            epochs: 1, // Single pass for simple model
-            duration: duration,
-            modelType: .embedding,
-            metadata: [
-                "dimension": String(dimension),
-                "vocabulary_size": String(wordVectors.count),
-                "total_unique_words": String(uniqueWords.count)
-            ]
+            epochs: 1,
+            trainingTime: duration
         )
     }
     
@@ -354,20 +354,34 @@ public struct BasicTextClassifier: NLPModelProtocol, Sendable {
         
         let totalProcessingTime = Date().timeIntervalSince(startTime)
         
+        let sentimentResult = SentimentResult(
+            sentiment: SentimentResult.Sentiment(rawValue: bestCategory) ?? .neutral,
+            score: Float(confidence),
+            confidence: Float(confidence),
+            positiveWords: categoryKeywords["positive"] ?? [],
+            negativeWords: categoryKeywords["negative"] ?? []
+        )
+        
         return NLPAnalysisResult(
-            classification: classificationResult,
-            processingTime: totalProcessingTime
+            sentiment: sentimentResult,
+            entities: [],
+            keywords: [],
+            topics: [],
+            languageConfidence: [],
+            readability: nil,
+            summary: nil
         )
     }
     
-    public func train(with data: NLPTrainingData) async throws -> NLPTrainingResult {
+    public mutating func train(with data: NLPTrainingData) async throws -> NLPTrainingResult {
         let startTime = Date()
         
         // Update keyword patterns based on training data
-        for (text, label) in zip(data.texts, data.labels) {
-            let words = text.lowercased()
-                .components(separatedBy: .whitespacesAndNewlines)
-                .filter { !$0.isEmpty && $0.count > 2 } // Filter short words
+        if let labels = data.labels {
+            for (text, label) in zip(data.texts, labels) {
+                let words = text.lowercased()
+                    .components(separatedBy: CharacterSet.whitespacesAndNewlines)
+                    .filter { !$0.isEmpty && $0.count > 2 } // Filter short words
             
             // Add frequent words from training data to category keywords
             if var existingKeywords = categoryKeywords[label] {
@@ -377,6 +391,7 @@ public struct BasicTextClassifier: NLPModelProtocol, Sendable {
                     }
                 }
                 categoryKeywords[label] = Array(existingKeywords.prefix(50)) // Limit keyword count
+                }
             }
         }
         
@@ -384,26 +399,23 @@ public struct BasicTextClassifier: NLPModelProtocol, Sendable {
         
         // Evaluate accuracy on training data
         var correct = 0
-        for (text, expectedLabel) in zip(data.texts, data.labels) {
-            let analysis = try await analyze(text)
-            if analysis.classification?.predictedCategory == expectedLabel {
-                correct += 1
+        if let labels = data.labels {
+            for (text, expectedLabel) in zip(data.texts, labels) {
+                let analysis = try await analyze(text)
+                if analysis.sentiment?.sentiment.rawValue == expectedLabel {
+                    correct += 1
+                }
             }
         }
         
         let accuracy = Float(correct) / Float(data.texts.count)
         
         return NLPTrainingResult(
+            modelId: "classifier_\(categories.count)",
             accuracy: accuracy,
             loss: 1.0 - accuracy,
-            epochs: 1, // Single pass for keyword-based classifier
-            duration: duration,
-            modelType: .classification,
-            metadata: [
-                "categories": categories.joined(separator: ","),
-                "total_keywords": String(categoryKeywords.values.reduce(0) { $0 + $1.count }),
-                "training_samples": String(data.texts.count)
-            ]
+            epochs: 1,
+            trainingTime: duration
         )
     }
     

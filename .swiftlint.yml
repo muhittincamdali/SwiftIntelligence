@@ -1,0 +1,252 @@
+# SwiftLint Configuration for SwiftIntelligence
+# AI/ML Framework Code Style Enforcement
+
+# Basic Configuration
+disabled_rules:
+  - trailing_whitespace
+  - todo
+  - unused_optional_binding
+
+opt_in_rules:
+  - array_init
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+  - contains_over_first_not_nil
+  - contains_over_range_nil_comparison
+  - discouraged_object_literal
+  - empty_collection_literal
+  - empty_count
+  - empty_string
+  - enum_case_associated_values_count
+  - explicit_init
+  - extension_access_modifier
+  - fallthrough
+  - fatal_error_message
+  - file_header
+  - first_where
+  - force_unwrapping
+  - identical_operands
+  - joined_default_parameter
+  - last_where
+  - legacy_random
+  - literal_expression_end_indentation
+  - multiline_arguments
+  - multiline_function_chains
+  - multiline_literal_brackets
+  - multiline_parameters
+  - multiline_parameters_brackets
+  - operator_usage_whitespace
+  - overridden_super_call
+  - override_in_extension
+  - pattern_matching_keywords
+  - prefer_self_type_over_type_of_self
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - strict_fileprivate
+  - switch_case_alignment
+  - toggle_bool
+  - trailing_closure
+  - unneeded_parentheses_in_closure_argument
+  - unused_import
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - yoda_condition
+
+# File and Folder Configuration
+included:
+  - Sources
+  - Tests
+  - Examples
+  - DemoApps
+  - SwiftUILab
+
+excluded:
+  - .build
+  - .swiftpm
+  - Package.swift
+  - "*/Package.swift"
+  - DerivedData
+  - "**/.DS_Store"
+  - Resources
+  - Documentation
+
+# Rule Configurations
+line_length:
+  warning: 120
+  error: 150
+  ignores_function_declarations: true
+  ignores_comments: true
+  ignores_urls: true
+
+type_body_length:
+  warning: 300
+  error: 400
+
+file_length:
+  warning: 500
+  error: 800
+  ignore_comment_only_lines: true
+
+function_body_length:
+  warning: 60
+  error: 100
+
+function_parameter_count:
+  warning: 6
+  error: 8
+
+cyclomatic_complexity:
+  warning: 10
+  error: 20
+
+nesting:
+  type_level:
+    warning: 3
+    error: 6
+  statement_level:
+    warning: 5
+    error: 10
+
+identifier_name:
+  min_length: 1
+  max_length:
+    warning: 50
+    error: 60
+  excluded:
+    - id
+    - url
+    - api
+    - ai
+    - ml
+    - nlp
+    - tts
+    - ui
+    - ux
+    - db
+    - os
+    - ip
+    - gps
+    - cpu
+    - gpu
+    - fps
+    - dpi
+    - rgb
+    - hsl
+    - x
+    - y
+    - z
+
+type_name:
+  min_length: 3
+  max_length:
+    warning: 45
+    error: 50
+  excluded:
+    - AI
+    - ML
+    - NLP
+    - TTS
+    - GPU
+    - CPU
+    - API
+    - URL
+    - UI
+    - UX
+    - DB
+    - OS
+    - IP
+    - GPS
+    - RGB
+    - HSL
+
+large_tuple:
+  warning: 3
+  error: 4
+
+# Custom Rules for AI/ML Framework
+custom_rules:
+  # AI/ML specific naming
+  ai_ml_naming:
+    name: "AI/ML Component Naming"
+    regex: "class\\s+\\w*(?:Engine|Processor|Manager|Provider|Analyzer)\\s*(?::\\s*\\w+)?"
+    message: "AI/ML components should use descriptive suffixes like Engine, Processor, Manager, Provider, or Analyzer"
+    severity: warning
+
+  # Actor usage for thread safety
+  actor_for_engines:
+    name: "Actor for Engine Classes"
+    regex: "class\\s+\\w*Engine\\s*(?::\\s*\\w+)?"
+    message: "Engine classes should be actors for thread safety in AI/ML operations"
+    severity: warning
+
+  # Async/await for AI operations
+  async_ai_operations:
+    name: "Async AI Operations"
+    regex: "func\\s+(?:process|analyze|recognize|generate|predict|train)\\w*\\s*\\([^)]*\\)\\s*(?:throws\\s+)?(?:->\\s*\\w+\\s*)?\\s*\\{"
+    message: "AI operations should be async for better performance"
+    severity: warning
+
+  # Sendable conformance for AI types
+  sendable_ai_types:
+    name: "Sendable AI Types"
+    regex: "struct\\s+\\w*(?:Result|Request|Configuration|Options|Metrics)\\s*(?::\\s*[^{]*)?\\s*\\{"
+    message: "AI result, request, and configuration types should conform to Sendable"
+    severity: warning
+
+  # Error handling for AI operations
+  ai_error_handling:
+    name: "AI Error Handling"
+    regex: "enum\\s+\\w*Error\\s*(?::\\s*Error\\s*)?\\{"
+    message: "AI error enums should conform to Error protocol"
+    severity: warning
+
+  # Privacy compliance
+  privacy_sensitive_data:
+    name: "Privacy Sensitive Data"
+    regex: "(?:password|secret|key|token|credential|apiKey|authToken)"
+    message: "Sensitive data should be properly protected and not logged"
+    severity: error
+
+  # Performance monitoring
+  performance_logging:
+    name: "Performance Logging"
+    regex: "logger\\.(?:debug|info|warning|error)\\("
+    message: "Ensure performance-critical operations are properly logged"
+    severity: warning
+
+# File Header Template
+file_header:
+  required_pattern: |
+                    \/\/
+                    \/\/ .*\.swift
+                    \/\/ SwiftIntelligence
+                    \/\/
+                    \/\/ Created by .* on \d{1,2}\/\d{1,2}\/\d{4}\.
+                    \/\/
+
+# Analyzer Rules
+analyzer_rules:
+  - unused_import
+  - unused_declaration
+
+# Reporter Configuration
+reporter: "xcode"
+
+# Severity Levels
+warning_threshold: 10
+error_threshold: 20
+
+# Performance Configuration
+compilation_database_path: ".build/debug.yaml"
+validate_extensions: true
+
+# Swift Version Compatibility
+swift_version: "5.9"
+
+# Additional Configuration for CI/CD
+only_rules: []

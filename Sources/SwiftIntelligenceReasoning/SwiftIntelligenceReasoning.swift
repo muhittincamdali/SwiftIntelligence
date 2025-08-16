@@ -89,13 +89,15 @@ public actor SwiftIntelligenceReasoning {
         logger.debug("Loading default knowledge base", category: "Reasoning")
         
         // Load basic facts and rules
-        await knowledgeBase.addFact(Fact(id: "basic_logic", content: "All humans are mortal", confidence: 1.0))
-        await knowledgeBase.addRule(Rule(
+        var kb = knowledgeBase
+        await kb.addFact(Fact(id: "basic_logic", content: "All humans are mortal", confidence: 1.0))
+        await kb.addRule(Rule(
             id: "modus_ponens",
             premise: "If P then Q, P is true",
             conclusion: "Q is true",
             confidence: 1.0
         ))
+        knowledgeBase = kb
         
         logger.debug("Default knowledge base loaded", category: "Reasoning")
     }
@@ -287,7 +289,7 @@ public actor SwiftIntelligenceReasoning {
             conclusion: conclusion,
             reasoningType: .abductive,
             evidence: observations.map { $0.description },
-            alternatives: possibleExplanations.filter { $0 !== bestExplanation }.map { $0.description }
+            alternatives: possibleExplanations.filter { $0.id != bestExplanation?.id }.map { $0.description }
         )
         
         logger.info("Abductive reasoning completed - Best explanation score: \(bestScore)", category: "Reasoning")

@@ -161,7 +161,7 @@ public struct Rule: Codable, Sendable {
     public let ruleType: RuleType
     public let conditions: [String]
     
-    public enum RuleType: String, CaseIterable, Codable {
+    public enum RuleType: String, CaseIterable, Codable, Sendable {
         case implication = "implication"
         case equivalence = "equivalence"
         case disjunction = "disjunction"
@@ -215,7 +215,7 @@ public struct Relationship: Codable, Sendable {
     public let target: String
     public let strength: Float
     
-    public enum RelationType: String, CaseIterable, Codable {
+    public enum RelationType: String, CaseIterable, Codable, Sendable {
         case isa = "is_a"
         case partof = "part_of"
         case similar = "similar_to"
@@ -329,7 +329,7 @@ public struct Query: Codable, Sendable {
     public let queryType: QueryType
     public let context: [String]
     
-    public enum QueryType: String, CaseIterable, Codable {
+    public enum QueryType: String, CaseIterable, Codable, Sendable {
         case verification = "verification"
         case explanation = "explanation"
         case prediction = "prediction"

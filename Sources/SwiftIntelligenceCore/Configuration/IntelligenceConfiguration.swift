@@ -38,6 +38,30 @@ public struct IntelligenceConfiguration: Sendable {
     /// Model paths configuration
     public let modelPaths: ModelPathsConfiguration
     
+    /// Enable on-device processing
+    public let enableOnDeviceProcessing: Bool
+    
+    /// Enable cloud fallback
+    public let enableCloudFallback: Bool
+    
+    /// Neural Engine optimization
+    public let enableNeuralEngine: Bool
+    
+    /// Batch processing size
+    public let batchSize: Int
+    
+    /// Log level
+    public let logLevel: IntelligenceLogLevel
+    
+    /// Performance profile
+    public let performanceProfile: PerformanceProfile
+    
+    /// Privacy level
+    public let privacyLevel: PrivacyLevel
+    
+    /// Cache policy
+    public let cachePolicy: CachePolicy
+    
     // MARK: - Initialization
     
     public init(
@@ -51,7 +75,15 @@ public struct IntelligenceConfiguration: Sendable {
         privacyMode: Bool = true,
         telemetryEnabled: Bool = false,
         endpoints: EndpointsConfiguration = EndpointsConfiguration(),
-        modelPaths: ModelPathsConfiguration = ModelPathsConfiguration()
+        modelPaths: ModelPathsConfiguration = ModelPathsConfiguration(),
+        enableOnDeviceProcessing: Bool = true,
+        enableCloudFallback: Bool = false,
+        enableNeuralEngine: Bool = true,
+        batchSize: Int = 10,
+        logLevel: IntelligenceLogLevel = .info,
+        performanceProfile: PerformanceProfile = .balanced,
+        privacyLevel: PrivacyLevel = .standard,
+        cachePolicy: CachePolicy = .automatic
     ) {
         self.debugMode = debugMode
         self.performanceMonitoring = performanceMonitoring
@@ -64,6 +96,14 @@ public struct IntelligenceConfiguration: Sendable {
         self.telemetryEnabled = telemetryEnabled
         self.endpoints = endpoints
         self.modelPaths = modelPaths
+        self.enableOnDeviceProcessing = enableOnDeviceProcessing
+        self.enableCloudFallback = enableCloudFallback
+        self.enableNeuralEngine = enableNeuralEngine
+        self.batchSize = batchSize
+        self.logLevel = logLevel
+        self.performanceProfile = performanceProfile
+        self.privacyLevel = privacyLevel
+        self.cachePolicy = cachePolicy
     }
     
     // MARK: - Presets
@@ -76,7 +116,15 @@ public struct IntelligenceConfiguration: Sendable {
             verboseLogging: true,
             memoryLimit: 1024,
             privacyMode: false,
-            telemetryEnabled: false
+            telemetryEnabled: false,
+            enableOnDeviceProcessing: true,
+            enableCloudFallback: true,
+            enableNeuralEngine: true,
+            batchSize: 5,
+            logLevel: .debug,
+            performanceProfile: .balanced,
+            privacyLevel: .minimal,
+            cachePolicy: .aggressive
         )
     }
     
@@ -88,7 +136,15 @@ public struct IntelligenceConfiguration: Sendable {
             verboseLogging: false,
             memoryLimit: 256,
             privacyMode: true,
-            telemetryEnabled: true
+            telemetryEnabled: true,
+            enableOnDeviceProcessing: true,
+            enableCloudFallback: false,
+            enableNeuralEngine: true,
+            batchSize: 10,
+            logLevel: .warning,
+            performanceProfile: .optimized,
+            privacyLevel: .high,
+            cachePolicy: .automatic
         )
     }
     
@@ -103,7 +159,15 @@ public struct IntelligenceConfiguration: Sendable {
             cacheDuration: 0,
             maxConcurrentOperations: 1,
             privacyMode: false,
-            telemetryEnabled: false
+            telemetryEnabled: false,
+            enableOnDeviceProcessing: true,
+            enableCloudFallback: false,
+            enableNeuralEngine: false,
+            batchSize: 1,
+            logLevel: .info,
+            performanceProfile: .minimal,
+            privacyLevel: .minimal,
+            cachePolicy: .disabled
         )
     }
 }
@@ -139,4 +203,53 @@ public struct ModelPathsConfiguration: Sendable {
         self.basePath = basePath
         self.customPaths = customPaths
     }
+}
+
+// MARK: - Enumerations
+
+/// Log level enumeration
+public enum IntelligenceLogLevel: String, Sendable, CaseIterable {
+    case debug = "DEBUG"
+    case info = "INFO"
+    case warning = "WARNING"
+    case error = "ERROR"
+    case critical = "CRITICAL"
+    case none = "NONE"
+    
+    public var priority: Int {
+        switch self {
+        case .debug: return 0
+        case .info: return 1
+        case .warning: return 2
+        case .error: return 3
+        case .critical: return 4
+        case .none: return 5
+        }
+    }
+}
+
+/// Performance profile enumeration
+public enum PerformanceProfile: String, Sendable, CaseIterable {
+    case minimal = "minimal"
+    case battery = "battery"
+    case balanced = "balanced"
+    case optimized = "optimized"
+    case performance = "performance"
+    case enterprise = "enterprise"
+}
+
+/// Privacy level enumeration
+public enum PrivacyLevel: String, Sendable, CaseIterable {
+    case minimal = "minimal"
+    case standard = "standard"
+    case high = "high"
+    case maximum = "maximum"
+}
+
+/// Cache policy enumeration
+public enum CachePolicy: String, Sendable, CaseIterable {
+    case disabled = "disabled"
+    case conservative = "conservative"
+    case automatic = "automatic"
+    case aggressive = "aggressive"
 }

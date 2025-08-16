@@ -2,63 +2,66 @@ import Foundation
 import AVFoundation
 import Speech
 
+// MARK: - Speech Voice Types
+
+public struct SpeechVoice: Codable, Sendable {
+    public let identifier: String
+    public let name: String
+    public let language: String
+    public let quality: VoiceQuality
+    public let gender: VoiceGender
+    
+    public enum VoiceQuality: String, CaseIterable, Codable, Sendable {
+        case enhanced = "enhanced"
+        case premium = "premium"
+        case standard = "standard"
+    }
+    
+    public enum VoiceGender: String, CaseIterable, Codable, Sendable {
+        case male = "male"
+        case female = "female"
+        case neutral = "neutral"
+    }
+    
+    public init(identifier: String, name: String, language: String, quality: VoiceQuality, gender: VoiceGender) {
+        self.identifier = identifier
+        self.name = name
+        self.language = language
+        self.quality = quality
+        self.gender = gender
+    }
+}
+
+// MARK: - Speech Synthesis Options
+
+public struct SpeechSynthesisOptions: Codable, Sendable {
+    public let speed: Float
+    public let pitch: Float
+    public let volume: Float
+    public let enableSSML: Bool
+    
+    public static let `default` = SpeechSynthesisOptions(
+        speed: 1.0,
+        pitch: 1.0,
+        volume: 1.0,
+        enableSSML: false
+    )
+    
+    public init(speed: Float = 1.0, pitch: Float = 1.0, volume: Float = 1.0, enableSSML: Bool = false) {
+        self.speed = speed
+        self.pitch = pitch
+        self.volume = volume
+        self.enableSSML = enableSSML
+    }
+}
+
 // MARK: - Core Speech Types
 
-public struct SpeechConfiguration {
-    public let enableContinuousRecognition: Bool
-    public let preferOnDeviceRecognition: Bool
-    public let enableNoiseReduction: Bool
-    public let maxRecordingDuration: TimeInterval
-    public let audioQuality: AudioQuality
-    public let defaultLanguage: String
-    
-    public enum AudioQuality {
-        case low
-        case standard
-        case high
-        case lossless
-    }
-    
-    public init(
-        enableContinuousRecognition: Bool = true,
-        preferOnDeviceRecognition: Bool = true,
-        enableNoiseReduction: Bool = true,
-        maxRecordingDuration: TimeInterval = 300, // 5 minutes
-        audioQuality: AudioQuality = .standard,
-        defaultLanguage: String = "en-US"
-    ) {
-        self.enableContinuousRecognition = enableContinuousRecognition
-        self.preferOnDeviceRecognition = preferOnDeviceRecognition
-        self.enableNoiseReduction = enableNoiseReduction
-        self.maxRecordingDuration = maxRecordingDuration
-        self.audioQuality = audioQuality
-        self.defaultLanguage = defaultLanguage
-    }
-    
-    public static let `default` = SpeechConfiguration()
-    
-    public static let highQuality = SpeechConfiguration(
-        enableContinuousRecognition: true,
-        preferOnDeviceRecognition: false,
-        enableNoiseReduction: true,
-        maxRecordingDuration: 600,
-        audioQuality: .high,
-        defaultLanguage: "en-US"
-    )
-    
-    public static let privacy = SpeechConfiguration(
-        enableContinuousRecognition: false,
-        preferOnDeviceRecognition: true,
-        enableNoiseReduction: false,
-        maxRecordingDuration: 60,
-        audioQuality: .standard,
-        defaultLanguage: "en-US"
-    )
-}
+// Note: SpeechConfiguration is defined in Configuration/SpeechConfiguration.swift
 
 // MARK: - Speech Recognition Types
 
-public struct SpeechRecognitionOptions: Hashable, Codable {
+public struct SpeechRecognitionOptions: Hashable, Codable, Sendable {
     public let enablePartialResults: Bool
     public let requireOnDeviceRecognition: Bool
     public let addPunctuation: Bool
@@ -148,7 +151,7 @@ public struct SpeechSegment: Codable {
 
 // MARK: - Text-to-Speech Types
 
-public struct TextToSpeechOptions: Hashable, Codable {
+public struct TextToSpeechOptions: Hashable, Codable, Sendable {
     public let language: String
     public let voiceIdentifier: String?
     public let rate: Float // 0.0 to 1.0
@@ -292,7 +295,7 @@ public struct VoiceInfo: Codable, Hashable {
 
 // MARK: - Real-time Processing Types
 
-public struct RealtimeProcessingOptions: Hashable, Codable {
+public struct RealtimeProcessingOptions: Hashable, Codable, Sendable {
     public let updateInterval: TimeInterval // Seconds between updates
     public let applyNoiseReduction: Bool
     public let detectVoiceActivity: Bool
@@ -472,14 +475,14 @@ public struct SpeakerAnalysis: Codable {
 
 // MARK: - Audio Processing Types
 
-public struct AudioProcessingOptions: Hashable, Codable {
+public struct AudioProcessingOptions: Hashable, Codable, Sendable {
     public let applyNoiseReduction: Bool
     public let normalizeVolume: Bool
     public let removeEcho: Bool
     public let enhanceSpeech: Bool
     public let outputFormat: AudioFormat
     
-    public enum AudioFormat: String, CaseIterable, Codable {
+    public enum AudioFormat: String, CaseIterable, Codable, Sendable {
         case wav = "wav"
         case mp3 = "mp3"
         case aac = "aac"
@@ -535,7 +538,7 @@ public struct AudioProcessingResult {
 
 // MARK: - Language Support
 
-public struct SpeechLanguageSupport {
+public struct SpeechLanguageSupport: Sendable {
     public let languageCode: String
     public let displayName: String
     public let recognitionSupport: SupportLevel
@@ -543,7 +546,7 @@ public struct SpeechLanguageSupport {
     public let onDeviceSupport: Bool
     public let availableVoices: Int
     
-    public enum SupportLevel: String, CaseIterable, Codable {
+    public enum SupportLevel: String, CaseIterable, Codable, Sendable {
         case none = "none"
         case basic = "basic"
         case good = "good"

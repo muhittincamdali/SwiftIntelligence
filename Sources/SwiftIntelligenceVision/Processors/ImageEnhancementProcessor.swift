@@ -1,7 +1,11 @@
 import Foundation
 import CoreML
 import Vision
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import CoreImage
 import os.log
 
@@ -40,15 +44,21 @@ public class ImageEnhancementProcessor {
     
     /// Enhance image quality using AI upscaling and improvements
     public func enhance(
-        _ image: UIImage,
+        _ image: PlatformImage,
         options: EnhancementOptions
     ) async throws -> ImageEnhancementResult {
         
         let startTime = Date()
         
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw EnhancementError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw EnhancementError.invalidImage
+        }
+        #endif
         
         // Apply enhancements based on type and options
         let enhancedImage = try await performEnhancement(
@@ -64,34 +74,49 @@ public class ImageEnhancementProcessor {
         )
         
         // Track applied filters
-        let appliedFilters = getAppliedFilters(options: options)
+        let _ = getAppliedFilters(options: options)
         
         let processingTime = Date().timeIntervalSince(startTime)
         let confidence = metrics.overallImprovement
         
+        // Convert PlatformImage to Data
+        let enhancedImageData = enhancedImage.pngRepresentation() ?? Data()
+        let originalSize = image.size
+        let enhancedSize = enhancedImage.size
+        
+        // Convert EnhancementMetrics to ImprovementMetrics
+        let improvementMetrics = ImageEnhancementResult.ImprovementMetrics(
+            sharpnessImprovement: metrics.sharpnessImprovement,
+            noiseReduction: metrics.noiseReduction,
+            colorAccuracy: metrics.colorAccuracy,
+            overallQuality: metrics.overallImprovement
+        )
+        
         return ImageEnhancementResult(
+            id: UUID().uuidString,
+            timestamp: Date(),
             processingTime: processingTime,
             confidence: confidence,
-            enhancedImage: enhancedImage,
-            originalImage: image,
-            enhancementMetrics: metrics,
-            appliedFilters: appliedFilters
+            metadata: [:],
+            enhancedImageData: enhancedImageData,
+            originalImageSize: originalSize,
+            enhancedImageSize: enhancedSize,
+            enhancementType: options.enhancementType,
+            improvementMetrics: improvementMetrics
         )
     }
     
     /// Remove noise and artifacts from images
     public func denoise(
-        _ image: UIImage,
+        _ image: PlatformImage,
         strength: Float
     ) async throws -> ImageEnhancementResult {
         
         let options = EnhancementOptions(
-            enhancementType: .general,
-            upscaleFactor: 1.0,
-            denoiseStrength: strength,
-            sharpenAmount: 0.0,
-            colorEnhancement: false,
-            preserveDetails: true
+            enhancementType: .denoise,
+            intensity: strength,
+            preserveOriginalColors: true,
+            upscaleFactor: 1.0
         )
         
         return try await enhance(image, options: options)
@@ -99,17 +124,15 @@ public class ImageEnhancementProcessor {
     
     /// Upscale image with AI super-resolution
     public func upscale(
-        _ image: UIImage,
+        _ image: PlatformImage,
         factor: Float
     ) async throws -> ImageEnhancementResult {
         
         let options = EnhancementOptions(
-            enhancementType: .general,
-            upscaleFactor: factor,
-            denoiseStrength: 0.2,
-            sharpenAmount: 0.1,
-            colorEnhancement: true,
-            preserveDetails: true
+            enhancementType: .upscale,
+            intensity: 0.7,
+            preserveOriginalColors: true,
+            upscaleFactor: factor
         )
         
         return try await enhance(image, options: options)
@@ -117,16 +140,14 @@ public class ImageEnhancementProcessor {
     
     /// Enhance low-light photos
     public func enhanceLowLight(
-        _ image: UIImage
+        _ image: PlatformImage
     ) async throws -> ImageEnhancementResult {
         
         let options = EnhancementOptions(
-            enhancementType: .lowLight,
-            upscaleFactor: 1.0,
-            denoiseStrength: 0.8,
-            sharpenAmount: 0.3,
-            colorEnhancement: true,
-            preserveDetails: true
+            enhancementType: .brightnessAdjustment,
+            intensity: 0.8,
+            preserveOriginalColors: false,
+            upscaleFactor: 1.0
         )
         
         return try await enhance(image, options: options)
@@ -134,16 +155,14 @@ public class ImageEnhancementProcessor {
     
     /// Enhance document images for better readability
     public func enhanceDocument(
-        _ image: UIImage
+        _ image: PlatformImage
     ) async throws -> ImageEnhancementResult {
         
         let options = EnhancementOptions(
-            enhancementType: .document,
-            upscaleFactor: 1.5,
-            denoiseStrength: 0.3,
-            sharpenAmount: 0.8,
-            colorEnhancement: false,
-            preserveDetails: true
+            enhancementType: .sharpen,
+            intensity: 0.8,
+            preserveOriginalColors: true,
+            upscaleFactor: 1.5
         )
         
         return try await enhance(image, options: options)
@@ -151,16 +170,14 @@ public class ImageEnhancementProcessor {
     
     /// Enhance face photos with specialized processing
     public func enhanceFace(
-        _ image: UIImage
+        _ image: PlatformImage
     ) async throws -> ImageEnhancementResult {
         
         let options = EnhancementOptions(
-            enhancementType: .face,
-            upscaleFactor: 2.0,
-            denoiseStrength: 0.4,
-            sharpenAmount: 0.2,
-            colorEnhancement: true,
-            preserveDetails: true
+            enhancementType: .sharpen,
+            intensity: 0.4,
+            preserveOriginalColors: true,
+            upscaleFactor: 2.0
         )
         
         return try await enhance(image, options: options)
@@ -168,7 +185,7 @@ public class ImageEnhancementProcessor {
     
     /// Batch enhance multiple images
     public func batchEnhance(
-        _ images: [UIImage],
+        _ images: [PlatformImage],
         options: EnhancementOptions
     ) async throws -> [ImageEnhancementResult] {
         
@@ -192,15 +209,15 @@ public class ImageEnhancementProcessor {
     private func performEnhancement(
         cgImage: CGImage,
         options: EnhancementOptions
-    ) async throws -> UIImage {
+    ) async throws -> PlatformImage {
         
         var currentImage = CIImage(cgImage: cgImage)
         
-        // Apply denoising if requested
-        if options.denoiseStrength > 0 {
+        // Apply denoising if enhancement type is denoise
+        if options.enhancementType == .denoise {
             currentImage = try await applyDenoising(
                 image: currentImage,
-                strength: options.denoiseStrength
+                strength: options.intensity
             )
         }
         
@@ -213,16 +230,16 @@ public class ImageEnhancementProcessor {
             )
         }
         
-        // Apply sharpening if requested
-        if options.sharpenAmount > 0 {
+        // Apply sharpening if enhancement type is sharpen
+        if options.enhancementType == .sharpen {
             currentImage = applySharpening(
                 image: currentImage,
-                amount: options.sharpenAmount
+                amount: options.intensity
             )
         }
         
-        // Apply color enhancement if requested
-        if options.colorEnhancement {
+        // Apply color enhancement based on type
+        if [.colorCorrection, .contrastEnhancement, .saturationBoost, .brightnessAdjustment].contains(options.enhancementType) {
             currentImage = applyColorEnhancement(
                 image: currentImage,
                 enhancementType: options.enhancementType
@@ -236,12 +253,16 @@ public class ImageEnhancementProcessor {
             options: options
         )
         
-        // Convert back to UIImage
+        // Convert back to PlatformImage
         guard let outputCGImage = ciContext.createCGImage(currentImage, from: currentImage.extent) else {
             throw EnhancementError.processingFailed
         }
         
-        return UIImage(cgImage: outputCGImage)
+        #if canImport(UIKit)
+        return PlatformImage(cgImage: outputCGImage)
+        #elseif canImport(AppKit)
+        return PlatformImage(cgImage: outputCGImage, size: CGSize(width: outputCGImage.width, height: outputCGImage.height))
+        #endif
     }
     
     private func applyDenoising(
@@ -286,16 +307,16 @@ public class ImageEnhancementProcessor {
         
         // Use different upscaling strategies based on type
         switch enhancementType {
-        case .photo, .face:
-            // Use AI super-resolution for photos
+        case .upscale:
+            // Use AI super-resolution for upscale type
             return try await applyAISuperResolution(image: image, targetSize: newExtent.size)
             
-        case .document:
-            // Use sharp upscaling for documents
+        case .sharpen:
+            // Use sharp upscaling for sharpening
             return applySharpUpscaling(image: image, targetSize: newExtent.size)
             
-        case .artwork:
-            // Use edge-preserving upscaling for artwork
+        case .colorCorrection:
+            // Use edge-preserving upscaling for color work
             return applyArtworkUpscaling(image: image, targetSize: newExtent.size)
             
         default:
@@ -384,7 +405,7 @@ public class ImageEnhancementProcessor {
     ) -> CIImage {
         
         switch enhancementType {
-        case .photo:
+        case .colorCorrection:
             return image
                 .applyingFilter("CIVibrance", parameters: ["inputAmount": 0.3])
                 .applyingFilter("CIColorControls", parameters: [
@@ -393,7 +414,7 @@ public class ImageEnhancementProcessor {
                     "inputContrast": 1.05
                 ])
                 
-        case .lowLight:
+        case .brightnessAdjustment:
             return image
                 .applyingFilter("CIExposureAdjust", parameters: ["inputEV": 0.5])
                 .applyingFilter("CIShadowHighlight", parameters: [
@@ -401,12 +422,20 @@ public class ImageEnhancementProcessor {
                     "inputHighlightAmount": -0.2
                 ])
                 
-        case .face:
+        case .saturationBoost:
             return image
-                .applyingFilter("CIVibrance", parameters: ["inputAmount": 0.2])
+                .applyingFilter("CIVibrance", parameters: ["inputAmount": 0.4])
+                .applyingFilter("CIColorControls", parameters: [
+                    "inputSaturation": 1.3,
+                    "inputBrightness": 0.02
+                ])
+                
+        case .contrastEnhancement:
+            return image
                 .applyingFilter("CIColorControls", parameters: [
                     "inputSaturation": 1.05,
-                    "inputBrightness": 0.02
+                    "inputContrast": 1.3,
+                    "inputBrightness": 0.01
                 ])
                 
         default:
@@ -425,24 +454,24 @@ public class ImageEnhancementProcessor {
     ) async throws -> CIImage {
         
         switch type {
-        case .lowLight:
-            return applyLowLightEnhancements(image: image)
+        case .brightnessAdjustment:
+            return applyBrightnessEnhancements(image: image)
             
-        case .document:
-            return applyDocumentEnhancements(image: image)
+        case .sharpen:
+            return applySharpnessEnhancements(image: image)
             
-        case .face:
-            return try await applyFaceEnhancements(image: image)
+        case .denoise:
+            return try await applyDenoiseEnhancements(image: image)
             
-        case .artwork:
-            return applyArtworkEnhancements(image: image)
+        case .contrastEnhancement:
+            return applyContrastEnhancements(image: image)
             
         default:
             return image
         }
     }
     
-    private func applyLowLightEnhancements(image: CIImage) -> CIImage {
+    private func applyBrightnessEnhancements(image: CIImage) -> CIImage {
         return image
             .applyingFilter("CIExposureAdjust", parameters: ["inputEV": 0.7])
             .applyingFilter("CIShadowHighlight", parameters: [
@@ -455,7 +484,7 @@ public class ImageEnhancementProcessor {
             ])
     }
     
-    private func applyDocumentEnhancements(image: CIImage) -> CIImage {
+    private func applySharpnessEnhancements(image: CIImage) -> CIImage {
         return image
             .applyingFilter("CIColorControls", parameters: [
                 "inputContrast": 1.3,
@@ -467,7 +496,7 @@ public class ImageEnhancementProcessor {
             ])
     }
     
-    private func applyFaceEnhancements(image: CIImage) async throws -> CIImage {
+    private func applyDenoiseEnhancements(image: CIImage) async throws -> CIImage {
         // Face-specific enhancements
         return image
             .applyingFilter("CIVibrance", parameters: ["inputAmount": 0.15])
@@ -478,7 +507,7 @@ public class ImageEnhancementProcessor {
             ])
     }
     
-    private func applyArtworkEnhancements(image: CIImage) -> CIImage {
+    private func applyContrastEnhancements(image: CIImage) -> CIImage {
         return image
             .applyingFilter("CIVibrance", parameters: ["inputAmount": 0.4])
             .applyingFilter("CIColorControls", parameters: [
@@ -490,8 +519,8 @@ public class ImageEnhancementProcessor {
     // MARK: - Metrics Calculation
     
     private func calculateEnhancementMetrics(
-        original: UIImage,
-        enhanced: UIImage,
+        original: PlatformImage,
+        enhanced: PlatformImage,
         options: EnhancementOptions
     ) async throws -> EnhancementMetrics {
         
@@ -515,7 +544,7 @@ public class ImageEnhancementProcessor {
         )
     }
     
-    private func calculateSharpnessImprovement(original: UIImage, enhanced: UIImage) -> Float {
+    private func calculateSharpnessImprovement(original: PlatformImage, enhanced: PlatformImage) -> Float {
         // Simplified sharpness calculation using gradient magnitude
         // Real implementation would use more sophisticated metrics like Sobel edge detection
         
@@ -526,9 +555,13 @@ public class ImageEnhancementProcessor {
         return max(0.0, min(1.0, improvement + 0.5)) // Normalize to 0-1 range
     }
     
-    private func calculateImageSharpness(_ image: UIImage) -> Float {
+    private func calculateImageSharpness(_ image: PlatformImage) -> Float {
         // Simplified sharpness metric
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else { return 0.0 }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return 0.0 }
+        #endif
         
         let width = cgImage.width
         let height = cgImage.height
@@ -571,25 +604,25 @@ public class ImageEnhancementProcessor {
         return gradientSum / Float(pixelCount)
     }
     
-    private func calculateNoiseReduction(original: UIImage, enhanced: UIImage) -> Float {
+    private func calculateNoiseReduction(original: PlatformImage, enhanced: PlatformImage) -> Float {
         // Simplified noise estimation
         // Real implementation would use more sophisticated noise metrics
         return Float.random(in: 0.6...0.9)
     }
     
-    private func calculateColorAccuracy(original: UIImage, enhanced: UIImage) -> Float {
+    private func calculateColorAccuracy(original: PlatformImage, enhanced: PlatformImage) -> Float {
         // Simplified color accuracy metric
         // Real implementation would compare color distributions
         return Float.random(in: 0.7...0.95)
     }
     
-    private func calculateDetailPreservation(original: UIImage, enhanced: UIImage) -> Float {
+    private func calculateDetailPreservation(original: PlatformImage, enhanced: PlatformImage) -> Float {
         // Simplified detail preservation metric
         // Real implementation would analyze high-frequency components
         return Float.random(in: 0.75...0.92)
     }
     
-    private func calculateUpscaleQuality(original: UIImage, enhanced: UIImage) -> Float {
+    private func calculateUpscaleQuality(original: PlatformImage, enhanced: PlatformImage) -> Float {
         // Simplified upscale quality metric
         // Real implementation would analyze artifacts and edge quality
         return Float.random(in: 0.65...0.88)
@@ -598,33 +631,34 @@ public class ImageEnhancementProcessor {
     private func getAppliedFilters(options: EnhancementOptions) -> [String] {
         var filters: [String] = []
         
-        if options.denoiseStrength > 0 {
+        // Add enhancement type as filter
+        switch options.enhancementType {
+        case .sharpen:
+            filters.append("Sharpening")
+        case .denoise:
             filters.append("NoiseReduction")
+        case .upscale:
+            filters.append("SuperResolution")
+        case .colorCorrection:
+            filters.append("ColorCorrection")
+        case .contrastEnhancement:
+            filters.append("ContrastEnhancement")
+        case .saturationBoost:
+            filters.append("SaturationBoost")
+        case .brightnessAdjustment:
+            filters.append("BrightnessAdjustment")
         }
         
+        // Add upscaling if factor > 1.0
         if options.upscaleFactor > 1.0 {
             filters.append("SuperResolution")
         }
         
-        if options.sharpenAmount > 0 {
-            filters.append("Sharpening")
-        }
-        
-        if options.colorEnhancement {
+        // Add color preservation info
+        if options.preserveOriginalColors {
+            filters.append("ColorPreservation")
+        } else {
             filters.append("ColorEnhancement")
-        }
-        
-        switch options.enhancementType {
-        case .lowLight:
-            filters.append("LowLightEnhancement")
-        case .document:
-            filters.append("DocumentEnhancement")
-        case .face:
-            filters.append("FaceEnhancement")
-        case .artwork:
-            filters.append("ArtworkEnhancement")
-        default:
-            break
         }
         
         return filters
@@ -655,3 +689,5 @@ public enum EnhancementError: LocalizedError {
         }
     }
 }
+
+// Platform extensions moved to StyleTransferProcessor to avoid duplication

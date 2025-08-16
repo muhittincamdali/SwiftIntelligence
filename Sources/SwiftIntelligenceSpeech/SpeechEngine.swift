@@ -32,9 +32,11 @@ public class SpeechEngine: NSObject, ObservableObject {
     private var voiceActivityDetector: MLModel?
     
     // MARK: - Audio Configuration
+    #if canImport(AVFoundation) && !os(macOS)
     private var audioSession: AVAudioSession {
         return AVAudioSession.sharedInstance()
     }
+    #endif
     
     // MARK: - State Management
     @Published public var isRecording = false
@@ -43,11 +45,11 @@ public class SpeechEngine: NSObject, ObservableObject {
     @Published public var recognitionError: Error?
     
     // MARK: - Cache and Storage
-    private let cache = NSCache<NSString, SpeechResult>()
-    private let voiceCache = NSCache<NSString, Data>()
+    private let cache = NSCache<NSString, AnyObject>()
+    private let voiceCache = NSCache<NSString, NSData>()
     
     // MARK: - Configuration
-    private var configuration = SpeechConfiguration.default
+    private var configuration = SpeechEngineConfiguration.default
     
     // MARK: - Initialization
     override init() {
@@ -109,8 +111,10 @@ public class SpeechEngine: NSObject, ObservableObject {
     }
     
     private func configureAudioSession() throws {
+        #if canImport(AVFoundation) && !os(macOS)
         try audioSession.setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        #endif
     }
     
     private func loadCustomModels() async {
@@ -126,7 +130,7 @@ public class SpeechEngine: NSObject, ObservableObject {
     
     private func loadTurkishSpeechModel() async {
         do {
-            if let modelURL = Bundle.module.url(forResource: "TurkishSpeechModel", withExtension: "mlmodel") {
+            if let modelURL = Bundle.main.url(forResource: "TurkishSpeechModel", withExtension: "mlmodel") {
                 turkishSpeechModel = try MLModel(contentsOf: modelURL)
                 logger.info("Turkish speech model loaded successfully")
             }
@@ -137,7 +141,7 @@ public class SpeechEngine: NSObject, ObservableObject {
     
     private func loadVoiceActivityDetectionModel() async {
         do {
-            if let modelURL = Bundle.module.url(forResource: "VoiceActivityDetector", withExtension: "mlmodel") {
+            if let modelURL = Bundle.main.url(forResource: "VoiceActivityDetector", withExtension: "mlmodel") {
                 voiceActivityDetector = try MLModel(contentsOf: modelURL)
                 logger.info("Voice activity detector loaded successfully")
             }
@@ -151,7 +155,7 @@ public class SpeechEngine: NSObject, ObservableObject {
         
         for modelName in modelNames {
             do {
-                if let modelURL = Bundle.module.url(forResource: modelName, withExtension: "mlmodel") {
+                if let modelURL = Bundle.main.url(forResource: modelName, withExtension: "mlmodel") {
                     let model = try MLModel(contentsOf: modelURL)
                     customSpeechModels[modelName] = model
                     logger.info("Loaded custom speech model: \(modelName)")
@@ -593,7 +597,7 @@ public class SpeechEngine: NSObject, ObservableObject {
         return text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    private func mapQuality(_ quality: AVSpeechSynthesisVoiceQuality) -> SpeechVoice.Quality {
+    private func mapQuality(_ quality: AVSpeechSynthesisVoiceQuality) -> SpeechVoice.VoiceQuality {
         switch quality {
         case .default: return .standard
         case .enhanced: return .enhanced
@@ -602,19 +606,19 @@ public class SpeechEngine: NSObject, ObservableObject {
         }
     }
     
-    private func mapGender(_ gender: AVSpeechSynthesisVoiceGender) -> SpeechVoice.Gender {
+    private func mapGender(_ gender: AVSpeechSynthesisVoiceGender) -> SpeechVoice.VoiceGender {
         switch gender {
         case .male: return .male
         case .female: return .female
-        case .unspecified: return .unknown
-        @unknown default: return .unknown
+        case .unspecified: return .neutral
+        @unknown default: return .neutral
         }
     }
 }
 
 // MARK: - AVSpeechSynthesizerDelegate
 
-extension SpeechEngine: AVSpeechSynthesizerDelegate {
+extension SpeechEngine: @preconcurrency AVSpeechSynthesizerDelegate {
     
     public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
         isSpeaking = true
@@ -638,7 +642,7 @@ extension SpeechEngine: AVSpeechSynthesizerDelegate {
 
 // MARK: - Temporary Synthesis Delegate
 
-private class TemporarySynthesisDelegate: NSObject, AVSpeechSynthesizerDelegate {
+private final class TemporarySynthesisDelegate: NSObject, @unchecked Sendable, AVSpeechSynthesizerDelegate {
     private let completion: (SpeechSynthesisResult?, Error?) -> Void
     
     init(completion: @escaping (SpeechSynthesisResult?, Error?) -> Void) {

@@ -1,0 +1,113 @@
+/* SwiftIntelligence Framework - Spanish Localization */
+
+/* Core Framework */
+"framework.name" = "SwiftIntelligence";
+"framework.description" = "Framework Avanzado de IA/ML para Plataformas Apple";
+"framework.version" = "Versión";
+
+/* Initialization */
+"initialization.starting" = "Inicializando SwiftIntelligence...";
+"initialization.complete" = "SwiftIntelligence inicializado exitosamente";
+"initialization.failed" = "Error al inicializar SwiftIntelligence";
+
+/* Engine Status */
+"engine.ready" = "Motor Listo";
+"engine.initializing" = "Inicializando Motor";
+"engine.error" = "Error del Motor";
+"engine.shutdown" = "Motor Apagado";
+"engine.unavailable" = "Motor No Disponible";
+
+/* NLP Module */
+"nlp.analyzing" = "Analizando texto...";
+"nlp.sentiment.positive" = "Positivo";
+"nlp.sentiment.negative" = "Negativo";
+"nlp.sentiment.neutral" = "Neutral";
+"nlp.language.detected" = "Idioma detectado";
+"nlp.entities.found" = "entidades encontradas";
+"nlp.processing.complete" = "Procesamiento de texto completado";
+
+/* Vision Module */
+"vision.processing" = "Procesando imagen...";
+"vision.objects.detected" = "objetos detectados";
+"vision.faces.detected" = "caras detectadas";
+"vision.text.recognized" = "Texto reconocido";
+"vision.classification.complete" = "Clasificación de imagen completada";
+
+/* Speech Module */
+"speech.listening" = "Escuchando...";
+"speech.recognition.starting" = "Iniciando reconocimiento de voz";
+"speech.recognition.stopped" = "Reconocimiento de voz detenido";
+"speech.synthesis.starting" = "Iniciando síntesis de voz";
+"speech.synthesis.complete" = "Síntesis de voz completada";
+"speech.permission.required" = "Permiso de reconocimiento de voz requerido";
+
+/* ML Module */
+"ml.training" = "Entrenando modelo...";
+"ml.prediction" = "Realizando predicción...";
+"ml.model.loaded" = "Modelo cargado exitosamente";
+"ml.model.failed" = "Error al cargar el modelo";
+
+/* Privacy Module */
+"privacy.protecting" = "Protegiendo datos sensibles...";
+"privacy.anonymizing" = "Anonimizando datos...";
+"privacy.encrypting" = "Encriptando datos...";
+"privacy.compliance.check" = "Verificando cumplimiento";
+
+/* Error Messages */
+"error.general" = "Ocurrió un error";
+"error.network" = "Error de red";
+"error.permission.denied" = "Permiso denegado";
+"error.invalid.input" = "Entrada inválida";
+"error.processing.failed" = "Procesamiento fallido";
+"error.model.unavailable" = "Modelo no disponible";
+"error.unsupported.platform" = "Plataforma no soportada";
+
+/* Performance */
+"performance.excellent" = "Excelente";
+"performance.good" = "Bueno";
+"performance.average" = "Promedio";
+"performance.poor" = "Pobre";
+"performance.measuring" = "Midiendo rendimiento...";
+
+/* Cache */
+"cache.loading" = "Cargando desde caché...";
+"cache.saving" = "Guardando en caché...";
+"cache.cleared" = "Caché limpiado";
+"cache.full" = "Caché lleno";
+
+/* Network */
+"network.connecting" = "Conectando...";
+"network.connected" = "Conectado";
+"network.disconnected" = "Desconectado";
+"network.slow" = "Conexión lenta detectada";
+
+/* Validation */
+"validation.success" = "Validación exitosa";
+"validation.failed" = "Validación fallida";
+"validation.warning" = "Advertencia de validación";
+
+/* User Interface */
+"ui.loading" = "Cargando...";
+"ui.processing" = "Procesando...";
+"ui.complete" = "Completado";
+"ui.cancel" = "Cancelar";
+"ui.retry" = "Reintentar";
+"ui.settings" = "Configuración";
+
+/* Time */
+"time.seconds" = "segundos";
+"time.minutes" = "minutos";
+"time.hours" = "horas";
+"time.estimated" = "Tiempo estimado";
+
+/* Data Sizes */
+"data.bytes" = "bytes";
+"data.kb" = "KB";
+"data.mb" = "MB";
+"data.gb" = "GB";
+
+/* Accessibility */
+"accessibility.ai.processing" = "Procesamiento de IA en progreso";
+"accessibility.image.analyzing" = "Analizando contenido de imagen";
+"accessibility.speech.listening" = "Escuchando entrada de voz";
+"accessibility.text.processing" = "Procesando contenido de texto";

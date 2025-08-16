@@ -1,0 +1,197 @@
+name: 📚 Documentation Issue
+description: Report issues with documentation or request documentation improvements
+title: "[DOCS] "
+labels: ["documentation", "needs-review"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve SwiftIntelligence documentation! 📚
+        Good documentation is essential for developer experience.
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation issue is this?
+      options:
+        - Missing documentation
+        - Incorrect documentation
+        - Outdated documentation
+        - Unclear explanation
+        - Missing code examples
+        - API reference issue
+        - Tutorial improvement
+        - Getting started guide
+        - Architecture documentation
+        - Performance guide
+        - Migration guide
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Affected Module
+      description: Which module's documentation needs attention?
+      options:
+        - Core
+        - NLP (Natural Language Processing)
+        - Vision
+        - Speech
+        - ML (Machine Learning)
+        - Privacy
+        - Network
+        - Cache
+        - Metrics
+        - Reasoning
+        - Image Generation
+        - visionOS
+        - General documentation
+        - API Reference
+        - Getting Started
+        - Examples
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-documentation
+    attributes:
+      label: Current Documentation State
+      description: What's currently documented (or missing)?
+      placeholder: |
+        The current documentation says... 
+        Or: There's no documentation for...
+    validations:
+      required: true
+
+  - type: textarea
+    id: documentation-issue
+    attributes:
+      label: Issue Description
+      description: What specific issue did you find with the documentation?
+      placeholder: |
+        The documentation is unclear because...
+        The example doesn't work because...
+        Important information is missing about...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-improvement
+    attributes:
+      label: Suggested Improvement
+      description: How would you improve this documentation?
+      placeholder: |
+        The documentation should explain...
+        Add an example showing...
+        Include information about...
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-perspective
+    attributes:
+      label: User Perspective
+      description: From what perspective should this be documented?
+      placeholder: |
+        As a beginner developer, I need...
+        As an experienced iOS developer, I want...
+        As someone new to AI/ML, I would like...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-content
+    attributes:
+      label: Proposed Content
+      description: If you have specific content suggestions, please include them
+      render: markdown
+      placeholder: |
+        ## Proposed Section
+        
+        ```swift
+        // Example code
+        ```
+        
+        Explanation of the example...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is the primary audience for this documentation?
+      multiple: true
+      options:
+        - Beginner developers
+        - Experienced iOS/macOS developers
+        - AI/ML experts
+        - Swift package maintainers
+        - Framework contributors
+        - Academic researchers
+        - Enterprise developers
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this documentation improvement?
+      options:
+        - Critical - Blocks framework adoption
+        - High - Significantly impacts developer experience
+        - Medium - Would improve clarity
+        - Low - Nice to have improvement
+    validations:
+      required: true
+
+  - type: input
+    id: documentation-link
+    attributes:
+      label: Documentation Link
+      description: Link to the specific documentation page or section
+      placeholder: https://github.com/username/SwiftIntelligence/blob/main/Documentation/...
+    validations:
+      required: false
+
+  - type: textarea
+    id: related-issues
+    attributes:
+      label: Related Issues
+      description: Are there related documentation issues or discussions?
+      placeholder: Related to issue #123, discussion #456
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context, references, or examples
+      placeholder: |
+        Similar frameworks handle this by...
+        Apple's documentation shows...
+        Developers often ask about...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please verify the following before submitting
+      options:
+        - label: I searched for existing documentation issues
+          required: true
+        - label: I checked the latest version of the documentation
+          required: true
+        - label: I provided specific suggestions for improvement
+          required: true
+        - label: I'm willing to help review proposed documentation changes
+          required: false

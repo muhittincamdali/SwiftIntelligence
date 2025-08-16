@@ -1,7 +1,13 @@
 import Foundation
+import SwiftIntelligenceCore
+import SwiftIntelligenceVision
 import CoreML
 import Vision
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import CoreImage
 import os.log
 
@@ -89,16 +95,22 @@ public class ImageGenerationProcessor {
     
     /// Generate image variations
     public func generateVariations(
-        of image: UIImage,
+        of image: PlatformImage,
         count: Int,
         options: VariationOptions
     ) async throws -> ImageVariationResult {
         
         let startTime = Date()
         
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw GenerationError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw GenerationError.invalidImage
+        }
+        #endif
         
         // Generate multiple variations
         let variations = try await performVariationGeneration(
@@ -209,7 +221,7 @@ public class ImageGenerationProcessor {
     private func performImageGeneration(
         prompt: String,
         options: ImageGenerationOptions
-    ) async throws -> UIImage {
+    ) async throws -> PlatformImage {
         
         // Simulate AI image generation process
         // In a real implementation, this would use models like Stable Diffusion
@@ -240,9 +252,9 @@ public class ImageGenerationProcessor {
         sourceImage: CGImage,
         count: Int,
         options: VariationOptions
-    ) async throws -> [UIImage] {
+    ) async throws -> [PlatformImage] {
         
-        var variations: [UIImage] = []
+        var variations: [PlatformImage] = []
         
         for i in 0..<count {
             let variation = try await createVariation(
@@ -260,7 +272,7 @@ public class ImageGenerationProcessor {
         sourceImage: CGImage,
         variationIndex: Int,
         options: VariationOptions
-    ) async throws -> UIImage {
+    ) async throws -> PlatformImage {
         
         // Create variation by applying different filters and transforms
         let ciImage = CIImage(cgImage: sourceImage)
@@ -291,7 +303,7 @@ public class ImageGenerationProcessor {
             throw GenerationError.variationFailed
         }
         
-        return UIImage(cgImage: cgVariation)
+        return PlatformImage(cgImage: cgVariation)
     }
     
     private func applyColorVariation(_ image: CIImage, index: Int, strength: Float) -> CIImage {
@@ -420,7 +432,7 @@ public class ImageGenerationProcessor {
         return baseDelay * qualityMultiplier * stepsMultiplier * Double(sizeMultiplier)
     }
     
-    private func createMockGeneratedImage(prompt: String, options: ImageGenerationOptions) -> UIImage {
+    private func createMockGeneratedImage(prompt: String, options: ImageGenerationOptions) -> PlatformImage {
         let size = options.size.dimensions
         
         UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
@@ -436,11 +448,11 @@ public class ImageGenerationProcessor {
         // Add text overlay with prompt
         addTextOverlay(prompt, in: CGRect(origin: .zero, size: size))
         
-        return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+        return UIGraphicsGetImageFromCurrentImageContext() ?? PlatformImage()
     }
     
-    private func extractColorsFromPrompt(_ prompt: String) -> [UIColor] {
-        let colorKeywords: [String: UIColor] = [
+    private func extractColorsFromPrompt(_ prompt: String) -> [PlatformColor] {
+        let colorKeywords: [String: PlatformColor] = [
             "red": .red, "blue": .blue, "green": .green, "yellow": .yellow,
             "purple": .purple, "orange": .orange, "pink": .systemPink,
             "sunset": .orange, "ocean": .blue, "forest": .green,
@@ -448,7 +460,7 @@ public class ImageGenerationProcessor {
         ]
         
         let words = prompt.lowercased().components(separatedBy: .whitespacesAndPunctuationMarks)
-        var colors: [UIColor] = []
+        var colors: [PlatformColor] = []
         
         for word in words {
             if let color = colorKeywords[word] {
@@ -459,7 +471,7 @@ public class ImageGenerationProcessor {
         return colors.isEmpty ? [.blue, .purple] : colors
     }
     
-    private func createGradient(colors: [UIColor], size: CGSize) {
+    private func createGradient(colors: [PlatformColor], size: CGSize) {
         let context = UIGraphicsGetCurrentContext()
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
@@ -486,7 +498,7 @@ public class ImageGenerationProcessor {
     }
     
     private func addCartoonElements(in rect: CGRect) {
-        UIColor.white.setFill()
+        PlatformColor.white.setFill()
         
         // Add some circles
         for i in 0..<5 {
@@ -499,7 +511,7 @@ public class ImageGenerationProcessor {
     }
     
     private func addArtisticElements(in rect: CGRect) {
-        UIColor.white.setStroke()
+        PlatformColor.white.setStroke()
         
         // Add some abstract lines
         for _ in 0..<10 {
@@ -518,7 +530,7 @@ public class ImageGenerationProcessor {
     }
     
     private func addGenericElements(in rect: CGRect) {
-        UIColor.white.withAlphaComponent(0.5).setFill()
+        PlatformColor.white.withAlphaComponent(0.5).setFill()
         
         // Add some rectangles
         for _ in 0..<3 {
@@ -534,8 +546,8 @@ public class ImageGenerationProcessor {
     private func addTextOverlay(_ prompt: String, in rect: CGRect) {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.white.withAlphaComponent(0.8),
-            .backgroundColor: UIColor.black.withAlphaComponent(0.3)
+            .foregroundColor: PlatformColor.white.withAlphaComponent(0.8),
+            .backgroundColor: PlatformColor.black.withAlphaComponent(0.3)
         ]
         
         let truncatedPrompt = prompt.count > 50 ? String(prompt.prefix(47)) + "..." : prompt
@@ -552,7 +564,7 @@ public class ImageGenerationProcessor {
     }
     
     private func assessGenerationQuality(
-        image: UIImage,
+        image: PlatformImage,
         prompt: String,
         options: ImageGenerationOptions
     ) -> GenerationQualityMetrics {
@@ -576,13 +588,13 @@ public class ImageGenerationProcessor {
         )
     }
     
-    private func calculatePromptAdherence(prompt: String, image: UIImage) -> Float {
+    private func calculatePromptAdherence(prompt: String, image: PlatformImage) -> Float {
         // Simplified prompt adherence calculation
         // Real implementation would analyze image content against prompt
         return Float.random(in: 0.65...0.88)
     }
     
-    private func calculateVariationScore(original: UIImage, variation: UIImage, options: VariationOptions) -> Float {
+    private func calculateVariationScore(original: PlatformImage, variation: PlatformImage, options: VariationOptions) -> Float {
         // Calculate how well the variation balances similarity and difference
         let similarity = calculateImageSimilarity(original, variation)
         let difference = 1.0 - similarity
@@ -594,7 +606,7 @@ public class ImageGenerationProcessor {
         return max(0.0, min(1.0, differenceScore))
     }
     
-    private func calculateImageSimilarity(_ image1: UIImage, _ image2: UIImage) -> Float {
+    private func calculateImageSimilarity(_ image1: PlatformImage, _ image2: PlatformImage) -> Float {
         // Simplified similarity calculation
         // Real implementation would use perceptual hashing or feature comparison
         return Float.random(in: 0.3...0.8)

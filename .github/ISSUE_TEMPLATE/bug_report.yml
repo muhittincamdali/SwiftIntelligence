@@ -1,0 +1,173 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in SwiftIntelligence
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! 🐛
+        Please fill out the information below to help us resolve the issue quickly.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of the bug
+      placeholder: Describe what happened and what you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the behavior
+      placeholder: |
+        1. Initialize SwiftIntelligence with...
+        2. Call method...
+        3. Observe error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: The method should return...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: Instead, it throws an error...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Affected Module
+      description: Which SwiftIntelligence module is affected?
+      options:
+        - Core
+        - NLP (Natural Language Processing)
+        - Vision
+        - Speech
+        - ML (Machine Learning)
+        - Privacy
+        - Network
+        - Cache
+        - Metrics
+        - Reasoning
+        - Image Generation
+        - visionOS
+        - Multiple modules
+        - Unknown
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: What platform are you using?
+      options:
+        - iOS
+        - macOS
+        - watchOS
+        - tvOS
+        - visionOS
+        - Multiple platforms
+    validations:
+      required: true
+
+  - type: input
+    id: ios-version
+    attributes:
+      label: iOS/Platform Version
+      description: What version of the platform are you using?
+      placeholder: e.g., iOS 17.2, macOS 14.1, visionOS 1.0
+    validations:
+      required: true
+
+  - type: input
+    id: xcode-version
+    attributes:
+      label: Xcode Version
+      description: What version of Xcode are you using?
+      placeholder: e.g., 15.1
+    validations:
+      required: true
+
+  - type: input
+    id: swift-version
+    attributes:
+      label: Swift Version
+      description: What version of Swift are you using?
+      placeholder: e.g., 5.9
+    validations:
+      required: true
+
+  - type: input
+    id: framework-version
+    attributes:
+      label: SwiftIntelligence Version
+      description: What version of SwiftIntelligence are you using?
+      placeholder: e.g., 1.0.0, main branch
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-sample
+    attributes:
+      label: Code Sample
+      description: Provide a minimal code sample that reproduces the issue
+      render: swift
+      placeholder: |
+        import SwiftIntelligence
+        
+        let engine = IntelligenceEngine.shared
+        // Your code here
+    validations:
+      required: false
+
+  - type: textarea
+    id: error-logs
+    attributes:
+      label: Error Logs
+      description: Include any relevant error messages or crash logs
+      render: text
+      placeholder: Paste error logs here
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or information about the problem
+      placeholder: Add any other context about the problem here
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please verify the following before submitting
+      options:
+        - label: I searched for existing issues and didn't find a duplicate
+          required: true
+        - label: I'm using the latest version of SwiftIntelligence
+          required: true
+        - label: I tested this on a clean project to rule out conflicts
+          required: false
+        - label: I'm willing to provide additional information if needed
+          required: true

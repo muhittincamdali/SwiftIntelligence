@@ -1,0 +1,47 @@
+# Swift Package Index Configuration
+# https://swiftpackageindex.com/add-a-package
+
+version: 1
+
+# Package metadata
+metadata:
+  # Documentation hosting
+  documentation_targets:
+    - SwiftIntelligence
+    - SwiftIntelligenceCore
+    - SwiftIntelligenceNLP
+    - SwiftIntelligenceVision
+    - SwiftIntelligenceSpeech
+    - SwiftIntelligenceML
+    - SwiftIntelligencePrivacy
+    - SwiftIntelligenceReasoning
+    - SwiftIntelligenceImageGeneration
+    - SwiftIntelligenceNetwork
+    - SwiftIntelligenceCache
+    - SwiftIntelligenceMetrics
+    - SwiftIntelligenceBenchmarks
+
+# Build configuration
+builder:
+  configs:
+    # Documentation generation
+    - documentation_targets:
+        - SwiftIntelligence
+      scheme: SwiftIntelligence
+      
+    # Platform-specific builds
+    - platform: ios
+      scheme: SwiftIntelligence
+      
+    - platform: macos
+      scheme: SwiftIntelligence
+      
+    - platform: watchos
+      scheme: SwiftIntelligence
+      
+    - platform: tvos
+      scheme: SwiftIntelligence
+      
+    - platform: visionos
+      scheme: SwiftIntelligence
+      swift_version: "5.9"

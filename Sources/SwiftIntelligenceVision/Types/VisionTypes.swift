@@ -6,33 +6,33 @@ import CoreImage
 
 #if canImport(UIKit)
 import UIKit
-#endif
-
-#if canImport(AppKit)
+public typealias PlatformImage = UIImage
+#elseif canImport(AppKit)
 import AppKit
+public typealias PlatformImage = NSImage
 #endif
 
 // MARK: - Vision Operations
 
 public enum VisionOperation {
-    case classify(UIImage, ClassificationOptions)
-    case detect(UIImage, DetectionOptions)
-    case recognizeFaces(UIImage, FaceRecognitionOptions)
-    case recognizeText(UIImage, TextRecognitionOptions)
-    case segment(UIImage, SegmentationOptions)
+    case classify(PlatformImage, ClassificationOptions)
+    case detect(PlatformImage, DetectionOptions)
+    case recognizeFaces(PlatformImage, FaceRecognitionOptions)
+    case recognizeText(PlatformImage, TextRecognitionOptions)
+    case segment(PlatformImage, SegmentationOptions)
     case generate(String, ImageGenerationOptions)
-    case enhance(UIImage, EnhancementOptions)
-    case styleTransfer(UIImage, ArtisticStyle, StyleTransferOptions)
+    case enhance(PlatformImage, EnhancementOptions)
+    case styleTransfer(PlatformImage, ArtisticStyle, StyleTransferOptions)
 }
 
 // MARK: - Vision Results Base Protocol
 
-public protocol VisionResult: Codable {
+public protocol VisionResult: Codable, Sendable {
     var id: String { get }
     var timestamp: Date { get }
     var processingTime: TimeInterval { get }
     var confidence: Float { get }
-    var metadata: [String: Any] { get }
+    var metadata: [String: String] { get }
 }
 
 // MARK: - Image Classification
@@ -73,7 +73,7 @@ public struct ImageClassificationResult: VisionResult {
     public let timestamp: Date
     public let processingTime: TimeInterval
     public let confidence: Float
-    public let metadata: [String: Any]
+    public let metadata: [String: String]
     
     public let classifications: [Classification]
     public let dominantColors: [DominantColor]
@@ -84,7 +84,7 @@ public struct ImageClassificationResult: VisionResult {
         timestamp: Date = Date(),
         processingTime: TimeInterval,
         confidence: Float,
-        metadata: [String: Any] = [:],
+        metadata: [String: String] = [:],
         classifications: [Classification],
         dominantColors: [DominantColor] = [],
         imageProperties: ImageProperties
@@ -116,7 +116,7 @@ public struct Classification: Codable {
 
 // MARK: - Object Detection
 
-public struct DetectionOptions: Hashable, Codable {
+public struct DetectionOptions: Hashable, Codable, Sendable {
     public let confidenceThreshold: Float
     public let maxObjects: Int
     public let enableTracking: Bool
@@ -157,7 +157,7 @@ public struct ObjectDetectionResult: VisionResult {
     public let timestamp: Date
     public let processingTime: TimeInterval
     public let confidence: Float
-    public let metadata: [String: Any]
+    public let metadata: [String: String]
     
     public let detectedObjects: [DetectedObject]
     public let imageSize: CGSize
@@ -168,7 +168,7 @@ public struct ObjectDetectionResult: VisionResult {
         timestamp: Date = Date(),
         processingTime: TimeInterval,
         confidence: Float,
-        metadata: [String: Any] = [:],
+        metadata: [String: String] = [:],
         detectedObjects: [DetectedObject],
         imageSize: CGSize,
         frameNumber: Int? = nil
@@ -191,7 +191,7 @@ public struct DetectedObject: Codable {
     public let boundingBox: CGRect
     public let category: ObjectCategory
     public let trackingID: String?
-    public let attributes: [String: Any]
+    public let attributes: [String: String]
     
     public init(
         identifier: String,
@@ -200,7 +200,7 @@ public struct DetectedObject: Codable {
         boundingBox: CGRect,
         category: ObjectCategory,
         trackingID: String? = nil,
-        attributes: [String: Any] = [:]
+        attributes: [String: String] = [:]
     ) {
         self.identifier = identifier
         self.label = label
@@ -274,7 +274,7 @@ public struct FaceRecognitionResult: VisionResult {
     public let timestamp: Date
     public let processingTime: TimeInterval
     public let confidence: Float
-    public let metadata: [String: Any]
+    public let metadata: [String: String]
     
     public let detectedFaces: [DetectedFace]
     public let imageSize: CGSize
@@ -284,7 +284,7 @@ public struct FaceRecognitionResult: VisionResult {
         timestamp: Date = Date(),
         processingTime: TimeInterval,
         confidence: Float,
-        metadata: [String: Any] = [:],
+        metadata: [String: String] = [:],
         detectedFaces: [DetectedFace],
         imageSize: CGSize
     ) {
@@ -441,7 +441,7 @@ public struct FaceEnrollmentResult: VisionResult {
     public let timestamp: Date
     public let processingTime: TimeInterval
     public let confidence: Float
-    public let metadata: [String: Any]
+    public let metadata: [String: String]
     
     public let personID: String
     public let faceTemplate: Data
@@ -453,7 +453,7 @@ public struct FaceEnrollmentResult: VisionResult {
         timestamp: Date = Date(),
         processingTime: TimeInterval,
         confidence: Float,
-        metadata: [String: Any] = [:],
+        metadata: [String: String] = [:],
         personID: String,
         faceTemplate: Data,
         enrollmentQuality: Float,
@@ -473,16 +473,30 @@ public struct FaceEnrollmentResult: VisionResult {
 
 // MARK: - Text Recognition
 
+public enum TextRecognitionLevel: String, Codable {
+    case accurate = "accurate"
+    case fast = "fast"
+    
+    public var vnLevel: VNRequestTextRecognitionLevel {
+        switch self {
+        case .accurate:
+            return .accurate
+        case .fast:
+            return .fast
+        }
+    }
+}
+
 public struct TextRecognitionOptions: Hashable, Codable {
     public let recognitionLanguages: [String]
-    public let recognitionLevel: VNRequestTextRecognitionLevel
+    public let recognitionLevel: TextRecognitionLevel
     public let enableAutomaticTextNormalization: Bool
     public let customWordsToRecognize: [String]
     public let minimumTextHeight: Float
     
     public init(
         recognitionLanguages: [String] = ["en-US"],
-        recognitionLevel: VNRequestTextRecognitionLevel = .accurate,
+        recognitionLevel: TextRecognitionLevel = .accurate,
         enableAutomaticTextNormalization: Bool = true,
         customWordsToRecognize: [String] = [],
         minimumTextHeight: Float = 0.03
@@ -516,7 +530,7 @@ public struct TextRecognitionResult: VisionResult {
     public let timestamp: Date
     public let processingTime: TimeInterval
     public let confidence: Float
-    public let metadata: [String: Any]
+    public let metadata: [String: String]
     
     public let recognizedText: String
     public let textBlocks: [TextBlock]
@@ -528,7 +542,7 @@ public struct TextRecognitionResult: VisionResult {
         timestamp: Date = Date(),
         processingTime: TimeInterval,
         confidence: Float,
-        metadata: [String: Any] = [:],
+        metadata: [String: String] = [:],
         recognizedText: String,
         textBlocks: [TextBlock],
         detectedLanguages: [String],
@@ -546,7 +560,7 @@ public struct TextRecognitionResult: VisionResult {
     }
 }
 
-public struct TextBlock: Codable {
+public struct TextBlock: Codable, Sendable {
     public let text: String
     public let boundingBox: CGRect
     public let confidence: Float
@@ -609,7 +623,7 @@ public struct DocumentAnalysisResult: VisionResult {
     public let timestamp: Date
     public let processingTime: TimeInterval
     public let confidence: Float
-    public let metadata: [String: Any]
+    public let metadata: [String: String]
     
     public let documentText: String
     public let layout: DocumentLayout
@@ -621,7 +635,7 @@ public struct DocumentAnalysisResult: VisionResult {
         timestamp: Date = Date(),
         processingTime: TimeInterval,
         confidence: Float,
-        metadata: [String: Any] = [:],
+        metadata: [String: String] = [:],
         documentText: String,
         layout: DocumentLayout,
         tables: [DocumentTable] = [],
@@ -744,6 +758,434 @@ public struct DominantColor: Codable {
     }
 }
 
+// MARK: - Cutout Mask Types
+
+public enum SegmentationSubject: String, CaseIterable, Codable {
+    case foreground = "foreground"
+    case background = "background"
+    case person = "person"
+    case object = "object"
+    case automatic = "automatic"
+}
+
+public struct CutoutMaskResult: VisionResult {
+    public let id: String
+    public let timestamp: Date
+    public let processingTime: TimeInterval
+    public let confidence: Float
+    public let metadata: [String: String]
+    
+    public let maskData: Data
+    public let subject: SegmentationSubject
+    public let imageSize: CGSize
+    public let maskFormat: MaskFormat
+    
+    public enum MaskFormat: String, CaseIterable, Codable {
+        case png = "png"
+        case alpha = "alpha"
+        case binary = "binary"
+    }
+    
+    public enum MaskQuality: String, CaseIterable, Codable {
+        case low = "low"
+        case medium = "medium"
+        case high = "high"
+        case excellent = "excellent"
+    }
+    
+    public init(
+        id: String = UUID().uuidString,
+        timestamp: Date = Date(),
+        processingTime: TimeInterval,
+        confidence: Float,
+        metadata: [String: String] = [:],
+        maskData: Data,
+        subject: SegmentationSubject,
+        imageSize: CGSize,
+        maskFormat: MaskFormat = .png
+    ) {
+        self.id = id
+        self.timestamp = timestamp
+        self.processingTime = processingTime
+        self.confidence = confidence
+        self.metadata = metadata
+        self.maskData = maskData
+        self.subject = subject
+        self.imageSize = imageSize
+        self.maskFormat = maskFormat
+    }
+}
+
+// MARK: - Image Generation Types
+
+public struct ImageGenerationOptions: Hashable, Codable {
+    public let prompt: String
+    public let style: GenerationStyle
+    public let size: GenerationSize
+    public let quality: GenerationQuality
+    public let count: Int
+    
+    public enum GenerationStyle: String, CaseIterable, Codable {
+        case photorealistic = "photorealistic"
+        case artistic = "artistic"
+        case cartoon = "cartoon"
+        case sketch = "sketch"
+        case oil_painting = "oil_painting"
+        case watercolor = "watercolor"
+    }
+    
+    public enum GenerationSize: String, CaseIterable, Codable {
+        case small = "256x256"
+        case medium = "512x512"
+        case large = "1024x1024"
+        case extra_large = "1792x1024"
+        case portrait = "1024x1792"
+    }
+    
+    public enum GenerationQuality: String, CaseIterable, Codable {
+        case standard = "standard"
+        case high = "high"
+        case ultra = "ultra"
+    }
+    
+    public init(
+        prompt: String,
+        style: GenerationStyle = .photorealistic,
+        size: GenerationSize = .medium,
+        quality: GenerationQuality = .standard,
+        count: Int = 1
+    ) {
+        self.prompt = prompt
+        self.style = style
+        self.size = size
+        self.quality = quality
+        self.count = count
+    }
+    
+    public static let `default` = ImageGenerationOptions(prompt: "")
+}
+
+public struct ImageGenerationResult: VisionResult {
+    public let id: String
+    public let timestamp: Date
+    public let processingTime: TimeInterval
+    public let confidence: Float
+    public let metadata: [String: String]
+    
+    public let generatedImages: [GeneratedImage]
+    public let prompt: String
+    public let options: ImageGenerationOptions
+    
+    public struct GeneratedImage: Codable {
+        public let imageData: Data
+        public let format: String
+        public let size: CGSize
+        public let quality: Float
+        
+        public init(
+            imageData: Data,
+            format: String = "PNG",
+            size: CGSize,
+            quality: Float = 1.0
+        ) {
+            self.imageData = imageData
+            self.format = format
+            self.size = size
+            self.quality = quality
+        }
+    }
+    
+    public init(
+        id: String = UUID().uuidString,
+        timestamp: Date = Date(),
+        processingTime: TimeInterval,
+        confidence: Float,
+        metadata: [String: String] = [:],
+        generatedImages: [GeneratedImage],
+        prompt: String,
+        options: ImageGenerationOptions
+    ) {
+        self.id = id
+        self.timestamp = timestamp
+        self.processingTime = processingTime
+        self.confidence = confidence
+        self.metadata = metadata
+        self.generatedImages = generatedImages
+        self.prompt = prompt
+        self.options = options
+    }
+}
+
+public struct ImageVariationResult: VisionResult {
+    public let id: String
+    public let timestamp: Date
+    public let processingTime: TimeInterval
+    public let confidence: Float
+    public let metadata: [String: String]
+    
+    public let variations: [ImageVariation]
+    public let originalImageSize: CGSize
+    
+    public struct ImageVariation: Codable {
+        public let imageData: Data
+        public let variationType: VariationType
+        public let similarity: Float
+        public let format: String
+        
+        public enum VariationType: String, CaseIterable, Codable {
+            case style_transfer = "style_transfer"
+            case color_variation = "color_variation"
+            case composition_change = "composition_change"
+            case detail_enhancement = "detail_enhancement"
+        }
+        
+        public init(
+            imageData: Data,
+            variationType: VariationType,
+            similarity: Float,
+            format: String = "PNG"
+        ) {
+            self.imageData = imageData
+            self.variationType = variationType
+            self.similarity = similarity
+            self.format = format
+        }
+    }
+    
+    public init(
+        id: String = UUID().uuidString,
+        timestamp: Date = Date(),
+        processingTime: TimeInterval,
+        confidence: Float,
+        metadata: [String: String] = [:],
+        variations: [ImageVariation],
+        originalImageSize: CGSize
+    ) {
+        self.id = id
+        self.timestamp = timestamp
+        self.processingTime = processingTime
+        self.confidence = confidence
+        self.metadata = metadata
+        self.variations = variations
+        self.originalImageSize = originalImageSize
+    }
+}
+
+// MARK: - Image Variation Types
+
+public struct VariationOptions: Hashable, Codable {
+    public let count: Int
+    public let variationType: ImageVariationResult.ImageVariation.VariationType
+    public let similarity: Float
+    public let enhanceQuality: Bool
+    
+    public init(
+        count: Int = 1,
+        variationType: ImageVariationResult.ImageVariation.VariationType = .style_transfer,
+        similarity: Float = 0.8,
+        enhanceQuality: Bool = true
+    ) {
+        self.count = count
+        self.variationType = variationType
+        self.similarity = similarity
+        self.enhanceQuality = enhanceQuality
+    }
+    
+    public static let `default` = VariationOptions()
+}
+
+// MARK: - Image Enhancement Types
+
+public struct EnhancementOptions: Hashable, Codable {
+    public let enhancementType: EnhancementType
+    public let intensity: Float
+    public let preserveOriginalColors: Bool
+    public let upscaleFactor: Float
+    
+    public enum EnhancementType: String, CaseIterable, Codable {
+        case sharpen = "sharpen"
+        case denoise = "denoise"
+        case upscale = "upscale"
+        case colorCorrection = "color_correction"
+        case contrastEnhancement = "contrast_enhancement"
+        case saturationBoost = "saturation_boost"
+        case brightnessAdjustment = "brightness_adjustment"
+    }
+    
+    public init(
+        enhancementType: EnhancementType = .sharpen,
+        intensity: Float = 0.5,
+        preserveOriginalColors: Bool = true,
+        upscaleFactor: Float = 1.0
+    ) {
+        self.enhancementType = enhancementType
+        self.intensity = intensity
+        self.preserveOriginalColors = preserveOriginalColors
+        self.upscaleFactor = upscaleFactor
+    }
+    
+    public static let `default` = EnhancementOptions()
+}
+
+public struct ImageEnhancementResult: VisionResult {
+    public let id: String
+    public let timestamp: Date
+    public let processingTime: TimeInterval
+    public let confidence: Float
+    public let metadata: [String: String]
+    
+    public let enhancedImageData: Data
+    public let originalImageSize: CGSize
+    public let enhancedImageSize: CGSize
+    public let enhancementType: EnhancementType
+    public let improvementMetrics: ImprovementMetrics
+    
+    public struct ImprovementMetrics: Codable {
+        public let sharpnessImprovement: Float
+        public let noiseReduction: Float
+        public let colorAccuracy: Float
+        public let overallQuality: Float
+        
+        public init(
+            sharpnessImprovement: Float,
+            noiseReduction: Float,
+            colorAccuracy: Float,
+            overallQuality: Float
+        ) {
+            self.sharpnessImprovement = sharpnessImprovement
+            self.noiseReduction = noiseReduction
+            self.colorAccuracy = colorAccuracy
+            self.overallQuality = overallQuality
+        }
+    }
+    
+    public init(
+        id: String = UUID().uuidString,
+        timestamp: Date = Date(),
+        processingTime: TimeInterval,
+        confidence: Float,
+        metadata: [String: String] = [:],
+        enhancedImageData: Data,
+        originalImageSize: CGSize,
+        enhancedImageSize: CGSize,
+        enhancementType: EnhancementOptions.EnhancementType,
+        improvementMetrics: ImprovementMetrics
+    ) {
+        self.id = id
+        self.timestamp = timestamp
+        self.processingTime = processingTime
+        self.confidence = confidence
+        self.metadata = metadata
+        self.enhancedImageData = enhancedImageData
+        self.originalImageSize = originalImageSize
+        self.enhancedImageSize = enhancedImageSize
+        self.enhancementType = enhancementType
+        self.improvementMetrics = improvementMetrics
+    }
+}
+
+// MARK: - Style Transfer Types
+
+public struct StyleTransferOptions: Hashable, Codable {
+    public let style: ArtisticStyle
+    public let intensity: Float
+    public let preserveContent: Bool
+    public let outputResolution: StyleResolution
+    
+    public enum StyleResolution: String, CaseIterable, Codable {
+        case low = "512x512"
+        case medium = "1024x1024"
+        case high = "2048x2048"
+    }
+    
+    public init(
+        style: ArtisticStyle = .impressionist,
+        intensity: Float = 0.7,
+        preserveContent: Bool = true,
+        outputResolution: StyleResolution = .medium
+    ) {
+        self.style = style
+        self.intensity = intensity
+        self.preserveContent = preserveContent
+        self.outputResolution = outputResolution
+    }
+    
+    public static let `default` = StyleTransferOptions()
+}
+
+public enum ArtisticStyle: String, CaseIterable, Codable {
+    case impressionist = "impressionist"
+    case cubist = "cubist"
+    case abstract = "abstract"
+    case realism = "realism"
+    case surrealism = "surrealism"
+    case pop_art = "pop_art"
+    case minimalism = "minimalism"
+    case expressionism = "expressionism"
+    case baroque = "baroque"
+    case renaissance = "renaissance"
+}
+
+public struct StyleTransferResult: VisionResult {
+    public let id: String
+    public let timestamp: Date
+    public let processingTime: TimeInterval
+    public let confidence: Float
+    public let metadata: [String: String]
+    
+    public let styledImageData: Data
+    public let originalImageSize: CGSize
+    public let styledImageSize: CGSize
+    public let appliedStyle: ArtisticStyle
+    public let styleIntensity: Float
+    public let qualityMetrics: StyleQualityMetrics
+    
+    public struct StyleQualityMetrics: Codable {
+        public let contentPreservation: Float
+        public let styleAdherence: Float
+        public let artisticQuality: Float
+        public let overallSatisfaction: Float
+        
+        public init(
+            contentPreservation: Float,
+            styleAdherence: Float,
+            artisticQuality: Float,
+            overallSatisfaction: Float
+        ) {
+            self.contentPreservation = contentPreservation
+            self.styleAdherence = styleAdherence
+            self.artisticQuality = artisticQuality
+            self.overallSatisfaction = overallSatisfaction
+        }
+    }
+    
+    public init(
+        id: String = UUID().uuidString,
+        timestamp: Date = Date(),
+        processingTime: TimeInterval,
+        confidence: Float,
+        metadata: [String: String] = [:],
+        styledImageData: Data,
+        originalImageSize: CGSize,
+        styledImageSize: CGSize,
+        appliedStyle: ArtisticStyle,
+        styleIntensity: Float,
+        qualityMetrics: StyleQualityMetrics
+    ) {
+        self.id = id
+        self.timestamp = timestamp
+        self.processingTime = processingTime
+        self.confidence = confidence
+        self.metadata = metadata
+        self.styledImageData = styledImageData
+        self.originalImageSize = originalImageSize
+        self.styledImageSize = styledImageSize
+        self.appliedStyle = appliedStyle
+        self.styleIntensity = styleIntensity
+        self.qualityMetrics = qualityMetrics
+    }
+}
+
 // MARK: - Custom Extensions for Codable
 
 extension CGRect: Codable {
@@ -804,5 +1246,235 @@ extension CGSize: Codable {
     
     private enum CodingKeys: String, CodingKey {
         case width, height
+    }
+}
+
+// MARK: - Image Segmentation Types
+
+public struct SegmentationOptions: Hashable, Codable {
+    public let segmentationType: SegmentationType
+    public let minimumConfidence: Float
+    public let includeMasks: Bool
+    public let includeEdges: Bool
+    
+    public enum SegmentationType: String, CaseIterable, Codable {
+        case semantic = "semantic"
+        case instance = "instance"
+        case panoptic = "panoptic"
+    }
+    
+    public init(
+        segmentationType: SegmentationType = .semantic,
+        minimumConfidence: Float = 0.5,
+        includeMasks: Bool = true,
+        includeEdges: Bool = false
+    ) {
+        self.segmentationType = segmentationType
+        self.minimumConfidence = minimumConfidence
+        self.includeMasks = includeMasks
+        self.includeEdges = includeEdges
+    }
+    
+    public static let `default` = SegmentationOptions()
+}
+
+public struct ImageSegmentationResult: VisionResult {
+    public let id: String
+    public let timestamp: Date
+    public let processingTime: TimeInterval
+    public let confidence: Float
+    public let metadata: [String: String]
+    
+    public let segments: [ImageSegment]
+    public let masks: [SegmentationMask]
+    
+    public init(
+        id: String = UUID().uuidString,
+        timestamp: Date = Date(),
+        processingTime: TimeInterval,
+        confidence: Float,
+        metadata: [String: String] = [:],
+        segments: [ImageSegment],
+        masks: [SegmentationMask] = []
+    ) {
+        self.id = id
+        self.timestamp = timestamp
+        self.processingTime = processingTime
+        self.confidence = confidence
+        self.metadata = metadata
+        self.segments = segments
+        self.masks = masks
+    }
+}
+
+public struct ImageSegment: Codable {
+    public let id: String
+    public let label: String
+    public let confidence: Float
+    public let boundingBox: CGRect
+    public let pixelCount: Int
+    
+    public init(
+        id: String,
+        label: String,
+        confidence: Float,
+        boundingBox: CGRect,
+        pixelCount: Int
+    ) {
+        self.id = id
+        self.label = label
+        self.confidence = confidence
+        self.boundingBox = boundingBox
+        self.pixelCount = pixelCount
+    }
+}
+
+public struct SegmentationMask: Codable {
+    public let segmentId: String
+    public let maskData: Data
+    public let width: Int
+    public let height: Int
+    
+    public init(
+        segmentId: String,
+        maskData: Data,
+        width: Int,
+        height: Int
+    ) {
+        self.segmentId = segmentId
+        self.maskData = maskData
+        self.width = width
+        self.height = height
+    }
+}
+
+// MARK: - Enhanced Image Types (Removed duplicate - using EnhancementOptions.EnhancementType instead)
+
+// Typealias for backwards compatibility
+public typealias EnhancementType = EnhancementOptions.EnhancementType
+
+public struct EnhancementMetrics: Codable, Sendable {
+    public let sharpnessImprovement: Float
+    public let noiseReduction: Float
+    public let colorAccuracy: Float
+    public let detailPreservation: Float
+    public let overallImprovement: Float
+    public let upscaleQuality: Float?
+    
+    public init(
+        sharpnessImprovement: Float,
+        noiseReduction: Float,
+        colorAccuracy: Float,
+        detailPreservation: Float,
+        overallImprovement: Float,
+        upscaleQuality: Float? = nil
+    ) {
+        self.sharpnessImprovement = sharpnessImprovement
+        self.noiseReduction = noiseReduction
+        self.colorAccuracy = colorAccuracy
+        self.detailPreservation = detailPreservation
+        self.overallImprovement = overallImprovement
+        self.upscaleQuality = upscaleQuality
+    }
+}
+
+// MARK: - Missing Image Generation Types
+
+public struct ImageSize: Hashable, Codable {
+    public let width: Int
+    public let height: Int
+    
+    public init(width: Int, height: Int) {
+        self.width = width
+        self.height = height
+    }
+    
+    public static let small = ImageSize(width: 512, height: 512)
+    public static let medium = ImageSize(width: 768, height: 768)
+    public static let large = ImageSize(width: 1024, height: 1024)
+    public static let ultraHD = ImageSize(width: 2048, height: 2048)
+}
+
+public enum GenerationStyle: String, CaseIterable, Codable {
+    case realistic = "realistic"
+    case artistic = "artistic"
+    case cartoon = "cartoon"
+    case anime = "anime"
+    case abstract = "abstract"
+    case photographic = "photographic"
+    case illustration = "illustration"
+    case digital_art = "digital_art"
+    case oil_painting = "oil_painting"
+    case watercolor = "watercolor"
+    case pencil_sketch = "pencil_sketch"
+    case cyberpunk = "cyberpunk"
+    case fantasy = "fantasy"
+    case minimalist = "minimalist"
+    case vintage = "vintage"
+}
+
+public struct GenerationQualityMetrics: Codable {
+    public let aestheticScore: Float
+    public let technicalQuality: Float
+    public let promptAdherence: Float
+    public let creativity: Float
+    public let composition: Float
+    public let colorHarmony: Float
+    public let detail: Float
+    public let overallQuality: Float
+    
+    public init(
+        aestheticScore: Float,
+        technicalQuality: Float,
+        promptAdherence: Float,
+        creativity: Float,
+        composition: Float,
+        colorHarmony: Float,
+        detail: Float,
+        overallQuality: Float
+    ) {
+        self.aestheticScore = aestheticScore
+        self.technicalQuality = technicalQuality
+        self.promptAdherence = promptAdherence
+        self.creativity = creativity
+        self.composition = composition
+        self.colorHarmony = colorHarmony
+        self.detail = detail
+        self.overallQuality = overallQuality
+    }
+}
+
+// MARK: - Platform Color Support
+
+#if canImport(UIKit)
+public typealias PlatformColor = UIColor
+#elseif canImport(AppKit)
+public typealias PlatformColor = NSColor
+#endif
+
+// MARK: - Generation Parameters
+
+public struct GenerationParameters: Codable {
+    public let style: GenerationStyle
+    public let size: ImageSize
+    public let guidance: Float
+    public let steps: Int
+    public let seed: Int
+    public let model: String
+    
+    public init(
+        style: GenerationStyle,
+        size: ImageSize,
+        guidance: Float,
+        steps: Int,
+        seed: Int,
+        model: String
+    ) {
+        self.style = style
+        self.size = size
+        self.guidance = guidance
+        self.steps = steps
+        self.seed = seed
+        self.model = model
     }
 }
