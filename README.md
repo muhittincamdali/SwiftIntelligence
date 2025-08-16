@@ -449,6 +449,79 @@ Manual Setup      ████████████████████�
 
 ---
 
+## 📚 Documentation
+
+### Comprehensive Guides
+
+Explore our extensive documentation to master SwiftIntelligence:
+
+- 📖 **[Getting Started Guide](Documentation/Getting-Started.md)** - Quick start tutorial and basic setup
+- 🏗️ **[Architecture Guide](Documentation/Architecture.md)** - Deep dive into framework architecture
+- 🔍 **[API Reference](Documentation/API-Reference.md)** - Complete API documentation
+- ⚡ **[Performance Guide](Documentation/Performance.md)** - Optimization strategies and benchmarks
+- 🔒 **[Security Guide](Documentation/Security.md)** - Security best practices and privacy features
+- 🥽 **[visionOS Guide](Documentation/visionOS-Guide.md)** - Spatial computing development guide
+
+### Quick Links
+
+| Documentation | Description |
+|--------------|-------------|
+| **[API Reference](Documentation/API-Reference.md)** | Complete API documentation with all classes and methods |
+| **[Getting Started](Documentation/Getting-Started.md)** | Installation, setup, and first steps |
+| **[Architecture](Documentation/Architecture.md)** | System design and architectural patterns |
+| **[Performance](Documentation/Performance.md)** | Performance optimization techniques |
+| **[Security](Documentation/Security.md)** | Security features and best practices |
+| **[visionOS Integration](Documentation/visionOS-Guide.md)** | Building spatial computing apps |
+
+---
+
+## 🚀 Examples
+
+### Demo Applications
+
+Check out our complete example applications to see SwiftIntelligence in action:
+
+#### 📱 **[iOS Demo Apps](Examples/DemoApps/)**
+- **[IntelligentCamera](Examples/DemoApps/IntelligentCamera/)** - AI-powered camera with real-time object detection
+- **[SmartTranslator](Examples/DemoApps/SmartTranslator/)** - Multi-language translation with context understanding
+- **[VoiceAssistant](Examples/DemoApps/VoiceAssistant/)** - Natural conversation AI assistant
+- **[ARCreativeStudio](Examples/DemoApps/ARCreativeStudio/)** - AR content creation with AI
+- **[PersonalAITutor](Examples/DemoApps/PersonalAITutor/)** - Adaptive learning companion
+
+#### 💻 **[Feature Examples](Examples/)**
+- **[ARExperience](Examples/ARExperience/)** - Augmented reality AI integration
+- **[ChatBot](Examples/ChatBot/)** - Conversational AI implementation
+- **[ImageAnalyzer](Examples/ImageAnalyzer/)** - Advanced image analysis
+- **[TranslatorApp](Examples/TranslatorApp/)** - Real-time translation
+- **[VoiceAssistant](Examples/VoiceAssistant/)** - Voice interaction system
+
+### Quick Example Code
+
+```swift
+// Object Detection Example
+import SwiftIntelligence
+
+let image = UIImage(named: "sample.jpg")!
+let objects = try await SwiftIntelligence.shared.vision.detectObjects(in: image)
+for object in objects {
+    print("Found \(object.label) with \(object.confidence)% confidence")
+}
+
+// Sentiment Analysis Example
+let text = "This framework is absolutely amazing!"
+let sentiment = try await SwiftIntelligence.shared.nlp.analyzeSentiment(text)
+print("Sentiment: \(sentiment.sentiment) (\(sentiment.confidence)% confident)")
+
+// Speech Recognition Example
+SwiftIntelligence.shared.speech.startRecognition { result in
+    print("You said: \(result.text)")
+}
+```
+
+For more examples, check the [Examples directory](Examples/).
+
+---
+
 ## 📖 Advanced Usage
 
 ### Custom Configuration
