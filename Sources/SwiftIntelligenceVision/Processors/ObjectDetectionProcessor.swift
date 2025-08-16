@@ -1,7 +1,11 @@
 import Foundation
 import CoreML
 import Vision
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import AVFoundation
 import os.log
 
@@ -89,14 +93,20 @@ public class ObjectDetectionProcessor {
     
     /// Detect and locate objects in images
     public func detect(
-        in image: UIImage,
+        in image: PlatformImage,
         options: DetectionOptions
     ) async throws -> ObjectDetectionResult {
         let startTime = Date()
         
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw DetectionError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw DetectionError.invalidImage
+        }
+        #endif
         
         // Select optimal model
         let modelName = selectOptimalModel(for: options)
@@ -168,7 +178,7 @@ public class ObjectDetectionProcessor {
     
     /// Batch detect objects in multiple images
     public func batchDetect(
-        _ images: [UIImage],
+        _ images: [PlatformImage],
         options: DetectionOptions
     ) async throws -> [ObjectDetectionResult] {
         return try await withThrowingTaskGroup(of: ObjectDetectionResult.self) { group in
@@ -541,15 +551,16 @@ public class ObjectDetectionProcessor {
         return identifier.replacingOccurrences(of: "_", with: " ").capitalized
     }
     
-    private func extractAttributes(from observation: VNRecognizedObjectObservation) -> [String: Any] {
-        var attributes: [String: Any] = [:]
+    private func extractAttributes(from observation: VNRecognizedObjectObservation) -> [String: String] {
+        var attributes: [String: String] = [:]
         
-        // Extract additional attributes if available
-        attributes["area"] = observation.boundingBox.width * observation.boundingBox.height
-        attributes["aspectRatio"] = observation.boundingBox.width / observation.boundingBox.height
+        // Extract additional attributes as strings
+        attributes["area"] = String(format: "%.4f", observation.boundingBox.width * observation.boundingBox.height)
+        attributes["aspectRatio"] = String(format: "%.2f", observation.boundingBox.width / observation.boundingBox.height)
         
         if observation.labels.count > 1 {
-            attributes["alternativeLabels"] = observation.labels.dropFirst().map { $0.identifier }
+            let alternativeLabels = observation.labels.dropFirst().map { $0.identifier }.joined(separator: ",")
+            attributes["alternativeLabels"] = alternativeLabels
         }
         
         return attributes

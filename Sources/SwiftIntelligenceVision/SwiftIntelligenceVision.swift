@@ -7,12 +7,8 @@ import AVFoundation
 
 #if canImport(UIKit)
 import UIKit
-typealias PlatformImage = UIImage
-#endif
-
-#if canImport(AppKit)
+#elseif canImport(AppKit)
 import AppKit
-typealias PlatformImage = NSImage
 #endif
 
 /// Computer Vision Engine - Advanced image analysis and computer vision capabilities
@@ -167,14 +163,14 @@ public actor SwiftIntelligenceVision {
         var detectedObjects: [DetectedObject] = []
         var confidence: Float = 0.0
         
-        // Create object detection request
-        let objectDetectionRequest = VNRecognizeObjectsRequest { request, error in
+        // Create object detection request (using rectangles as a placeholder)
+        let objectDetectionRequest = VNDetectRectanglesRequest { request, error in
             if let error = error {
                 self.logger.error("Object detection error: \(error)", category: "Vision")
                 return
             }
             
-            guard let observations = request.results as? [VNRecognizedObjectObservation] else {
+            guard let observations = request.results as? [VNRectangleObservation] else {
                 return
             }
             
@@ -182,17 +178,17 @@ public actor SwiftIntelligenceVision {
                 .filter { $0.confidence >= options.confidenceThreshold }
                 .prefix(options.maxObjects)
             
-            detectedObjects = filteredObservations.compactMap { observation in
-                guard let topLabel = observation.labels.first else { return nil }
-                
-                let category = self.mapToObjectCategory(topLabel.identifier)
+            detectedObjects = filteredObservations.map { observation in
+                // For rectangles, we don't have labels, so we use generic labels
+                let identifier = UUID().uuidString
+                let label = "Rectangle"
                 
                 return DetectedObject(
-                    identifier: topLabel.identifier,
-                    label: topLabel.identifier,
-                    confidence: topLabel.confidence,
+                    identifier: identifier,
+                    label: label,
+                    confidence: observation.confidence,
                     boundingBox: observation.boundingBox,
-                    category: category
+                    category: .other
                 )
             }
             
@@ -339,7 +335,7 @@ public actor SwiftIntelligenceVision {
         
         // Configure request
         textRecognitionRequest.recognitionLanguages = options.recognitionLanguages
-        textRecognitionRequest.recognitionLevel = options.recognitionLevel
+        textRecognitionRequest.recognitionLevel = options.recognitionLevel.vnLevel
         textRecognitionRequest.automaticallyDetectsLanguage = true
         
         // Process image

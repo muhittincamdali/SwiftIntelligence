@@ -4,6 +4,14 @@ import CoreML
 import Vision
 import os.log
 
+// Cache wrapper for NSCache
+private class CacheWrapper {
+    let entities: [NamedEntity]
+    init(entities: [NamedEntity]) {
+        self.entities = entities
+    }
+}
+
 /// Advanced named entity recognition and extraction processor
 public class EntityExtractionProcessor {
     
@@ -22,7 +30,7 @@ public class EntityExtractionProcessor {
     private var patternMatchers: [EntityPatternMatcher] = []
     
     // MARK: - Cache
-    private let cache = NSCache<NSString, [NamedEntity]>()
+    private let cache = NSCache<NSString, CacheWrapper>()
     
     // MARK: - Initialization
     public init() async throws {
@@ -48,7 +56,8 @@ public class EntityExtractionProcessor {
     
     private func loadTurkishEntityModel() async {
         do {
-            if let modelURL = Bundle.module.url(forResource: "TurkishEntityModel", withExtension: "mlmodel") {
+            let bundle = Bundle(for: type(of: self))
+            if let modelURL = bundle.url(forResource: "TurkishEntityModel", withExtension: "mlmodel") {
                 let mlModel = try MLModel(contentsOf: modelURL)
                 turkishEntityModel = try VNCoreMLModel(for: mlModel)
                 logger.info("Turkish entity model loaded successfully")
@@ -63,7 +72,8 @@ public class EntityExtractionProcessor {
         
         for modelName in modelNames {
             do {
-                if let modelURL = Bundle.module.url(forResource: modelName, withExtension: "mlmodel") {
+                let bundle = Bundle(for: type(of: self))
+                if let modelURL = bundle.url(forResource: modelName, withExtension: "mlmodel") {
                     let mlModel = try MLModel(contentsOf: modelURL)
                     let visionModel = try VNCoreMLModel(for: mlModel)
                     customEntityModels[modelName] = visionModel
@@ -110,12 +120,11 @@ public class EntityExtractionProcessor {
         
         // Check cache
         let cacheKey = NSString(string: "\(text.hashValue)_\(language?.rawValue ?? "auto")_\(options.hashValue)")
-        if let cachedEntities = cache.object(forKey: cacheKey) {
+        if let cachedWrapper = cache.object(forKey: cacheKey) {
             return EntityExtractionResult(
-                entities: cachedEntities,
-                processingTime: 0,
-                confidence: calculateAverageConfidence(cachedEntities),
-                detectedLanguage: language ?? detectLanguage(text: text)
+                entities: cachedWrapper.entities,
+                entityCount: cachedWrapper.entities.count,
+                processingTime: 0
             )
         }
         
@@ -140,13 +149,12 @@ public class EntityExtractionProcessor {
         
         let result = EntityExtractionResult(
             entities: filteredEntities,
-            processingTime: processingTime,
-            confidence: confidence,
-            detectedLanguage: detectedLanguage
+            entityCount: filteredEntities.count,
+            processingTime: processingTime
         )
         
         // Cache result
-        cache.setObject(filteredEntities, forKey: cacheKey, cost: text.count)
+        cache.setObject(CacheWrapper(entities: filteredEntities), forKey: cacheKey, cost: text.count)
         
         return result
     }
@@ -430,19 +438,7 @@ public struct EntityExtractionOptions: Hashable, Codable {
     )
 }
 
-public struct EntityExtractionResult {
-    public let entities: [NamedEntity]
-    public let processingTime: TimeInterval
-    public let confidence: Float
-    public let detectedLanguage: NLLanguage
-    
-    public init(entities: [NamedEntity], processingTime: TimeInterval, confidence: Float, detectedLanguage: NLLanguage) {
-        self.entities = entities
-        self.processingTime = processingTime
-        self.confidence = confidence
-        self.detectedLanguage = detectedLanguage
-    }
-}
+// EntityExtractionResult is now defined in NLPTypes.swift
 
 // MARK: - Pattern Matchers
 
@@ -491,7 +487,7 @@ struct PhonePatternMatcher: EntityPatternMatcher {
 }
 
 struct URLPatternMatcher: EntityPatternMatcher {
-    private let urlRegex = try! NSRegularExpression(pattern: #"https?://(?:[-\w.])+(?:\:[0-9]+)?(?:/(?:[\w/_.])*(?:\?(?:[\w&=%.])*)?(?:\#(?:[\w.])*)?)?|www\.(?:[-\w.])+(?:\:[0-9]+)?(?:/(?:[\w/_.])*(?:\?(?:[\w&=%.])*)?(?:\#(?:[\w.])*)?)?"#)
+    private let urlRegex = try! NSRegularExpression(pattern: #"https?://(?:[-\w.])+(?::[0-9]+)?(?:/(?:[\w/_.])*(?:\?(?:[\w&=%.])*)?(?:#(?:[\w.])*)?)?|www\.(?:[-\w.])+(?::[0-9]+)?(?:/(?:[\w/_.])*(?:\?(?:[\w&=%.])*)?(?:#(?:[\w.])*)?)?"#)
     
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = urlRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))

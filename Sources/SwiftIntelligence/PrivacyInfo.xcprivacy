@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Privacy Manifest for SwiftIntelligence Framework -->
+    <!-- AI/ML Framework Data Collection and Usage Declaration -->
+    
+    <!-- Data Collection Practices -->
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array>
+        <!-- Audio Data for Speech Processing -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeAudioData</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+                <string>NSPrivacyCollectedDataTypePurposeDeveloperAdvertising</string>
+            </array>
+        </dict>
+        
+        <!-- Photos/Media for Vision Processing -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePhotos</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        
+        <!-- Camera Data for Real-time Vision -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeOtherDataTypes</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        
+        <!-- Performance and Analytics Data -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePerformanceData</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAnalytics</string>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        
+        <!-- Diagnostic Data -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeCrashData</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+                <string>NSPrivacyCollectedDataTypePurposeAnalytics</string>
+            </array>
+        </dict>
+    </array>
+    
+    <!-- Data Usage Tracking -->
+    <key>NSPrivacyTracking</key>
+    <false/>
+    
+    <!-- Domain Tracking -->
+    <key>NSPrivacyTrackingDomains</key>
+    <array>
+        <!-- No tracking domains - privacy-first framework -->
+    </array>
+    
+    <!-- API Access and Data Usage -->
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array>
+        <!-- File Timestamp API -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>C617.1</string> <!-- Model file management -->
+                <string>3B52.1</string> <!-- Cache file timestamp -->
+            </array>
+        </dict>
+        
+        <!-- User Defaults API -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>CA92.1</string> <!-- Framework configuration -->
+                <string>1C8F.1</string> <!-- User preferences -->
+            </array>
+        </dict>
+        
+        <!-- System Boot Time API -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>35F9.1</string> <!-- Performance measurement -->
+            </array>
+        </dict>
+        
+        <!-- Disk Space API -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>E174.1</string> <!-- Model storage optimization -->
+                <string>85F4.1</string> <!-- Cache management -->
+            </array>
+        </dict>
+        
+        <!-- Active Keyboard API -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryActiveKeyboards</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>3EC4.1</string> <!-- Text processing optimization -->
+            </array>
+        </dict>
+    </array>
+    
+    <!-- Required API Declarations -->
+    <key>NSPrivacyAccessedAPICategoryReasons</key>
+    <dict>
+        <!-- Speech Recognition -->
+        <key>SpeechRecognition</key>
+        <string>Speech recognition functionality for voice input processing. Data processed locally on device when possible.</string>
+        
+        <!-- Camera Access -->
+        <key>CameraAccess</key>
+        <string>Camera access for real-time vision processing and AR features. Image data processed locally.</string>
+        
+        <!-- Photo Library -->
+        <key>PhotoLibrary</key>
+        <string>Photo library access for image analysis and vision processing features.</string>
+        
+        <!-- Microphone -->
+        <key>Microphone</key>
+        <string>Microphone access for speech recognition and audio processing features.</string>
+        
+        <!-- Motion Sensors -->
+        <key>MotionSensors</key>
+        <string>Motion sensor access for spatial computing and AR features on compatible devices.</string>
+    </dict>
+    
+    <!-- Data Processing Locations -->
+    <key>NSPrivacyDataProcessingLocations</key>
+    <array>
+        <string>On-Device</string>
+        <string>Local Network</string>
+    </array>
+    
+    <!-- Third-Party SDK Disclosures -->
+    <key>NSPrivacyAccessedAPITypeReasons</key>
+    <dict>
+        <!-- Apple Frameworks -->
+        <key>AppleFrameworks</key>
+        <array>
+            <string>Core ML - On-device machine learning</string>
+            <string>Vision - Image and video analysis</string>
+            <string>Speech - Speech recognition and synthesis</string>
+            <string>Natural Language - Text processing</string>
+            <string>AVFoundation - Audio and video processing</string>
+            <string>RealityKit - Spatial computing (visionOS)</string>
+            <string>ARKit - Augmented reality (iOS)</string>
+        </array>
+        
+        <!-- External Dependencies -->
+        <key>ExternalDependencies</key>
+        <array>
+            <!-- No external tracking SDKs -->
+        </array>
+    </dict>
+    
+    <!-- Contact Information -->
+    <key>NSPrivacyContactInfo</key>
+    <dict>
+        <key>NSPrivacyContactInfoEmail</key>
+        <string>privacy@swiftintelligence.com</string>
+        <key>NSPrivacyContactInfoWebsite</key>
+        <string>https://github.com/username/SwiftIntelligence/blob/main/SECURITY.md</string>
+    </dict>
+    
+    <!-- Data Retention Policy -->
+    <key>NSPrivacyDataRetention</key>
+    <dict>
+        <key>ProcessedData</key>
+        <string>Processed AI/ML data is not retained unless explicitly saved by the app developer</string>
+        <key>CacheData</key>
+        <string>Cached model data retained for performance optimization, cleared on app uninstall</string>
+        <key>MetricsData</key>
+        <string>Anonymous performance metrics retained for framework optimization</string>
+    </dict>
+    
+    <!-- Privacy Policy Link -->
+    <key>NSPrivacyPolicyURL</key>
+    <string>https://github.com/username/SwiftIntelligence/blob/main/SECURITY.md#privacy-policy</string>
+    
+    <!-- Data Sharing Practices -->
+    <key>NSPrivacyDataSharing</key>
+    <dict>
+        <key>SharedWithThirdParties</key>
+        <false/>
+        <key>SharedForTargetedAdvertising</key>
+        <false/>
+        <key>SharedForAnalytics</key>
+        <false/>
+        <key>SharedForAppFunctionality</key>
+        <false/>
+    </dict>
+    
+    <!-- Children's Privacy -->
+    <key>NSPrivacyChildrensPrivacy</key>
+    <dict>
+        <key>SupportsChildrensPrivacy</key>
+        <true/>
+        <key>COPPACompliant</key>
+        <true/>
+        <key>AdditionalProtections</key>
+        <string>Additional privacy protections available for apps targeting children</string>
+    </dict>
+</dict>
+</plist>

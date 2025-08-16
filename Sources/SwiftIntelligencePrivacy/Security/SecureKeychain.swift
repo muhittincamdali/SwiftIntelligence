@@ -19,7 +19,7 @@ public class SecureKeychain {
     // MARK: - Key Storage
     
     /// Store a symmetric key in the keychain
-    public func storeKey(_ key: SymmetricKey, identifier: String, accessibility: SecAccessibility = .whenUnlockedThisDeviceOnly) async throws {
+    public func storeKey(_ key: SymmetricKey, identifier: String, accessibility: CFString = kSecAttrAccessibleWhenUnlockedThisDeviceOnly) async throws {
         let keyData = key.withUnsafeBytes { Data($0) }
         
         var query: [String: Any] = [
@@ -106,7 +106,7 @@ public class SecureKeychain {
     // MARK: - Secure Data Storage
     
     /// Store encrypted data in the keychain
-    public func storeSecureData(_ data: Data, identifier: String, accessibility: SecAccessibility = .whenUnlockedThisDeviceOnly) async throws {
+    public func storeSecureData(_ data: Data, identifier: String, accessibility: CFString = kSecAttrAccessibleWhenUnlockedThisDeviceOnly) async throws {
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: "\(serviceIdentifier).data",
@@ -381,7 +381,7 @@ public class SecureKeychain {
     // MARK: - Key Rotation
     
     /// Rotate a symmetric key
-    public func rotateKey(identifier: String, accessibility: SecAccessibility = .whenUnlockedThisDeviceOnly) async throws -> SymmetricKey {
+    public func rotateKey(identifier: String, accessibility: CFString = kSecAttrAccessibleWhenUnlockedThisDeviceOnly) async throws -> SymmetricKey {
         // Generate new key
         let newKey = SymmetricKey(size: .bits256)
         
@@ -434,8 +434,12 @@ public class SecureKeychain {
     public func importKeys(from backupData: Data, with backupKey: SymmetricKey) async throws {
         let backup = try JSONDecoder().decode(KeyBackup.self, from: backupData)
         
+        guard let nonce = backup.nonce else {
+            throw KeychainError.invalidBackupFormat
+        }
+        
         let sealedBox = try AES.GCM.SealedBox(
-            nonce: backup.nonce,
+            nonce: nonce,
             ciphertext: backup.encryptedData,
             tag: backup.tag
         )
@@ -459,9 +463,20 @@ public class SecureKeychain {
 
 private struct KeyBackup: Codable {
     let encryptedData: Data
-    let nonce: AES.GCM.Nonce
+    let nonceData: Data
     let tag: Data
     let timestamp: Date
+    
+    init(encryptedData: Data, nonce: AES.GCM.Nonce, tag: Data, timestamp: Date) {
+        self.encryptedData = encryptedData
+        self.nonceData = Data(nonce)
+        self.tag = tag
+        self.timestamp = timestamp
+    }
+    
+    var nonce: AES.GCM.Nonce? {
+        try? AES.GCM.Nonce(data: nonceData)
+    }
 }
 
 // MARK: - Keychain Errors
@@ -478,11 +493,14 @@ public enum KeychainError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .storageError(let status):
-            return "Failed to store in keychain: \(SecCopyErrorMessageString(status, nil) ?? "Unknown error")"
+            let message = SecCopyErrorMessageString(status, nil) as String? ?? "Unknown error"
+            return "Failed to store in keychain: \(message)"
         case .retrievalError(let status):
-            return "Failed to retrieve from keychain: \(SecCopyErrorMessageString(status, nil) ?? "Unknown error")"
+            let message = SecCopyErrorMessageString(status, nil) as String? ?? "Unknown error"
+            return "Failed to retrieve from keychain: \(message)"
         case .deletionError(let status):
-            return "Failed to delete from keychain: \(SecCopyErrorMessageString(status, nil) ?? "Unknown error")"
+            let message = SecCopyErrorMessageString(status, nil) as String? ?? "Unknown error"
+            return "Failed to delete from keychain: \(message)"
         case .invalidData:
             return "Invalid data format"
         case .accessControlError(let error):
@@ -508,9 +526,9 @@ public enum KeychainError: LocalizedError {
     }
 }
 
-// MARK: - SecAccessibility Extension
+// MARK: - Security Accessibility Helpers
 
-extension SecAccessibility {
+public struct SecurityAccessibility {
     public static let whenUnlockedThisDeviceOnly = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
     public static let whenUnlocked = kSecAttrAccessibleWhenUnlocked
     public static let afterFirstUnlockThisDeviceOnly = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly

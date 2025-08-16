@@ -66,16 +66,16 @@ public actor SwiftIntelligencePrivacy {
         logger.debug("Setting up Privacy capabilities", category: "Privacy")
         
         // Initialize encryption service
-        encryptionService = EncryptionService()
+        encryptionService = DefaultEncryptionService()
         
         // Setup secure storage
-        secureStorage = SecureStorageService()
+        secureStorage = DefaultSecureStorageService()
         
         // Initialize biometric authentication
-        biometricManager = BiometricAuthManager()
+        biometricManager = DefaultBiometricAuthManager()
         
         // Setup data anonymization
-        dataAnonymizer = DataAnonymizationService()
+        dataAnonymizer = DefaultDataAnonymizationService()
         
         // Initialize performance metrics
         performanceMetrics = PrivacyPerformanceMetrics()

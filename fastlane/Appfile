@@ -1,0 +1,17 @@
+# SwiftIntelligence Fastlane Appfile
+# Framework-specific configuration
+
+# Framework identifier
+app_identifier("com.swiftintelligence.framework")
+
+# Apple ID (for potential App Store tools)
+# apple_id("your@email.com")
+
+# Team ID (if using for signing)
+# team_id("YOUR_TEAM_ID")
+
+# iTunes Connect Team ID
+# itc_team_id("YOUR_ITC_TEAM_ID")
+
+# For framework development, we don't need most of these
+# but they're here for future App Store distribution if needed

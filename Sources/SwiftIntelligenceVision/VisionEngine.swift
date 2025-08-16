@@ -1,8 +1,13 @@
 import Foundation
+import SwiftIntelligenceCore
 import CoreML
 import Vision
 import CoreImage
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import AVFoundation
 import Combine
 import os.log
@@ -12,7 +17,7 @@ import os.log
 public class VisionEngine: ObservableObject {
     
     // MARK: - Singleton
-    public static let shared = VisionEngine()
+    public static let shared = VisionEngine(configuration: .default)
     
     // MARK: - Published Properties
     @Published public var isInitialized: Bool = false
@@ -33,23 +38,30 @@ public class VisionEngine: ObservableObject {
     private var enhancementProcessor: ImageEnhancementProcessor?
     private var styleProcessor: StyleTransferProcessor?
     
+    // MARK: - Cache Wrapper
+    private class VisionResultWrapper {
+        let result: VisionResult
+        init(result: VisionResult) {
+            self.result = result
+        }
+    }
+    
     // MARK: - Caching & Performance
-    private let imageCache = NSCache<NSString, UIImage>()
-    private let resultCache = NSCache<NSString, VisionResult>()
-    private var processingTasks: [String: Task<Any, Error>] = [:]
+    private let imageCache = NSCache<NSString, PlatformImage>()
+    private let resultCache = NSCache<NSString, VisionResultWrapper>()
+    private var processingTasks: [String: Task<VisionResult, Error>] = [:]
     
     // MARK: - Publishers
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Initialization
-    private init() {
-        self.configuration = VisionConfiguration.default
+    private init(configuration: VisionConfiguration = .default) {
+        self.configuration = configuration
         setupCaching()
     }
     
-    public convenience init(configuration: VisionConfiguration) {
-        self.init()
-        self.configuration.update(with: configuration)
+    public convenience init() {
+        self.init(configuration: .default)
     }
     
     // MARK: - Setup
@@ -97,13 +109,14 @@ public class VisionEngine: ObservableObject {
     
     /// Classify image contents using advanced ML models
     public func classifyImage(
-        _ image: UIImage,
+        _ image: PlatformImage,
         options: ClassificationOptions = .default
     ) async throws -> ImageClassificationResult {
         try ensureInitialized()
         
         let cacheKey = "classify_\(image.hashValue)_\(options.hashValue)"
-        if let cached = resultCache.object(forKey: cacheKey as NSString) as? ImageClassificationResult {
+        if let cachedWrapper = resultCache.object(forKey: cacheKey as NSString),
+           let cached = cachedWrapper.result as? ImageClassificationResult {
             return cached
         }
         
@@ -118,7 +131,8 @@ public class VisionEngine: ObservableObject {
         let result = try await processor.classify(image, options: options)
         
         // Cache result
-        resultCache.setObject(result, forKey: cacheKey as NSString)
+        let wrapper = VisionResultWrapper(result: result)
+        resultCache.setObject(wrapper, forKey: cacheKey as NSString)
         
         status = .ready
         return result
@@ -126,7 +140,7 @@ public class VisionEngine: ObservableObject {
     
     /// Batch classify multiple images
     public func batchClassifyImages(
-        _ images: [UIImage],
+        _ images: [PlatformImage],
         options: ClassificationOptions = .default
     ) async throws -> [ImageClassificationResult] {
         try ensureInitialized()
@@ -150,13 +164,14 @@ public class VisionEngine: ObservableObject {
     
     /// Detect and locate objects in images
     public func detectObjects(
-        in image: UIImage,
+        in image: PlatformImage,
         options: DetectionOptions = .default
     ) async throws -> ObjectDetectionResult {
         try ensureInitialized()
         
         let cacheKey = "detect_\(image.hashValue)_\(options.hashValue)"
-        if let cached = resultCache.object(forKey: cacheKey as NSString) as? ObjectDetectionResult {
+        if let cachedWrapper = resultCache.object(forKey: cacheKey as NSString),
+           let cached = cachedWrapper.result as? ObjectDetectionResult {
             return cached
         }
         
@@ -171,7 +186,8 @@ public class VisionEngine: ObservableObject {
         let result = try await processor.detect(in: image, options: options)
         
         // Cache result
-        resultCache.setObject(result, forKey: cacheKey as NSString)
+        let wrapper = VisionResultWrapper(result: result)
+        resultCache.setObject(wrapper, forKey: cacheKey as NSString)
         
         status = .ready
         return result
@@ -193,13 +209,14 @@ public class VisionEngine: ObservableObject {
     
     /// Detect and recognize faces in images
     public func recognizeFaces(
-        in image: UIImage,
+        in image: PlatformImage,
         options: FaceRecognitionOptions = .default
     ) async throws -> FaceRecognitionResult {
         try ensureInitialized()
         
         let cacheKey = "face_\(image.hashValue)_\(options.hashValue)"
-        if let cached = resultCache.object(forKey: cacheKey as NSString) as? FaceRecognitionResult {
+        if let cachedWrapper = resultCache.object(forKey: cacheKey as NSString),
+           let cached = cachedWrapper.result as? FaceRecognitionResult {
             return cached
         }
         
@@ -214,7 +231,8 @@ public class VisionEngine: ObservableObject {
         let result = try await processor.recognize(in: image, options: options)
         
         // Cache result
-        resultCache.setObject(result, forKey: cacheKey as NSString)
+        let wrapper = VisionResultWrapper(result: result)
+        resultCache.setObject(wrapper, forKey: cacheKey as NSString)
         
         status = .ready
         return result
@@ -222,7 +240,7 @@ public class VisionEngine: ObservableObject {
     
     /// Enroll a face for recognition
     public func enrollFace(
-        from image: UIImage,
+        from image: PlatformImage,
         identity: String,
         options: FaceEnrollmentOptions = .default
     ) async throws -> FaceEnrollmentResult {
@@ -237,13 +255,14 @@ public class VisionEngine: ObservableObject {
     
     /// Extract text from images using advanced OCR
     public func recognizeText(
-        in image: UIImage,
+        in image: PlatformImage,
         options: TextRecognitionOptions = .default
     ) async throws -> TextRecognitionResult {
         try ensureInitialized()
         
         let cacheKey = "text_\(image.hashValue)_\(options.hashValue)"
-        if let cached = resultCache.object(forKey: cacheKey as NSString) as? TextRecognitionResult {
+        if let cachedWrapper = resultCache.object(forKey: cacheKey as NSString),
+           let cached = cachedWrapper.result as? TextRecognitionResult {
             return cached
         }
         
@@ -258,7 +277,8 @@ public class VisionEngine: ObservableObject {
         let result = try await processor.recognize(in: image, options: options)
         
         // Cache result
-        resultCache.setObject(result, forKey: cacheKey as NSString)
+        let wrapper = VisionResultWrapper(result: result)
+        resultCache.setObject(wrapper, forKey: cacheKey as NSString)
         
         status = .ready
         return result
@@ -266,7 +286,7 @@ public class VisionEngine: ObservableObject {
     
     /// Extract text with document structure analysis
     public func analyzeDocument(
-        _ image: UIImage,
+        _ image: PlatformImage,
         options: DocumentAnalysisOptions = .default
     ) async throws -> DocumentAnalysisResult {
         guard let processor = textProcessor else {
@@ -280,7 +300,7 @@ public class VisionEngine: ObservableObject {
     
     /// Segment image into meaningful regions
     public func segmentImage(
-        _ image: UIImage,
+        _ image: PlatformImage,
         options: SegmentationOptions = .default
     ) async throws -> ImageSegmentationResult {
         try ensureInitialized()
@@ -301,7 +321,7 @@ public class VisionEngine: ObservableObject {
     
     /// Create precise cutout masks for objects
     public func createCutoutMask(
-        for image: UIImage,
+        for image: PlatformImage,
         subject: SegmentationSubject = .foreground
     ) async throws -> CutoutMaskResult {
         guard let processor = segmentationProcessor else {
@@ -336,7 +356,7 @@ public class VisionEngine: ObservableObject {
     
     /// Generate image variations
     public func generateVariations(
-        of image: UIImage,
+        of image: PlatformImage,
         count: Int = 4,
         options: VariationOptions = .default
     ) async throws -> ImageVariationResult {
@@ -351,7 +371,7 @@ public class VisionEngine: ObservableObject {
     
     /// Enhance image quality using AI upscaling
     public func enhanceImage(
-        _ image: UIImage,
+        _ image: PlatformImage,
         options: EnhancementOptions = .default
     ) async throws -> ImageEnhancementResult {
         try ensureInitialized()
@@ -372,7 +392,7 @@ public class VisionEngine: ObservableObject {
     
     /// Remove noise and artifacts from images
     public func denoiseImage(
-        _ image: UIImage,
+        _ image: PlatformImage,
         strength: Float = 0.5
     ) async throws -> ImageEnhancementResult {
         guard let processor = enhancementProcessor else {
@@ -386,7 +406,7 @@ public class VisionEngine: ObservableObject {
     
     /// Apply artistic styles to images
     public func applyStyle(
-        to image: UIImage,
+        to image: PlatformImage,
         style: ArtisticStyle,
         options: StyleTransferOptions = .default
     ) async throws -> StyleTransferResult {
@@ -408,8 +428,8 @@ public class VisionEngine: ObservableObject {
     
     /// Apply custom style from reference image
     public func applyCustomStyle(
-        to contentImage: UIImage,
-        styleImage: UIImage,
+        to contentImage: PlatformImage,
+        styleImage: PlatformImage,
         options: StyleTransferOptions = .default
     ) async throws -> StyleTransferResult {
         guard let processor = styleProcessor else {
@@ -464,13 +484,11 @@ public class VisionEngine: ObservableObject {
         imageCache.removeAllObjects()
         resultCache.removeAllObjects()
         
-        // Cancel non-essential tasks
-        let lowPriorityTasks = processingTasks.filter { _, task in
-            task.priority < .high
-        }
-        
-        for (id, task) in lowPriorityTasks {
-            task.cancel()
+        // Cancel all running tasks
+        for (id, task) in processingTasks {
+            if !task.isCancelled {
+                task.cancel()
+            }
             processingTasks.removeValue(forKey: id)
         }
         
@@ -618,7 +636,7 @@ public enum VisionError: LocalizedError {
     }
 }
 
-public enum VisionTaskType {
+public enum VisionTaskType: Sendable {
     case classification
     case detection
     case faceRecognition

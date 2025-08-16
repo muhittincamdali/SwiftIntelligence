@@ -26,8 +26,16 @@ public class NLPEngine: ObservableObject {
     private var turkishNLPModel: NLModel?
     private var customModels: [String: NLModel] = [:]
     
+    // MARK: - Cache Wrapper
+    private class NLPResultWrapper {
+        let result: NLPResult
+        init(result: NLPResult) {
+            self.result = result
+        }
+    }
+    
     // MARK: - Cache
-    private let cache = NSCache<NSString, NLPResult>()
+    private let cache = NSCache<NSString, NLPResultWrapper>()
     
     // MARK: - Initialization
     private init() {
@@ -73,7 +81,7 @@ public class NLPEngine: ObservableObject {
         // Load our specialized Turkish NLP model
         // This gives us competitive advantage in Turkish market
         do {
-            if let modelURL = Bundle.module.url(forResource: "TurkishNLP", withExtension: "mlmodel") {
+            if let modelURL = Bundle.main.url(forResource: "TurkishNLP", withExtension: "mlmodel") {
                 let model = try MLModel(contentsOf: modelURL)
                 turkishNLPModel = try NLModel(mlModel: model)
                 logger.info("Turkish NLP model loaded successfully")
@@ -103,8 +111,8 @@ public class NLPEngine: ObservableObject {
         
         // Check cache first
         let cacheKey = NSString(string: "\(text.hashValue)_\(options.hashValue)")
-        if let cachedResult = cache.object(forKey: cacheKey) {
-            return cachedResult
+        if let cachedWrapper = cache.object(forKey: cacheKey) {
+            return cachedWrapper.result
         }
         
         // Detect language
@@ -160,7 +168,8 @@ public class NLPEngine: ObservableObject {
         )
         
         // Cache result
-        cache.setObject(result, forKey: cacheKey, cost: text.count)
+        let wrapper = NLPResultWrapper(result: result)
+        cache.setObject(wrapper, forKey: cacheKey, cost: text.count)
         
         return result
     }
@@ -404,7 +413,7 @@ public class NLPEngine: ObservableObject {
         return try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
                 do {
-                    guard let prediction = try? model.prediction(from: text) else {
+                    guard let prediction = try? model.predictedLabel(for: text) else {
                         throw NLPError.modelPredictionFailed
                     }
                     
@@ -510,7 +519,7 @@ public class NLPEngine: ObservableObject {
         // In a real implementation, this would load actual trained models
         // For now, return a placeholder
         let configuration = MLModelConfiguration()
-        return try! MLModel(contentsOf: Bundle.module.url(forResource: "DummyModel", withExtension: "mlmodel")!)
+        return try! MLModel(contentsOf: Bundle.main.url(forResource: "DummyModel", withExtension: "mlmodel")!)
     }
     
     private func parseSentimentPrediction(_ prediction: String, text: String) -> SentimentResult {
@@ -645,12 +654,12 @@ public class NLPEngine: ObservableObject {
         position: Int,
         totalSentences: Int
     ) -> Float {
-        let words = sentence.lowercased().components(separatedBy: .whitespacesAndPunctuationMarks)
+        let words = sentence.lowercased().components(separatedBy: .whitespacesAndNewlines)
         let keywordCount = words.filter { keywords.contains($0) }.count
         
         // Score based on keyword density and position
         let keywordScore = Float(keywordCount) / Float(words.count)
-        let positionScore = position < totalSentences / 3 ? 1.5 : 1.0 // Prefer early sentences
+        let positionScore: Float = position < totalSentences / 3 ? 1.5 : 1.0 // Prefer early sentences
         
         return keywordScore * positionScore
     }

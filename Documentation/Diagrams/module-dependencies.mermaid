@@ -1,0 +1,92 @@
+%%{init: {'theme':'forest', 'themeVariables': { 'primaryColor':'#d4f4dd', 'primaryTextColor':'#1a5f3f', 'primaryBorderColor':'#2d7a57'}}}%%
+
+graph LR
+    %% Module Dependency Graph
+    
+    subgraph "Base Layer"
+        CORE[SwiftIntelligenceCore]
+    end
+    
+    subgraph "Foundation Layer"
+        ML[SwiftIntelligenceML]
+        PRIVACY[SwiftIntelligencePrivacy]
+    end
+    
+    subgraph "AI/ML Layer"
+        NLP[SwiftIntelligenceNLP]
+        VISION[SwiftIntelligenceVision]
+        SPEECH[SwiftIntelligenceSpeech]
+        REASON[SwiftIntelligenceReasoning]
+    end
+    
+    subgraph "Advanced Layer"
+        IMAGEGEN[SwiftIntelligenceImageGeneration]
+        VISIONOS[SwiftIntelligenceVisionOS]
+    end
+    
+    subgraph "Infrastructure Layer"
+        NETWORK[SwiftIntelligenceNetwork]
+        CACHE[SwiftIntelligenceCache]
+        METRICS[SwiftIntelligenceMetrics]
+        BENCH[SwiftIntelligenceBenchmarks]
+    end
+    
+    subgraph "Main API"
+        MAIN[SwiftIntelligence]
+    end
+    
+    %% Dependencies
+    ML --> CORE
+    PRIVACY --> CORE
+    
+    NLP --> CORE
+    NLP --> ML
+    
+    VISION --> CORE
+    VISION --> ML
+    
+    SPEECH --> CORE
+    SPEECH --> NLP
+    
+    REASON --> CORE
+    REASON --> ML
+    
+    IMAGEGEN --> CORE
+    IMAGEGEN --> VISION
+    
+    VISIONOS --> VISION
+    VISIONOS --> IMAGEGEN
+    
+    NETWORK --> CORE
+    CACHE --> CORE
+    METRICS --> CORE
+    BENCH --> CORE
+    
+    MAIN --> CORE
+    MAIN --> ML
+    MAIN --> NLP
+    MAIN --> VISION
+    MAIN --> SPEECH
+    MAIN --> REASON
+    MAIN --> IMAGEGEN
+    MAIN --> PRIVACY
+    MAIN --> NETWORK
+    MAIN --> CACHE
+    MAIN --> METRICS
+    MAIN --> BENCH
+    
+    %% Styling
+    style CORE fill:#fbbf24,stroke:#f59e0b,stroke-width:3px
+    style MAIN fill:#3b82f6,stroke:#2563eb,stroke-width:3px
+    style ML fill:#ec4899,stroke:#db2777,stroke-width:2px
+    style PRIVACY fill:#ef4444,stroke:#dc2626,stroke-width:2px
+    style NLP fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px
+    style VISION fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px
+    style SPEECH fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px
+    style REASON fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px
+    style IMAGEGEN fill:#06b6d4,stroke:#0891b2,stroke-width:2px
+    style VISIONOS fill:#06b6d4,stroke:#0891b2,stroke-width:2px
+    style NETWORK fill:#10b981,stroke:#059669,stroke-width:2px
+    style CACHE fill:#10b981,stroke:#059669,stroke-width:2px
+    style METRICS fill:#10b981,stroke:#059669,stroke-width:2px
+    style BENCH fill:#10b981,stroke:#059669,stroke-width:2px

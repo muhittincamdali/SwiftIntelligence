@@ -1,0 +1,113 @@
+/* SwiftIntelligence Framework - English Localization */
+
+/* Core Framework */
+"framework.name" = "SwiftIntelligence";
+"framework.description" = "Advanced AI/ML Framework for Apple Platforms";
+"framework.version" = "Version";
+
+/* Initialization */
+"initialization.starting" = "Initializing SwiftIntelligence...";
+"initialization.complete" = "SwiftIntelligence initialized successfully";
+"initialization.failed" = "Failed to initialize SwiftIntelligence";
+
+/* Engine Status */
+"engine.ready" = "Engine Ready";
+"engine.initializing" = "Initializing Engine";
+"engine.error" = "Engine Error";
+"engine.shutdown" = "Engine Shutdown";
+"engine.unavailable" = "Engine Unavailable";
+
+/* NLP Module */
+"nlp.analyzing" = "Analyzing text...";
+"nlp.sentiment.positive" = "Positive";
+"nlp.sentiment.negative" = "Negative";
+"nlp.sentiment.neutral" = "Neutral";
+"nlp.language.detected" = "Language detected";
+"nlp.entities.found" = "entities found";
+"nlp.processing.complete" = "Text processing complete";
+
+/* Vision Module */
+"vision.processing" = "Processing image...";
+"vision.objects.detected" = "objects detected";
+"vision.faces.detected" = "faces detected";
+"vision.text.recognized" = "Text recognized";
+"vision.classification.complete" = "Image classification complete";
+
+/* Speech Module */
+"speech.listening" = "Listening...";
+"speech.recognition.starting" = "Starting speech recognition";
+"speech.recognition.stopped" = "Speech recognition stopped";
+"speech.synthesis.starting" = "Starting text-to-speech";
+"speech.synthesis.complete" = "Speech synthesis complete";
+"speech.permission.required" = "Speech recognition permission required";
+
+/* ML Module */
+"ml.training" = "Training model...";
+"ml.prediction" = "Making prediction...";
+"ml.model.loaded" = "Model loaded successfully";
+"ml.model.failed" = "Failed to load model";
+
+/* Privacy Module */
+"privacy.protecting" = "Protecting sensitive data...";
+"privacy.anonymizing" = "Anonymizing data...";
+"privacy.encrypting" = "Encrypting data...";
+"privacy.compliance.check" = "Checking compliance";
+
+/* Error Messages */
+"error.general" = "An error occurred";
+"error.network" = "Network error";
+"error.permission.denied" = "Permission denied";
+"error.invalid.input" = "Invalid input";
+"error.processing.failed" = "Processing failed";
+"error.model.unavailable" = "Model unavailable";
+"error.unsupported.platform" = "Unsupported platform";
+
+/* Performance */
+"performance.excellent" = "Excellent";
+"performance.good" = "Good";
+"performance.average" = "Average";
+"performance.poor" = "Poor";
+"performance.measuring" = "Measuring performance...";
+
+/* Cache */
+"cache.loading" = "Loading from cache...";
+"cache.saving" = "Saving to cache...";
+"cache.cleared" = "Cache cleared";
+"cache.full" = "Cache full";
+
+/* Network */
+"network.connecting" = "Connecting...";
+"network.connected" = "Connected";
+"network.disconnected" = "Disconnected";
+"network.slow" = "Slow connection detected";
+
+/* Validation */
+"validation.success" = "Validation successful";
+"validation.failed" = "Validation failed";
+"validation.warning" = "Validation warning";
+
+/* User Interface */
+"ui.loading" = "Loading...";
+"ui.processing" = "Processing...";
+"ui.complete" = "Complete";
+"ui.cancel" = "Cancel";
+"ui.retry" = "Retry";
+"ui.settings" = "Settings";
+
+/* Time */
+"time.seconds" = "seconds";
+"time.minutes" = "minutes";
+"time.hours" = "hours";
+"time.estimated" = "Estimated time";
+
+/* Data Sizes */
+"data.bytes" = "bytes";
+"data.kb" = "KB";
+"data.mb" = "MB";
+"data.gb" = "GB";
+
+/* Accessibility */
+"accessibility.ai.processing" = "AI processing in progress";
+"accessibility.image.analyzing" = "Analyzing image content";
+"accessibility.speech.listening" = "Listening for speech input";
+"accessibility.text.processing" = "Processing text content";

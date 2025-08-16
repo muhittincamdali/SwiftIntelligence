@@ -21,8 +21,16 @@ public class SentimentProcessor {
     private var intensifierLists: [NLLanguage: Set<String>] = [:]
     private var negationLists: [NLLanguage: Set<String>] = [:]
     
+    // MARK: - Cache Wrapper
+    private class SentimentResultWrapper {
+        let result: SentimentResult
+        init(result: SentimentResult) {
+            self.result = result
+        }
+    }
+    
     // MARK: - Cache
-    private let cache = NSCache<NSString, SentimentResult>()
+    private let cache = NSCache<NSString, SentimentResultWrapper>()
     
     // MARK: - Initialization
     public init() async throws {
@@ -57,7 +65,8 @@ public class SentimentProcessor {
         for language in supportedLanguages {
             do {
                 // In production, these would be actual trained sentiment models
-                if let modelURL = Bundle.module.url(forResource: "SentimentModel_\(language.rawValue)", withExtension: "mlmodel") {
+                let bundle = Bundle(for: type(of: self))
+                if let modelURL = bundle.url(forResource: "SentimentModel_\(language.rawValue)", withExtension: "mlmodel") {
                     let mlModel = try MLModel(contentsOf: modelURL)
                     let nlModel = try NLModel(mlModel: mlModel)
                     sentimentModels[language] = nlModel
@@ -71,7 +80,8 @@ public class SentimentProcessor {
     
     private func loadTurkishSentimentModel() async {
         do {
-            if let modelURL = Bundle.module.url(forResource: "TurkishSentimentModel", withExtension: "mlmodel") {
+            let bundle = Bundle(for: type(of: self))
+            if let modelURL = bundle.url(forResource: "TurkishSentimentModel", withExtension: "mlmodel") {
                 let mlModel = try MLModel(contentsOf: modelURL)
                 turkishSentimentModel = try NLModel(mlModel: mlModel)
                 logger.info("Turkish sentiment model loaded successfully")
@@ -83,7 +93,8 @@ public class SentimentProcessor {
     
     private func loadEmotionDetectionModel() async {
         do {
-            if let modelURL = Bundle.module.url(forResource: "EmotionDetectionModel", withExtension: "mlmodel") {
+            let bundle = Bundle(for: type(of: self))
+            if let modelURL = bundle.url(forResource: "EmotionDetectionModel", withExtension: "mlmodel") {
                 let mlModel = try MLModel(contentsOf: modelURL)
                 emotionDetectionModel = try NLModel(mlModel: mlModel)
                 logger.info("Emotion detection model loaded successfully")
@@ -216,8 +227,8 @@ public class SentimentProcessor {
         
         // Check cache
         let cacheKey = NSString(string: "\(text.hashValue)_\(language?.rawValue ?? "auto")_\(options.hashValue)")
-        if let cachedResult = cache.object(forKey: cacheKey) {
-            return cachedResult
+        if let cachedWrapper = cache.object(forKey: cacheKey) {
+            return cachedWrapper.result
         }
         
         // Detect language if not provided
@@ -232,22 +243,11 @@ public class SentimentProcessor {
         
         let processingTime = Date().timeIntervalSince(startTime)
         
-        let finalResult = SentimentResult(
-            sentiment: result.sentiment,
-            score: result.score,
-            confidence: result.confidence,
-            positiveWords: result.positiveWords,
-            negativeWords: result.negativeWords,
-            emotions: result.emotions,
-            aspectSentiments: result.aspectSentiments,
-            processingTime: processingTime,
-            detectedLanguage: detectedLanguage
-        )
-        
         // Cache result
-        cache.setObject(finalResult, forKey: cacheKey, cost: text.count)
+        let wrapper = SentimentResultWrapper(result: result)
+        cache.setObject(wrapper, forKey: cacheKey, cost: text.count)
         
-        return finalResult
+        return result
     }
     
     /// Batch sentiment analysis for multiple texts
@@ -274,7 +274,7 @@ public class SentimentProcessor {
     
     /// Real-time sentiment analysis for streaming text
     public func analyzeStreamingSentiment(
-        textStream: AsyncSequence<String, Error>,
+        textStream: AsyncThrowingStream<String, Error>,
         language: NLLanguage? = nil,
         windowSize: Int = 5
     ) -> AsyncThrowingStream<SentimentResult, Error> {
@@ -318,7 +318,7 @@ public class SentimentProcessor {
         text: String,
         language: NLLanguage,
         options: SentimentAnalysisOptions
-    ) async throws -> SentimentAnalysisResult {
+    ) async throws -> SentimentResult {
         
         // Try model-based analysis first
         if let modelResult = try await attemptModelBasedAnalysis(text: text, language: language) {
@@ -368,12 +368,12 @@ public class SentimentProcessor {
         text: String,
         model: NLModel,
         language: NLLanguage
-    ) async throws -> SentimentAnalysisResult {
+    ) async throws -> SentimentResult {
         
         return try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
                 do {
-                    guard let prediction = try? model.prediction(from: text) else {
+                    guard let prediction = model.predictedLabel(for: text) else {
                         throw NLPError.modelPredictionFailed
                     }
                     
@@ -391,7 +391,7 @@ public class SentimentProcessor {
         text: String,
         language: NLLanguage,
         options: SentimentAnalysisOptions
-    ) async throws -> SentimentAnalysisResult {
+    ) async throws -> SentimentResult {
         
         let words = tokenizeText(text: text.lowercased(), language: language)
         
@@ -530,7 +530,7 @@ public class SentimentProcessor {
         for aspect in commonAspects {
             if text.lowercased().contains(aspect) {
                 // Simple heuristic: analyze sentiment of sentences containing the aspect
-                let sentences = text.components(separatedBy: .sentenceTerminators)
+                let sentences = text.components(separatedBy: CharacterSet(charactersIn: ".!?"))
                 for sentence in sentences {
                     if sentence.lowercased().contains(aspect) {
                         let sentimentResult = try await ruleBasedSentimentAnalysis(
@@ -650,7 +650,7 @@ public struct SentimentAnalysisOptions: Hashable, Codable {
     )
 }
 
-struct SentimentAnalysisResult {
+struct InternalSentimentAnalysisResult {
     let sentiment: SentimentResult.Sentiment
     let score: Float
     let confidence: Float
@@ -738,3 +738,6 @@ extension SentimentResult {
         set { /* No-op for now */ }
     }
 }
+
+// MARK: - Type Aliases
+typealias SentimentAnalysisResult = SentimentResult

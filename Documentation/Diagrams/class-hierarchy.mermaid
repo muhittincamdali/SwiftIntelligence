@@ -1,0 +1,141 @@
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fff5f5', 'primaryTextColor':'#7f1d1d', 'primaryBorderColor':'#dc2626'}}}%%
+
+classDiagram
+    %% Protocols
+    class IntelligenceProtocol {
+        <<protocol>>
+        +initialize() async throws
+        +shutdown() async throws
+        +validate() async throws ValidationResult
+        +healthCheck() async HealthStatus
+    }
+    
+    class Sendable {
+        <<protocol>>
+    }
+    
+    %% Core Classes
+    class IntelligenceEngine {
+        +shared: IntelligenceEngine
+        +configuration: IntelligenceConfiguration
+        +initialize() async throws
+        +getVisionEngine() async throws VisionEngine
+        +getNaturalLanguageEngine() async throws NLPEngine
+        +getSpeechEngine() async throws SpeechEngine
+        +getMLEngine() async throws MLEngine
+    }
+    
+    class IntelligenceConfiguration {
+        +debugMode: Bool
+        +performanceMonitoring: Bool
+        +privacyMode: Bool
+        +memoryLimit: Int
+        +enabledEngines: Set~EngineType~
+    }
+    
+    %% AI/ML Engines
+    class NLPEngine {
+        <<actor>>
+        +analyzeText(String) async throws NLPResult
+        +analyzeSentiment(String) async throws SentimentAnalysis
+        +extractEntities(String) async throws [NamedEntity]
+        +detectLanguage(String) async throws NLPLanguage
+    }
+    
+    class VisionEngine {
+        <<actor>>
+        +processImage(CIImage) async throws VisionResult
+        +detectObjects(CIImage) async throws [DetectedObject]
+        +recognizeFaces(CIImage) async throws [FaceRecognition]
+        +extractText(CIImage) async throws String
+    }
+    
+    class SpeechEngine {
+        <<actor>>
+        +startRecognition() async throws AsyncStream~SpeechResult~
+        +stopRecognition() async
+        +speak(String) async throws
+        +synthesizeSpeech(String) async throws Data
+    }
+    
+    class MLEngine {
+        <<actor>>
+        +trainModel(TrainingData) async throws Model
+        +predict(Model, Input) async throws Prediction
+        +evaluateModel(Model) async throws Evaluation
+    }
+    
+    %% Privacy & Security
+    class PrivacyEngine {
+        +protectSensitiveText(String) async throws String
+        +anonymizeData(T) async throws T
+        +encryptData(T) async throws EncryptedData
+        +classifyData(String) async throws DataClassification
+    }
+    
+    %% Infrastructure
+    class CacheManager {
+        +store(T, String) async
+        +retrieve(String) async T?
+        +clear() async
+        +getCacheStatistics() async CacheStatistics
+    }
+    
+    class NetworkManager {
+        +request(URLRequest) async throws Data
+        +download(URL) async throws URL
+        +upload(Data, URL) async throws
+    }
+    
+    class MetricsCollector {
+        +startCollecting([MetricType]) async
+        +stopCollecting() async
+        +getCurrentMetrics() async PerformanceMetrics
+    }
+    
+    %% Data Types
+    class NLPResult {
+        +language: String
+        +sentiment: Sentiment?
+        +entities: [NamedEntity]
+        +keywords: [String]
+    }
+    
+    class VisionResult {
+        +objects: [DetectedObject]
+        +faces: [FaceRecognition]
+        +text: String?
+        +classification: ImageClassification?
+    }
+    
+    class SpeechResult {
+        +transcription: String
+        +confidence: Float
+        +isFinal: Bool
+    }
+    
+    %% Relationships
+    IntelligenceEngine ..> IntelligenceProtocol : implements
+    NLPEngine ..> IntelligenceProtocol : implements
+    VisionEngine ..> IntelligenceProtocol : implements
+    SpeechEngine ..> IntelligenceProtocol : implements
+    MLEngine ..> IntelligenceProtocol : implements
+    PrivacyEngine ..> IntelligenceProtocol : implements
+    
+    IntelligenceConfiguration ..> Sendable : conforms
+    NLPResult ..> Sendable : conforms
+    VisionResult ..> Sendable : conforms
+    SpeechResult ..> Sendable : conforms
+    
+    IntelligenceEngine --> NLPEngine : creates
+    IntelligenceEngine --> VisionEngine : creates
+    IntelligenceEngine --> SpeechEngine : creates
+    IntelligenceEngine --> MLEngine : creates
+    IntelligenceEngine --> PrivacyEngine : uses
+    IntelligenceEngine --> CacheManager : uses
+    IntelligenceEngine --> NetworkManager : uses
+    IntelligenceEngine --> MetricsCollector : uses
+    
+    NLPEngine --> NLPResult : produces
+    VisionEngine --> VisionResult : produces
+    SpeechEngine --> SpeechResult : produces

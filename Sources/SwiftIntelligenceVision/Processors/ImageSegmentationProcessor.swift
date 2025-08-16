@@ -1,7 +1,11 @@
 import Foundation
 import CoreML
 import Vision
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import CoreImage
 import os.log
 
@@ -16,7 +20,7 @@ public class ImageSegmentationProcessor {
     private let ciContext = CIContext(options: [.useSoftwareRenderer: false])
     
     // MARK: - Models
-    private var segmentationModels: [SegmentationType: VNCoreMLModel] = [:]
+    private var segmentationModels: [SegmentationOptions.SegmentationType: VNCoreMLModel] = [:]
     private var personSegmentationRequest: VNGeneratePersonSegmentationRequest?
     
     // MARK: - Initialization
@@ -40,15 +44,21 @@ public class ImageSegmentationProcessor {
     
     /// Segment image into meaningful regions
     public func segment(
-        _ image: UIImage,
+        _ image: PlatformImage,
         options: SegmentationOptions
     ) async throws -> ImageSegmentationResult {
         
         let startTime = Date()
         
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw SegmentationError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw SegmentationError.invalidImage
+        }
+        #endif
         
         // Perform segmentation based on type
         let (segmentedImage, maskImage, segments) = try await performSegmentation(
@@ -57,7 +67,7 @@ public class ImageSegmentationProcessor {
         )
         
         // Remove background if requested
-        var backgroundRemoved: UIImage?
+        var backgroundRemoved: PlatformImage?
         if options.backgroundRemoval {
             backgroundRemoved = try await removeBackground(
                 originalImage: image,
@@ -80,15 +90,21 @@ public class ImageSegmentationProcessor {
     
     /// Create precise cutout masks for objects
     public func createCutoutMask(
-        for image: UIImage,
+        for image: PlatformImage,
         subject: SegmentationSubject
     ) async throws -> CutoutMaskResult {
         
         let startTime = Date()
         
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw SegmentationError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw SegmentationError.invalidImage
+        }
+        #endif
         
         // Generate high-quality mask
         let maskImage = try await generatePrecisionMask(
@@ -126,7 +142,7 @@ public class ImageSegmentationProcessor {
     
     /// Batch segment multiple images
     public func batchSegment(
-        _ images: [UIImage],
+        _ images: [PlatformImage],
         options: SegmentationOptions
     ) async throws -> [ImageSegmentationResult] {
         
@@ -149,7 +165,7 @@ public class ImageSegmentationProcessor {
     
     /// Portrait segmentation optimized for people
     public func segmentPortrait(
-        _ image: UIImage,
+        _ image: PlatformImage,
         refinement: Bool = true
     ) async throws -> ImageSegmentationResult {
         
@@ -165,7 +181,7 @@ public class ImageSegmentationProcessor {
     
     /// Object segmentation for specific objects
     public func segmentObject(
-        _ image: UIImage,
+        _ image: PlatformImage,
         objectClass: String
     ) async throws -> ImageSegmentationResult {
         
@@ -180,7 +196,7 @@ public class ImageSegmentationProcessor {
     
     /// Scene segmentation for environments
     public func segmentScene(
-        _ image: UIImage
+        _ image: PlatformImage
     ) async throws -> ImageSegmentationResult {
         
         let options = SegmentationOptions(
@@ -197,7 +213,7 @@ public class ImageSegmentationProcessor {
     private func performSegmentation(
         cgImage: CGImage,
         options: SegmentationOptions
-    ) async throws -> (segmented: UIImage?, mask: UIImage?, segments: [ImageSegment]) {
+    ) async throws -> (segmented: PlatformImage?, mask: PlatformImage?, segments: [ImageSegment]) {
         
         switch options.segmentationType {
         case .person:
@@ -216,7 +232,7 @@ public class ImageSegmentationProcessor {
     private func performPersonSegmentation(
         cgImage: CGImage,
         options: SegmentationOptions
-    ) async throws -> (segmented: UIImage?, mask: UIImage?, segments: [ImageSegment]) {
+    ) async throws -> (segmented: PlatformImage?, mask: PlatformImage?, segments: [ImageSegment]) {
         
         return try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
@@ -262,7 +278,7 @@ public class ImageSegmentationProcessor {
     private func performSemanticSegmentation(
         cgImage: CGImage,
         options: SegmentationOptions
-    ) async throws -> (segmented: UIImage?, mask: UIImage?, segments: [ImageSegment]) {
+    ) async throws -> (segmented: PlatformImage?, mask: PlatformImage?, segments: [ImageSegment]) {
         
         // Semantic segmentation using custom models
         // In a real implementation, this would use DeepLab or similar models
@@ -287,7 +303,7 @@ public class ImageSegmentationProcessor {
     private func performInstanceSegmentation(
         cgImage: CGImage,
         options: SegmentationOptions
-    ) async throws -> (segmented: UIImage?, mask: UIImage?, segments: [ImageSegment]) {
+    ) async throws -> (segmented: PlatformImage?, mask: PlatformImage?, segments: [ImageSegment]) {
         
         // Instance segmentation using Mask R-CNN or similar
         // This would identify and separate individual object instances
@@ -312,7 +328,7 @@ public class ImageSegmentationProcessor {
     private func performObjectSegmentation(
         cgImage: CGImage,
         options: SegmentationOptions
-    ) async throws -> (segmented: UIImage?, mask: UIImage?, segments: [ImageSegment]) {
+    ) async throws -> (segmented: PlatformImage?, mask: PlatformImage?, segments: [ImageSegment]) {
         
         // Object-specific segmentation
         let segments = createMockObjectSegments(
@@ -335,7 +351,7 @@ public class ImageSegmentationProcessor {
     private func performSceneSegmentation(
         cgImage: CGImage,
         options: SegmentationOptions
-    ) async throws -> (segmented: UIImage?, mask: UIImage?, segments: [ImageSegment]) {
+    ) async throws -> (segmented: PlatformImage?, mask: PlatformImage?, segments: [ImageSegment]) {
         
         // Scene segmentation for environments
         let segments = createMockSceneSegments(
@@ -358,7 +374,7 @@ public class ImageSegmentationProcessor {
     private func generatePrecisionMask(
         cgImage: CGImage,
         subject: SegmentationSubject
-    ) async throws -> UIImage {
+    ) async throws -> PlatformImage {
         
         switch subject {
         case .foreground, .person:
@@ -403,9 +419,9 @@ public class ImageSegmentationProcessor {
     }
     
     private func removeBackground(
-        originalImage: UIImage,
-        maskImage: UIImage?
-    ) async throws -> UIImage? {
+        originalImage: PlatformImage,
+        maskImage: PlatformImage?
+    ) async throws -> PlatformImage? {
         
         guard let mask = maskImage,
               let originalCIImage = CIImage(image: originalImage),
@@ -418,18 +434,18 @@ public class ImageSegmentationProcessor {
             "inputMaskImage": maskCIImage
         ])
         
-        // Convert back to UIImage
+        // Convert back to PlatformImage
         guard let cgImage = ciContext.createCGImage(maskedImage, from: maskedImage.extent) else {
             return nil
         }
         
-        return UIImage(cgImage: cgImage)
+        return PlatformImage(cgImage: cgImage)
     }
     
     private func applyCutoutMask(
-        originalImage: UIImage,
-        maskImage: UIImage
-    ) async throws -> UIImage {
+        originalImage: PlatformImage,
+        maskImage: PlatformImage
+    ) async throws -> PlatformImage {
         
         guard let originalCIImage = CIImage(image: originalImage),
               let maskCIImage = CIImage(image: maskImage) else {
@@ -446,24 +462,24 @@ public class ImageSegmentationProcessor {
             throw SegmentationError.imageProcessingFailed
         }
         
-        return UIImage(cgImage: cgImage)
+        return PlatformImage(cgImage: cgImage)
     }
     
-    private func convertPixelBufferToImage(_ pixelBuffer: CVPixelBuffer) -> UIImage? {
+    private func convertPixelBufferToImage(_ pixelBuffer: CVPixelBuffer) -> PlatformImage? {
         let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
         
         guard let cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent) else {
             return nil
         }
         
-        return UIImage(cgImage: cgImage)
+        return PlatformImage(cgImage: cgImage)
     }
     
     private func createSegmentedImage(
         original: CGImage,
         mask: CVPixelBuffer,
         options: SegmentationOptions
-    ) -> UIImage? {
+    ) -> PlatformImage? {
         
         let maskImage = convertPixelBufferToImage(mask)
         return createSegmentedImageFromMask(
@@ -475,12 +491,12 @@ public class ImageSegmentationProcessor {
     
     private func createSegmentedImageFromMask(
         original: CGImage,
-        maskImage: UIImage?,
+        maskImage: PlatformImage?,
         options: SegmentationOptions
-    ) -> UIImage? {
+    ) -> PlatformImage? {
         
         guard let mask = maskImage,
-              let originalImage = UIImage(cgImage: original),
+              let originalImage = PlatformImage(cgImage: original),
               let originalCIImage = CIImage(image: originalImage),
               let maskCIImage = CIImage(image: mask) else {
             return nil
@@ -501,7 +517,7 @@ public class ImageSegmentationProcessor {
             return nil
         }
         
-        return UIImage(cgImage: cgImage)
+        return PlatformImage(cgImage: cgImage)
     }
     
     private func refineMask(_ pixelBuffer: CVPixelBuffer) -> CVPixelBuffer {
@@ -524,7 +540,7 @@ public class ImageSegmentationProcessor {
         return pixelBuffer // In real implementation, would convert CIImage back
     }
     
-    private func invertMask(_ maskImage: UIImage) -> UIImage {
+    private func invertMask(_ maskImage: PlatformImage) -> PlatformImage {
         guard let ciImage = CIImage(image: maskImage) else {
             return maskImage
         }
@@ -535,10 +551,10 @@ public class ImageSegmentationProcessor {
             return maskImage
         }
         
-        return UIImage(cgImage: cgImage)
+        return PlatformImage(cgImage: cgImage)
     }
     
-    private func calculateSubjectBounds(maskImage: UIImage) -> CGRect {
+    private func calculateSubjectBounds(maskImage: PlatformImage) -> CGRect {
         // Calculate the bounding box of the masked subject
         // This is a simplified calculation
         
@@ -554,8 +570,8 @@ public class ImageSegmentationProcessor {
     }
     
     private func assessMaskQuality(
-        maskImage: UIImage,
-        originalImage: UIImage
+        maskImage: PlatformImage,
+        originalImage: PlatformImage
     ) -> CutoutMaskResult.MaskQuality {
         
         // Simplified quality assessment
@@ -714,7 +730,7 @@ public class ImageSegmentationProcessor {
         return segments
     }
     
-    private func createMockMaskImage(imageSize: CGSize) -> UIImage? {
+    private func createMockMaskImage(imageSize: CGSize) -> PlatformImage? {
         UIGraphicsBeginImageContextWithOptions(imageSize, false, 1.0)
         defer { UIGraphicsEndImageContext() }
         

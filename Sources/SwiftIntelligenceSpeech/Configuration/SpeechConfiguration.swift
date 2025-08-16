@@ -4,7 +4,7 @@ import Speech
 import os.log
 
 /// Advanced configuration system for Speech Recognition and Synthesis operations
-public struct SpeechEngineConfiguration {
+public struct SpeechEngineConfiguration: Sendable {
     
     // MARK: - Recognition Settings
     public let recognitionSettings: RecognitionSettings
@@ -13,7 +13,7 @@ public struct SpeechEngineConfiguration {
     public let performanceSettings: PerformanceSettings
     public let privacySettings: PrivacySettings
     
-    public struct RecognitionSettings {
+    public struct RecognitionSettings: Sendable {
         public let preferOnDevice: Bool
         public let enableContinuousRecognition: Bool
         public let reportPartialResults: Bool
@@ -44,7 +44,7 @@ public struct SpeechEngineConfiguration {
         }
     }
     
-    public struct SynthesisSettings {
+    public struct SynthesisSettings: Sendable {
         public let preferHighQualityVoices: Bool
         public let enableVoiceEffects: Bool
         public let defaultRate: Float
@@ -72,7 +72,7 @@ public struct SpeechEngineConfiguration {
         }
     }
     
-    public struct AudioSettings {
+    public struct AudioSettings: Sendable {
         public let inputGain: Float
         public let outputGain: Float
         public let enableNoiseReduction: Bool
@@ -82,7 +82,7 @@ public struct SpeechEngineConfiguration {
         public let bufferSize: Int
         public let audioFormat: AudioFormat
         
-        public enum AudioFormat: String, CaseIterable {
+        public enum AudioFormat: String, CaseIterable, Sendable {
             case pcm16 = "pcm16"
             case pcm24 = "pcm24"
             case pcm32 = "pcm32"
@@ -110,7 +110,7 @@ public struct SpeechEngineConfiguration {
         }
     }
     
-    public struct PerformanceSettings {
+    public struct PerformanceSettings: Sendable {
         public let maxConcurrentOperations: Int
         public let enableCaching: Bool
         public let cacheSize: Int
@@ -118,7 +118,7 @@ public struct SpeechEngineConfiguration {
         public let processingQueue: ProcessingQueue
         public let memoryOptimization: Bool
         
-        public enum ProcessingQueue {
+        public enum ProcessingQueue: Sendable {
             case main
             case background
             case userInitiated
@@ -142,7 +142,7 @@ public struct SpeechEngineConfiguration {
         }
     }
     
-    public struct PrivacySettings {
+    public struct PrivacySettings: Sendable {
         public let forceOnDeviceProcessing: Bool
         public let disableCloudSync: Bool
         public let enableDataEncryption: Bool

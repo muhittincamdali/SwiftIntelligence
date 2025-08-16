@@ -1,12 +1,17 @@
 import Foundation
+import SwiftIntelligenceCore
 import CoreML
 import Vision
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import NaturalLanguage
 import os.log
 
 /// Advanced text recognition processor with multi-language support and document analysis
-public class TextRecognitionProcessor {
+public class TextRecognitionProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "TextRecognition")
@@ -63,15 +68,22 @@ public class TextRecognitionProcessor {
     
     /// Recognize text in an image
     public func recognize(
-        in image: UIImage,
+        in image: PlatformImage,
         options: TextRecognitionOptions
     ) async throws -> TextRecognitionResult {
         
         let startTime = Date()
         
+        // Get CGImage in platform-specific way
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw TextRecognitionError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw TextRecognitionError.invalidImage
+        }
+        #endif
         
         // Configure recognition request
         try configureRecognitionRequest(with: options)
@@ -100,15 +112,22 @@ public class TextRecognitionProcessor {
     
     /// Analyze document structure and extract text
     public func analyzeDocument(
-        _ image: UIImage,
+        _ image: PlatformImage,
         options: DocumentAnalysisOptions
     ) async throws -> DocumentAnalysisResult {
         
         let startTime = Date()
         
+        // Get CGImage in platform-specific way
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw TextRecognitionError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw TextRecognitionError.invalidImage
+        }
+        #endif
         
         // Perform document segmentation if enabled
         var documentLayout: DocumentLayout
@@ -159,7 +178,7 @@ public class TextRecognitionProcessor {
     
     /// Batch process multiple images
     public func batchRecognize(
-        _ images: [UIImage],
+        _ images: [PlatformImage],
         options: TextRecognitionOptions
     ) async throws -> [TextRecognitionResult] {
         
@@ -182,7 +201,7 @@ public class TextRecognitionProcessor {
     
     /// Extract text from Turkish documents with optimized settings
     public func recognizeTurkishText(
-        in image: UIImage,
+        in image: PlatformImage,
         enableDiacritics: Bool = true
     ) async throws -> TextRecognitionResult {
         
@@ -198,7 +217,7 @@ public class TextRecognitionProcessor {
     
     /// Extract text from business cards
     public func recognizeBusinessCard(
-        _ image: UIImage
+        _ image: PlatformImage
     ) async throws -> BusinessCardResult {
         
         let options = TextRecognitionOptions(
@@ -222,7 +241,7 @@ public class TextRecognitionProcessor {
     
     /// Extract text from license plates
     public func recognizeLicensePlate(
-        _ image: UIImage,
+        _ image: PlatformImage,
         country: String = "US"
     ) async throws -> LicensePlateResult {
         
@@ -259,7 +278,7 @@ public class TextRecognitionProcessor {
         request.recognitionLanguages = options.recognitionLanguages
         
         // Set recognition level
-        request.recognitionLevel = options.recognitionLevel
+        request.recognitionLevel = options.recognitionLevel.vnLevel
         
         // Set text correction
         request.usesLanguageCorrection = options.enableAutomaticTextNormalization
@@ -282,7 +301,7 @@ public class TextRecognitionProcessor {
                         return
                     }
                     
-                    request.results = nil
+                    // Note: request.results is read-only, no need to clear
                     
                     let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                     try handler.perform([request])
@@ -347,20 +366,29 @@ public class TextRecognitionProcessor {
         // Try to get character-level bounding boxes
         do {
             let range = text.startIndex..<text.endIndex
-            let boundingBoxes = try observation.boundingBox(for: range)
+            // Get the single bounding box from observation
+            let observationBoundingBox = observation.boundingBox
             
-            if let boxes = boundingBoxes {
-                for (index, character) in text.enumerated() {
-                    if index < boxes.count {
-                        let charBoundingBox = convertBoundingBox(boxes[index], imageSize: imageSize)
-                        let characterBox = CharacterBox(
-                            character: String(character),
-                            boundingBox: charBoundingBox,
-                            confidence: observation.confidence
-                        )
-                        characterBoxes.append(characterBox)
-                    }
-                }
+            // Use the main bounding box for all characters (simplified approach)
+            let mainBoundingBox = convertBoundingBox(observationBoundingBox, imageSize: imageSize)
+            
+            // Create character boxes with estimated positions
+            for (index, character) in text.enumerated() {
+                let estimatedX = mainBoundingBox.origin.x + (mainBoundingBox.width * CGFloat(index) / CGFloat(text.count))
+                let estimatedWidth = mainBoundingBox.width / CGFloat(text.count)
+                
+                let charBox = CGRect(
+                    x: estimatedX,
+                    y: mainBoundingBox.origin.y,
+                    width: estimatedWidth,
+                    height: mainBoundingBox.height
+                )
+                
+                characterBoxes.append(CharacterBox(
+                    character: String(character),
+                    boundingBox: charBox,
+                    confidence: observation.confidence
+                ))
             }
         } catch {
             // Character-level boxes not available, skip
@@ -408,7 +436,8 @@ public class TextRecognitionProcessor {
         var headings: [DocumentLayout.DocumentHeading] = []
         var readingOrder: [String] = []
         
-        if let observations = results as? [VNDocumentSegmentationObservation] {
+        // VNDocumentSegmentationObservation is not available, use generic approach
+        if let observations = results as? [VNObservation] {
             for (index, observation) in observations.enumerated() {
                 let id = "segment_\(index)"
                 let boundingBox = convertBoundingBox(observation.boundingBox, imageSize: imageSize)
@@ -500,7 +529,7 @@ public class TextRecognitionProcessor {
             return markdown
             
         case .json:
-            let documentData = [
+            let documentData: [String: Any] = [
                 "headings": layout.headings.map { ["text": $0.text, "level": $0.level] },
                 "paragraphs": layout.paragraphs.map { ["text": $0.text] },
                 "full_text": textResult.recognizedText
@@ -662,7 +691,7 @@ public class TextRecognitionProcessor {
 
 // MARK: - Supporting Types
 
-public struct BusinessCardInfo: Codable {
+public struct BusinessCardInfo: Codable, Sendable {
     public let name: String?
     public let title: String?
     public let company: String?
@@ -677,7 +706,7 @@ public struct BusinessCardResult: VisionResult {
     public let timestamp: Date
     public let processingTime: TimeInterval
     public let confidence: Float
-    public let metadata: [String: Any]
+    public let metadata: [String: String]
     
     public let recognizedText: String
     public let textBlocks: [TextBlock]
@@ -708,7 +737,7 @@ public struct LicensePlateResult: VisionResult {
     public let timestamp: Date
     public let processingTime: TimeInterval
     public let confidence: Float
-    public let metadata: [String: Any]
+    public let metadata: [String: String]
     
     public let licensePlateNumber: String?
     public let country: String

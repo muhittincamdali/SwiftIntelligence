@@ -1,0 +1,390 @@
+# SwiftIntelligence Fastlane Configuration
+# Automation for testing, building, and releasing
+
+default_platform(:ios)
+
+# Constants
+WORKSPACE = "SwiftIntelligence.xcworkspace"
+PROJECT = "Package.swift"
+SCHEME = "SwiftIntelligence"
+FRAMEWORK_NAME = "SwiftIntelligence"
+
+# Platforms
+PLATFORMS = ["iOS", "macOS", "watchOS", "tvOS", "visionOS"]
+
+platform :ios do
+  
+  # =====================================
+  # Testing Lanes
+  # =====================================
+  
+  desc "Run all tests for all platforms"
+  lane :test_all do
+    test_ios
+    test_macos
+    test_watchos
+    test_tvos
+    # test_visionos # When Fastlane supports visionOS
+  end
+  
+  desc "Run iOS tests"
+  lane :test_ios do
+    run_tests(
+      scheme: SCHEME,
+      device: "iPhone 15 Pro",
+      code_coverage: true,
+      output_directory: "./test_output/ios",
+      output_types: "html,junit"
+    )
+  end
+  
+  desc "Run macOS tests"
+  lane :test_macos do
+    run_tests(
+      scheme: SCHEME,
+      destination: "platform=macOS",
+      code_coverage: true,
+      output_directory: "./test_output/macos",
+      output_types: "html,junit"
+    )
+  end
+  
+  desc "Run watchOS tests"
+  lane :test_watchos do
+    run_tests(
+      scheme: SCHEME,
+      destination: "platform=watchOS Simulator,name=Apple Watch Series 9 (45mm)",
+      code_coverage: true,
+      output_directory: "./test_output/watchos",
+      output_types: "html,junit"
+    )
+  end
+  
+  desc "Run tvOS tests"
+  lane :test_tvos do
+    run_tests(
+      scheme: SCHEME,
+      destination: "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)",
+      code_coverage: true,
+      output_directory: "./test_output/tvos",
+      output_types: "html,junit"
+    )
+  end
+  
+  # =====================================
+  # Build Lanes
+  # =====================================
+  
+  desc "Build framework for all platforms"
+  lane :build_all do
+    build_ios
+    build_macos
+    build_watchos
+    build_tvos
+    create_xcframework
+  end
+  
+  desc "Build iOS framework"
+  lane :build_ios do
+    xcodebuild(
+      scheme: SCHEME,
+      configuration: "Release",
+      sdk: "iphoneos",
+      derivedDataPath: "./build/DerivedData",
+      xcargs: "SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    )
+    
+    xcodebuild(
+      scheme: SCHEME,
+      configuration: "Release",
+      sdk: "iphonesimulator",
+      derivedDataPath: "./build/DerivedData",
+      xcargs: "SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    )
+  end
+  
+  desc "Build macOS framework"
+  lane :build_macos do
+    xcodebuild(
+      scheme: SCHEME,
+      configuration: "Release",
+      sdk: "macosx",
+      derivedDataPath: "./build/DerivedData",
+      xcargs: "SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    )
+  end
+  
+  desc "Build watchOS framework"
+  lane :build_watchos do
+    xcodebuild(
+      scheme: SCHEME,
+      configuration: "Release",
+      sdk: "watchos",
+      derivedDataPath: "./build/DerivedData",
+      xcargs: "SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    )
+    
+    xcodebuild(
+      scheme: SCHEME,
+      configuration: "Release",
+      sdk: "watchsimulator",
+      derivedDataPath: "./build/DerivedData",
+      xcargs: "SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    )
+  end
+  
+  desc "Build tvOS framework"
+  lane :build_tvos do
+    xcodebuild(
+      scheme: SCHEME,
+      configuration: "Release",
+      sdk: "appletvos",
+      derivedDataPath: "./build/DerivedData",
+      xcargs: "SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    )
+    
+    xcodebuild(
+      scheme: SCHEME,
+      configuration: "Release",
+      sdk: "appletvsimulator",
+      derivedDataPath: "./build/DerivedData",
+      xcargs: "SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+    )
+  end
+  
+  desc "Create XCFramework"
+  lane :create_xcframework do
+    sh("rm -rf ../build/#{FRAMEWORK_NAME}.xcframework")
+    
+    xcframework_cmd = "xcodebuild -create-xcframework "
+    
+    # iOS
+    xcframework_cmd += "-framework ../build/DerivedData/Build/Products/Release-iphoneos/#{FRAMEWORK_NAME}.framework "
+    xcframework_cmd += "-framework ../build/DerivedData/Build/Products/Release-iphonesimulator/#{FRAMEWORK_NAME}.framework "
+    
+    # macOS
+    xcframework_cmd += "-framework ../build/DerivedData/Build/Products/Release/#{FRAMEWORK_NAME}.framework "
+    
+    # watchOS
+    xcframework_cmd += "-framework ../build/DerivedData/Build/Products/Release-watchos/#{FRAMEWORK_NAME}.framework "
+    xcframework_cmd += "-framework ../build/DerivedData/Build/Products/Release-watchsimulator/#{FRAMEWORK_NAME}.framework "
+    
+    # tvOS
+    xcframework_cmd += "-framework ../build/DerivedData/Build/Products/Release-appletvos/#{FRAMEWORK_NAME}.framework "
+    xcframework_cmd += "-framework ../build/DerivedData/Build/Products/Release-appletvsimulator/#{FRAMEWORK_NAME}.framework "
+    
+    xcframework_cmd += "-output ../build/#{FRAMEWORK_NAME}.xcframework"
+    
+    sh(xcframework_cmd)
+    
+    UI.success("XCFramework created successfully!")
+  end
+  
+  # =====================================
+  # Quality Lanes
+  # =====================================
+  
+  desc "Run SwiftLint"
+  lane :lint do
+    swiftlint(
+      mode: :lint,
+      config_file: ".swiftlint.yml",
+      ignore_exit_status: false,
+      raise_if_swiftlint_error: true,
+      reporter: "json",
+      output_file: "./lint_report.json"
+    )
+  end
+  
+  desc "Run SwiftLint autocorrect"
+  lane :lint_fix do
+    swiftlint(
+      mode: :fix,
+      config_file: ".swiftlint.yml"
+    )
+  end
+  
+  desc "Generate code coverage report"
+  lane :coverage do
+    # Run tests with coverage
+    test_all
+    
+    # Generate coverage report
+    xcov(
+      workspace: WORKSPACE,
+      scheme: SCHEME,
+      output_directory: "./coverage_report",
+      minimum_coverage_percentage: 80.0,
+      ignore: ["Tests/*", "Examples/*", "DemoApps/*"]
+    )
+  end
+  
+  desc "Run static analysis"
+  lane :analyze do
+    xcodebuild(
+      analyze: true,
+      scheme: SCHEME,
+      sdk: "iphoneos",
+      configuration: "Debug"
+    )
+  end
+  
+  # =====================================
+  # Documentation Lanes
+  # =====================================
+  
+  desc "Generate documentation"
+  lane :docs do
+    sh("swift package generate-documentation --target #{FRAMEWORK_NAME} --output-path ../docs")
+    UI.success("Documentation generated at docs/")
+  end
+  
+  desc "Generate and serve documentation"
+  lane :docs_serve do
+    docs
+    sh("cd ../docs && python3 -m http.server 8000")
+  end
+  
+  # =====================================
+  # Release Lanes
+  # =====================================
+  
+  desc "Prepare a new release"
+  lane :prepare_release do |options|
+    version = options[:version]
+    
+    ensure_git_status_clean
+    ensure_git_branch(branch: "main")
+    
+    # Update version
+    increment_version_number(version_number: version)
+    
+    # Run all tests
+    test_all
+    
+    # Build all platforms
+    build_all
+    
+    # Generate documentation
+    docs
+    
+    # Create git tag
+    add_git_tag(tag: "v#{version}")
+    
+    UI.success("Release v#{version} prepared successfully!")
+  end
+  
+  desc "Deploy to CocoaPods"
+  lane :deploy_cocoapods do
+    pod_lib_lint(allow_warnings: true)
+    pod_push(allow_warnings: true)
+  end
+  
+  desc "Create GitHub release"
+  lane :github_release do |options|
+    version = options[:version] || get_version_number
+    
+    set_github_release(
+      repository_name: "username/SwiftIntelligence",
+      api_token: ENV["GITHUB_TOKEN"],
+      name: "v#{version}",
+      tag_name: "v#{version}",
+      description: generate_release_notes,
+      upload_assets: ["./build/#{FRAMEWORK_NAME}.xcframework.zip"]
+    )
+  end
+  
+  # =====================================
+  # CI/CD Lanes
+  # =====================================
+  
+  desc "CI lane for pull requests"
+  lane :ci_pr do
+    lint
+    test_all
+    coverage
+    analyze
+  end
+  
+  desc "CI lane for main branch"
+  lane :ci_main do
+    ensure_git_branch(branch: "main")
+    lint
+    test_all
+    coverage
+    build_all
+    docs
+  end
+  
+  desc "Nightly build"
+  lane :nightly do
+    test_all
+    build_all
+    
+    # Upload to internal distribution
+    sh("zip -r ../build/#{FRAMEWORK_NAME}-nightly.xcframework.zip ../build/#{FRAMEWORK_NAME}.xcframework")
+    
+    # Notify team
+    slack(
+      message: "Nightly build completed successfully!",
+      success: true,
+      slack_url: ENV["SLACK_WEBHOOK_URL"]
+    )
+  end
+  
+  # =====================================
+  # Utility Lanes
+  # =====================================
+  
+  desc "Clean all build artifacts"
+  lane :clean do
+    sh("rm -rf ../build")
+    sh("rm -rf ../test_output")
+    sh("rm -rf ../coverage_report")
+    sh("rm -rf ~/Library/Developer/Xcode/DerivedData/#{FRAMEWORK_NAME}-*")
+    clear_derived_data
+    UI.success("Cleaned all build artifacts!")
+  end
+  
+  desc "Setup development environment"
+  lane :setup do
+    sh("brew install swiftlint || true")
+    sh("brew install swift-format || true")
+    sh("gem install xcov")
+    sh("gem install xcpretty")
+    UI.success("Development environment setup complete!")
+  end
+  
+  desc "Run benchmarks"
+  lane :benchmark do
+    run_tests(
+      scheme: SCHEME,
+      only_testing: ["SwiftIntelligenceBenchmarks"],
+      configuration: "Release"
+    )
+  end
+  
+  # =====================================
+  # Error Handling
+  # =====================================
+  
+  error do |lane, exception|
+    slack(
+      message: "Error in lane #{lane}: #{exception.message}",
+      success: false,
+      slack_url: ENV["SLACK_WEBHOOK_URL"]
+    ) if ENV["SLACK_WEBHOOK_URL"]
+  end
+  
+end
+
+# =====================================
+# Helper Methods
+# =====================================
+
+def generate_release_notes
+  changelog = File.read("../CHANGELOG.md")
+  # Extract latest version notes
+  latest_notes = changelog.split("## ")[1].split("## ")[0]
+  return latest_notes
+end

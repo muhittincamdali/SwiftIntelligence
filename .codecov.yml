@@ -1,0 +1,149 @@
+# Codecov Configuration for SwiftIntelligence
+# Comprehensive test coverage reporting and quality gates
+
+codecov:
+  # Repository configuration
+  require_ci_to_pass: true
+  notify:
+    wait_for_ci: true
+  
+  # Bot configuration
+  bot: SwiftIntelligenceBot
+  
+  # Branch configuration
+  branch: main
+  
+  # Strict mode for accuracy
+  strict_yaml_branch: main
+
+# Coverage configuration
+coverage:
+  # Coverage precision
+  precision: 2
+  round: down
+  range: "70...100"
+  
+  # Status checks
+  status:
+    # Project-wide coverage
+    project:
+      default:
+        target: 80%
+        threshold: 2%
+        base: auto
+        if_not_found: success
+        if_ci_failed: error
+        informational: false
+        only_pulls: false
+      
+      # Module-specific targets
+      core:
+        target: 90%
+        paths:
+          - Sources/SwiftIntelligenceCore/
+      
+      nlp:
+        target: 85%
+        paths:
+          - Sources/SwiftIntelligenceNLP/
+      
+      vision:
+        target: 85%
+        paths:
+          - Sources/SwiftIntelligenceVision/
+      
+      speech:
+        target: 80%
+        paths:
+          - Sources/SwiftIntelligenceSpeech/
+      
+      ml:
+        target: 85%
+        paths:
+          - Sources/SwiftIntelligenceML/
+      
+      privacy:
+        target: 90%
+        paths:
+          - Sources/SwiftIntelligencePrivacy/
+    
+    # Patch coverage (new code)
+    patch:
+      default:
+        target: 85%
+        threshold: 5%
+        base: auto
+        if_not_found: success
+        informational: false
+        only_pulls: true
+    
+    # Changes coverage
+    changes:
+      default:
+        target: 80%
+        branches:
+          - main
+          - develop
+
+# Parsers configuration
+parsers:
+  gcov:
+    branch_detection:
+      conditional: true
+      loop: true
+      method: true
+      macro: false
+
+# Comments configuration
+comment:
+  layout: "reach,diff,flags,tree,betaprofiling"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+  branches:
+    - main
+    - develop
+    - feature/*
+    - release/*
+
+# Ignore patterns
+ignore:
+  - "Tests/**/*"
+  - "Examples/**/*"
+  - "DemoApps/**/*"
+  - "SwiftUILab/**/*"
+  - "*.generated.swift"
+  - "**/*Mock*.swift"
+  - "**/*Test*.swift"
+  - "**/*Spec*.swift"
+
+# Flag management
+flags:
+  # Unit tests
+  unittests:
+    paths:
+      - Sources/
+    carryforward: true
+  
+  # Integration tests
+  integration:
+    paths:
+      - Sources/
+    carryforward: true
+  
+  # iOS specific
+  ios:
+    paths:
+      - Sources/
+    carryforward: true
+  
+  # macOS specific
+  macos:
+    paths:
+      - Sources/
+    carryforward: true
+
+# GitHub integration
+github_checks:
+  annotations: true

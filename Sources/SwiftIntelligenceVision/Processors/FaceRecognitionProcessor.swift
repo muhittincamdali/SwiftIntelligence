@@ -63,7 +63,7 @@ public class FaceRecognitionProcessor {
     
     /// Recognize faces in an image
     public func recognize(
-        in image: UIImage,
+        in image: PlatformImage,
         options: FaceRecognitionOptions
     ) async throws -> FaceRecognitionResult {
         
@@ -101,7 +101,7 @@ public class FaceRecognitionProcessor {
     
     /// Enroll a face for recognition
     public func enroll(
-        from image: UIImage,
+        from image: PlatformImage,
         identity: String,
         options: FaceEnrollmentOptions
     ) async throws -> FaceEnrollmentResult {
@@ -179,7 +179,7 @@ public class FaceRecognitionProcessor {
     
     /// Batch process multiple faces
     public func batchRecognize(
-        _ images: [UIImage],
+        _ images: [PlatformImage],
         options: FaceRecognitionOptions
     ) async throws -> [FaceRecognitionResult] {
         
@@ -802,7 +802,7 @@ private class FaceDatabase {
 
 // MARK: - Supporting Types
 
-private struct EnrolledFace: Codable {
+public struct EnrolledFace: Codable {
     let personID: String
     var identity: String
     let faceTemplate: Data

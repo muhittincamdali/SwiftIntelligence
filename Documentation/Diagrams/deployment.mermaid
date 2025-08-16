@@ -1,0 +1,123 @@
+%%{init: {'theme':'neutral'}}%%
+
+graph TB
+    %% Deployment Architecture
+    
+    subgraph "Development Environment"
+        DEV[Xcode Project]
+        SPM[Swift Package Manager]
+        PODS[CocoaPods]
+        CARTHAGE[Carthage]
+    end
+    
+    subgraph "Distribution Channels"
+        subgraph "Source Distribution"
+            GITHUB[GitHub Repository]
+            SPI[Swift Package Index]
+        end
+        
+        subgraph "Binary Distribution"
+            XCFRAMEWORK[XCFramework]
+            RELEASE[GitHub Releases]
+        end
+        
+        subgraph "Package Managers"
+            COCOAPODS[CocoaPods Trunk]
+            SPM_REG[Swift Package Registry]
+        end
+    end
+    
+    subgraph "Target Platforms"
+        subgraph "iOS Platform"
+            IPHONE[iPhone Apps]
+            IPAD[iPad Apps]
+        end
+        
+        subgraph "macOS Platform"
+            MAC_APP[Mac Apps]
+            MAC_CATALYST[Mac Catalyst]
+        end
+        
+        subgraph "Other Platforms"
+            WATCH[watchOS Apps]
+            TV[tvOS Apps]
+            VISION[visionOS Apps]
+        end
+    end
+    
+    subgraph "App Integration"
+        subgraph "Framework Embedding"
+            EMBED[Embedded Framework]
+            DYNAMIC[Dynamic Library]
+            STATIC[Static Library]
+        end
+        
+        subgraph "App Targets"
+            MAIN_APP[Main App Target]
+            APP_EXT[App Extensions]
+            WIDGETS[Widgets]
+            INTENTS[Intents]
+        end
+    end
+    
+    subgraph "CI/CD Pipeline"
+        CI[GitHub Actions]
+        TEST[Test Suite]
+        BUILD[Build Pipeline]
+        DOCS[Documentation]
+        DEPLOY[Deployment]
+    end
+    
+    %% Connections
+    DEV --> SPM
+    DEV --> PODS
+    DEV --> CARTHAGE
+    
+    SPM --> GITHUB
+    PODS --> COCOAPODS
+    
+    GITHUB --> SPI
+    GITHUB --> CI
+    
+    CI --> TEST
+    CI --> BUILD
+    CI --> DOCS
+    CI --> DEPLOY
+    
+    BUILD --> XCFRAMEWORK
+    DEPLOY --> RELEASE
+    DEPLOY --> COCOAPODS
+    DEPLOY --> SPM_REG
+    
+    XCFRAMEWORK --> EMBED
+    XCFRAMEWORK --> DYNAMIC
+    XCFRAMEWORK --> STATIC
+    
+    EMBED --> MAIN_APP
+    DYNAMIC --> MAIN_APP
+    STATIC --> MAIN_APP
+    
+    MAIN_APP --> IPHONE
+    MAIN_APP --> IPAD
+    MAIN_APP --> MAC_APP
+    MAIN_APP --> MAC_CATALYST
+    MAIN_APP --> WATCH
+    MAIN_APP --> TV
+    MAIN_APP --> VISION
+    
+    APP_EXT --> MAIN_APP
+    WIDGETS --> MAIN_APP
+    INTENTS --> MAIN_APP
+    
+    %% Styling
+    classDef devStyle fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+    classDef distStyle fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
+    classDef platformStyle fill:#d1fae5,stroke:#10b981,stroke-width:2px
+    classDef appStyle fill:#fce7f3,stroke:#ec4899,stroke-width:2px
+    classDef ciStyle fill:#e0e7ff,stroke:#6366f1,stroke-width:2px
+    
+    class DEV,SPM,PODS,CARTHAGE devStyle
+    class GITHUB,SPI,XCFRAMEWORK,RELEASE,COCOAPODS,SPM_REG distStyle
+    class IPHONE,IPAD,MAC_APP,MAC_CATALYST,WATCH,TV,VISION platformStyle
+    class EMBED,DYNAMIC,STATIC,MAIN_APP,APP_EXT,WIDGETS,INTENTS appStyle
+    class CI,TEST,BUILD,DOCS,DEPLOY ciStyle

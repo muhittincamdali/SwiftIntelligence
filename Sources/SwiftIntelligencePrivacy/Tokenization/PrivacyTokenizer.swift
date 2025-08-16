@@ -4,7 +4,7 @@ import os.log
 
 /// Privacy-preserving tokenization system for sensitive data
 /// Provides secure, reversible tokenization of PII and sensitive information
-public class PrivacyTokenizer {
+public class PrivacyTokenizer: @unchecked Sendable {
     
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "PrivacyTokenizer")
     private let processingQueue = DispatchQueue(label: "privacy.tokenization", qos: .userInitiated)
@@ -108,14 +108,17 @@ public class PrivacyTokenizer {
             await self.saveTokenVault()
         }
         
-        logger.debug("Tokenized data for context: \(context.rawValue)")
+        logger.debug("Tokenized data for context: \(context.purpose.rawValue)")
+        
+        let originalDataHash = SHA256.hash(data: dataBytes).map { String(format: "%02x", $0) }.joined()
         
         return TokenizedData(
-            token: token,
+            originalDataHash: originalDataHash,
+            tokens: [token],
+            tokenMapping: [data: token],
             context: context,
-            expiresAt: expiresAt,
-            reversible: true,
-            timestamp: Date()
+            createdAt: Date(),
+            expiresAt: expiresAt
         )
     }
     
@@ -134,14 +137,15 @@ public class PrivacyTokenizer {
     }
     
     private func performDetokenization(_ tokenizedData: TokenizedData) throws -> String {
-        guard let vaultEntry = tokenVault[tokenizedData.token] else {
+        guard let firstToken = tokenizedData.tokens.first,
+              let vaultEntry = tokenVault[firstToken] else {
             throw TokenizationError.tokenNotFound
         }
         
         // Check expiration
         if let expiresAt = vaultEntry.expiresAt, Date() > expiresAt {
             // Remove expired token
-            tokenVault.removeValue(forKey: tokenizedData.token)
+            tokenVault.removeValue(forKey: firstToken)
             throw TokenizationError.tokenExpired
         }
         
@@ -171,9 +175,11 @@ public class PrivacyTokenizer {
         var updatedEntry = vaultEntry
         updatedEntry.accessCount += 1
         updatedEntry.lastAccessedAt = Date()
-        tokenVault[tokenizedData.token] = updatedEntry
+        if let firstToken = tokenizedData.tokens.first {
+            tokenVault[firstToken] = updatedEntry
+        }
         
-        logger.debug("Detokenized data for context: \(tokenizedData.context.rawValue)")
+        logger.debug("Detokenized data for context: \(tokenizedData.context.purpose.rawValue)")
         
         return originalString
     }
@@ -235,7 +241,7 @@ public class PrivacyTokenizer {
     }
     
     private func performFormatPreservingTokenization(_ data: String, context: TokenizationContext) throws -> String {
-        switch context {
+        switch context.purpose {
         case .creditCard:
             return try tokenizeCreditCard(data)
         case .phoneNumber:
@@ -247,7 +253,7 @@ public class PrivacyTokenizer {
         default:
             // For other contexts, use standard tokenization
             let tokenized = try performTokenization(data, context: context)
-            return tokenized.token
+            return tokenized.tokens.first ?? ""
         }
     }
     
@@ -453,7 +459,7 @@ public class PrivacyTokenizer {
     // MARK: - Utility Methods
     
     private func shouldExpire(for context: TokenizationContext) -> Bool {
-        switch context {
+        switch context.purpose {
         case .creditCard, .socialSecurity:
             return true // Highly sensitive data should expire
         case .phoneNumber, .email:
@@ -462,6 +468,8 @@ public class PrivacyTokenizer {
             return false // Personal info for legitimate use
         case .custom:
             return true // Default to expiring for custom contexts
+        case .analytics, .testing, .sharing, .storage:
+            return false // Business purposes can be longer-lived
         }
     }
     
@@ -497,6 +505,46 @@ private struct TokenVaultEntry: Codable {
     let expiresAt: Date?
     var accessCount: Int
     var lastAccessedAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case encryptedData, nonceData, tag, context, createdAt, expiresAt, accessCount, lastAccessedAt
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        encryptedData = try container.decode(Data.self, forKey: .encryptedData)
+        let nonceData = try container.decode(Data.self, forKey: .nonceData)
+        nonce = try AES.GCM.Nonce(data: nonceData)
+        tag = try container.decode(Data.self, forKey: .tag)
+        context = try container.decode(TokenizationContext.self, forKey: .context)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
+        accessCount = try container.decode(Int.self, forKey: .accessCount)
+        lastAccessedAt = try container.decode(Date.self, forKey: .lastAccessedAt)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(encryptedData, forKey: .encryptedData)
+        try container.encode(Data(nonce), forKey: .nonceData)
+        try container.encode(tag, forKey: .tag)
+        try container.encode(context, forKey: .context)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(expiresAt, forKey: .expiresAt)
+        try container.encode(accessCount, forKey: .accessCount)
+        try container.encode(lastAccessedAt, forKey: .lastAccessedAt)
+    }
+    
+    init(encryptedData: Data, nonce: AES.GCM.Nonce, tag: Data, context: TokenizationContext, createdAt: Date, expiresAt: Date?, accessCount: Int, lastAccessedAt: Date) {
+        self.encryptedData = encryptedData
+        self.nonce = nonce
+        self.tag = tag
+        self.context = context
+        self.createdAt = createdAt
+        self.expiresAt = expiresAt
+        self.accessCount = accessCount
+        self.lastAccessedAt = lastAccessedAt
+    }
 }
 
 public struct TokenMetadata {

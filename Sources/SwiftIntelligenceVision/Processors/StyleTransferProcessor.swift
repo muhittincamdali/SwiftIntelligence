@@ -1,7 +1,12 @@
 import Foundation
+import SwiftIntelligenceCore
 import CoreML
 import Vision
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import CoreImage
 import os.log
 
@@ -48,16 +53,22 @@ public class StyleTransferProcessor {
     
     /// Apply artistic styles to images
     public func applyStyle(
-        to image: UIImage,
+        to image: PlatformImage,
         style: ArtisticStyle,
         options: StyleTransferOptions
     ) async throws -> StyleTransferResult {
         
         let startTime = Date()
         
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw StyleTransferError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw StyleTransferError.invalidImage
+        }
+        #endif
         
         // Perform style transfer
         let styledImage = try await performStyleTransfer(
@@ -75,32 +86,41 @@ public class StyleTransferProcessor {
         )
         
         let processingTime = Date().timeIntervalSince(startTime)
-        let confidence = qualityMetrics.overallQuality
+        let confidence = qualityMetrics.overallSatisfaction
         
         return StyleTransferResult(
             processingTime: processingTime,
             confidence: confidence,
-            styledImage: styledImage,
-            originalImage: image,
+            styledImageData: styledImage.pngRepresentation() ?? Data(),
+            originalImageSize: CGSize(width: image.size.width, height: image.size.height),
+            styledImageSize: CGSize(width: styledImage.size.width, height: styledImage.size.height),
             appliedStyle: style,
-            styleStrength: options.strength,
+            styleIntensity: options.intensity,
             qualityMetrics: qualityMetrics
         )
     }
     
     /// Apply custom style from reference image
     public func applyCustomStyle(
-        to contentImage: UIImage,
-        styleImage: UIImage,
+        to contentImage: PlatformImage,
+        styleImage: PlatformImage,
         options: StyleTransferOptions
     ) async throws -> StyleTransferResult {
         
         let startTime = Date()
         
+        // Get CGImages in platform-specific way
+        #if canImport(UIKit)
         guard let contentCGImage = contentImage.cgImage,
               let styleCGImage = styleImage.cgImage else {
             throw StyleTransferError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let contentCGImage = contentImage.cgImage(forProposedRect: nil, context: nil, hints: nil),
+              let styleCGImage = styleImage.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw StyleTransferError.invalidImage
+        }
+        #endif
         
         // Perform custom style transfer
         let styledImage = try await performCustomStyleTransfer(
@@ -118,22 +138,28 @@ public class StyleTransferProcessor {
         )
         
         let processingTime = Date().timeIntervalSince(startTime)
-        let confidence = qualityMetrics.overallQuality
+        let confidence = qualityMetrics.overallSatisfaction
+        
+        // Convert PlatformImage to Data
+        let styledImageData = styledImage.pngRepresentation() ?? Data()
+        let originalSize = contentImage.size
+        let styledSize = styledImage.size
         
         return StyleTransferResult(
             processingTime: processingTime,
             confidence: confidence,
-            styledImage: styledImage,
-            originalImage: contentImage,
-            appliedStyle: .custom,
-            styleStrength: options.strength,
+            styledImageData: styledImageData,
+            originalImageSize: originalSize,
+            styledImageSize: styledSize,
+            appliedStyle: options.style,
+            styleIntensity: options.intensity,
             qualityMetrics: qualityMetrics
         )
     }
     
     /// Batch apply style to multiple images
     public func batchApplyStyle(
-        to images: [UIImage],
+        to images: [PlatformImage],
         style: ArtisticStyle,
         options: StyleTransferOptions
     ) async throws -> [StyleTransferResult] {
@@ -157,67 +183,67 @@ public class StyleTransferProcessor {
     
     /// Apply Van Gogh style with enhanced swirling effects
     public func applyVanGoghStyle(
-        to image: UIImage,
+        to image: PlatformImage,
         intensity: Float = 0.8
     ) async throws -> StyleTransferResult {
         
         let options = StyleTransferOptions(
-            strength: intensity,
-            preserveColors: false,
+            style: .expressionism,
+            intensity: intensity,
             preserveContent: true,
-            enhanceDetails: true
+            outputResolution: .medium
         )
         
-        return try await applyStyle(to: image, style: .vanGogh, options: options)
+        return try await applyStyle(to: image, style: .expressionism, options: options)
     }
     
     /// Apply Picasso cubist style
     public func applyCubistStyle(
-        to image: UIImage,
+        to image: PlatformImage,
         geometricIntensity: Float = 0.7
     ) async throws -> StyleTransferResult {
         
         let options = StyleTransferOptions(
-            strength: geometricIntensity,
-            preserveColors: false,
+            style: .cubist,
+            intensity: geometricIntensity,
             preserveContent: false,
-            enhanceDetails: false
+            outputResolution: .medium
         )
         
-        return try await applyStyle(to: image, style: .picasso, options: options)
+        return try await applyStyle(to: image, style: .cubist, options: options)
     }
     
     /// Apply impressionist style with color emphasis
     public func applyImpressionistStyle(
-        to image: UIImage,
+        to image: PlatformImage,
         colorVibrancy: Float = 0.6
     ) async throws -> StyleTransferResult {
         
         let options = StyleTransferOptions(
-            strength: colorVibrancy,
-            preserveColors: true,
+            style: .impressionist,
+            intensity: colorVibrancy,
             preserveContent: true,
-            enhanceDetails: false
+            outputResolution: .medium
         )
         
-        return try await applyStyle(to: image, style: .impressionism, options: options)
+        return try await applyStyle(to: image, style: .impressionist, options: options)
     }
     
     /// Apply anime/manga style
     public func applyAnimeStyle(
-        to image: UIImage,
+        to image: PlatformImage,
         cartoonLevel: Float = 0.9
     ) async throws -> StyleTransferResult {
         
-        // Use cartoon style as anime equivalent
+        // Use pop art style as anime equivalent
         let options = StyleTransferOptions(
-            strength: cartoonLevel,
-            preserveColors: false,
+            style: .pop_art,
+            intensity: cartoonLevel,
             preserveContent: true,
-            enhanceDetails: true
+            outputResolution: .medium
         )
         
-        return try await applyStyle(to: image, style: .popArt, options: options) // Using popArt as anime substitute
+        return try await applyStyle(to: image, style: .pop_art, options: options) // Using pop_art as anime substitute
     }
     
     // MARK: - Private Methods
@@ -226,7 +252,7 @@ public class StyleTransferProcessor {
         contentImage: CGImage,
         style: ArtisticStyle,
         options: StyleTransferOptions
-    ) async throws -> UIImage {
+    ) async throws -> PlatformImage {
         
         // Get style reference
         let styleReference = getStyleReference(for: style)
@@ -248,7 +274,7 @@ public class StyleTransferProcessor {
         contentImage: CGImage,
         styleImage: CGImage,
         options: StyleTransferOptions
-    ) async throws -> UIImage {
+    ) async throws -> PlatformImage {
         
         let ciContentImage = CIImage(cgImage: contentImage)
         let ciStyleImage = CIImage(cgImage: styleImage)
@@ -267,7 +293,7 @@ public class StyleTransferProcessor {
         styleReference: CIImage,
         style: ArtisticStyle,
         options: StyleTransferOptions
-    ) async throws -> UIImage {
+    ) async throws -> PlatformImage {
         
         // Simulate neural style transfer process
         // In a real implementation, this would use actual neural networks
@@ -278,15 +304,15 @@ public class StyleTransferProcessor {
         styledImage = try await applyStyleSpecificEffects(
             image: styledImage,
             style: style,
-            strength: options.strength
+            strength: options.intensity
         )
         
         // Apply color adjustments based on options
-        if !options.preserveColors {
+        if !options.preserveContent {
             styledImage = applyStyleColorTransfer(
                 content: styledImage,
                 style: styleReference,
-                strength: options.strength
+                strength: options.intensity
             )
         }
         
@@ -295,34 +321,36 @@ public class StyleTransferProcessor {
             styledImage = preserveContentStructure(
                 original: content,
                 styled: styledImage,
-                preservation: 1.0 - options.strength
+                preservation: 1.0 - options.intensity
             )
         }
         
-        // Enhance details if requested
-        if options.enhanceDetails {
-            styledImage = enhanceArtisticDetails(styledImage, style: style)
-        }
+        // Enhance details based on style
+        styledImage = enhanceArtisticDetails(styledImage, style: style)
         
         // Apply final blending
         styledImage = blendWithOriginal(
             original: content,
             styled: styledImage,
-            strength: options.strength
+            strength: options.intensity
         )
         
         guard let cgImage = ciContext.createCGImage(styledImage, from: styledImage.extent) else {
             throw StyleTransferError.processingFailed
         }
         
-        return UIImage(cgImage: cgImage)
+        #if canImport(UIKit)
+        return PlatformImage(cgImage: cgImage)
+        #elseif canImport(AppKit)
+        return PlatformImage(cgImage: cgImage, size: CGSize(width: cgImage.width, height: cgImage.height))
+        #endif
     }
     
     private func applyCustomNeuralStyleTransfer(
         content: CIImage,
         style: CIImage,
         options: StyleTransferOptions
-    ) async throws -> UIImage {
+    ) async throws -> PlatformImage {
         
         // Extract style features from reference image
         let styleFeatures = extractStyleFeatures(from: style)
@@ -331,8 +359,8 @@ public class StyleTransferProcessor {
         var styledImage = content
         
         // Apply color transfer
-        if !options.preserveColors {
-            styledImage = transferColors(from: style, to: styledImage, strength: options.strength)
+        if !options.preserveContent {
+            styledImage = transferColors(from: style, to: styledImage, strength: options.intensity)
         }
         
         // Apply texture transfer
@@ -340,18 +368,18 @@ public class StyleTransferProcessor {
             from: style,
             to: styledImage,
             features: styleFeatures,
-            strength: options.strength
+            strength: options.intensity
         )
         
         // Apply artistic effects
-        styledImage = applyArtisticEffects(styledImage, strength: options.strength)
+        styledImage = applyArtisticEffects(styledImage, strength: options.intensity)
         
         // Preserve content if requested
         if options.preserveContent {
             styledImage = preserveContentStructure(
                 original: content,
                 styled: styledImage,
-                preservation: 1.0 - options.strength
+                preservation: 1.0 - options.intensity
             )
         }
         
@@ -359,7 +387,11 @@ public class StyleTransferProcessor {
             throw StyleTransferError.processingFailed
         }
         
-        return UIImage(cgImage: cgImage)
+        #if canImport(UIKit)
+        return PlatformImage(cgImage: cgImage)
+        #elseif canImport(AppKit)
+        return PlatformImage(cgImage: cgImage, size: CGSize(width: cgImage.width, height: cgImage.height))
+        #endif
     }
     
     private func applyStyleSpecificEffects(
@@ -369,35 +401,31 @@ public class StyleTransferProcessor {
     ) async throws -> CIImage {
         
         switch style {
-        case .vanGogh:
-            return applyVanGoghEffects(image: image, strength: strength)
-        case .picasso:
-            return applyPicassoEffects(image: image, strength: strength)
-        case .monet:
-            return applyMonetEffects(image: image, strength: strength)
-        case .kandinsky:
-            return applyKandinskyEffects(image: image, strength: strength)
-        case .ukiyoe:
-            return applyUkiyoeEffects(image: image, strength: strength)
-        case .abstractExpressionism:
-            return applyAbstractExpressionismEffects(image: image, strength: strength)
-        case .cubism:
-            return applyCubismEffects(image: image, strength: strength)
-        case .impressionism:
-            return applyImpressionismEffects(image: image, strength: strength)
+        case .expressionism:
+            return applyExpressionismEffects(image: image, strength: strength)
+        case .cubist:
+            return applyCubistEffects(image: image, strength: strength)
+        case .impressionist:
+            return applyImpressionistEffects(image: image, strength: strength)
+        case .abstract:
+            return applyAbstractEffects(image: image, strength: strength)
         case .surrealism:
             return applySurrealismEffects(image: image, strength: strength)
-        case .popArt:
+        case .pop_art:
             return applyPopArtEffects(image: image, strength: strength)
         case .minimalism:
             return applyMinimalismEffects(image: image, strength: strength)
         case .renaissance:
             return applyRenaissanceEffects(image: image, strength: strength)
+        case .realism:
+            return applyRealismEffects(image: image, strength: strength)
+        case .baroque:
+            return applyBaroqueEffects(image: image, strength: strength)
         }
     }
     
-    private func applyVanGoghEffects(image: CIImage, strength: Float) -> CIImage {
-        // Simulate Van Gogh's swirling brushstrokes and vibrant colors
+    private func applyExpressionismEffects(image: CIImage, strength: Float) -> CIImage {
+        // Simulate expressionist bold colors and emotional intensity
         return image
             .applyingFilter("CIVibrance", parameters: ["inputAmount": strength * 0.8])
             .applyingFilter("CIColorControls", parameters: [
@@ -410,8 +438,8 @@ public class StyleTransferProcessor {
             ])
     }
     
-    private func applyPicassoEffects(image: CIImage, strength: Float) -> CIImage {
-        // Simulate Picasso's cubist geometric fragmentation
+    private func applyCubistEffects(image: CIImage, strength: Float) -> CIImage {
+        // Simulate cubist geometric fragmentation
         let crystallize = image.applyingFilter("CICrystallize", parameters: [
             "inputRadius": 20.0 * strength
         ])
@@ -421,16 +449,16 @@ public class StyleTransferProcessor {
         ])
     }
     
-    private func applyMonetEffects(image: CIImage, strength: Float) -> CIImage {
-        // Simulate Monet's impressionist light and color effects
+    private func applyImpressionistEffects(image: CIImage, strength: Float) -> CIImage {
+        // Simulate impressionist light and color effects
         return image
             .applyingFilter("CIGaussianBlur", parameters: ["inputRadius": 2.0 * strength])
             .applyingFilter("CIVibrance", parameters: ["inputAmount": strength * 0.6])
             .applyingFilter("CIExposureAdjust", parameters: ["inputEV": 0.3 * strength])
     }
     
-    private func applyKandinskyEffects(image: CIImage, strength: Float) -> CIImage {
-        // Simulate Kandinsky's abstract colorful compositions
+    private func applyAbstractEffects(image: CIImage, strength: Float) -> CIImage {
+        // Simulate abstract colorful compositions
         return image
             .applyingFilter("CIVibrance", parameters: ["inputAmount": strength])
             .applyingFilter("CIColorControls", parameters: [
@@ -443,34 +471,32 @@ public class StyleTransferProcessor {
             ])
     }
     
-    private func applyUkiyoeEffects(image: CIImage, strength: Float) -> CIImage {
-        // Simulate Japanese woodblock print style
+    private func applyRealismEffects(image: CIImage, strength: Float) -> CIImage {
+        // Simulate realistic detailed rendering
         return image
-            .applyingFilter("CIColorPosterize", parameters: ["inputLevels": 8 - Int(strength * 3)])
+            .applyingFilter("CISharpenLuminance", parameters: ["inputSharpness": strength * 0.8])
             .applyingFilter("CIColorControls", parameters: [
-                "inputSaturation": 1.0 + strength * 0.3,
-                "inputContrast": 1.0 + strength * 0.5
+                "inputSaturation": 1.0 + strength * 0.1,
+                "inputContrast": 1.0 + strength * 0.2
             ])
-            .applyingFilter("CIEdges", parameters: ["inputIntensity": strength * 2.0])
+            .applyingFilter("CIUnsharpMask", parameters: [
+                "inputRadius": 1.5,
+                "inputIntensity": strength * 0.3
+            ])
     }
     
-    private func applyAbstractExpressionismEffects(image: CIImage, strength: Float) -> CIImage {
-        // Simulate abstract expressionist bold brushwork
+    private func applyBaroqueEffects(image: CIImage, strength: Float) -> CIImage {
+        // Simulate baroque dramatic lighting and rich details
         return image
-            .applyingFilter("CIMotionBlur", parameters: [
-                "inputRadius": 15.0 * strength,
-                "inputAngle": 0.5
+            .applyingFilter("CIExposureAdjust", parameters: ["inputEV": 0.2 * strength])
+            .applyingFilter("CIShadowHighlight", parameters: [
+                "inputShadowAmount": 0.8 * strength,
+                "inputHighlightAmount": -0.2 * strength
             ])
-            .applyingFilter("CIVibrance", parameters: ["inputAmount": strength * 0.9])
+            .applyingFilter("CIVibrance", parameters: ["inputAmount": strength * 0.5])
     }
     
-    private func applyCubismEffects(image: CIImage, strength: Float) -> CIImage {
-        return applyPicassoEffects(image: image, strength: strength) // Reuse Picasso effects
-    }
-    
-    private func applyImpressionismEffects(image: CIImage, strength: Float) -> CIImage {
-        return applyMonetEffects(image: image, strength: strength) // Reuse Monet effects
-    }
+    // Note: applyCubistEffects and applyImpressionistEffects are already defined above
     
     private func applySurrealismEffects(image: CIImage, strength: Float) -> CIImage {
         // Simulate surrealist dreamlike effects
@@ -540,12 +566,12 @@ public class StyleTransferProcessor {
     
     private func enhanceArtisticDetails(_ image: CIImage, style: ArtisticStyle) -> CIImage {
         switch style {
-        case .vanGogh, .impressionism:
+        case .expressionism, .impressionist:
             return image.applyingFilter("CIUnsharpMask", parameters: [
                 "inputRadius": 2.0,
                 "inputIntensity": 0.5
             ])
-        case .picasso, .cubism:
+        case .cubist, .abstract:
             return image.applyingFilter("CIEdges", parameters: ["inputIntensity": 1.0])
         default:
             return image.applyingFilter("CISharpenLuminance", parameters: ["inputSharpness": 0.3])
@@ -630,27 +656,52 @@ public class StyleTransferProcessor {
     private func createMockStyleReference(for style: ArtisticStyle) -> CIImage {
         let size = CGSize(width: 512, height: 512)
         
+        #if canImport(UIKit)
         UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
         defer { UIGraphicsEndImageContext() }
         
         // Create style-specific pattern
         switch style {
-        case .vanGogh:
-            createVanGoghPattern(in: CGRect(origin: .zero, size: size))
-        case .picasso:
-            createPicassoPattern(in: CGRect(origin: .zero, size: size))
-        case .monet:
-            createMonetPattern(in: CGRect(origin: .zero, size: size))
+        case .expressionism:
+            createExpressionismPattern(in: CGRect(origin: .zero, size: size))
+        case .cubist:
+            createCubistPattern(in: CGRect(origin: .zero, size: size))
+        case .impressionist:
+            createImpressionistPattern(in: CGRect(origin: .zero, size: size))
         default:
             createGenericArtPattern(in: CGRect(origin: .zero, size: size))
         }
         
-        let image = UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+        let image = UIGraphicsGetImageFromCurrentImageContext() ?? PlatformImage()
         return CIImage(image: image) ?? CIImage.empty()
+        #elseif canImport(AppKit)
+        // macOS: Create mock style reference using Core Graphics
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        guard let context = CGContext(
+            data: nil,
+            width: Int(size.width),
+            height: Int(size.height),
+            bitsPerComponent: 8,
+            bytesPerRow: 0,
+            space: colorSpace,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        ) else {
+            return CIImage.empty()
+        }
+        
+        createMacOSStylePattern(in: context, rect: CGRect(origin: .zero, size: size), style: style)
+        
+        guard let cgImage = context.makeImage() else {
+            return CIImage.empty()
+        }
+        
+        return CIImage(cgImage: cgImage)
+        #endif
     }
     
-    private func createVanGoghPattern(in rect: CGRect) {
-        // Create swirling pattern reminiscent of Van Gogh
+    #if canImport(UIKit)
+    private func createExpressionismPattern(in rect: CGRect) {
+        // Create expressive swirling pattern
         let colors = [UIColor.blue, UIColor.yellow, UIColor.green]
         for i in 0..<20 {
             colors[i % colors.count].setStroke()
@@ -666,8 +717,8 @@ public class StyleTransferProcessor {
         }
     }
     
-    private func createPicassoPattern(in rect: CGRect) {
-        // Create geometric pattern reminiscent of Picasso
+    private func createCubistPattern(in rect: CGRect) {
+        // Create geometric cubist pattern
         UIColor.brown.setFill()
         for i in 0..<15 {
             let size = CGFloat.random(in: 20...80)
@@ -683,8 +734,8 @@ public class StyleTransferProcessor {
         }
     }
     
-    private func createMonetPattern(in rect: CGRect) {
-        // Create impressionist pattern reminiscent of Monet
+    private func createImpressionistPattern(in rect: CGRect) {
+        // Create impressionist pattern with light touches
         let colors = [UIColor.lightGray, UIColor.blue, UIColor.green, UIColor.yellow]
         for i in 0..<50 {
             colors[i % colors.count].withAlphaComponent(0.7).setFill()
@@ -710,13 +761,77 @@ public class StyleTransferProcessor {
             UIBezierPath(rect: CGRect(x: x, y: y, width: size, height: size)).fill()
         }
     }
+    #elseif canImport(AppKit)
+    private func createMacOSStylePattern(in context: CGContext, rect: CGRect, style: ArtisticStyle) {
+        // macOS: Create style patterns using Core Graphics
+        switch style {
+        case .expressionism:
+            // Create expressive swirling pattern
+            for i in 0..<20 {
+                let colors: [CGColor] = [CGColor(red: 0, green: 0, blue: 1, alpha: 1), 
+                                        CGColor(red: 1, green: 1, blue: 0, alpha: 1), 
+                                        CGColor(red: 0, green: 1, blue: 0, alpha: 1)]
+                context.setStrokeColor(colors[i % colors.count])
+                context.setLineWidth(3.0)
+                
+                let startAngle = CGFloat(i) * .pi / 10
+                let centerX = rect.midX + cos(startAngle) * 100
+                let centerY = rect.midY + sin(startAngle) * 100
+                
+                context.addEllipse(in: CGRect(x: centerX - 30, y: centerY - 30, width: 60, height: 60))
+                context.strokePath()
+            }
+        case .cubist:
+            // Create geometric cubist pattern
+            context.setFillColor(CGColor(red: 0.6, green: 0.4, blue: 0.2, alpha: 1.0))
+            for _ in 0..<15 {
+                let size = CGFloat.random(in: 20...80)
+                let x = CGFloat.random(in: 0...(rect.width - size))
+                let y = CGFloat.random(in: 0...(rect.height - size))
+                
+                context.move(to: CGPoint(x: x, y: y))
+                context.addLine(to: CGPoint(x: x + size, y: y + size/2))
+                context.addLine(to: CGPoint(x: x + size/2, y: y + size))
+                context.closePath()
+                context.fillPath()
+            }
+        case .impressionist:
+            // Create impressionist pattern with light touches
+            let colors: [CGColor] = [CGColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.7),
+                                    CGColor(red: 0, green: 0, blue: 1, alpha: 0.7),
+                                    CGColor(red: 0, green: 1, blue: 0, alpha: 0.7),
+                                    CGColor(red: 1, green: 1, blue: 0, alpha: 0.7)]
+            for i in 0..<50 {
+                context.setFillColor(colors[i % colors.count])
+                let size = CGFloat.random(in: 5...20)
+                let x = CGFloat.random(in: 0...(rect.width - size))
+                let y = CGFloat.random(in: 0...(rect.height - size))
+                
+                context.fillEllipse(in: CGRect(x: x, y: y, width: size, height: size))
+            }
+        default:
+            // Create generic artistic pattern
+            context.setFillColor(CGColor(red: 0.5, green: 0, blue: 0.5, alpha: 1.0))
+            context.fill(rect)
+            
+            context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 0.3))
+            for _ in 0..<10 {
+                let size = CGFloat.random(in: 10...50)
+                let x = CGFloat.random(in: 0...(rect.width - size))
+                let y = CGFloat.random(in: 0...(rect.height - size))
+                
+                context.fill(CGRect(x: x, y: y, width: size, height: size))
+            }
+        }
+    }
+    #endif
     
     private func assessStyleTransferQuality(
-        original: UIImage,
-        styled: UIImage,
+        original: PlatformImage,
+        styled: PlatformImage,
         style: ArtisticStyle,
         options: StyleTransferOptions
-    ) -> StyleQualityMetrics {
+    ) -> StyleTransferResult.StyleQualityMetrics {
         
         let styleTransferQuality = Float.random(in: 0.7...0.92)
         let contentPreservation = options.preserveContent ? Float.random(in: 0.8...0.95) : Float.random(in: 0.4...0.7)
@@ -725,21 +840,20 @@ public class StyleTransferProcessor {
         
         let overallQuality = (styleTransferQuality + contentPreservation + artisticFidelity + visualCoherence) / 4.0
         
-        return StyleQualityMetrics(
-            styleTransferQuality: styleTransferQuality,
+        return StyleTransferResult.StyleQualityMetrics(
             contentPreservation: contentPreservation,
-            artisticFidelity: artisticFidelity,
-            visualCoherence: visualCoherence,
-            overallQuality: overallQuality
+            styleAdherence: styleTransferQuality,
+            artisticQuality: artisticFidelity,
+            overallSatisfaction: overallQuality
         )
     }
     
     private func assessCustomStyleTransferQuality(
-        content: UIImage,
-        style: UIImage,
-        result: UIImage,
+        content: PlatformImage,
+        style: PlatformImage,
+        result: PlatformImage,
         options: StyleTransferOptions
-    ) -> StyleQualityMetrics {
+    ) -> StyleTransferResult.StyleQualityMetrics {
         
         // Assess quality for custom style transfer
         let styleTransferQuality = Float.random(in: 0.6...0.85)
@@ -749,12 +863,11 @@ public class StyleTransferProcessor {
         
         let overallQuality = (styleTransferQuality + contentPreservation + artisticFidelity + visualCoherence) / 4.0
         
-        return StyleQualityMetrics(
-            styleTransferQuality: styleTransferQuality,
+        return StyleTransferResult.StyleQualityMetrics(
             contentPreservation: contentPreservation,
-            artisticFidelity: artisticFidelity,
-            visualCoherence: visualCoherence,
-            overallQuality: overallQuality
+            styleAdherence: styleTransferQuality,
+            artisticQuality: artisticFidelity,
+            overallSatisfaction: overallQuality
         )
     }
 }
@@ -781,5 +894,19 @@ public enum StyleTransferError: LocalizedError {
         case .insufficientMemory:
             return "Insufficient memory for style transfer operation"
         }
+    }
+}
+
+// MARK: - Platform Extensions
+
+extension PlatformImage {
+    func pngRepresentation() -> Data? {
+        #if canImport(UIKit)
+        return self.pngData()
+        #elseif canImport(AppKit)
+        guard let tiffData = self.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: tiffData) else { return nil }
+        return bitmap.representation(using: .png, properties: [:])
+        #endif
     }
 }

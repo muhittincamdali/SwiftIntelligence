@@ -167,7 +167,7 @@ public actor SwiftIntelligenceNLP {
     // MARK: - Sentiment Analysis
     
     /// Analyze sentiment of text
-    public func analyzeSentiment(_ text: String, language: String = "en") async throws -> SentimentAnalysisResult {
+    public func analyzeSentiment(_ text: String, language: String = "en") async throws -> SentimentResult {
         guard status == .ready else {
             throw IntelligenceError(code: "NLP_NOT_READY", message: "NLP Engine not ready")
         }
@@ -228,14 +228,14 @@ public actor SwiftIntelligenceNLP {
         let tagger = NLTagger(tagSchemes: [.nameType])
         tagger.string = text
         
-        var entities: [SimpleNamedEntity] = []
+        var entities: [NamedEntity] = []
         
         tagger.enumerateTags(in: text.startIndex..<text.endIndex, unit: .word, scheme: .nameType) { tag, tokenRange in
             if let tag = tag {
                 let entity = String(text[tokenRange])
                 let entityType = mapNLTagToEntityType(tag)
                 
-                entities.append(SimpleNamedEntity(
+                entities.append(NamedEntity(
                     text: entity,
                     type: entityType,
                     range: tokenRange,
@@ -372,7 +372,7 @@ public actor SwiftIntelligenceNLP {
     
     // MARK: - Utility Methods
     
-    private func mapNLTagToEntityType(_ tag: NLTag) -> EntityType {
+    private func mapNLTagToEntityType(_ tag: NLTag) -> NamedEntity.EntityType {
         switch tag {
         case .personalName:
             return .person

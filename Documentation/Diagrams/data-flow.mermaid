@@ -1,0 +1,68 @@
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#e0f2fe', 'primaryTextColor':'#0c4a6e', 'primaryBorderColor':'#0284c7', 'lineColor':'#0ea5e9'}}}%%
+
+sequenceDiagram
+    participant User as User/App
+    participant API as SwiftIntelligence API
+    participant Core as Core Engine
+    participant Module as AI Module
+    participant Privacy as Privacy Engine
+    participant Cache as Cache Manager
+    participant Platform as Platform Framework
+    participant Result as Result Handler
+    
+    %% Standard AI Processing Flow
+    User->>API: Request AI Operation
+    API->>Core: Initialize Request
+    Core->>Privacy: Check Privacy Settings
+    Privacy-->>Core: Privacy Validation
+    
+    Core->>Cache: Check Cache
+    alt Cache Hit
+        Cache-->>Core: Return Cached Result
+        Core-->>API: Return Result
+        API-->>User: Deliver Result
+    else Cache Miss
+        Core->>Module: Process Request
+        Module->>Platform: Use Platform API
+        Platform-->>Module: Platform Result
+        Module->>Module: Process with AI/ML
+        Module-->>Core: Processing Result
+        Core->>Privacy: Apply Privacy Filters
+        Privacy-->>Core: Sanitized Result
+        Core->>Cache: Store Result
+        Core->>Result: Format Response
+        Result-->>API: Final Result
+        API-->>User: Deliver Result
+    end
+    
+    %% Error Handling Flow
+    Note over User,Result: Error Handling Flow
+    User->>API: Request with Error
+    API->>Core: Process Request
+    Core->>Module: Execute Operation
+    Module--xPlatform: Platform Error
+    Module->>Core: Report Error
+    Core->>Result: Handle Error
+    Result->>API: Error Response
+    API->>User: Error with Recovery Options
+    
+    %% Multi-Modal Processing
+    Note over User,Result: Multi-Modal AI Processing
+    User->>API: Multi-Modal Request
+    API->>Core: Orchestrate Request
+    
+    par Vision Processing
+        Core->>Module: Vision Analysis
+        Module-->>Core: Vision Result
+    and NLP Processing
+        Core->>Module: Text Analysis
+        Module-->>Core: NLP Result
+    and Speech Processing
+        Core->>Module: Audio Processing
+        Module-->>Core: Speech Result
+    end
+    
+    Core->>Core: Combine Results
+    Core->>Result: Unified Response
+    Result-->>API: Multi-Modal Result
+    API-->>User: Deliver Complete Result

@@ -1,11 +1,15 @@
 import Foundation
 import CoreML
 import Vision
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import os.log
 
 /// Advanced image classification processor with multiple model support
-public class ImageClassificationProcessor {
+public class ImageClassificationProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "ImageClassification")
@@ -71,15 +75,21 @@ public class ImageClassificationProcessor {
     
     /// Classify image contents using advanced ML models
     public func classify(
-        _ image: UIImage,
+        _ image: PlatformImage,
         options: ClassificationOptions
     ) async throws -> ImageClassificationResult {
         let startTime = Date()
         
         // Validate input
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             throw ClassificationError.invalidImage
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            throw ClassificationError.invalidImage
+        }
+        #endif
         
         // Select optimal model based on options
         let modelName = selectOptimalModel(for: options)
@@ -111,7 +121,7 @@ public class ImageClassificationProcessor {
     
     /// Batch classify multiple images
     public func batchClassify(
-        _ images: [UIImage],
+        _ images: [PlatformImage],
         options: ClassificationOptions
     ) async throws -> [ImageClassificationResult] {
         return try await withThrowingTaskGroup(of: ImageClassificationResult.self) { group in
@@ -255,9 +265,13 @@ public class ImageClassificationProcessor {
         return imagenetLabels[identifier]
     }
     
-    private func analyzeImageProperties(_ image: UIImage) -> ImageProperties {
+    private func analyzeImageProperties(_ image: PlatformImage) -> ImageProperties {
         let size = image.size
+        #if canImport(UIKit)
         let cgImage = image.cgImage
+        #elseif canImport(AppKit)
+        let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        #endif
         
         // Analyze color properties
         let (brightness, contrast, saturation) = analyzeColorProperties(image)
@@ -265,11 +279,18 @@ public class ImageClassificationProcessor {
         // Get dominant colors
         let dominantColors = extractDominantColors(from: image)
         
+        // Get orientation based on platform
+        #if canImport(UIKit)
+        let orientation = mapOrientation(image.imageOrientation)
+        #elseif canImport(AppKit)
+        let orientation = ImageProperties.ImageOrientation.up // NSImage doesn't have imageOrientation
+        #endif
+        
         return ImageProperties(
             size: size,
             colorSpace: cgImage?.colorSpace?.name as String? ?? "unknown",
             hasAlpha: cgImage?.alphaInfo != .none,
-            orientation: mapOrientation(image.imageOrientation),
+            orientation: orientation,
             dominantColors: dominantColors,
             averageBrightness: brightness,
             contrast: contrast,
@@ -277,11 +298,17 @@ public class ImageClassificationProcessor {
         )
     }
     
-    private func analyzeColorProperties(_ image: UIImage) -> (brightness: Float, contrast: Float, saturation: Float) {
+    private func analyzeColorProperties(_ image: PlatformImage) -> (brightness: Float, contrast: Float, saturation: Float) {
         // Simplified color analysis - in a real implementation, this would be more sophisticated
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else {
             return (0.5, 0.5, 0.5)
         }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            return (0.5, 0.5, 0.5)
+        }
+        #endif
         
         // Sample pixels for analysis
         let width = cgImage.width
@@ -341,8 +368,12 @@ public class ImageClassificationProcessor {
         return (avgBrightness, contrast, avgSaturation)
     }
     
-    private func extractDominantColors(from image: UIImage) -> [DominantColor] {
+    private func extractDominantColors(from image: PlatformImage) -> [DominantColor] {
+        #if canImport(UIKit)
         guard let cgImage = image.cgImage else { return [] }
+        #elseif canImport(AppKit)
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return [] }
+        #endif
         
         // Simplified dominant color extraction
         // In a real implementation, you would use more sophisticated algorithms like k-means clustering
@@ -447,7 +478,8 @@ public class ImageClassificationProcessor {
         return nil
     }
     
-    private func mapOrientation(_ orientation: UIImage.Orientation) -> ImageProperties.ImageOrientation {
+    #if canImport(UIKit)
+    private func mapOrientation(_ orientation: PlatformImage.Orientation) -> ImageProperties.ImageOrientation {
         switch orientation {
         case .up: return .up
         case .down: return .down
@@ -460,6 +492,7 @@ public class ImageClassificationProcessor {
         @unknown default: return .up
         }
     }
+    #endif
     
     private func getDeviceCapabilities() -> DeviceCapabilities {
         let totalMemory = ProcessInfo.processInfo.physicalMemory

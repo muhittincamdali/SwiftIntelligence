@@ -1,6 +1,97 @@
 # SwiftIntelligence API Reference
 
-Complete API reference for the SwiftIntelligence framework.
+Complete API reference for the SwiftIntelligence framework - your comprehensive AI/ML toolkit for Apple platforms.
+
+## 📚 Table of Contents
+
+- [Core Module](#core-module)
+- [NLP Module](#nlp-module)
+- [Vision Module](#vision-module)
+- [Speech Module](#speech-module)
+- [Machine Learning Module](#ml-module)
+- [Privacy Module](#privacy-module)
+- [Network Module](#network-module)
+- [Cache Module](#cache-module)
+- [Metrics Module](#metrics-module)
+- [Reasoning Module](#reasoning-module)
+- [Image Generation Module](#image-generation-module)
+
+---
+
+## Core Module
+
+The foundation module providing configuration, logging, performance monitoring, and error handling.
+
+### SwiftIntelligenceCore
+
+The main entry point for the framework.
+
+```swift
+public class SwiftIntelligenceCore {
+    /// Shared singleton instance
+    public static let shared = SwiftIntelligenceCore()
+    
+    /// Framework version
+    public static let version = "1.0.0"
+    
+    /// Build number
+    public static let buildNumber = "100"
+    
+    /// Current configuration
+    public private(set) var configuration: IntelligenceConfiguration
+    
+    /// Logger instance
+    public let logger: IntelligenceLogger
+    
+    /// Performance monitor
+    public let performanceMonitor: PerformanceMonitor
+    
+    /// Error handler
+    public let errorHandler: ErrorHandler
+}
+```
+
+#### Methods
+
+```swift
+/// Configure the framework with custom settings
+public func configure(with configuration: IntelligenceConfiguration)
+
+/// Reset to default configuration
+public func resetConfiguration()
+
+/// Get current memory usage statistics
+public func memoryUsage() -> MemoryUsage
+
+/// Get current CPU usage statistics
+public func cpuUsage() -> CPUUsage
+
+/// Cleanup framework resources
+public func cleanup()
+```
+
+### IntelligenceConfiguration
+
+Framework configuration options.
+
+```swift
+public struct IntelligenceConfiguration: Sendable {
+    public let debugMode: Bool
+    public let performanceMonitoring: Bool
+    public let verboseLogging: Bool
+    public let memoryLimit: Int // MB
+    public let requestTimeout: TimeInterval
+    public let cacheDuration: TimeInterval
+    public let maxConcurrentOperations: Int
+    public let privacyMode: Bool
+    public let telemetryEnabled: Bool
+    
+    // Predefined configurations
+    public static let development: IntelligenceConfiguration
+    public static let production: IntelligenceConfiguration
+    public static let testing: IntelligenceConfiguration
+}
+```
 
 ## Core Intelligence Engine
 

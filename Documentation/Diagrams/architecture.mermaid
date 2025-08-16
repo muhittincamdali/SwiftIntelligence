@@ -1,0 +1,97 @@
+%%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#1f2937', 'primaryTextColor':'#fff', 'primaryBorderColor':'#7C3AED', 'lineColor':'#F97316', 'secondaryColor':'#1e293b', 'tertiaryColor':'#334155'}}}%%
+
+graph TB
+    %% SwiftIntelligence Framework Architecture
+    
+    subgraph "SwiftIntelligence Framework"
+        subgraph "Application Layer"
+            APP[iOS/macOS/visionOS Apps]
+            DEMO[Demo Applications]
+            UI[SwiftUI Components]
+        end
+        
+        subgraph "API Layer"
+            MAIN[SwiftIntelligence<br/>Main API]
+            CONFIG[Configuration<br/>Manager]
+        end
+        
+        subgraph "AI/ML Modules"
+            NLP[NLP Engine<br/>Text Processing]
+            VISION[Vision Engine<br/>Image Analysis]
+            SPEECH[Speech Engine<br/>Audio Processing]
+            ML[ML Engine<br/>Model Training]
+            REASON[Reasoning Engine<br/>Logic Processing]
+            IMAGEGEN[Image Generation<br/>AI Art Creation]
+        end
+        
+        subgraph "Core Infrastructure"
+            CORE[Core Engine<br/>Orchestration]
+            PRIVACY[Privacy Engine<br/>Data Protection]
+            PERF[Performance<br/>Monitor]
+            ERROR[Error Handler]
+        end
+        
+        subgraph "Support Modules"
+            NETWORK[Network Layer<br/>API Communication]
+            CACHE[Cache Manager<br/>Data Storage]
+            METRICS[Metrics Collector<br/>Analytics]
+            BENCH[Benchmarks<br/>Performance Testing]
+        end
+        
+        subgraph "Platform Frameworks"
+            COREML[Core ML]
+            VISION_FW[Vision Framework]
+            NL_FW[Natural Language]
+            SPEECH_FW[Speech Framework]
+            REALITYKIT[RealityKit<br/>visionOS]
+        end
+    end
+    
+    %% Connections
+    APP --> MAIN
+    DEMO --> MAIN
+    UI --> MAIN
+    
+    MAIN --> CONFIG
+    MAIN --> CORE
+    
+    CORE --> NLP
+    CORE --> VISION
+    CORE --> SPEECH
+    CORE --> ML
+    CORE --> REASON
+    CORE --> IMAGEGEN
+    
+    NLP --> NL_FW
+    VISION --> VISION_FW
+    SPEECH --> SPEECH_FW
+    ML --> COREML
+    IMAGEGEN --> VISION_FW
+    IMAGEGEN --> COREML
+    
+    CORE --> PRIVACY
+    CORE --> PERF
+    CORE --> ERROR
+    
+    CORE --> NETWORK
+    CORE --> CACHE
+    CORE --> METRICS
+    
+    PERF --> BENCH
+    
+    VISION --> REALITYKIT
+    
+    %% Styling
+    classDef appLayer fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    classDef apiLayer fill:#3b82f6,stroke:#2563eb,stroke-width:2px,color:#fff
+    classDef aiModule fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff
+    classDef coreModule fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
+    classDef supportModule fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    classDef platform fill:#6b7280,stroke:#4b5563,stroke-width:2px,color:#fff
+    
+    class APP,DEMO,UI appLayer
+    class MAIN,CONFIG apiLayer
+    class NLP,VISION,SPEECH,ML,REASON,IMAGEGEN aiModule
+    class CORE,PRIVACY,PERF,ERROR coreModule
+    class NETWORK,CACHE,METRICS,BENCH supportModule
+    class COREML,VISION_FW,NL_FW,SPEECH_FW,REALITYKIT platform
