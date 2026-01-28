@@ -3,21 +3,14 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release version (e.g., v1.0.0)'
-        required: true
-        type: string
+      - 'v*'
 
-env:
-  SWIFT_VERSION: 5.9
+permissions:
+  contents: write
 
 jobs:
-  # Validate Release
-  validate-release:
-    name: Validate Release
+  release:
+    name: Create Release
     runs-on: macos-14
     
     steps:
@@ -26,303 +19,43 @@ jobs:
       with:
         fetch-depth: 0
     
-    - name: Setup Swift
-      uses: swift-actions/setup-swift@v1
-      with:
-        swift-version: ${{ env.SWIFT_VERSION }}
+    - name: Build Package
+      run: swift build -c release
+      continue-on-error: true
     
-    - name: Validate Version
+    - name: Generate Changelog
+      id: changelog
       run: |
-        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          VERSION="${{ github.event.inputs.version }}"
+        # Get the previous tag
+        PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+        
+        if [ -z "$PREV_TAG" ]; then
+          CHANGELOG=$(git log --pretty=format:"- %s" HEAD)
         else
-          VERSION="${{ github.ref_name }}"
+          CHANGELOG=$(git log --pretty=format:"- %s" $PREV_TAG..HEAD)
         fi
         
-        echo "Release version: $VERSION"
-        
-        # Validate version format
-        if [[ ! $VERSION =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "❌ Invalid version format: $VERSION"
-          echo "Expected format: v1.0.0"
-          exit 1
-        fi
-        
-        echo "✅ Version format is valid"
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
-    
-    - name: Run Full Test Suite
-      run: |
-        echo "🧪 Running comprehensive test suite..."
-        swift test --configuration release
-    
-    - name: Build Release
-      run: |
-        echo "🔨 Building release configuration..."
-        swift build --configuration release
-    
-    - name: Validate Package
-      run: |
-        echo "📦 Validating Swift package..."
-        swift package dump-package
-        swift package resolve
-
-  # Build Documentation
-  build-docs:
-    name: Build Documentation
-    runs-on: macos-14
-    needs: validate-release
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Setup Swift
-      uses: swift-actions/setup-swift@v1
-      with:
-        swift-version: ${{ env.SWIFT_VERSION }}
-    
-    - name: Generate Documentation
-      run: |
-        echo "📚 Generating documentation..."
-        swift package generate-documentation --target SwiftIntelligence \
-          --output-path ./docs
-    
-    - name: Upload Documentation
-      uses: actions/upload-artifact@v3
-      with:
-        name: documentation
-        path: docs/
-        retention-days: 90
-
-  # Build Release Artifacts
-  build-artifacts:
-    name: Build Release Artifacts
-    runs-on: ${{ matrix.os }}
-    needs: validate-release
-    strategy:
-      matrix:
-        os: [macos-14, macos-13]
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Setup Swift
-      uses: swift-actions/setup-swift@v1
-      with:
-        swift-version: ${{ env.SWIFT_VERSION }}
-    
-    - name: Build Release Artifacts
-      run: |
-        echo "🔨 Building release artifacts for ${{ matrix.os }}..."
-        swift build --configuration release
-        
-        # Create artifacts directory
-        mkdir -p release-artifacts
-        
-        # Copy build products
-        cp -r .build/release release-artifacts/
-        
-        # Create archive
-        tar -czf "SwiftIntelligence-${{ matrix.os }}.tar.gz" -C release-artifacts .
-    
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: release-artifacts-${{ matrix.os }}
-        path: SwiftIntelligence-${{ matrix.os }}.tar.gz
-        retention-days: 90
-
-  # Create GitHub Release
-  create-release:
-    name: Create GitHub Release
-    runs-on: macos-14
-    needs: [validate-release, build-docs, build-artifacts]
-    permissions:
-      contents: write
-      discussions: write
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Get Version
-      run: |
-        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          VERSION="${{ github.event.inputs.version }}"
-        else
-          VERSION="${{ github.ref_name }}"
-        fi
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
-    
-    - name: Generate Release Notes
-      run: |
-        echo "# SwiftIntelligence ${{ env.VERSION }}" > release-notes.md
-        echo "" >> release-notes.md
-        echo "## 🚀 Features" >> release-notes.md
-        echo "- Complete AI/ML framework for Apple platforms" >> release-notes.md
-        echo "- 12 specialized modules (NLP, Vision, Speech, ML, Privacy, etc.)" >> release-notes.md
-        echo "- Swift 5.9+ with strict concurrency support" >> release-notes.md
-        echo "- Multi-platform: iOS 17+, macOS 14+, watchOS 10+, tvOS 17+, visionOS 1.0+" >> release-notes.md
-        echo "" >> release-notes.md
-        echo "## 🧠 AI/ML Capabilities" >> release-notes.md
-        echo "- **Natural Language Processing**: Sentiment analysis, entity recognition, text classification" >> release-notes.md
-        echo "- **Computer Vision**: Object detection, text recognition, face detection, image classification" >> release-notes.md
-        echo "- **Speech Processing**: Text-to-speech synthesis, speech recognition, voice analysis" >> release-notes.md
-        echo "- **Machine Learning**: Model training, prediction, privacy-preserving ML" >> release-notes.md
-        echo "- **Privacy & Security**: Data tokenization, encryption, compliance frameworks" >> release-notes.md
-        echo "" >> release-notes.md
-        echo "## 📊 Framework Statistics" >> release-notes.md
-        echo "- **68,027 lines** of Swift code" >> release-notes.md
-        echo "- **74 source files** across 12 modules" >> release-notes.md
-        echo "- **200+ test cases** with comprehensive coverage" >> release-notes.md
-        echo "- **0 build errors** - production ready" >> release-notes.md
-        echo "" >> release-notes.md
-        echo "## 🛠️ Installation" >> release-notes.md
-        echo "\`\`\`swift" >> release-notes.md
-        echo "dependencies: [" >> release-notes.md
-        echo "    .package(url: \"https://github.com/username/SwiftIntelligence.git\", from: \"${{ env.VERSION }}\")" >> release-notes.md
-        echo "]" >> release-notes.md
-        echo "\`\`\`" >> release-notes.md
-        echo "" >> release-notes.md
-        echo "## 📚 Documentation" >> release-notes.md
-        echo "- [Getting Started Guide](README.md)" >> release-notes.md
-        echo "- [API Documentation](Documentation/)" >> release-notes.md
-        echo "- [Examples](Examples/)" >> release-notes.md
-        echo "" >> release-notes.md
-        
-        # Add recent changes if available
-        if git tag --list | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | tail -2 | head -1 > /dev/null; then
-          PREVIOUS_TAG=$(git tag --list | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | tail -2 | head -1)
-          echo "## 📝 Changes Since $PREVIOUS_TAG" >> release-notes.md
-          git log --pretty=format:"- %s" $PREVIOUS_TAG..HEAD >> release-notes.md
-          echo "" >> release-notes.md
-        fi
-        
-        echo "## 🔧 Technical Requirements" >> release-notes.md
-        echo "- Xcode 15.0+" >> release-notes.md
-        echo "- Swift 5.9+" >> release-notes.md
-        echo "- iOS 17.0+ / macOS 14.0+ / watchOS 10.0+ / tvOS 17.0+ / visionOS 1.0+" >> release-notes.md
-        echo "" >> release-notes.md
-        echo "---" >> release-notes.md
-        echo "Built with ❤️ for the Apple developer community" >> release-notes.md
-    
-    - name: Download Artifacts
-      uses: actions/download-artifact@v3
-      with:
-        path: artifacts/
+        echo "changelog<<EOF" >> $GITHUB_OUTPUT
+        echo "$CHANGELOG" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
     
     - name: Create Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ env.VERSION }}
-        name: SwiftIntelligence ${{ env.VERSION }}
-        body_path: release-notes.md
-        draft: false
-        prerelease: false
-        generate_release_notes: true
-        files: |
-          artifacts/release-artifacts-*/SwiftIntelligence-*.tar.gz
-          artifacts/documentation/**
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Create Discussion
-      uses: abirismyname/create-discussion@v1.2.0
-      with:
-        title: "🚀 SwiftIntelligence ${{ env.VERSION }} Released!"
         body: |
-          We're excited to announce the release of SwiftIntelligence ${{ env.VERSION }}!
+          ## What's Changed
+          ${{ steps.changelog.outputs.changelog }}
           
-          ## What's New
-          Check out the [release notes](https://github.com/username/SwiftIntelligence/releases/tag/${{ env.VERSION }}) for detailed information about this release.
+          ## Installation
           
-          ## Get Started
+          ### Swift Package Manager
           ```swift
           dependencies: [
-              .package(url: "https://github.com/username/SwiftIntelligence.git", from: "${{ env.VERSION }}")
+              .package(url: "https://github.com/muhittincamdali/${{ github.event.repository.name }}.git", from: "${{ github.ref_name }}")
           ]
           ```
-          
-          ## Community
-          - 📚 [Documentation](README.md)
-          - 💬 [Discussions](https://github.com/username/SwiftIntelligence/discussions)
-          - 🐛 [Issues](https://github.com/username/SwiftIntelligence/issues)
-          - 🌟 [Examples](Examples/)
-          
-          Happy coding! 🎉
-        category-id: 5
+        draft: false
+        prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      continue-on-error: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Publish to Package Registries (Future)
-  publish-package:
-    name: Publish Package
-    runs-on: macos-14
-    needs: create-release
-    if: github.ref_type == 'tag'
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Setup Swift
-      uses: swift-actions/setup-swift@v1
-      with:
-        swift-version: ${{ env.SWIFT_VERSION }}
-    
-    - name: Validate Package
-      run: |
-        echo "📦 Validating package for publication..."
-        swift package dump-package
-        swift package resolve
-        swift build --configuration release
-        swift test --configuration release
-    
-    - name: Package Registry Info
-      run: |
-        echo "🚀 Package ready for publication"
-        echo "Registry publication will be available when Swift Package Registry is released"
-        echo "For now, the package is available via Git URL"
-
-  # Deployment Status
-  deployment-status:
-    name: Deployment Status
-    runs-on: macos-14
-    needs: [validate-release, build-docs, build-artifacts, create-release, publish-package]
-    if: always()
-    
-    steps:
-    - name: Deployment Summary
-      run: |
-        echo "## 🚀 SwiftIntelligence Release Deployment Summary"
-        echo ""
-        echo "**Release Version:** ${{ env.VERSION || github.ref_name }}"
-        echo "**Deployment Date:** $(date)"
-        echo ""
-        echo "### Job Status"
-        echo "- Validate Release: ${{ needs.validate-release.result }}"
-        echo "- Build Documentation: ${{ needs.build-docs.result }}"
-        echo "- Build Artifacts: ${{ needs.build-artifacts.result }}"
-        echo "- Create Release: ${{ needs.create-release.result }}"
-        echo "- Publish Package: ${{ needs.publish-package.result }}"
-        echo ""
-        
-        if [[ "${{ needs.create-release.result }}" == "success" ]]; then
-          echo "✅ **Release Successfully Deployed!**"
-          echo ""
-          echo "🔗 **Release URL:** https://github.com/${{ github.repository }}/releases/tag/${{ env.VERSION || github.ref_name }}"
-          echo "📦 **Installation:**"
-          echo "\`\`\`swift"
-          echo "dependencies: ["
-          echo "    .package(url: \"https://github.com/${{ github.repository }}.git\", from: \"${{ env.VERSION || github.ref_name }}\")"
-          echo "]"
-          echo "\`\`\`"
-        else
-          echo "❌ **Release Deployment Failed**"
-          echo "Please check the job logs for details."
-        fi
