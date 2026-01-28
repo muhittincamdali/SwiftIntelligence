@@ -1,14 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 💬 Discussion Forum
-    url: https://github.com/username/SwiftIntelligence/discussions
-    about: Ask questions, share ideas, and discuss SwiftIntelligence with the community
-  - name: 🔒 Security Issues
-    url: https://github.com/username/SwiftIntelligence/security/advisories/new
-    about: Report security vulnerabilities privately
   - name: 📖 Documentation
-    url: https://github.com/username/SwiftIntelligence/blob/main/README.md
-    about: Read the documentation and getting started guide
-  - name: 💡 Feature Ideas
-    url: https://github.com/username/SwiftIntelligence/discussions/categories/ideas
-    about: Share and discuss feature ideas with the community before creating a formal request
+    url: https://github.com/muhittincamdali/SwiftIntelligence#readme
+    about: Check out the documentation first
+  - name: 💬 Discussions
+    url: https://github.com/muhittincamdali/SwiftIntelligence/discussions
+    about: Ask questions and discuss ideas
