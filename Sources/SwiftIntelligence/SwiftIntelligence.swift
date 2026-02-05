@@ -1,577 +1,625 @@
-import Foundation
-import SwiftIntelligenceCore
-import SwiftIntelligenceML
-import SwiftIntelligenceNLP
-import SwiftIntelligenceVision
-import SwiftIntelligenceSpeech
-import SwiftIntelligenceReasoning
-import SwiftIntelligenceImageGeneration
-import SwiftIntelligencePrivacy
-import SwiftIntelligenceNetwork
-import SwiftIntelligenceCache
-import SwiftIntelligenceMetrics
+// SwiftIntelligence.swift
+// The Ultimate AI/ML Framework for Apple Platforms
+// Copyright © 2024 Muhittin Camdali. MIT License.
 
-/// SwiftIntelligence - Comprehensive AI/ML Framework for Apple Platforms
-/// A production-ready framework providing state-of-the-art AI capabilities
-@MainActor
-public final class SwiftIntelligence: ObservableObject {
+import Foundation
+import CoreML
+import Vision
+import NaturalLanguage
+#if canImport(UIKit)
+import UIKit
+public typealias SIImage = UIImage
+#elseif canImport(AppKit)
+import AppKit
+public typealias SIImage = NSImage
+#endif
+
+// MARK: - SwiftIntelligence Main API
+
+/// The unified entry point for all AI/ML operations on Apple platforms.
+///
+/// SwiftIntelligence provides world-class, on-device AI capabilities with
+/// a simple, Swift-native API. Privacy-first, battery-optimized, production-ready.
+///
+/// ```swift
+/// // One-liner predictions
+/// let result = try await SwiftIntelligence.classify(image)
+/// let sentiment = try await SwiftIntelligence.sentiment("I love this!")
+/// let objects = try await SwiftIntelligence.detectObjects(in: image)
+/// ```
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, visionOS 1.0, *)
+public enum SwiftIntelligence {
     
-    // MARK: - Singleton
+    // MARK: - Version Info
     
-    /// Shared instance of SwiftIntelligence
-    public static let shared = SwiftIntelligence()
+    /// Current framework version
+    public static let version = "2.0.0"
     
-    // MARK: - Properties
+    /// Build information
+    public static let build = "2024.02.05"
     
-    /// Framework version
-    public static let version = "1.0.0"
+    // MARK: - Shared Engines
     
-    /// Framework build
-    public static let build = "100"
+    /// Vision processing engine
+    public static let vision = VisionEngine.shared
     
-    /// Core module
-    public let core = SwiftIntelligenceCore.shared
+    /// Natural Language processing engine
+    public static let nlp = NLPEngine.shared
     
-    /// Machine Learning module
-    @Published public private(set) var ml: MLEngine?
+    /// Speech processing engine
+    public static let speech = SpeechEngine.shared
     
-    /// Natural Language Processing module
-    @Published public private(set) var nlp: NLPEngine?
+    /// Machine Learning engine
+    public static let ml = MLEngine.shared
     
-    /// Computer Vision module  
-    @Published public private(set) var vision: VisionEngine?
+    /// Recommendation engine
+    public static let recommendations = RecommendationEngine.shared
     
-    /// Speech Recognition module
-    @Published public private(set) var speech: SpeechEngine?
+    /// Anomaly detection engine
+    public static let anomaly = AnomalyEngine.shared
     
-    /// Reasoning module
-    @Published public private(set) var reasoning: ReasoningEngine?
+    /// Time series prediction engine
+    public static let timeSeries = TimeSeriesEngine.shared
     
-    /// Image Generation module
-    @Published public private(set) var imageGeneration: ImageGenerationEngine?
+    // MARK: - 🖼️ Vision - One-Liner APIs
     
-    /// Privacy module
-    @Published public private(set) var privacy: PrivacyEngine?
-    
-    /// Network module
-    @Published public private(set) var network: NetworkEngine?
-    
-    /// Cache module
-    @Published public private(set) var cache: CacheEngine?
-    
-    /// Metrics module
-    @Published public private(set) var metrics: MetricsEngine?
-    
-    /// Framework initialization state
-    @Published public private(set) var isInitialized = false
-    
-    /// Active modules
-    @Published public private(set) var activeModules: Set<String> = []
-    
-    // MARK: - Initialization
-    
-    private init() {
-        core.logger.info("SwiftIntelligence v\(Self.version) initializing...")
+    /// Classify image contents with AI
+    /// - Parameter image: The image to classify
+    /// - Returns: Classification result with labels and confidence scores
+    public static func classify(_ image: SIImage) async throws -> ClassificationResult {
+        try await vision.classify(image)
     }
     
-    // MARK: - Framework Management
-    
-    /// Initialize the framework with configuration
-    /// - Parameter configuration: Framework configuration
-    public func initialize(with configuration: IntelligenceConfiguration = .init()) async throws {
-        guard !isInitialized else {
-            core.logger.warning("SwiftIntelligence already initialized")
-            return
-        }
-        
-        core.logger.info("Initializing SwiftIntelligence framework...")
-        
-        // Configure core
-        core.configure(with: configuration)
-        
-        // Initialize modules based on configuration
-        if configuration.performanceMonitoring {
-            core.performanceMonitor.startMonitoring()
-        }
-        
-        isInitialized = true
-        core.logger.info("SwiftIntelligence framework initialized successfully")
+    /// Detect and locate objects in an image
+    /// - Parameters:
+    ///   - image: The image to analyze
+    ///   - maxObjects: Maximum number of objects to detect (default: 20)
+    /// - Returns: Array of detected objects with bounding boxes
+    public static func detectObjects(
+        in image: SIImage,
+        maxObjects: Int = 20
+    ) async throws -> [DetectedObject] {
+        try await vision.detectObjects(in: image, maxObjects: maxObjects)
     }
     
-    /// Load a specific module
-    /// - Parameter module: Module to load
-    public func loadModule(_ module: Module) async throws {
-        guard isInitialized else {
-            throw IntelligenceError(
-                code: IntelligenceError.initializationError,
-                message: "Framework must be initialized before loading modules"
-            )
-        }
-        
-        core.logger.info("Loading module: \(module.rawValue)")
-        
-        switch module {
-        case .ml:
-            ml = try await MLEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .nlp:
-            nlp = try await NLPEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .vision:
-            vision = try await VisionEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .speech:
-            speech = try await SpeechEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .reasoning:
-            reasoning = try await ReasoningEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .imageGeneration:
-            imageGeneration = try await ImageGenerationEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .privacy:
-            privacy = try await PrivacyEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .network:
-            network = try await NetworkEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .cache:
-            cache = try await CacheEngine()
-            activeModules.insert(module.rawValue)
-            
-        case .metrics:
-            metrics = try await MetricsEngine()
-            activeModules.insert(module.rawValue)
-        }
-        
-        core.logger.info("Module loaded successfully: \(module.rawValue)")
+    /// Detect faces in an image
+    /// - Parameter image: The image to analyze
+    /// - Returns: Array of detected faces with landmarks
+    public static func detectFaces(in image: SIImage) async throws -> [Face] {
+        try await vision.detectFaces(in: image)
     }
     
-    /// Load multiple modules
-    /// - Parameter modules: Modules to load
-    public func loadModules(_ modules: [Module]) async throws {
-        for module in modules {
-            try await loadModule(module)
-        }
+    /// Extract text from an image (OCR)
+    /// - Parameters:
+    ///   - image: The image containing text
+    ///   - languages: Preferred languages for recognition
+    /// - Returns: Recognized text and positions
+    public static func extractText(
+        from image: SIImage,
+        languages: [String] = ["en-US"]
+    ) async throws -> TextExtractionResult {
+        try await vision.extractText(from: image, languages: languages)
     }
     
-    /// Load all modules
-    public func loadAllModules() async throws {
-        try await loadModules(Module.allCases)
+    /// Generate image description using AI
+    /// - Parameter image: The image to describe
+    /// - Returns: Natural language description of the image
+    public static func describe(_ image: SIImage) async throws -> String {
+        try await vision.describe(image)
     }
     
-    /// Unload a specific module
-    /// - Parameter module: Module to unload
-    public func unloadModule(_ module: Module) async throws {
-        guard activeModules.contains(module.rawValue) else {
-            core.logger.warning("Module not loaded: \(module.rawValue)")
-            return
-        }
-        
-        core.logger.info("Unloading module: \(module.rawValue)")
-        
-        switch module {
-        case .ml:
-            try await ml?.shutdown()
-            ml = nil
-            
-        case .nlp:
-            try await nlp?.shutdown()
-            nlp = nil
-            
-        case .vision:
-            try await vision?.shutdown()
-            vision = nil
-            
-        case .speech:
-            try await speech?.shutdown()
-            speech = nil
-            
-        case .reasoning:
-            try await reasoning?.shutdown()
-            reasoning = nil
-            
-        case .imageGeneration:
-            try await imageGeneration?.shutdown()
-            imageGeneration = nil
-            
-        case .privacy:
-            try await privacy?.shutdown()
-            privacy = nil
-            
-        case .network:
-            try await network?.shutdown()
-            network = nil
-            
-        case .cache:
-            try await cache?.shutdown()
-            cache = nil
-            
-        case .metrics:
-            try await metrics?.shutdown()
-            metrics = nil
-        }
-        
-        activeModules.remove(module.rawValue)
-        core.logger.info("Module unloaded: \(module.rawValue)")
+    /// Segment image into meaningful regions
+    /// - Parameter image: The image to segment
+    /// - Returns: Segmented regions with labels
+    public static func segment(_ image: SIImage) async throws -> SegmentationResult {
+        try await vision.segment(image)
     }
     
-    /// Shutdown the framework
-    public func shutdown() async throws {
-        core.logger.info("Shutting down SwiftIntelligence framework...")
-        
-        // Unload all active modules
-        for moduleString in activeModules {
-            if let module = Module(rawValue: moduleString) {
-                try await unloadModule(module)
-            }
-        }
-        
-        // Clean up core
-        core.cleanup()
-        
-        isInitialized = false
-        core.logger.info("SwiftIntelligence framework shut down")
+    /// Remove background from image
+    /// - Parameter image: The image to process
+    /// - Returns: Image with transparent background
+    public static func removeBackground(from image: SIImage) async throws -> SIImage {
+        try await vision.removeBackground(from: image)
     }
     
-    /// Get framework health status
-    public func healthCheck() async -> HealthReport {
-        var moduleStatuses: [String: HealthStatus] = [:]
-        
-        if let ml = ml {
-            moduleStatuses["ML"] = await ml.healthCheck()
-        }
-        
-        if let nlp = nlp {
-            moduleStatuses["NLP"] = await nlp.healthCheck()
-        }
-        
-        if let vision = vision {
-            moduleStatuses["Vision"] = await vision.healthCheck()
-        }
-        
-        if let speech = speech {
-            moduleStatuses["Speech"] = await speech.healthCheck()
-        }
-        
-        if let reasoning = reasoning {
-            moduleStatuses["Reasoning"] = await reasoning.healthCheck()
-        }
-        
-        if let imageGeneration = imageGeneration {
-            moduleStatuses["ImageGeneration"] = await imageGeneration.healthCheck()
-        }
-        
-        let memoryUsage = core.memoryUsage()
-        let cpuUsage = core.cpuUsage()
-        
-        return HealthReport(
-            frameworkVersion: Self.version,
-            isInitialized: isInitialized,
-            activeModules: Array(activeModules),
-            moduleStatuses: moduleStatuses,
-            memoryUsage: memoryUsage,
-            cpuUsage: cpuUsage,
-            timestamp: Date()
+    /// Enhance image quality with AI upscaling
+    /// - Parameters:
+    ///   - image: The image to enhance
+    ///   - scale: Upscale factor (1.0-4.0)
+    /// - Returns: Enhanced high-resolution image
+    public static func enhance(
+        _ image: SIImage,
+        scale: Float = 2.0
+    ) async throws -> SIImage {
+        try await vision.enhance(image, scale: scale)
+    }
+    
+    // MARK: - 📝 Natural Language - One-Liner APIs
+    
+    /// Analyze sentiment of text
+    /// - Parameter text: The text to analyze
+    /// - Returns: Sentiment score (-1.0 to 1.0) and label
+    public static func sentiment(_ text: String) async throws -> SentimentResult {
+        try await nlp.analyzeSentiment(text)
+    }
+    
+    /// Extract named entities from text
+    /// - Parameter text: The text to analyze
+    /// - Returns: Extracted entities (people, places, organizations, etc.)
+    public static func extractEntities(from text: String) async throws -> [Entity] {
+        try await nlp.extractEntities(from: text)
+    }
+    
+    /// Detect language of text
+    /// - Parameter text: The text to analyze
+    /// - Returns: Detected language code and confidence
+    public static func detectLanguage(_ text: String) async throws -> LanguageResult {
+        try await nlp.detectLanguage(text)
+    }
+    
+    /// Summarize text content
+    /// - Parameters:
+    ///   - text: The text to summarize
+    ///   - maxLength: Maximum summary length in words
+    /// - Returns: Summarized text
+    public static func summarize(
+        _ text: String,
+        maxLength: Int = 100
+    ) async throws -> String {
+        try await nlp.summarize(text, maxLength: maxLength)
+    }
+    
+    /// Extract keywords from text
+    /// - Parameters:
+    ///   - text: The text to analyze
+    ///   - count: Number of keywords to extract
+    /// - Returns: Array of keywords with relevance scores
+    public static func extractKeywords(
+        from text: String,
+        count: Int = 10
+    ) async throws -> [Keyword] {
+        try await nlp.extractKeywords(from: text, count: count)
+    }
+    
+    /// Calculate semantic similarity between texts
+    /// - Parameters:
+    ///   - text1: First text
+    ///   - text2: Second text
+    /// - Returns: Similarity score (0.0 to 1.0)
+    public static func similarity(
+        _ text1: String,
+        _ text2: String
+    ) async throws -> Float {
+        try await nlp.similarity(text1, text2)
+    }
+    
+    /// Classify text into categories
+    /// - Parameters:
+    ///   - text: The text to classify
+    ///   - categories: Available categories
+    /// - Returns: Category with confidence score
+    public static func classifyText(
+        _ text: String,
+        categories: [String]
+    ) async throws -> TextClassificationResult {
+        try await nlp.classify(text, categories: categories)
+    }
+    
+    // MARK: - 🎤 Speech - One-Liner APIs
+    
+    /// Convert speech to text
+    /// - Parameters:
+    ///   - audioURL: URL of audio file
+    ///   - language: Speech language (default: en-US)
+    /// - Returns: Transcribed text with timestamps
+    public static func transcribe(
+        _ audioURL: URL,
+        language: String = "en-US"
+    ) async throws -> TranscriptionResult {
+        try await speech.transcribe(audioURL, language: language)
+    }
+    
+    /// Convert text to speech
+    /// - Parameters:
+    ///   - text: Text to speak
+    ///   - voice: Voice identifier (optional)
+    /// - Returns: Audio data
+    public static func synthesize(
+        _ text: String,
+        voice: String? = nil
+    ) async throws -> Data {
+        try await speech.synthesize(text, voice: voice)
+    }
+    
+    // MARK: - 🤖 Machine Learning - One-Liner APIs
+    
+    /// Make prediction with a trained model
+    /// - Parameters:
+    ///   - modelName: Name of the registered model
+    ///   - input: Input features dictionary
+    /// - Returns: Prediction result
+    public static func predict(
+        model modelName: String,
+        input: [String: Any]
+    ) async throws -> PredictionResult {
+        try await ml.predict(model: modelName, input: input)
+    }
+    
+    /// Train a model on-device
+    /// - Parameters:
+    ///   - modelType: Type of model to train
+    ///   - data: Training data
+    /// - Returns: Trained model identifier
+    public static func train(
+        _ modelType: ModelType,
+        with data: TrainingData
+    ) async throws -> String {
+        try await ml.train(modelType, with: data)
+    }
+    
+    // MARK: - 📊 Recommendations - One-Liner APIs
+    
+    /// Get personalized recommendations
+    /// - Parameters:
+    ///   - userId: User identifier
+    ///   - context: Optional context for recommendations
+    /// - Returns: Recommended items with scores
+    public static func recommend(
+        for userId: String,
+        context: [String: Any]? = nil
+    ) async throws -> [Recommendation] {
+        try await recommendations.recommend(for: userId, context: context)
+    }
+    
+    /// Find similar items
+    /// - Parameters:
+    ///   - itemId: Reference item identifier
+    ///   - count: Number of similar items to find
+    /// - Returns: Similar items with similarity scores
+    public static func findSimilar(
+        to itemId: String,
+        count: Int = 10
+    ) async throws -> [SimilarItem] {
+        try await recommendations.findSimilar(to: itemId, count: count)
+    }
+    
+    // MARK: - 🔍 Anomaly Detection - One-Liner APIs
+    
+    /// Detect anomalies in data
+    /// - Parameter data: Array of values to analyze
+    /// - Returns: Detected anomalies with scores
+    public static func detectAnomalies(
+        in data: [Double]
+    ) async throws -> [Anomaly] {
+        try await anomaly.detect(in: data)
+    }
+    
+    /// Check if a value is anomalous
+    /// - Parameters:
+    ///   - value: Value to check
+    ///   - baseline: Baseline data for comparison
+    /// - Returns: Whether the value is anomalous and confidence score
+    public static func isAnomalous(
+        _ value: Double,
+        baseline: [Double]
+    ) async throws -> (isAnomaly: Bool, score: Float) {
+        try await anomaly.isAnomalous(value, baseline: baseline)
+    }
+    
+    // MARK: - 📈 Time Series - One-Liner APIs
+    
+    /// Predict future values in a time series
+    /// - Parameters:
+    ///   - series: Historical data points
+    ///   - steps: Number of future steps to predict
+    /// - Returns: Predicted values with confidence intervals
+    public static func forecast(
+        _ series: [Double],
+        steps: Int
+    ) async throws -> ForecastResult {
+        try await timeSeries.forecast(series, steps: steps)
+    }
+    
+    /// Detect trends in time series data
+    /// - Parameter series: Data points to analyze
+    /// - Returns: Detected trends and patterns
+    public static func detectTrends(
+        in series: [Double]
+    ) async throws -> TrendResult {
+        try await timeSeries.detectTrends(in: series)
+    }
+    
+    // MARK: - 🔧 Configuration
+    
+    /// Configure SwiftIntelligence settings
+    /// - Parameter configuration: Configuration options
+    public static func configure(_ configuration: Configuration) {
+        ConfigurationManager.shared.apply(configuration)
+    }
+    
+    /// Reset all engines to default state
+    public static func reset() async {
+        await vision.reset()
+        await nlp.reset()
+        await speech.reset()
+        await ml.reset()
+        await recommendations.reset()
+        await anomaly.reset()
+        await timeSeries.reset()
+    }
+    
+    /// Get system information
+    public static func systemInfo() -> SystemInfo {
+        SystemInfo(
+            version: version,
+            build: build,
+            platform: platformName,
+            neuralEngineAvailable: hasNeuralEngine,
+            availableMemory: availableMemory
         )
     }
-}
-
-// MARK: - Supporting Types
-
-/// Available modules
-public enum Module: String, CaseIterable, Sendable {
-    case ml = "MachineLearning"
-    case nlp = "NaturalLanguageProcessing"
-    case vision = "ComputerVision"
-    case speech = "SpeechRecognition"
-    case reasoning = "Reasoning"
-    case imageGeneration = "ImageGeneration"
-    case privacy = "Privacy"
-    case network = "Network"
-    case cache = "Cache"
-    case metrics = "Metrics"
-}
-
-/// Framework health report
-public struct HealthReport: Sendable {
-    public let frameworkVersion: String
-    public let isInitialized: Bool
-    public let activeModules: [String]
-    public let moduleStatuses: [String: HealthStatus]
-    public let memoryUsage: MemoryUsage
-    public let cpuUsage: CPUUsage
-    public let timestamp: Date
-}
-
-// MARK: - Module Placeholders
-
-// These will be implemented in their respective module files
-
-public actor MLEngine: IntelligenceProtocol {
-    public let moduleID = "ML"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
     
-    public init() async throws {
-        try await initialize()
+    // MARK: - Private Helpers
+    
+    private static var platformName: String {
+        #if os(iOS)
+        return "iOS"
+        #elseif os(macOS)
+        return "macOS"
+        #elseif os(tvOS)
+        return "tvOS"
+        #elseif os(watchOS)
+        return "watchOS"
+        #elseif os(visionOS)
+        return "visionOS"
+        #else
+        return "Unknown"
+        #endif
     }
     
-    public func initialize() async throws {
-        status = .ready
+    private static var hasNeuralEngine: Bool {
+        MLModel.availableComputeDevices.contains { $0.description.contains("Neural") }
     }
     
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "ML Engine is operational")
+    private static var availableMemory: UInt64 {
+        ProcessInfo.processInfo.physicalMemory
     }
 }
 
-public actor NLPEngine: IntelligenceProtocol {
-    public let moduleID = "NLP"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+// MARK: - Result Types
+
+/// Image classification result
+public struct ClassificationResult: Sendable {
+    public let labels: [LabelScore]
+    public let processingTime: TimeInterval
     
-    public init() async throws {
-        try await initialize()
-    }
+    public var topLabel: String? { labels.first?.label }
+    public var topConfidence: Float? { labels.first?.confidence }
     
-    public func initialize() async throws {
-        status = .ready
-    }
-    
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "NLP Engine is operational")
+    public struct LabelScore: Sendable {
+        public let label: String
+        public let confidence: Float
     }
 }
 
-public actor VisionEngine: IntelligenceProtocol {
-    public let moduleID = "Vision"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+/// Detected object in an image
+public struct DetectedObject: Sendable {
+    public let label: String
+    public let confidence: Float
+    public let boundingBox: CGRect
+    public let category: String
+}
+
+/// Detected face in an image
+public struct Face: Sendable {
+    public let boundingBox: CGRect
+    public let confidence: Float
+    public let landmarks: FaceLandmarks?
+    public let age: Int?
+    public let emotion: String?
+}
+
+/// Face landmarks
+public struct FaceLandmarks: Sendable {
+    public let leftEye: CGPoint
+    public let rightEye: CGPoint
+    public let nose: CGPoint
+    public let mouth: CGPoint
+    public let jawline: [CGPoint]
+}
+
+/// Text extraction result
+public struct TextExtractionResult: Sendable {
+    public let text: String
+    public let blocks: [TextBlock]
+    public let confidence: Float
     
-    public init() async throws {
-        try await initialize()
-    }
-    
-    public func initialize() async throws {
-        status = .ready
-    }
-    
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "Vision Engine is operational")
+    public struct TextBlock: Sendable {
+        public let text: String
+        public let boundingBox: CGRect
+        public let confidence: Float
     }
 }
 
-public actor SpeechEngine: IntelligenceProtocol {
-    public let moduleID = "Speech"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+/// Image segmentation result
+public struct SegmentationResult: Sendable {
+    public let segments: [Segment]
+    public let maskImage: SIImage?
     
-    public init() async throws {
-        try await initialize()
-    }
-    
-    public func initialize() async throws {
-        status = .ready
-    }
-    
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "Speech Engine is operational")
+    public struct Segment: Sendable {
+        public let label: String
+        public let confidence: Float
+        public let mask: Data
     }
 }
 
-public actor ReasoningEngine: IntelligenceProtocol {
-    public let moduleID = "Reasoning"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+/// Sentiment analysis result
+public struct SentimentResult: Sendable {
+    public let score: Float  // -1.0 (negative) to 1.0 (positive)
+    public let label: SentimentLabel
+    public let confidence: Float
     
-    public init() async throws {
-        try await initialize()
-    }
-    
-    public func initialize() async throws {
-        status = .ready
-    }
-    
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "Reasoning Engine is operational")
+    public enum SentimentLabel: String, Sendable {
+        case veryNegative = "very_negative"
+        case negative = "negative"
+        case neutral = "neutral"
+        case positive = "positive"
+        case veryPositive = "very_positive"
     }
 }
 
-public actor ImageGenerationEngine: IntelligenceProtocol {
-    public let moduleID = "ImageGeneration"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+/// Extracted entity
+public struct Entity: Sendable {
+    public let text: String
+    public let type: EntityType
+    public let range: Range<String.Index>
+    public let confidence: Float
     
-    public init() async throws {
-        try await initialize()
-    }
-    
-    public func initialize() async throws {
-        status = .ready
-    }
-    
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "Image Generation Engine is operational")
+    public enum EntityType: String, Sendable {
+        case person, organization, place, date, money, percentage, other
     }
 }
 
-public actor PrivacyEngine: IntelligenceProtocol {
-    public let moduleID = "Privacy"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+/// Language detection result
+public struct LanguageResult: Sendable {
+    public let languageCode: String
+    public let languageName: String
+    public let confidence: Float
+}
+
+/// Extracted keyword
+public struct Keyword: Sendable {
+    public let text: String
+    public let relevance: Float
+}
+
+/// Text classification result
+public struct TextClassificationResult: Sendable {
+    public let category: String
+    public let confidence: Float
+    public let allScores: [String: Float]
+}
+
+/// Speech transcription result
+public struct TranscriptionResult: Sendable {
+    public let text: String
+    public let segments: [TranscriptionSegment]
+    public let confidence: Float
+    public let duration: TimeInterval
     
-    public init() async throws {
-        try await initialize()
-    }
-    
-    public func initialize() async throws {
-        status = .ready
-    }
-    
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "Privacy Engine is operational")
+    public struct TranscriptionSegment: Sendable {
+        public let text: String
+        public let startTime: TimeInterval
+        public let endTime: TimeInterval
+        public let confidence: Float
     }
 }
 
-public actor NetworkEngine: IntelligenceProtocol {
-    public let moduleID = "Network"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+/// ML prediction result
+public struct PredictionResult: Sendable {
+    public let value: Any
+    public let confidence: Float
+    public let processingTime: TimeInterval
+}
+
+/// Model type for training
+public enum ModelType: String, Sendable {
+    case classifier
+    case regressor
+    case recommender
+    case anomalyDetector
+    case timeSeriesPredictor
+}
+
+/// Training data container
+public struct TrainingData: Sendable {
+    public let features: [[String: Any]]
+    public let labels: [Any]
     
-    public init() async throws {
-        try await initialize()
-    }
-    
-    public func initialize() async throws {
-        status = .ready
-    }
-    
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "Network Engine is operational")
+    public init(features: [[String: Any]], labels: [Any]) {
+        self.features = features
+        self.labels = labels
     }
 }
 
-public actor CacheEngine: IntelligenceProtocol {
-    public let moduleID = "Cache"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+/// Recommendation result
+public struct Recommendation: Sendable {
+    public let itemId: String
+    public let score: Float
+    public let reason: String?
+}
+
+/// Similar item result
+public struct SimilarItem: Sendable {
+    public let itemId: String
+    public let similarity: Float
+}
+
+/// Detected anomaly
+public struct Anomaly: Sendable {
+    public let index: Int
+    public let value: Double
+    public let score: Float
+    public let type: AnomalyType
     
-    public init() async throws {
-        try await initialize()
-    }
-    
-    public func initialize() async throws {
-        status = .ready
-    }
-    
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "Cache Engine is operational")
+    public enum AnomalyType: String, Sendable {
+        case outlier, spike, drop, pattern
     }
 }
 
-public actor MetricsEngine: IntelligenceProtocol {
-    public let moduleID = "Metrics"
-    public let version = "1.0.0"
-    public var status: ModuleStatus = .uninitialized
+/// Time series forecast result
+public struct ForecastResult: Sendable {
+    public let predictions: [Double]
+    public let lowerBounds: [Double]
+    public let upperBounds: [Double]
+    public let confidence: Float
+}
+
+/// Trend detection result
+public struct TrendResult: Sendable {
+    public let direction: TrendDirection
+    public let strength: Float
+    public let seasonality: Seasonality?
     
-    public init() async throws {
-        try await initialize()
+    public enum TrendDirection: String, Sendable {
+        case increasing, decreasing, stable, volatile
     }
     
-    public func initialize() async throws {
-        status = .ready
+    public struct Seasonality: Sendable {
+        public let period: Int
+        public let strength: Float
+    }
+}
+
+/// System information
+public struct SystemInfo: Sendable {
+    public let version: String
+    public let build: String
+    public let platform: String
+    public let neuralEngineAvailable: Bool
+    public let availableMemory: UInt64
+}
+
+/// Configuration options
+public struct Configuration: Sendable {
+    public var enableCaching: Bool = true
+    public var maxCacheSize: Int = 100
+    public var preferOnDevice: Bool = true
+    public var enableLogging: Bool = false
+    public var maxConcurrentOperations: Int = 4
+    
+    public init() {}
+}
+
+// MARK: - Configuration Manager
+
+final class ConfigurationManager: @unchecked Sendable {
+    static let shared = ConfigurationManager()
+    private var configuration = Configuration()
+    
+    func apply(_ config: Configuration) {
+        self.configuration = config
     }
     
-    public func shutdown() async throws {
-        status = .shutdown
-    }
-    
-    public func validate() async throws -> ValidationResult {
-        ValidationResult(isValid: true)
-    }
-    
-    public func healthCheck() async -> HealthStatus {
-        HealthStatus(status: .healthy, message: "Metrics Engine is operational")
-    }
+    var current: Configuration { configuration }
 }

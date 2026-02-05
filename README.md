@@ -1,114 +1,44 @@
-```
-
-<p align="center">
-  <a href="README.md">🇺🇸 English</a> |
-  <a href="README_TR.md">🇹🇷 Türkçe</a>
-</p>
-
-╔══════════════════════════════════════════════════════════════════════════════════════════════╗
-║                                                                                              ║
-║   ███████╗██╗    ██╗██╗███████╗████████╗                                                     ║
-║   ██╔════╝██║    ██║██║██╔════╝╚══██╔══╝                                                     ║
-║   ███████╗██║ █╗ ██║██║█████╗     ██║                                                        ║
-║   ╚════██║██║███╗██║██║██╔══╝     ██║                                                        ║
-║   ███████║╚███╔███╔╝██║██║        ██║                                                        ║
-║   ╚══════╝ ╚══╝╚══╝ ╚═╝╚═╝        ╚═╝                                                        ║
-║                                                                                              ║
-║   ██╗███╗   ██╗████████╗███████╗██╗     ██╗     ██╗ ██████╗ ███████╗███╗   ██╗ ██████╗███████╗║
-║   ██║████╗  ██║╚══██╔══╝██╔════╝██║     ██║     ██║██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔════╝║
-║   ██║██╔██╗ ██║   ██║   █████╗  ██║     ██║     ██║██║  ███╗█████╗  ██╔██╗ ██║██║     █████╗  ║
-║   ██║██║╚██╗██║   ██║   ██╔══╝  ██║     ██║     ██║██║   ██║██╔══╝  ██║╚██╗██║██║     ██╔══╝  ║
-║   ██║██║ ╚████║   ██║   ███████╗███████╗███████╗██║╚██████╔╝███████╗██║ ╚████║╚██████╗███████╗║
-║   ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝╚══════╝║
-║                                                                                              ║
-║   ██████████████████████████████████████████████████████████████████████████████████████████ ║
-║   █  The Ultimate AI/ML Framework  •  12 Modules  •  Neural Engine Optimized  •  Privacy  █ ║
-║   ██████████████████████████████████████████████████████████████████████████████████████████ ║
-║                                                                                              ║
-╚══════════════════════════════════════════════════════════════════════════════════════════════╝
-```
-
 <div align="center">
 
-**Build intelligent iOS apps with 12 specialized AI modules, Neural Engine optimization, and privacy-first on-device processing.**
+# 🧠 SwiftIntelligence
+
+### The Ultimate AI/ML Framework for Apple Platforms
 
 [![Swift](https://img.shields.io/badge/Swift-5.9+-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
-[![iOS](https://img.shields.io/badge/iOS-17.0+-000000?style=for-the-badge&logo=apple&logoColor=white)](https://developer.apple.com/ios/)
-[![visionOS](https://img.shields.io/badge/visionOS-1.0+-007AFF?style=for-the-badge&logo=apple&logoColor=white)](https://developer.apple.com/visionos/)
-[![Neural Engine](https://img.shields.io/badge/Neural%20Engine-Optimized-9B59B6?style=for-the-badge&logo=apple&logoColor=white)](https://developer.apple.com)
-[![SPM](https://img.shields.io/badge/SPM-Compatible-FA7343?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org/package-manager/)
+[![Platforms](https://img.shields.io/badge/Platforms-iOS%20|%20macOS%20|%20tvOS%20|%20watchOS%20|%20visionOS-007AFF?style=for-the-badge&logo=apple)](https://developer.apple.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![CI](https://github.com/muhittincamdali/SwiftIntelligence/actions/workflows/ci.yml/badge.svg)](https://github.com/muhittincamdali/SwiftIntelligence/actions)
+[![SPM](https://img.shields.io/badge/SPM-Compatible-FA7343?style=for-the-badge&logo=swift)](https://swift.org/package-manager/)
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Modules](#-modules) • [Performance](#-performance) • [Docs](Documentation/)
+**Production-ready • Privacy-first • On-device AI • Battery-optimized**
+
+[Quick Start](#-quick-start) • [Features](#-features) • [Documentation](#-documentation) • [Examples](#-examples)
 
 </div>
 
 ---
 
-## 🤔 Why SwiftIntelligence?
+## ✨ Why SwiftIntelligence?
 
-| Feature | SwiftIntelligence | Manual Setup |
-|---------|:-----------------:|:------------:|
-| **Setup Time** | 5 minutes | 2-3 days |
-| **Inference Speed** | <10ms | 50-500ms |
-| **Memory Usage** | 85MB | 225MB |
-| **Privacy** | ✅ On-device | ❌ Often cloud |
-| **Neural Engine** | ✅ Optimized | ❌ Manual |
-| **Platforms** | ✅ Universal | ⚠️ iOS only |
+SwiftIntelligence is the **world's most comprehensive AI/ML framework** for Apple platforms. It provides a unified, Swift-native API for all AI capabilities—from image classification to time series prediction—with **zero external dependencies**.
 
----
-
-## ✨ Features
-
-- 🧠 **12 AI Modules** — ML, NLP, Vision, Speech, Reasoning, and more
-- ⚡ **Neural Engine** — Hardware-optimized for Apple Silicon
-- 🔒 **Privacy-First** — 100% on-device processing, zero data upload
-- 📱 **Universal** — iOS, macOS, watchOS, tvOS, visionOS
-- 🎯 **<10ms Inference** — Real-time AI performance
-- 💾 **85MB Memory** — Lightweight footprint
-- 📦 **Zero Dependencies** — Pure Swift implementation
-- 🏢 **Enterprise Ready** — SOC 2, GDPR, HIPAA compliant
-
----
-
-## 🏗️ Architecture
-
-```mermaid
-graph TB
-    subgraph App["📱 Your App"]
-        V[Views]
-    end
-    
-    subgraph AI["🧠 AI/ML Engines"]
-        ML[Machine Learning]
-        NLP[Natural Language]
-        CV[Computer Vision]
-        SP[Speech Processing]
-        RE[Reasoning Engine]
-        IG[Image Generation]
-    end
-    
-    subgraph Infra["⚙️ Infrastructure"]
-        PR[Privacy Engine]
-        CA[Smart Cache]
-        ME[Metrics]
-    end
-    
-    subgraph Core["🔧 Core"]
-        NE[Neural Engine]
-        SEC[Security]
-    end
-    
-    V --> AI
-    AI --> Infra
-    Infra --> Core
-    
-    style App fill:#4A90D9,stroke:#2E5A8B,color:#fff
-    style AI fill:#50C878,stroke:#3D9B5C,color:#fff
-    style Infra fill:#9B59B6,stroke:#7D3C98,color:#fff
-    style Core fill:#FF6B6B,stroke:#CC5555,color:#fff
+```swift
+// One-liner AI operations
+let classification = try await SwiftIntelligence.classify(image)
+let sentiment = try await SwiftIntelligence.sentiment("I love this app!")
+let objects = try await SwiftIntelligence.detectObjects(in: photo)
+let forecast = try await SwiftIntelligence.forecast(salesData, steps: 30)
 ```
+
+### 🏆 Key Differentiators
+
+| Feature | SwiftIntelligence | Others |
+|---------|-------------------|--------|
+| **Unified API** | ✅ One import, all AI | ❌ Multiple frameworks |
+| **On-Device** | ✅ 100% privacy | ⚠️ Cloud-dependent |
+| **Battery Optimized** | ✅ Neural Engine first | ❌ CPU fallback |
+| **Zero Dependencies** | ✅ Native only | ❌ External libs |
+| **All Platforms** | ✅ iOS/macOS/tvOS/watchOS/visionOS | ⚠️ Limited |
+| **Production Ready** | ✅ Enterprise-grade | ⚠️ Demo quality |
 
 ---
 
@@ -116,212 +46,354 @@ graph TB
 
 ### Installation
 
+**Swift Package Manager**
+
 ```swift
-// Package.swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence", from: "1.0.0")
+    .package(url: "https://github.com/muhittinc/SwiftIntelligence.git", from: "2.0.0")
 ]
 ```
 
-### Initialize
+**Xcode**
+
+1. File → Add Package Dependencies
+2. Enter: `https://github.com/muhittinc/SwiftIntelligence.git`
+3. Select version: `2.0.0` or later
+
+### Basic Usage
 
 ```swift
 import SwiftIntelligence
 
-@main
-struct IntelligentApp: App {
-    init() {
-        SwiftIntelligence.shared.quickSetup(
-            modules: [.nlp, .vision, .speech, .ml],
-            privacyLevel: .high,
-            performanceMode: .optimized
-        )
-    }
+// 🖼️ Image Classification
+let result = try await SwiftIntelligence.classify(myImage)
+print("This is a \(result.topLabel!) with \(result.topConfidence!)% confidence")
+
+// 📝 Sentiment Analysis
+let sentiment = try await SwiftIntelligence.sentiment("This product is amazing!")
+print("Sentiment: \(sentiment.label) (\(sentiment.score))")
+
+// 🎤 Speech to Text
+let transcription = try await SwiftIntelligence.transcribe(audioURL, language: "en-US")
+print("You said: \(transcription.text)")
+
+// 📈 Time Series Forecasting
+let forecast = try await SwiftIntelligence.forecast(historicalData, steps: 7)
+print("Predicted values: \(forecast.predictions)")
+```
+
+---
+
+## 🎯 Features
+
+### 🖼️ Computer Vision
+
+```swift
+// Image Classification
+let classification = try await SwiftIntelligence.classify(image)
+
+// Object Detection
+let objects = try await SwiftIntelligence.detectObjects(in: image)
+
+// Face Detection with Landmarks
+let faces = try await SwiftIntelligence.detectFaces(in: image)
+
+// Text Recognition (OCR)
+let text = try await SwiftIntelligence.extractText(from: documentImage)
+
+// Image Description
+let description = try await SwiftIntelligence.describe(image)
+
+// Background Removal
+let cutout = try await SwiftIntelligence.removeBackground(from: image)
+
+// AI Upscaling
+let enhanced = try await SwiftIntelligence.enhance(image, scale: 2.0)
+
+// Image Segmentation
+let segments = try await SwiftIntelligence.segment(image)
+```
+
+### 📝 Natural Language Processing
+
+```swift
+// Sentiment Analysis
+let sentiment = try await SwiftIntelligence.sentiment(text)
+
+// Entity Extraction
+let entities = try await SwiftIntelligence.extractEntities(from: text)
+
+// Language Detection
+let language = try await SwiftIntelligence.detectLanguage(text)
+
+// Text Summarization
+let summary = try await SwiftIntelligence.summarize(longText, maxLength: 100)
+
+// Keyword Extraction
+let keywords = try await SwiftIntelligence.extractKeywords(from: text, count: 10)
+
+// Semantic Similarity
+let similarity = try await SwiftIntelligence.similarity(text1, text2)
+
+// Text Classification
+let category = try await SwiftIntelligence.classifyText(text, categories: ["Sports", "Tech", "Politics"])
+```
+
+### 🎤 Speech Processing
+
+```swift
+// Speech to Text
+let transcription = try await SwiftIntelligence.transcribe(audioURL, language: "en-US")
+
+// Text to Speech
+let audioData = try await SwiftIntelligence.synthesize("Hello, world!", voice: "Samantha")
+
+// Multi-language Support
+let turkish = try await SwiftIntelligence.transcribe(audioURL, language: "tr-TR")
+```
+
+### 🤖 Machine Learning
+
+```swift
+// Train Custom Models On-Device
+let modelId = try await SwiftIntelligence.train(.classifier, with: trainingData)
+
+// Make Predictions
+let prediction = try await SwiftIntelligence.predict(model: modelId, input: features)
+
+// Register Core ML Models
+try await SwiftIntelligence.ml.registerModel(myCoreMLModel, name: "MyModel")
+```
+
+### 📊 Recommendations
+
+```swift
+// Record User Interactions
+await SwiftIntelligence.recommendations.recordInteraction(
+    userId: "user123",
+    itemId: "item456",
+    type: .purchase
+)
+
+// Get Personalized Recommendations
+let recommendations = try await SwiftIntelligence.recommend(
+    for: "user123",
+    context: ["timeOfDay": "evening"]
+)
+
+// Find Similar Items
+let similar = try await SwiftIntelligence.findSimilar(to: "item456", count: 10)
+```
+
+### 🔍 Anomaly Detection
+
+```swift
+// Detect Anomalies in Data
+let anomalies = try await SwiftIntelligence.detectAnomalies(in: sensorData)
+
+// Check Single Value
+let (isAnomaly, score) = try await SwiftIntelligence.isAnomalous(
+    currentValue,
+    baseline: historicalValues
+)
+
+// Advanced Isolation Forest
+let outlierIndices = try await SwiftIntelligence.anomaly.detectWithIsolationForest(
+    data: multidimensionalData,
+    contamination: 0.05
+)
+```
+
+### 📈 Time Series Analysis
+
+```swift
+// Forecast Future Values
+let forecast = try await SwiftIntelligence.forecast(salesHistory, steps: 30)
+print("Predictions: \(forecast.predictions)")
+print("95% Confidence: \(forecast.lowerBounds) - \(forecast.upperBounds)")
+
+// Detect Trends
+let trends = try await SwiftIntelligence.detectTrends(in: data)
+print("Direction: \(trends.direction), Strength: \(trends.strength)")
+
+// Decompose Time Series
+let decomposition = try await SwiftIntelligence.timeSeries.decompose(data)
+print("Trend: \(decomposition.trend)")
+print("Seasonal: \(decomposition.seasonal)")
+
+// Detect Change Points
+let changePoints = try await SwiftIntelligence.timeSeries.detectChangePoints(data)
+```
+
+---
+
+## 📚 Documentation
+
+### Architecture
+
+```
+SwiftIntelligence
+├── SwiftIntelligence (Unified API)
+│   ├── VisionEngine          # Computer Vision
+│   ├── NLPEngine             # Natural Language
+│   ├── SpeechEngine          # Speech Processing
+│   ├── MLEngine              # Machine Learning
+│   ├── RecommendationEngine  # Recommendations
+│   ├── AnomalyEngine         # Anomaly Detection
+│   └── TimeSeriesEngine      # Time Series
+├── SwiftIntelligenceCore     # Core Utilities
+├── SwiftIntelligenceML       # ML Types
+├── SwiftIntelligenceNLP      # NLP Types
+├── SwiftIntelligenceVision   # Vision Types
+├── SwiftIntelligenceSpeech   # Speech Types
+└── SwiftIntelligencePrivacy  # Privacy Controls
+```
+
+### Performance Optimization
+
+```swift
+// Configure for your needs
+SwiftIntelligence.configure(Configuration(
+    enableCaching: true,
+    maxCacheSize: 100,
+    preferOnDevice: true,
+    maxConcurrentOperations: 4
+))
+
+// Check system capabilities
+let info = SwiftIntelligence.systemInfo()
+print("Neural Engine: \(info.neuralEngineAvailable)")
+print("Memory: \(info.availableMemory / 1_000_000_000)GB")
+```
+
+### Privacy First
+
+All processing happens **on-device** by default:
+
+- ✅ No data leaves the device
+- ✅ No cloud API keys required
+- ✅ GDPR/CCPA compliant by design
+- ✅ Apple Privacy Nutrition Label ready
+
+---
+
+## 📱 Examples
+
+### Image Classification App
+
+```swift
+import SwiftUI
+import SwiftIntelligence
+
+struct ContentView: View {
+    @State private var result: String = ""
     
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .task { await SwiftIntelligence.shared.initialize() }
+    var body: some View {
+        VStack {
+            Image("sample")
+                .resizable()
+                .scaledToFit()
+            
+            Text(result)
+                .font(.headline)
+            
+            Button("Classify") {
+                Task {
+                    let classification = try await SwiftIntelligence.classify(UIImage(named: "sample")!)
+                    result = classification.topLabel ?? "Unknown"
+                }
+            }
         }
     }
 }
 ```
 
-### One-Line AI
+### Sentiment Analysis
 
 ```swift
-// Sentiment analysis
-let sentiment = try await SwiftIntelligence.shared.nlp.analyzeSentiment("I love this!")
-print("Sentiment: \(sentiment.sentiment) (\(sentiment.confidence)%)")
+import SwiftIntelligence
 
-// Object detection
-let objects = try await SwiftIntelligence.shared.vision.detectObjects(in: image)
-for object in objects {
-    print("Found: \(object.label) (\(object.confidence)%)")
+func analyzeFeedback(_ feedback: String) async {
+    let sentiment = try await SwiftIntelligence.sentiment(feedback)
+    
+    switch sentiment.label {
+    case .veryPositive, .positive:
+        print("😊 Happy customer!")
+    case .neutral:
+        print("😐 Neutral feedback")
+    case .negative, .veryNegative:
+        print("😟 Needs attention")
+    }
 }
+```
 
-// Speech recognition
-let transcription = try await SwiftIntelligence.shared.speech.transcribe(audio)
-print("You said: \(transcription.text)")
+### Real-time Object Detection
+
+```swift
+import SwiftIntelligence
+import AVFoundation
+
+class ObjectDetectionController: UIViewController {
+    func processFrame(_ pixelBuffer: CVPixelBuffer) async {
+        let image = CIImage(cvPixelBuffer: pixelBuffer)
+        let uiImage = UIImage(ciImage: image)
+        
+        let objects = try await SwiftIntelligence.detectObjects(in: uiImage)
+        
+        for object in objects {
+            print("\(object.label): \(object.confidence)% at \(object.boundingBox)")
+        }
+    }
+}
 ```
 
 ---
 
-## 🧩 Modules
+## 🔧 Requirements
 
-| Module | Purpose | Performance |
-|:------:|---------|:-----------:|
-| 🧠 **SwiftIntelligenceML** | Custom models, CoreML | <10ms |
-| 📝 **SwiftIntelligenceNLP** | Sentiment, entities, translation | <2ms |
-| 👁️ **SwiftIntelligenceVision** | Detection, OCR, faces | <15ms |
-| 🎤 **SwiftIntelligenceSpeech** | Recognition, synthesis | <50ms |
-| 🧮 **SwiftIntelligenceReasoning** | Decision trees, knowledge graphs | <5ms |
-| 🎨 **SwiftIntelligenceImageGeneration** | Style transfer, generation | <100ms |
-| 🔒 **SwiftIntelligencePrivacy** | Differential privacy, encryption | Always |
-| 🌐 **SwiftIntelligenceNetwork** | Adaptive protocols, caching | Optimized |
-| 💾 **SwiftIntelligenceCache** | ML-based eviction | Efficient |
-| 📊 **SwiftIntelligenceMetrics** | Real-time monitoring | Minimal |
-| 🎨 **SwiftUILab** | 120+ AI UI components | 60fps |
-
----
-
-## ⚡ Performance
-
-### Benchmarks (iPhone 15 Pro)
-
-| Metric | SwiftIntelligence | Manual |
-|--------|:-----------------:|:------:|
-| Sentiment Analysis | **2ms** | 30ms |
-| Object Detection | **15ms** | 120ms |
-| Speech Recognition | **50ms** | 250ms |
-| Memory Usage | **85MB** | 225MB |
-
-### Neural Engine Utilization
-
-```
-NLP Processing     ████████████████████░  95%
-Vision Tasks       ████████████████████░  98%
-ML Inference       █████████████████████  100%
-Speech Recognition ██████████████████░░░  90%
-```
-
----
-
-## 📱 Platform Support
-
-| Platform | Version | Features |
-|:--------:|:-------:|----------|
-| iOS | 17.0+ | Full AI/ML capabilities |
-| macOS | 14.0+ | Desktop-class AI |
-| visionOS | 1.0+ | Spatial AI computing |
-| watchOS | 10.0+ | Lightweight AI |
-| tvOS | 17.0+ | Companion features |
-
----
-
-## 🔒 Security & Privacy
-
-- ✅ **On-Device Processing** — Zero data leaves the device
-- ✅ **Differential Privacy** — Mathematical privacy guarantees
-- ✅ **Model Encryption** — AES-256 protected models
-- ✅ **Secure Enclaves** — Hardware-protected execution
-- ✅ **SOC 2 / GDPR / HIPAA** — Enterprise compliance ready
-
----
-
-## 📁 Project Structure
-
-```
-SwiftIntelligence/
-├── 📂 Sources/
-│   ├── Core/               # Foundation & protocols
-│   ├── ML/                 # Machine learning engine
-│   ├── NLP/                # Natural language processing
-│   ├── Vision/             # Computer vision
-│   ├── Speech/             # Speech processing
-│   ├── Reasoning/          # Logic & AI reasoning
-│   ├── ImageGeneration/    # Image synthesis
-│   ├── Privacy/            # Privacy engine
-│   ├── Network/            # Intelligent networking
-│   ├── Cache/              # Smart caching
-│   ├── Metrics/            # Performance analytics
-│   └── SwiftUILab/         # UI components
-├── 📂 Examples/            # Demo apps
-├── 📂 Tests/               # Test suite
-└── 📂 Documentation/       # Guides & API docs
-```
-
----
-
-## 📋 Requirements
-
-| Requirement | Version |
-|-------------|---------|
+| Platform | Minimum Version |
+|----------|-----------------|
 | iOS | 17.0+ |
 | macOS | 14.0+ |
+| tvOS | 17.0+ |
+| watchOS | 10.0+ |
 | visionOS | 1.0+ |
-| Swift | 5.9+ |
 | Xcode | 15.0+ |
-
----
-
-## 📖 Documentation
-
-| Guide | Description |
-|-------|-------------|
-| [Getting Started](Documentation/Getting-Started.md) | Installation and setup |
-| [API Reference](Documentation/API-Reference.md) | Complete API docs |
-| [Architecture](Documentation/Architecture.md) | System design |
-| [Performance](Documentation/Performance.md) | Optimization tips |
-| [Security](Documentation/Security.md) | Privacy & security |
-| [visionOS Guide](Documentation/visionOS-Guide.md) | Spatial computing |
+| Swift | 5.9+ |
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md).
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
 
-```bash
-git checkout -b feature/amazing-ai
-swift test
-git commit -m "feat(nlp): add amazing feature"
-git push origin feature/amazing-ai
-```
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+SwiftIntelligence is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+
+---
+
+## 🙏 Acknowledgments
+
+- Apple's Core ML, Vision, Natural Language, and Speech frameworks
+- The Swift community for inspiration and feedback
 
 ---
 
 <div align="center">
 
-## 👨‍💻 Author
+**Made with ❤️ by [Muhittin Camdali](https://github.com/muhittinc)**
 
-**Muhittin Camdali**
+⭐ Star this repo if you find it useful!
 
-[![GitHub](https://img.shields.io/badge/GitHub-muhittincamdali-181717?style=for-the-badge&logo=github)](https://github.com/muhittincamdali)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/muhittincamdali)
-
----
-
-**⭐ Star this repo if you find it useful!**
-
-*Building the future of AI on Apple platforms.*
+[Report Bug](https://github.com/muhittinc/SwiftIntelligence/issues) • [Request Feature](https://github.com/muhittinc/SwiftIntelligence/issues)
 
 </div>
-
----
-
-## 📈 Star History
-
-<a href="https://star-history.com/#muhittincamdali/SwiftIntelligence&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=muhittincamdali/SwiftIntelligence&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=muhittincamdali/SwiftIntelligence&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=muhittincamdali/SwiftIntelligence&type=Date" />
- </picture>
-</a>
