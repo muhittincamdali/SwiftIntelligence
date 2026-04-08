@@ -33,7 +33,8 @@ This gate currently requires:
 - `bash Scripts/validate-release-workflow-assets.sh .github/workflows/release.yml Documentation/release-asset-policy.json`
 - `bash Scripts/validate-benchmark-thresholds.sh Benchmarks/Results/latest Benchmarks/Results Benchmarks/benchmark-thresholds.json`
 
-The tagged GitHub release workflow now regenerates the `standard` benchmark set before running this gate, so release assets are derived from the tagged commit rather than whatever happened to be in the repository checkout.
+The tagged GitHub release workflow does **not** regenerate `standard` benchmarks on the hosted runner.
+It packages the already-validated `Benchmarks/Results/latest` artifact set from the tagged commit, so release assets stay tied to maintainer-verified evidence instead of ephemeral CI hardware.
 
 Required benchmark artifacts:
 
@@ -124,6 +125,8 @@ To generate and archive immutable evidence in one pass:
 ```bash
 bash Scripts/run-benchmarks.sh standard Benchmarks/Results/latest v1.2.3
 ```
+
+Commit the refreshed `Benchmarks/Results/latest` artifacts before pushing the release tag.
 
 Do not cut a release with missing benchmark evidence if the release notes or README make performance claims.
 The release gate now also runs `Scripts/validate-public-claims.sh` against high-visibility docs whenever `Benchmark-Readiness.md` is not `ready`.
