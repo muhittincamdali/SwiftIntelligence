@@ -19,9 +19,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Refresh Standard Benchmarks
-        run: bash Scripts/run-benchmarks.sh standard Benchmarks/Results/latest
-
       - name: Prepare Release
         run: bash Scripts/prepare-release.sh
 
