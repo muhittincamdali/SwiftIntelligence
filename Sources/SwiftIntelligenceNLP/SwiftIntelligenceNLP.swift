@@ -9,7 +9,7 @@ public actor SwiftIntelligenceNLP {
     // MARK: - Properties
     
     public let moduleID = "NLP"
-    public let version = "1.0.0"
+    public let version = "1.2.0"
     public private(set) var status: ModuleStatus = .uninitialized
     
     // MARK: - NLP Components

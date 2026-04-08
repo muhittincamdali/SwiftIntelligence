@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- post-1.2.0 changes will be tracked here
+
+## 1.2.0 - 2026-04-08
+
 - stabilized the active modular package graph and kept `swift test` green
 - refreshed README and getting-started guides to match the current modular API surface
 - aligned Swift Package Index metadata with real package targets

@@ -22,7 +22,7 @@
 ## 安装
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.0.0")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.0")
 ```
 
 推荐入口:

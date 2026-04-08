@@ -12,16 +12,16 @@ This page compares the current `latest` pointer against the most recent immutabl
 
 | Metric | Latest | Baseline | Delta |
 | --- | ---: | ---: | ---: |
-| Performance score | 55.28 | 38.59 | +43.27% |
-| Average execution time (s) | 0.0791 | 0.0793 | -0.26% |
-| Total memory (MB) | 246.0 | 1037.3 | -76.28% |
+| Performance score | 56.50 | 38.59 | +46.43% |
+| Average execution time (s) | 0.0766 | 0.0793 | -3.48% |
+| Total memory (MB) | 248.7 | 1037.3 | -76.03% |
 | Workloads | 25 | 25 | +0 |
 
 ## Workload Extremes
 
-- Latest fastest workload: `ML_Prediction_Small` (`0.0061s`)
+- Latest fastest workload: `ML_Prediction_Small` (`0.0059s`)
 - Baseline fastest workload: `ML_Prediction_Small` (`0.0061s`)
-- Latest slowest workload: `ML_Model_Loading` (`0.3111s`)
+- Latest slowest workload: `ML_Model_Loading` (`0.3051s`)
 - Baseline slowest workload: `ML_Model_Loading` (`0.3032s`)
 
 ## Evidence Links

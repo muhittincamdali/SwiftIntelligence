@@ -13,10 +13,10 @@ public final class SwiftIntelligenceCore: ObservableObject {
     // MARK: - Properties
     
     /// Current framework version
-    public static let version = "1.0.0"
+    public static let version = "1.2.0"
     
     /// Framework build number
-    public static let buildNumber = "100"
+    public static let buildNumber = "120"
     
     /// Current configuration
     @Published public private(set) var configuration: IntelligenceConfiguration

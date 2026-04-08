@@ -4,7 +4,7 @@ import SwiftUI
 /// Organized into 12 categories for easy discovery and integration
 @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, visionOS 1.0, *)
 public struct SwiftUILab {
-    public static let version = "1.0.0"
+    public static let version = "1.2.0"
     public static let componentCount = 120
     
     public init() {}
