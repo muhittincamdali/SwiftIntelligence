@@ -62,8 +62,15 @@ trap 'rm -f "$TEMP_ARCHIVE"' EXIT
 
 bash "$ROOT_DIR/Scripts/export-device-evidence-handoff.sh" "$TEMP_ARCHIVE" >/dev/null
 
-mapfile -t archive_entries < <(tar -tzf "$TEMP_ARCHIVE")
-archive_listing="$(printf '%s\n' "${archive_entries[@]}")"
+archive_entries=()
+while IFS= read -r archive_entry; do
+  archive_entries+=("$archive_entry")
+done < <(tar -tzf "$TEMP_ARCHIVE")
+
+archive_listing=""
+if [[ ${#archive_entries[@]} -gt 0 ]]; then
+  archive_listing="$(printf '%s\n' "${archive_entries[@]}")"
+fi
 
 required_archive_entries=(
   "device-evidence-handoff/README.md"
@@ -90,25 +97,30 @@ for entry in "${required_archive_entries[@]}"; do
   fi
 done
 
-mapfile -t pending_classes < <(ruby -rjson -e 'payload = JSON.parse(File.read(ARGV[0])); Array(payload["entries"]).each { |entry| puts entry.fetch("deviceClass") }' "$QUEUE_JSON")
+pending_classes=()
+while IFS= read -r pending_class; do
+  pending_classes+=("$pending_class")
+done < <(ruby -rjson -e 'payload = JSON.parse(File.read(ARGV[0])); Array(payload["entries"]).each { |entry| puts entry.fetch("deviceClass") }' "$QUEUE_JSON")
 
-for device_class in "${pending_classes[@]}"; do
-  slug="$(echo "$device_class" | tr '[:upper:]' '[:lower:]')"
-  packet_entries=(
-    "device-evidence-handoff/Device-Capture-Packets/$slug/README.md"
-    "device-evidence-handoff/Device-Capture-Packets/$slug/capture.sh"
-    "device-evidence-handoff/Device-Capture-Packets/$slug/import.sh"
-    "device-evidence-handoff/Device-Capture-Packets/$slug/device-metadata.json"
-    "device-evidence-handoff/Device-Capture-Packets/$slug/issue-fields.json"
-    "device-evidence-handoff/Device-Capture-Packets/$slug/issue-submission.md"
-  )
+if [[ ${#pending_classes[@]} -gt 0 ]]; then
+  for device_class in "${pending_classes[@]}"; do
+    slug="$(echo "$device_class" | tr '[:upper:]' '[:lower:]')"
+    packet_entries=(
+      "device-evidence-handoff/Device-Capture-Packets/$slug/README.md"
+      "device-evidence-handoff/Device-Capture-Packets/$slug/capture.sh"
+      "device-evidence-handoff/Device-Capture-Packets/$slug/import.sh"
+      "device-evidence-handoff/Device-Capture-Packets/$slug/device-metadata.json"
+      "device-evidence-handoff/Device-Capture-Packets/$slug/issue-fields.json"
+      "device-evidence-handoff/Device-Capture-Packets/$slug/issue-submission.md"
+    )
 
-  for entry in "${packet_entries[@]}"; do
-    if ! grep -qx "$entry" <<<"$archive_listing"; then
-      echo "Device evidence handoff archive is missing $entry" >&2
-      exit 1
-    fi
+    for entry in "${packet_entries[@]}"; do
+      if ! grep -qx "$entry" <<<"$archive_listing"; then
+        echo "Device evidence handoff archive is missing $entry" >&2
+        exit 1
+      fi
+    done
   done
-done
+fi
 
 echo "Device evidence handoff archive validated."
