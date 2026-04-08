@@ -56,13 +56,21 @@ public enum Localization {
     ///   - arguments: Format arguments
     ///   - defaultValue: Default value if localization not found
     /// - Returns: Formatted localized string
-    public static func string(
+    public static func formattedString(
         for key: String,
-        arguments: CVarArg...,
+        arguments: [CVarArg],
         defaultValue: String? = nil
     ) -> String {
         let format = string(for: key, defaultValue: defaultValue)
         return String(format: format, arguments: arguments)
+    }
+
+    public static func formattedString(
+        for key: String,
+        arguments: CVarArg...,
+        defaultValue: String? = nil
+    ) -> String {
+        formattedString(for: key, arguments: arguments, defaultValue: defaultValue)
     }
     
     // MARK: - Framework Localization
@@ -78,7 +86,7 @@ public enum Localization {
         }
         
         public static func version(_ version: String) -> String {
-            string(for: "framework.version", arguments: version, defaultValue: "Version \(version)")
+            formattedString(for: "framework.version", arguments: version, defaultValue: "Version \(version)")
         }
     }
     
@@ -153,7 +161,7 @@ public enum Localization {
         }
         
         public static func entitiesFound(_ count: Int) -> String {
-            string(for: "nlp.entities.found", arguments: count, defaultValue: "\(count) entities found")
+            formattedString(for: "nlp.entities.found", arguments: count, defaultValue: "\(count) entities found")
         }
         
         public enum Sentiment {
@@ -184,11 +192,11 @@ public enum Localization {
         }
         
         public static func objectsDetected(_ count: Int) -> String {
-            string(for: "vision.objects.detected", arguments: count, defaultValue: "\(count) objects detected")
+            formattedString(for: "vision.objects.detected", arguments: count, defaultValue: "\(count) objects detected")
         }
         
         public static func facesDetected(_ count: Int) -> String {
-            string(for: "vision.faces.detected", arguments: count, defaultValue: "\(count) faces detected")
+            formattedString(for: "vision.faces.detected", arguments: count, defaultValue: "\(count) faces detected")
         }
     }
     
@@ -291,7 +299,7 @@ extension String {
     
     /// Get localized version with format arguments
     public func localized(arguments: CVarArg...) -> String {
-        Localization.string(for: self, arguments: arguments)
+        Localization.formattedString(for: self, arguments: arguments)
     }
 }
 

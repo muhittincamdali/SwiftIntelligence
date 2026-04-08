@@ -239,6 +239,7 @@ public actor SwiftIntelligenceNLP {
                     text: entity,
                     type: entityType,
                     range: tokenRange,
+                    in: text,
                     confidence: 0.85 // NLTagger doesn't provide confidence scores
                 ))
             }

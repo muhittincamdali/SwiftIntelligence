@@ -8,8 +8,10 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping us optimize SwiftIntelligence! ⚡
-        Performance issues help us make the framework faster and more efficient.
+        Performance reports are most useful when they include reproducible workloads and benchmark evidence.
+        If the issue is about a public performance claim, attach or reference the generated artifacts under `Benchmarks/Results`.
+        If the report is specifically about missing device coverage or importing release-grade iPhone/iPad evidence, use the dedicated `Device Evidence Submission` form instead.
+        Do not report simulator results as if they were physical-device release evidence.
 
   - type: textarea
     id: performance-issue
@@ -45,17 +47,17 @@ body:
       description: Which module is experiencing performance issues?
       options:
         - Core
-        - NLP (Natural Language Processing)
+        - ML
+        - NLP
         - Vision
         - Speech
-        - ML (Machine Learning)
         - Privacy
+        - Reasoning
         - Network
         - Cache
         - Metrics
-        - Reasoning
-        - Image Generation
-        - visionOS
+        - Benchmarks
+        - Examples
         - Multiple modules
     validations:
       required: true
@@ -92,8 +94,9 @@ body:
       description: Provide code that demonstrates the performance problem
       render: swift
       placeholder: |
-        import SwiftIntelligence
-        
+        import SwiftIntelligenceCore
+        import SwiftIntelligenceVision
+
         // Code that demonstrates the performance issue
         let startTime = Date()
         let result = try await slowOperation()
@@ -148,7 +151,7 @@ body:
     id: profiling-data
     attributes:
       label: Profiling Data
-      description: Include any profiling data from Instruments or other tools
+      description: Include any profiling data from Instruments, benchmark JSON, or summary artifacts
       placeholder: |
         Time Profiler results:
         - Function A: 60% of time
@@ -159,6 +162,31 @@ body:
         - Memory leaks detected: None
     validations:
       required: false
+
+  - type: dropdown
+    id: proof-impact
+    attributes:
+      label: Public Claim Impact
+      description: Does this issue challenge a public performance or release-proof claim?
+      options:
+        - Yes - a public claim appears overstated or incorrect
+        - Yes - benchmark or release-proof docs look stale
+        - No - this is local performance feedback only
+        - Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence-truthfulness
+    attributes:
+      label: Evidence Truthfulness Notes
+      description: Explain whether the numbers come from physical hardware, simulator, CI, or a local synthetic run
+      placeholder: |
+        - Physical iPhone 15 Pro Max on iOS ...
+        - Apple Silicon Mac local run
+        - Simulator only, not release-grade evidence
+    validations:
+      required: true
 
   - type: textarea
     id: workarounds
@@ -210,6 +238,10 @@ body:
           required: true
         - label: I provided specific performance metrics
           required: true
+        - label: I attached benchmark artifacts or explained why they are unavailable
+          required: true
+        - label: I used the dedicated device-evidence form if this is really a missing-device coverage issue
+          required: false
         - label: I tested on appropriate hardware for my use case
           required: true
         - label: I'm willing to test proposed optimizations

@@ -89,7 +89,7 @@ public enum NLPModelType: String, Codable, Sendable, CaseIterable {
 
 // MARK: - Core NLP Types
 
-public struct NLPOptions: Hashable, Codable {
+public struct NLPOptions: Hashable, Codable, Sendable {
     public let includeSentiment: Bool
     public let includeEntities: Bool
     public let includeKeywords: Bool
@@ -119,9 +119,9 @@ public struct NLPOptions: Hashable, Codable {
         self.maxTopics = maxTopics
     }
     
-    public nonisolated(unsafe) static let `default` = NLPOptions()
+    public static let `default` = NLPOptions()
     
-    public nonisolated(unsafe) static let comprehensive = NLPOptions(
+    public static let comprehensive = NLPOptions(
         includeSentiment: true,
         includeEntities: true,
         includeKeywords: true,
@@ -132,7 +132,7 @@ public struct NLPOptions: Hashable, Codable {
         maxTopics: 10
     )
     
-    public nonisolated(unsafe) static let basic = NLPOptions(
+    public static let basic = NLPOptions(
         includeSentiment: true,
         includeEntities: false,
         includeKeywords: true,
@@ -317,10 +317,16 @@ public struct NamedEntity: Codable, Sendable {
         self.confidence = confidence
     }
     
-    public init(text: String, type: EntityType, range: Range<String.Index>, confidence: Float) {
+    public init(
+        text: String,
+        type: EntityType,
+        range: Range<String.Index>,
+        in sourceText: String,
+        confidence: Float
+    ) {
         self.text = text
         self.type = type
-        self.range = "\(range.lowerBound.utf16Offset(in: text)):\(range.upperBound.utf16Offset(in: text))"
+        self.range = "\(range.lowerBound.utf16Offset(in: sourceText)):\(range.upperBound.utf16Offset(in: sourceText))"
         self.confidence = confidence
     }
 }
@@ -490,7 +496,7 @@ public struct TurkishAnalysisResult: Codable, ConfidenceProvider {
     }
 }
 
-public struct MorphologicalUnit: Codable {
+public struct MorphologicalUnit: Codable, Sendable {
     public let surface: String
     public let lemma: String
     public let pos: String // Part of speech
@@ -504,12 +510,12 @@ public struct MorphologicalUnit: Codable {
     }
 }
 
-public struct TurkishEntity: Codable {
+public struct TurkishEntity: Codable, Sendable {
     public let text: String
     public let type: TurkishEntityType
     public let confidence: Float
     
-    public enum TurkishEntityType: String, CaseIterable, Codable {
+    public enum TurkishEntityType: String, CaseIterable, Codable, Sendable {
         case turkishPerson = "turkish_person"
         case turkishLocation = "turkish_location"
         case turkishOrganization = "turkish_organization"
@@ -573,7 +579,7 @@ public enum NLPError: LocalizedError {
 
 // MARK: - Extensions for NLLanguage
 
-extension NLLanguage: Codable {
+extension NLLanguage: @retroactive Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let rawValue = try container.decode(String.self)
@@ -644,7 +650,7 @@ public struct SentimentScores: Sendable {
 // Removed duplicate SentimentAnalysisResult - use SentimentResult instead
 
 /// NLP tokenizer
-public struct NLPTokenizer {
+public actor NLPTokenizer {
     public let language: String
     private let tokenizer: NLTokenizer
     
@@ -790,29 +796,29 @@ public actor NLPSentimentAnalyzer: Sendable {
         
         tagger.string = text
         
-        let (tag, confidenceRange) = tagger.tag(at: text.startIndex, unit: .paragraph, scheme: .sentimentScore)
+        let (tag, _) = tagger.tag(at: text.startIndex, unit: .paragraph, scheme: .sentimentScore)
         
         if let sentimentScore = tag?.rawValue, let score = Double(sentimentScore) {
-            let sentiment: SentimentType
             let positiveScore: Double
             let negativeScore: Double
             let neutralScore: Double
+            let resultSentiment: SentimentResult.Sentiment
             
             if score > 0.1 {
-                sentiment = .positive
                 positiveScore = min(score + 0.5, 1.0)
                 negativeScore = max(0.0, 0.5 - score)
                 neutralScore = max(0.0, 1.0 - positiveScore - negativeScore)
+                resultSentiment = .positive
             } else if score < -0.1 {
-                sentiment = .negative
                 negativeScore = min(abs(score) + 0.5, 1.0)
                 positiveScore = max(0.0, 0.5 - abs(score))
                 neutralScore = max(0.0, 1.0 - positiveScore - negativeScore)
+                resultSentiment = .negative
             } else {
-                sentiment = .neutral
                 neutralScore = 0.7
                 positiveScore = 0.15
                 negativeScore = 0.15
+                resultSentiment = .neutral
             }
             
             let scores = SentimentScores(
@@ -825,7 +831,7 @@ public actor NLPSentimentAnalyzer: Sendable {
             let calculatedConfidence = min(1.0, abs(score) + 0.5)
             
             return SentimentResult(
-                sentiment: .positive, // Convert from SentimentType to Sentiment enum
+                sentiment: resultSentiment,
                 score: Float(scores.positive - scores.negative), // Convert to -1.0 to 1.0 range
                 confidence: Float(calculatedConfidence),
                 positiveWords: [], 
@@ -857,46 +863,35 @@ public actor NLPSentimentAnalyzer: Sendable {
         }
         
         let total = positiveCount + negativeCount
-        let sentiment: SentimentType
         let confidence: Double
         let positiveScore: Double
         let negativeScore: Double
-        let neutralScore: Double
+        let resultSentiment: SentimentResult.Sentiment
         
         if total == 0 {
-            sentiment = .neutral
             confidence = 0.5
             positiveScore = 0.33
             negativeScore = 0.33
-            neutralScore = 0.34
+            resultSentiment = .neutral
         } else if positiveCount > negativeCount {
-            sentiment = .positive
             confidence = Double(positiveCount) / Double(total)
             positiveScore = confidence
             negativeScore = 1.0 - confidence
-            neutralScore = 0.1
+            resultSentiment = .positive
         } else if negativeCount > positiveCount {
-            sentiment = .negative
             confidence = Double(negativeCount) / Double(total)
             negativeScore = confidence
             positiveScore = 1.0 - confidence
-            neutralScore = 0.1
+            resultSentiment = .negative
         } else {
-            sentiment = .mixed
             confidence = 0.5
             positiveScore = 0.45
             negativeScore = 0.45
-            neutralScore = 0.1
+            resultSentiment = .neutral
         }
         
-        let scores = SentimentScores(
-            positive: positiveScore,
-            negative: negativeScore,
-            neutral: neutralScore
-        )
-        
         return SentimentResult(
-            sentiment: .neutral, // Convert from SentimentType to Sentiment enum
+            sentiment: resultSentiment,
             score: Float(positiveScore - negativeScore), // Convert to -1.0 to 1.0 range
             confidence: Float(confidence),
             positiveWords: [],

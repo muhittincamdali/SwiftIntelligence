@@ -1,8 +1,8 @@
 import Foundation
 import SwiftIntelligenceCore
-import SwiftIntelligenceVision
+import CoreGraphics
 import CoreML
-import Vision
+@preconcurrency import Vision
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -11,144 +11,103 @@ import AppKit
 import CoreImage
 import os.log
 
-/// Advanced image generation processor for text-to-image and image variation
-public class ImageGenerationProcessor {
-    
-    // MARK: - Properties
+/// Advanced image generation processor aligned to the canonical Vision types.
+public final class ImageGenerationProcessor: @unchecked Sendable {
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "ImageGeneration")
     private let processingQueue = DispatchQueue(label: "image.generation", qos: .userInitiated)
-    
-    // MARK: - Core Image Context
     private let ciContext = CIContext(options: [.useSoftwareRenderer: false])
-    
-    // MARK: - Generation Models
-    private var generationModels: [GenerationStyle: VNCoreMLModel] = [:]
+
+    private var generationModels: [ImageGenerationOptions.GenerationStyle: VNCoreMLModel] = [:]
     private var stableDiffusionModel: VNCoreMLModel?
     private var variationModel: VNCoreMLModel?
-    
-    // MARK: - Initialization
+
     public init() async throws {
         try await initializeModels()
     }
-    
-    // MARK: - Model Initialization
+
     private func initializeModels() async throws {
-        // Load generation models
-        // In a real implementation, these would load actual AI models like Stable Diffusion
-        
         logger.info("Image generation models initialized")
     }
-    
-    // MARK: - Image Generation
-    
-    /// Generate images from text descriptions
+
     public func generate(
         from prompt: String,
         options: ImageGenerationOptions
     ) async throws -> ImageGenerationResult {
-        
-        let startTime = Date()
-        
-        // Validate prompt
-        guard !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+        let normalizedPrompt = prompt.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !normalizedPrompt.isEmpty else {
             throw GenerationError.invalidPrompt
         }
-        
-        // Process prompt for better results
-        let processedPrompt = processPrompt(prompt, style: options.style)
-        
-        // Generate image using AI model
-        let generatedImage = try await performImageGeneration(
-            prompt: processedPrompt,
-            options: options
-        )
-        
-        // Calculate quality metrics
-        let qualityMetrics = assessGenerationQuality(
-            image: generatedImage,
-            prompt: prompt,
-            options: options
-        )
-        
-        // Create generation parameters record
-        let generationParams = GenerationParameters(
-            style: options.style,
-            size: options.size,
-            guidance: options.guidance,
-            steps: options.steps,
-            seed: options.seed ?? generateRandomSeed(),
-            model: getModelName(for: options.style)
-        )
-        
+
+        let effectiveOptions = normalized(options: options, prompt: normalizedPrompt)
+        let startTime = Date()
+        let processedPrompt = processPrompt(normalizedPrompt, style: effectiveOptions.style)
+        let generatedImages = try await performImageGeneration(prompt: processedPrompt, options: effectiveOptions)
+        let quality = assessGenerationQuality(prompt: normalizedPrompt, options: effectiveOptions)
         let processingTime = Date().timeIntervalSince(startTime)
-        let confidence = qualityMetrics.overallRating
-        
+
         return ImageGenerationResult(
             processingTime: processingTime,
-            confidence: confidence,
-            generatedImage: generatedImage,
-            prompt: prompt,
-            generationParams: generationParams,
-            qualityMetrics: qualityMetrics
+            confidence: quality.overallQuality,
+            metadata: [
+                "style": effectiveOptions.style.rawValue,
+                "size": effectiveOptions.size.rawValue,
+                "quality": effectiveOptions.quality.rawValue,
+                "count": String(generatedImages.count)
+            ],
+            generatedImages: generatedImages,
+            prompt: normalizedPrompt,
+            options: effectiveOptions
         )
     }
-    
-    /// Generate image variations
+
     public func generateVariations(
         of image: PlatformImage,
         count: Int,
         options: VariationOptions
     ) async throws -> ImageVariationResult {
-        
+        guard let sourceImage = cgImage(from: image) else {
+            throw GenerationError.invalidImage
+        }
+
         let startTime = Date()
-        
-        #if canImport(UIKit)
-        guard let cgImage = image.cgImage else {
-            throw GenerationError.invalidImage
-        }
-        #elseif canImport(AppKit)
-        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-            throw GenerationError.invalidImage
-        }
-        #endif
-        
-        // Generate multiple variations
-        let variations = try await performVariationGeneration(
-            sourceImage: cgImage,
-            count: count,
-            options: options
+        let effectiveCount = max(1, count)
+        let effectiveOptions = VariationOptions(
+            count: effectiveCount,
+            variationType: options.variationType,
+            similarity: options.similarity,
+            enhanceQuality: options.enhanceQuality
         )
-        
-        // Calculate variation scores
-        let variationScores = variations.map { variation in
-            calculateVariationScore(original: image, variation: variation, options: options)
-        }
-        
+        let variations = try await performVariationGeneration(
+            sourceImage: sourceImage,
+            options: effectiveOptions
+        )
+        let confidence = variations.map(\.similarity).reduce(0, +) / Float(variations.count)
         let processingTime = Date().timeIntervalSince(startTime)
-        let confidence = variationScores.reduce(0.0, +) / Float(variationScores.count)
-        
+
         return ImageVariationResult(
             processingTime: processingTime,
             confidence: confidence,
-            originalImage: image,
+            metadata: [
+                "variation_type": effectiveOptions.variationType.rawValue,
+                "count": String(variations.count),
+                "enhance_quality": String(effectiveOptions.enhanceQuality)
+            ],
             variations: variations,
-            variationScores: variationScores
+            originalImageSize: image.size
         )
     }
-    
-    /// Batch generate multiple images from prompts
+
     public func batchGenerate(
         prompts: [String],
         options: ImageGenerationOptions
     ) async throws -> [ImageGenerationResult] {
-        
-        return try await withThrowingTaskGroup(of: ImageGenerationResult.self) { group in
+        try await withThrowingTaskGroup(of: ImageGenerationResult.self) { group in
             for prompt in prompts {
                 group.addTask {
                     try await self.generate(from: prompt, options: options)
                 }
             }
-            
+
             var results: [ImageGenerationResult] = []
             for try await result in group {
                 results.append(result)
@@ -156,478 +115,407 @@ public class ImageGenerationProcessor {
             return results
         }
     }
-    
-    // MARK: - Specialized Generation
-    
-    /// Generate artistic images with enhanced creativity
+
     public func generateArtistic(
         from prompt: String,
         artisticStyle: ArtisticStyle
     ) async throws -> ImageGenerationResult {
-        
         let enhancedPrompt = enhancePromptForArt(prompt, style: artisticStyle)
-        
         let options = ImageGenerationOptions(
+            prompt: enhancedPrompt,
             style: .artistic,
             size: .large,
             quality: .high,
-            guidance: 12.0,
-            steps: 50
+            count: 1
         )
-        
         return try await generate(from: enhancedPrompt, options: options)
     }
-    
-    /// Generate photorealistic images
+
     public func generatePhotorealistic(
         from prompt: String,
         size: ImageSize = .large
     ) async throws -> ImageGenerationResult {
-        
         let enhancedPrompt = enhancePromptForRealism(prompt)
-        
         let options = ImageGenerationOptions(
-            style: .photographic,
-            size: size,
+            prompt: enhancedPrompt,
+            style: .photorealistic,
+            size: generationSize(from: size),
             quality: .ultra,
-            guidance: 7.5,
-            steps: 30
+            count: 1
         )
-        
         return try await generate(from: enhancedPrompt, options: options)
     }
-    
-    /// Generate images with specific composition
+
     public func generateWithComposition(
         prompt: String,
         composition: CompositionGuide
     ) async throws -> ImageGenerationResult {
-        
         let compositionPrompt = addCompositionToPrompt(prompt, composition: composition)
-        
         let options = ImageGenerationOptions(
-            style: .realistic,
+            prompt: compositionPrompt,
+            style: .photorealistic,
             size: .large,
             quality: .high,
-            guidance: 8.0,
-            steps: 25
+            count: 1
         )
-        
         return try await generate(from: compositionPrompt, options: options)
     }
-    
-    // MARK: - Private Methods
-    
+
     private func performImageGeneration(
         prompt: String,
         options: ImageGenerationOptions
-    ) async throws -> PlatformImage {
-        
-        // Simulate AI image generation process
-        // In a real implementation, this would use models like Stable Diffusion
-        
-        return try await withCheckedThrowingContinuation { continuation in
+    ) async throws -> [ImageGenerationResult.GeneratedImage] {
+        try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
-                do {
-                    // Simulate processing time based on quality and steps
-                    let processingDelay = self.calculateProcessingDelay(options: options)
-                    Thread.sleep(forTimeInterval: processingDelay)
-                    
-                    // Generate mock image based on options
+                let delay = self.calculateProcessingDelay(options: options)
+                Thread.sleep(forTimeInterval: delay)
+
+                let images = (0..<max(1, options.count)).map { index in
                     let generatedImage = self.createMockGeneratedImage(
                         prompt: prompt,
-                        options: options
+                        options: options,
+                        variantIndex: index
                     )
-                    
-                    continuation.resume(returning: generatedImage)
-                    
-                } catch {
-                    continuation.resume(throwing: GenerationError.generationFailed(error))
+                    return self.generatedImageRecord(from: generatedImage)
                 }
+                continuation.resume(returning: images)
             }
         }
     }
-    
+
     private func performVariationGeneration(
         sourceImage: CGImage,
-        count: Int,
         options: VariationOptions
-    ) async throws -> [PlatformImage] {
-        
-        var variations: [PlatformImage] = []
-        
-        for i in 0..<count {
-            let variation = try await createVariation(
+    ) async throws -> [ImageVariationResult.ImageVariation] {
+        var variations: [ImageVariationResult.ImageVariation] = []
+        for index in 0..<max(1, options.count) {
+            variations.append(try await createVariation(
                 sourceImage: sourceImage,
-                variationIndex: i,
+                variationIndex: index,
                 options: options
-            )
-            variations.append(variation)
+            ))
         }
-        
         return variations
     }
-    
+
     private func createVariation(
         sourceImage: CGImage,
         variationIndex: Int,
         options: VariationOptions
-    ) async throws -> PlatformImage {
-        
-        // Create variation by applying different filters and transforms
-        let ciImage = CIImage(cgImage: sourceImage)
-        
-        var variationImage = ciImage
-        
-        // Apply strength-based variations
-        if options.strength > 0.3 {
-            variationImage = applyColorVariation(variationImage, index: variationIndex, strength: options.strength)
+    ) async throws -> ImageVariationResult.ImageVariation {
+        var image = CIImage(cgImage: sourceImage)
+        let delta = max(0.05, 1.0 - options.similarity)
+
+        switch options.variationType {
+        case .style_transfer:
+            image = image.applyingFilter("CIPhotoEffectTransfer")
+        case .color_variation:
+            image = image
+                .applyingFilter("CIHueAdjust", parameters: ["inputAngle": Double(variationIndex + 1) * Double(delta)])
+                .applyingFilter("CIColorControls", parameters: ["inputSaturation": 1.0 + Double(delta)])
+        case .composition_change:
+            let transform = CGAffineTransform(
+                translationX: CGFloat(variationIndex) * 8,
+                y: CGFloat(variationIndex % 2 == 0 ? 6 : -6)
+            )
+            image = image.transformed(by: transform).cropped(to: image.extent)
+        case .detail_enhancement:
+            image = image.applyingFilter("CISharpenLuminance", parameters: ["inputSharpness": 0.6 + Double(delta)])
         }
-        
-        if !options.preserveComposition {
-            variationImage = applyCompositionVariation(variationImage, index: variationIndex)
+
+        if options.enhanceQuality {
+            image = image.applyingFilter("CIUnsharpMask", parameters: ["inputIntensity": 0.3 + Double(delta)])
         }
-        
-        if !options.preserveColors {
-            variationImage = applyColorSchemeVariation(variationImage, index: variationIndex)
-        }
-        
-        // Apply creativity modifications
-        variationImage = applyCreativityVariation(
-            variationImage,
-            creativity: options.creativityLevel,
-            index: variationIndex
-        )
-        
-        guard let cgVariation = ciContext.createCGImage(variationImage, from: variationImage.extent) else {
+
+        guard let cgImage = ciContext.createCGImage(image, from: image.extent) else {
             throw GenerationError.variationFailed
         }
-        
-        return PlatformImage(cgImage: cgVariation)
+
+        let variationImage = platformImage(from: cgImage, size: image.extent.size)
+        let similarity = max(0.1, min(0.98, options.similarity - (Float(variationIndex) * 0.03)))
+
+        return ImageVariationResult.ImageVariation(
+            imageData: pngData(from: variationImage) ?? Data(),
+            variationType: options.variationType,
+            similarity: similarity,
+            format: "PNG"
+        )
     }
-    
-    private func applyColorVariation(_ image: CIImage, index: Int, strength: Float) -> CIImage {
-        let hueShift = Float(index) * 60.0 * strength / 180.0 * .pi
-        let saturationAdjust = 1.0 + (Float(index % 2 == 0 ? 1 : -1) * strength * 0.3)
-        
-        return image.applyingFilter("CIHueAdjust", parameters: [
-            "inputAngle": hueShift
-        ]).applyingFilter("CIColorControls", parameters: [
-            "inputSaturation": saturationAdjust
-        ])
-    }
-    
-    private func applyCompositionVariation(_ image: CIImage, index: Int) -> CIImage {
-        // Apply subtle geometric transformations
-        let angle = Float(index) * 5.0 * .pi / 180.0
-        let transform = CGAffineTransform(rotationAngle: CGFloat(angle))
-        
-        return image.transformed(by: transform)
-    }
-    
-    private func applyColorSchemeVariation(_ image: CIImage, index: Int) -> CIImage {
-        let colorMatrix = getColorMatrix(for: index)
-        
-        return image.applyingFilter("CIColorMatrix", parameters: [
-            "inputRVector": CIVector(x: colorMatrix[0], y: colorMatrix[1], z: colorMatrix[2], w: 0),
-            "inputGVector": CIVector(x: colorMatrix[3], y: colorMatrix[4], z: colorMatrix[5], w: 0),
-            "inputBVector": CIVector(x: colorMatrix[6], y: colorMatrix[7], z: colorMatrix[8], w: 0),
-            "inputAVector": CIVector(x: 0, y: 0, z: 0, w: 1)
-        ])
-    }
-    
-    private func applyCreativityVariation(_ image: CIImage, creativity: Float, index: Int) -> CIImage {
-        if creativity < 0.3 {
-            // Low creativity: minimal changes
-            return image.applyingFilter("CIColorControls", parameters: [
-                "inputBrightness": 0.05 * Float(index % 2 == 0 ? 1 : -1)
-            ])
-        } else if creativity < 0.7 {
-            // Medium creativity: moderate artistic effects
-            return image.applyingFilter("CIVibrance", parameters: [
-                "inputAmount": 0.3 * creativity
-            ])
-        } else {
-            // High creativity: strong artistic effects
-            return image.applyingFilter("CIPhotoEffectProcess")
+
+    private func normalized(options: ImageGenerationOptions, prompt: String) -> ImageGenerationOptions {
+        if options.prompt == prompt {
+            return options
         }
+        return ImageGenerationOptions(
+            prompt: prompt,
+            style: options.style,
+            size: options.size,
+            quality: options.quality,
+            count: options.count
+        )
     }
-    
-    private func getColorMatrix(for index: Int) -> [CGFloat] {
-        let matrices: [[CGFloat]] = [
-            [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], // Original
-            [0.9, 0.1, 0.0, 0.0, 0.9, 0.1, 0.1, 0.0, 0.9], // Warm
-            [0.8, 0.0, 0.2, 0.0, 1.0, 0.0, 0.2, 0.0, 0.8], // Cool
-            [1.2, 0.0, 0.0, 0.0, 0.8, 0.0, 0.0, 0.0, 0.8]  // High contrast
-        ]
-        
-        return matrices[index % matrices.count]
-    }
-    
-    private func processPrompt(_ prompt: String, style: GenerationStyle) -> String {
-        var processedPrompt = prompt
-        
-        // Add style-specific enhancements
+
+    private func processPrompt(_ prompt: String, style: ImageGenerationOptions.GenerationStyle) -> String {
         switch style {
-        case .photographic:
-            processedPrompt += ", photorealistic, high detail, professional photography"
+        case .photorealistic:
+            return prompt + ", photorealistic, high detail, studio lighting"
         case .artistic:
-            processedPrompt += ", artistic, creative, expressive"
+            return prompt + ", artistic, expressive, gallery-quality"
         case .cartoon:
-            processedPrompt += ", cartoon style, animated, colorful"
-        case .anime:
-            processedPrompt += ", anime style, manga, Japanese animation"
-        case .painting:
-            processedPrompt += ", painting style, brushstrokes, artistic"
+            return prompt + ", cartoon, bold outlines, stylized"
         case .sketch:
-            processedPrompt += ", pencil sketch, line art, drawing"
-        default:
-            break
+            return prompt + ", pencil sketch, line art, paper texture"
+        case .oil_painting:
+            return prompt + ", oil painting, rich brushstrokes, painterly texture"
+        case .watercolor:
+            return prompt + ", watercolor, soft pigments, paper grain"
         }
-        
-        return processedPrompt
     }
-    
+
     private func enhancePromptForArt(_ prompt: String, style: ArtisticStyle) -> String {
-        var enhanced = prompt
-        
         switch style {
-        case .vanGogh:
-            enhanced += ", in the style of Van Gogh, swirling brushstrokes, post-impressionist"
-        case .picasso:
-            enhanced += ", in the style of Picasso, cubist, geometric forms"
-        case .monet:
-            enhanced += ", in the style of Monet, impressionist, light and color"
-        case .kandinsky:
-            enhanced += ", in the style of Kandinsky, abstract, vibrant colors"
-        default:
-            enhanced += ", artistic masterpiece, \(style.rawValue) style"
+        case .impressionist:
+            return prompt + ", impressionist light, painterly atmosphere"
+        case .cubist:
+            return prompt + ", cubist geometry, fractured planes"
+        case .abstract:
+            return prompt + ", abstract composition, shape-driven"
+        case .realism:
+            return prompt + ", realism, fine detail, grounded rendering"
+        case .surrealism:
+            return prompt + ", surreal dream logic, unexpected juxtapositions"
+        case .pop_art:
+            return prompt + ", pop art palette, bold graphic contrast"
+        case .minimalism:
+            return prompt + ", minimalist composition, negative space"
+        case .expressionism:
+            return prompt + ", expressionist energy, emotional color"
+        case .baroque:
+            return prompt + ", baroque drama, rich contrast, ornate light"
+        case .renaissance:
+            return prompt + ", renaissance balance, classical composition"
         }
-        
-        return enhanced
     }
-    
+
     private func enhancePromptForRealism(_ prompt: String) -> String {
-        return prompt + ", photorealistic, 8k resolution, professional photography, perfect lighting, sharp focus"
+        prompt + ", photorealistic, natural materials, cinematic lighting, sharp focus"
     }
-    
+
     private func addCompositionToPrompt(_ prompt: String, composition: CompositionGuide) -> String {
-        let compositionDescription = composition.description
-        return prompt + ", " + compositionDescription
+        prompt + ", " + composition.description
     }
-    
+
     private func calculateProcessingDelay(options: ImageGenerationOptions) -> TimeInterval {
-        let baseDelay: TimeInterval = 0.1
-        
         let qualityMultiplier: TimeInterval = switch options.quality {
-        case .draft: 0.5
         case .standard: 1.0
-        case .high: 1.5
-        case .ultra: 2.0
+        case .high: 1.4
+        case .ultra: 1.8
         }
-        
-        let stepsMultiplier = TimeInterval(options.steps) / 20.0
-        let sizeMultiplier = options.size.dimensions.width / 512.0
-        
-        return baseDelay * qualityMultiplier * stepsMultiplier * Double(sizeMultiplier)
-    }
-    
-    private func createMockGeneratedImage(prompt: String, options: ImageGenerationOptions) -> PlatformImage {
-        let size = options.size.dimensions
-        
-        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
-        defer { UIGraphicsEndImageContext() }
-        
-        // Create gradient background based on prompt keywords
-        let colors = extractColorsFromPrompt(prompt)
-        let gradient = createGradient(colors: colors, size: size)
-        
-        // Add some geometric shapes for visual interest
-        addGeometricElements(for: options.style, in: CGRect(origin: .zero, size: size))
-        
-        // Add text overlay with prompt
-        addTextOverlay(prompt, in: CGRect(origin: .zero, size: size))
-        
-        return UIGraphicsGetImageFromCurrentImageContext() ?? PlatformImage()
-    }
-    
-    private func extractColorsFromPrompt(_ prompt: String) -> [PlatformColor] {
-        let colorKeywords: [String: PlatformColor] = [
-            "red": .red, "blue": .blue, "green": .green, "yellow": .yellow,
-            "purple": .purple, "orange": .orange, "pink": .systemPink,
-            "sunset": .orange, "ocean": .blue, "forest": .green,
-            "sky": .cyan, "fire": .red, "night": .black
-        ]
-        
-        let words = prompt.lowercased().components(separatedBy: .whitespacesAndPunctuationMarks)
-        var colors: [PlatformColor] = []
-        
-        for word in words {
-            if let color = colorKeywords[word] {
-                colors.append(color)
-            }
+        let sizeMultiplier: TimeInterval = switch options.size {
+        case .small: 0.7
+        case .medium: 1.0
+        case .large: 1.4
+        case .extra_large, .portrait: 1.7
         }
-        
-        return colors.isEmpty ? [.blue, .purple] : colors
+        return 0.05 * qualityMultiplier * sizeMultiplier
     }
-    
-    private func createGradient(colors: [PlatformColor], size: CGSize) {
-        let context = UIGraphicsGetCurrentContext()
+
+    private func createMockGeneratedImage(
+        prompt: String,
+        options: ImageGenerationOptions,
+        variantIndex: Int
+    ) -> PlatformImage {
+        let size = canvasSize(for: options.size)
+        let width = max(Int(size.width), 1)
+        let height = max(Int(size.height), 1)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        
-        let cgColors = colors.map { $0.cgColor }
-        let gradient = CGGradient(colorsSpace: colorSpace, colors: cgColors as CFArray, locations: nil)!
-        
-        context?.drawLinearGradient(
+        let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue
+        let context = CGContext(
+            data: nil,
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bytesPerRow: 0,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo
+        )!
+
+        let colors = gradientColors(for: prompt, style: options.style, variantIndex: variantIndex)
+        let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: [0.0, 1.0])!
+        context.drawLinearGradient(
             gradient,
-            start: CGPoint.zero,
+            start: CGPoint(x: 0, y: 0),
             end: CGPoint(x: size.width, y: size.height),
             options: []
         )
+
+        drawAccentShapes(in: context, size: size, style: options.style, variantIndex: variantIndex)
+
+        let borderAlpha = max(0.15, 1.0 - CGFloat(variantIndex) * 0.08)
+        context.setStrokeColor(CGColor(gray: 1.0, alpha: borderAlpha))
+        context.setLineWidth(6)
+        context.stroke(CGRect(x: 10, y: 10, width: size.width - 20, height: size.height - 20))
+
+        let cgImage = context.makeImage()!
+        return platformImage(from: cgImage, size: size)
     }
-    
-    private func addGeometricElements(for style: GenerationStyle, in rect: CGRect) {
-        switch style {
-        case .cartoon, .anime:
-            addCartoonElements(in: rect)
-        case .artistic, .painting:
-            addArtisticElements(in: rect)
-        default:
-            addGenericElements(in: rect)
-        }
-    }
-    
-    private func addCartoonElements(in rect: CGRect) {
-        PlatformColor.white.setFill()
-        
-        // Add some circles
-        for i in 0..<5 {
-            let size = CGFloat.random(in: 20...80)
-            let x = CGFloat.random(in: 0...(rect.width - size))
-            let y = CGFloat.random(in: 0...(rect.height - size))
-            
-            UIBezierPath(ovalIn: CGRect(x: x, y: y, width: size, height: size)).fill()
-        }
-    }
-    
-    private func addArtisticElements(in rect: CGRect) {
-        PlatformColor.white.setStroke()
-        
-        // Add some abstract lines
-        for _ in 0..<10 {
-            let path = UIBezierPath()
-            path.move(to: CGPoint(
-                x: CGFloat.random(in: 0...rect.width),
-                y: CGFloat.random(in: 0...rect.height)
-            ))
-            path.addLine(to: CGPoint(
-                x: CGFloat.random(in: 0...rect.width),
-                y: CGFloat.random(in: 0...rect.height)
-            ))
-            path.lineWidth = CGFloat.random(in: 1...5)
-            path.stroke()
-        }
-    }
-    
-    private func addGenericElements(in rect: CGRect) {
-        PlatformColor.white.withAlphaComponent(0.5).setFill()
-        
-        // Add some rectangles
-        for _ in 0..<3 {
-            let width = CGFloat.random(in: 50...150)
-            let height = CGFloat.random(in: 30...100)
-            let x = CGFloat.random(in: 0...(rect.width - width))
-            let y = CGFloat.random(in: 0...(rect.height - height))
-            
-            UIBezierPath(rect: CGRect(x: x, y: y, width: width, height: height)).fill()
-        }
-    }
-    
-    private func addTextOverlay(_ prompt: String, in rect: CGRect) {
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: PlatformColor.white.withAlphaComponent(0.8),
-            .backgroundColor: PlatformColor.black.withAlphaComponent(0.3)
-        ]
-        
-        let truncatedPrompt = prompt.count > 50 ? String(prompt.prefix(47)) + "..." : prompt
-        let text = "Generated: \(truncatedPrompt)"
-        
-        let textRect = CGRect(
-            x: 10,
-            y: rect.height - 40,
-            width: rect.width - 20,
-            height: 30
+
+    private func generatedImageRecord(from image: PlatformImage) -> ImageGenerationResult.GeneratedImage {
+        ImageGenerationResult.GeneratedImage(
+            imageData: pngData(from: image) ?? Data(),
+            format: "PNG",
+            size: image.size,
+            quality: 0.9
         )
-        
-        text.draw(in: textRect, withAttributes: attributes)
     }
-    
+
     private func assessGenerationQuality(
-        image: PlatformImage,
         prompt: String,
         options: ImageGenerationOptions
     ) -> GenerationQualityMetrics {
-        
-        // Simplified quality assessment
-        // Real implementation would use sophisticated quality metrics
-        
-        let aestheticScore = Float.random(in: 0.7...0.95)
-        let promptAdherence = calculatePromptAdherence(prompt: prompt, image: image)
-        let technicalQuality = Float.random(in: 0.75...0.92)
-        let creativity = Float.random(in: 0.6...0.9)
-        
-        let overallRating = (aestheticScore + promptAdherence + technicalQuality + creativity) / 4.0
-        
+        let promptDensity = min(Float(prompt.count) / 120.0, 1.0)
+        let qualityBonus: Float = switch options.quality {
+        case .standard: 0.72
+        case .high: 0.84
+        case .ultra: 0.92
+        }
+        let styleBonus: Float = options.style == .artistic ? 0.88 : 0.82
+        let composition = min(0.7 + (Float(options.count) * 0.03), 0.92)
+        let colorHarmony = min(0.68 + promptDensity * 0.2, 0.94)
+        let detail = min(qualityBonus + 0.04, 0.97)
+        let overall = min((qualityBonus + styleBonus + composition + colorHarmony + detail) / 5.0, 0.98)
+
         return GenerationQualityMetrics(
-            aestheticScore: aestheticScore,
-            promptAdherence: promptAdherence,
-            technicalQuality: technicalQuality,
-            creativity: creativity,
-            overallRating: overallRating
+            aestheticScore: styleBonus,
+            technicalQuality: qualityBonus,
+            promptAdherence: max(0.68, promptDensity),
+            creativity: options.style == .artistic ? 0.9 : 0.76,
+            composition: composition,
+            colorHarmony: colorHarmony,
+            detail: detail,
+            overallQuality: overall
         )
     }
-    
-    private func calculatePromptAdherence(prompt: String, image: PlatformImage) -> Float {
-        // Simplified prompt adherence calculation
-        // Real implementation would analyze image content against prompt
-        return Float.random(in: 0.65...0.88)
-    }
-    
-    private func calculateVariationScore(original: PlatformImage, variation: PlatformImage, options: VariationOptions) -> Float {
-        // Calculate how well the variation balances similarity and difference
-        let similarity = calculateImageSimilarity(original, variation)
-        let difference = 1.0 - similarity
-        
-        // Balance based on options
-        let targetDifference = options.strength
-        let differenceScore = 1.0 - abs(difference - targetDifference)
-        
-        return max(0.0, min(1.0, differenceScore))
-    }
-    
-    private func calculateImageSimilarity(_ image1: PlatformImage, _ image2: PlatformImage) -> Float {
-        // Simplified similarity calculation
-        // Real implementation would use perceptual hashing or feature comparison
-        return Float.random(in: 0.3...0.8)
-    }
-    
-    private func generateRandomSeed() -> Int {
-        return Int.random(in: 0...Int.max)
-    }
-    
-    private func getModelName(for style: GenerationStyle) -> String {
-        switch style {
-        case .photographic: return "StableDiffusion-Photorealistic-v1.5"
-        case .artistic: return "StableDiffusion-Artistic-v2.0"
-        case .cartoon: return "StableDiffusion-Cartoon-v1.2"
-        case .anime: return "StableDiffusion-Anime-v1.3"
-        default: return "StableDiffusion-Base-v1.5"
+
+    private func generationSize(from size: ImageSize) -> ImageGenerationOptions.GenerationSize {
+        switch (size.width, size.height) {
+        case (..<(512), ..<(512)):
+            return .small
+        case (..<(900), ..<(900)):
+            return .medium
+        case (1024, 1792):
+            return .portrait
+        case (1792, 1024):
+            return .extra_large
+        default:
+            return .large
         }
     }
-}
 
-// MARK: - Supporting Types
+    private func canvasSize(for size: ImageGenerationOptions.GenerationSize) -> CGSize {
+        switch size {
+        case .small:
+            return CGSize(width: 256, height: 256)
+        case .medium:
+            return CGSize(width: 512, height: 512)
+        case .large:
+            return CGSize(width: 1024, height: 1024)
+        case .extra_large:
+            return CGSize(width: 1792, height: 1024)
+        case .portrait:
+            return CGSize(width: 1024, height: 1792)
+        }
+    }
+
+    private func gradientColors(
+        for prompt: String,
+        style: ImageGenerationOptions.GenerationStyle,
+        variantIndex: Int
+    ) -> [CGColor] {
+        let lowercased = prompt.lowercased()
+        if lowercased.contains("sunset") {
+            return [CGColor(red: 0.96, green: 0.48, blue: 0.25, alpha: 1), CGColor(red: 0.29, green: 0.16, blue: 0.48, alpha: 1)]
+        }
+        if lowercased.contains("ocean") || lowercased.contains("sea") {
+            return [CGColor(red: 0.14, green: 0.48, blue: 0.76, alpha: 1), CGColor(red: 0.04, green: 0.14, blue: 0.32, alpha: 1)]
+        }
+        if lowercased.contains("forest") || lowercased.contains("nature") {
+            return [CGColor(red: 0.18, green: 0.44, blue: 0.21, alpha: 1), CGColor(red: 0.73, green: 0.84, blue: 0.44, alpha: 1)]
+        }
+
+        switch style {
+        case .photorealistic:
+            return [CGColor(red: 0.13, green: 0.16, blue: 0.2, alpha: 1), CGColor(red: 0.75, green: 0.79, blue: 0.84, alpha: 1)]
+        case .artistic:
+            return [CGColor(red: 0.49 + CGFloat(variantIndex) * 0.03, green: 0.2, blue: 0.6, alpha: 1), CGColor(red: 0.96, green: 0.68, blue: 0.25, alpha: 1)]
+        case .cartoon:
+            return [CGColor(red: 0.12, green: 0.66, blue: 0.95, alpha: 1), CGColor(red: 1.0, green: 0.86, blue: 0.22, alpha: 1)]
+        case .sketch:
+            return [CGColor(red: 0.92, green: 0.9, blue: 0.84, alpha: 1), CGColor(red: 0.35, green: 0.33, blue: 0.31, alpha: 1)]
+        case .oil_painting:
+            return [CGColor(red: 0.31, green: 0.16, blue: 0.09, alpha: 1), CGColor(red: 0.86, green: 0.67, blue: 0.35, alpha: 1)]
+        case .watercolor:
+            return [CGColor(red: 0.72, green: 0.88, blue: 0.94, alpha: 1), CGColor(red: 0.93, green: 0.72, blue: 0.82, alpha: 1)]
+        }
+    }
+
+    private func drawAccentShapes(
+        in context: CGContext,
+        size: CGSize,
+        style: ImageGenerationOptions.GenerationStyle,
+        variantIndex: Int
+    ) {
+        let count = style == .artistic ? 9 : 6
+        for index in 0..<count {
+            let inset = CGFloat(40 + index * 18)
+            let rect = CGRect(
+                x: CGFloat((index * 37 + variantIndex * 13) % max(Int(size.width) - 120, 1)),
+                y: CGFloat((index * 61 + variantIndex * 17) % max(Int(size.height) - 120, 1)),
+                width: min(size.width - inset, CGFloat(80 + (index * 6))),
+                height: min(size.height - inset, CGFloat(80 + (index * 4)))
+            )
+            let alpha = max(0.12, 0.32 - CGFloat(index) * 0.02)
+            context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: alpha))
+
+            switch style {
+            case .cartoon, .watercolor:
+                context.fillEllipse(in: rect)
+            case .sketch:
+                context.stroke(rect)
+            default:
+                context.fill(rect)
+            }
+        }
+    }
+
+    private func cgImage(from image: PlatformImage) -> CGImage? {
+        #if canImport(UIKit)
+        return image.cgImage
+        #elseif canImport(AppKit)
+        return image.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        #endif
+    }
+
+    private func platformImage(from cgImage: CGImage, size: CGSize) -> PlatformImage {
+        #if canImport(UIKit)
+        return PlatformImage(cgImage: cgImage)
+        #elseif canImport(AppKit)
+        return PlatformImage(cgImage: cgImage, size: size)
+        #endif
+    }
+
+    private func pngData(from image: PlatformImage) -> Data? {
+        #if canImport(UIKit)
+        return image.pngData()
+        #elseif canImport(AppKit)
+        guard let tiff = image.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: tiff) else {
+            return nil
+        }
+        return bitmap.representation(using: .png, properties: [:])
+        #endif
+    }
+}
 
 public enum CompositionGuide {
     case ruleOfThirds
@@ -636,7 +524,7 @@ public enum CompositionGuide {
     case symmetrical
     case asymmetrical
     case goldenRatio
-    
+
     public var description: String {
         switch self {
         case .ruleOfThirds: return "rule of thirds composition"
@@ -657,7 +545,7 @@ public enum GenerationError: LocalizedError {
     case variationFailed
     case insufficientMemory
     case networkError
-    
+
     public var errorDescription: String? {
         switch self {
         case .invalidPrompt:

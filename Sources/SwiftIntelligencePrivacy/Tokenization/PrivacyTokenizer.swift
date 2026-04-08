@@ -13,6 +13,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
     private var tokenVault: [String: TokenVaultEntry] = [:]
     private let keychain = SecureKeychain()
     private var tokenizationKey: SymmetricKey?
+    private var initializationTask: Task<Void, Never>?
     private let maxTokenLifetime: TimeInterval = 86400 // 24 hours
     
     // MARK: - Token Generation
@@ -20,7 +21,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
     private let tokenPrefix = "SI_TKN_"
     
     public init() {
-        Task {
+        initializationTask = Task {
             await initializeTokenizer()
         }
         logger.info("PrivacyTokenizer initialized")
@@ -30,12 +31,15 @@ public class PrivacyTokenizer: @unchecked Sendable {
     
     private func initializeTokenizer() async {
         do {
-            // Initialize tokenization key
             if let existingKey = try await keychain.getKey(identifier: "tokenization_key") {
                 tokenizationKey = existingKey
             } else {
                 let newKey = SymmetricKey(size: .bits256)
-                try await keychain.storeKey(newKey, identifier: "tokenization_key")
+                do {
+                    try await keychain.storeKey(newKey, identifier: "tokenization_key")
+                } catch {
+                    logger.warning("Keychain unavailable for tokenization key storage; using in-memory session key: \(error.localizedDescription)")
+                }
                 tokenizationKey = newKey
             }
             
@@ -47,7 +51,9 @@ public class PrivacyTokenizer: @unchecked Sendable {
             
             logger.info("PrivacyTokenizer initialization complete")
         } catch {
-            logger.error("Failed to initialize tokenizer: \(error.localizedDescription)")
+            logger.error("Failed to initialize tokenizer with persistent keychain storage: \(error.localizedDescription)")
+            tokenizationKey = SymmetricKey(size: .bits256)
+            logger.warning("Using in-memory session tokenization key fallback")
         }
     }
     
@@ -58,6 +64,8 @@ public class PrivacyTokenizer: @unchecked Sendable {
         guard !data.isEmpty else {
             throw TokenizationError.emptyData
         }
+
+        await ensureTokenizerReady()
         
         return try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
@@ -124,6 +132,8 @@ public class PrivacyTokenizer: @unchecked Sendable {
     
     /// Detokenize previously tokenized data
     public func detokenize(_ tokenizedData: TokenizedData) async throws -> String {
+        await ensureTokenizerReady()
+
         return try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
                 do {
@@ -133,6 +143,17 @@ public class PrivacyTokenizer: @unchecked Sendable {
                     continuation.resume(throwing: error)
                 }
             }
+        }
+    }
+
+    private func ensureTokenizerReady() async {
+        if let initializationTask = initializationTask {
+            await initializationTask.value
+            self.initializationTask = nil
+        }
+
+        if tokenizationKey == nil {
+            await initializeTokenizer()
         }
     }
     
@@ -427,8 +448,8 @@ public class PrivacyTokenizer: @unchecked Sendable {
                 return
             }
             
-            tokenVault = try JSONDecoder().decode([String: TokenVaultEntry].self, from: vaultData)
-            logger.info("Loaded token vault with \(tokenVault.count) tokens")
+            self.tokenVault = try JSONDecoder().decode([String: TokenVaultEntry].self, from: vaultData)
+            logger.info("Loaded token vault with \(self.tokenVault.count) tokens")
         } catch {
             logger.error("Failed to load token vault: \(error.localizedDescription)")
             tokenVault = [:]
@@ -488,7 +509,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
         Task {
             while true {
                 try await Task.sleep(nanoseconds: 3600_000_000_000) // 1 hour
-                await cleanupExpiredTokens()
+                _ = await cleanupExpiredTokens()
             }
         }
     }

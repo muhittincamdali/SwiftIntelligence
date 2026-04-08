@@ -11,17 +11,40 @@ import SwiftIntelligenceCore
 /// AI/ML specific benchmarks for SwiftIntelligence Framework
 @MainActor
 public final class AIBenchmarks {
+    public enum Profile: String, CaseIterable, Sendable {
+        case smoke
+        case standard
+        case exhaustive
+    }
     
     private let benchmarkSuite = BenchmarkSuite()
     private let logger = IntelligenceLogger()
+    private typealias BenchmarkWorkload = (String, BenchmarkSuite.BenchmarkConfig, () async throws -> Any)
+
+    public init() {}
     
     // MARK: - Benchmark Categories
     
     /// Run comprehensive AI/ML benchmarks
     public func runComprehensiveBenchmarks() async -> [BenchmarkResult] {
-        logger.info("Starting comprehensive AI/ML benchmarks", category: "AIBenchmarks")
-        
-        let benchmarks: [(String, BenchmarkSuite.BenchmarkConfig, () async throws -> Any)] = [
+        await runBenchmarks(profile: .exhaustive)
+    }
+
+    /// Run benchmarks using a reproducible benchmark profile.
+    public func runBenchmarks(profile: Profile = .standard) async -> [BenchmarkResult] {
+        logger.info("Starting AI/ML benchmarks with profile \(profile.rawValue)", category: "AIBenchmarks")
+
+        let benchmarks = benchmarkDefinitions(for: profile)
+        let results = await benchmarkSuite.runBenchmarks(benchmarks)
+
+        logger.info("AI/ML benchmarks completed", category: "AIBenchmarks")
+        logger.info("Total benchmarks run: \(results.count)", category: "AIBenchmarks")
+
+        return results
+    }
+
+    private func benchmarkDefinitions(for profile: Profile) -> [BenchmarkWorkload] {
+        let workloads: [BenchmarkWorkload] = [
             // NLP Benchmarks
             ("NLP_Text_Analysis_Small", .default, { await self.nlpTextAnalysisSmall() }),
             ("NLP_Text_Analysis_Large", .default, { await self.nlpTextAnalysisLarge() }),
@@ -63,13 +86,30 @@ public final class AIBenchmarks {
             ("Integration_Multi_Modal", .default, { await self.integrationMultiModal() }),
             ("Integration_Concurrent_Processing", .default, { await self.integrationConcurrentProcessing() })
         ]
-        
-        let results = await benchmarkSuite.runBenchmarks(benchmarks)
-        
-        logger.info("Comprehensive AI/ML benchmarks completed", category: "AIBenchmarks")
-        logger.info("Total benchmarks run: \(results.count)", category: "AIBenchmarks")
-        
-        return results
+
+        return workloads.map { name, baselineConfig, operation in
+            (name, resolvedConfig(for: baselineConfig, profile: profile), operation)
+        }
+    }
+
+    private func resolvedConfig(
+        for baseline: BenchmarkSuite.BenchmarkConfig,
+        profile: Profile
+    ) -> BenchmarkSuite.BenchmarkConfig {
+        switch profile {
+        case .smoke:
+            return .quick
+        case .standard:
+            if baseline.iterations >= BenchmarkSuite.BenchmarkConfig.comprehensive.iterations {
+                return .default
+            }
+            return baseline
+        case .exhaustive:
+            if baseline.iterations <= BenchmarkSuite.BenchmarkConfig.quick.iterations {
+                return .default
+            }
+            return .comprehensive
+        }
     }
     
     // MARK: - NLP Benchmarks
@@ -213,7 +253,7 @@ public final class AIBenchmarks {
     
     private func cacheWritePerformance() async -> String {
         // Simulate cache write operations
-        for i in 0..<100 {
+        for _ in 0..<100 {
             try? await Task.sleep(nanoseconds: 100_000) // 0.1ms per write
         }
         return "Wrote 100 cache entries"
@@ -221,7 +261,7 @@ public final class AIBenchmarks {
     
     private func cacheReadPerformance() async -> String {
         // Simulate cache read operations
-        for i in 0..<100 {
+        for _ in 0..<100 {
             try? await Task.sleep(nanoseconds: 50_000) // 0.05ms per read
         }
         return "Read 100 cache entries"
@@ -243,7 +283,7 @@ public final class AIBenchmarks {
     
     private func networkBatchProcessing() async -> String {
         // Simulate batch network processing
-        for i in 0..<10 {
+        for _ in 0..<10 {
             try? await Task.sleep(nanoseconds: 5_000_000) // 5ms per request
         }
         return "Processed 10 network requests"
@@ -362,13 +402,17 @@ public final class AIBenchmarks {
     }
     
     /// Export benchmark results and analysis
-    public func exportBenchmarkReport(_ results: [BenchmarkResult]) throws -> Data {
+    public func exportBenchmarkReport(
+        _ results: [BenchmarkResult],
+        profile: Profile
+    ) throws -> Data {
         let analysis = analyzeBenchmarkResults(results)
         let report = BenchmarkReport(
             results: results,
             analysis: analysis,
             generatedAt: Date(),
-            frameworkVersion: "1.0.0"
+            frameworkVersion: "1.0.0",
+            profile: profile.rawValue
         )
         
         return try JSONEncoder().encode(report)
@@ -391,4 +435,5 @@ public struct BenchmarkReport: Codable, Sendable {
     public let analysis: BenchmarkAnalysis
     public let generatedAt: Date
     public let frameworkVersion: String
+    public let profile: String
 }

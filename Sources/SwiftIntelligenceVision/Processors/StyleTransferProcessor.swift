@@ -1,7 +1,7 @@
 import Foundation
 import SwiftIntelligenceCore
 import CoreML
-import Vision
+@preconcurrency import Vision
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -11,7 +11,7 @@ import CoreImage
 import os.log
 
 /// Advanced style transfer processor for artistic image transformation
-public class StyleTransferProcessor {
+public final class StyleTransferProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "StyleTransfer")
@@ -163,20 +163,14 @@ public class StyleTransferProcessor {
         style: ArtisticStyle,
         options: StyleTransferOptions
     ) async throws -> [StyleTransferResult] {
-        
-        return try await withThrowingTaskGroup(of: StyleTransferResult.self) { group in
-            for image in images {
-                group.addTask {
-                    try await self.applyStyle(to: image, style: style, options: options)
-                }
-            }
-            
-            var results: [StyleTransferResult] = []
-            for try await result in group {
-                results.append(result)
-            }
-            return results
+        var results: [StyleTransferResult] = []
+        results.reserveCapacity(images.count)
+
+        for image in images {
+            results.append(try await applyStyle(to: image, style: style, options: options))
         }
+
+        return results
     }
     
     // MARK: - Specialized Style Transfer

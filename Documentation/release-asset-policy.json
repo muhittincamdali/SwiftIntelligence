@@ -1,0 +1,25 @@
+{
+  "requiredReleaseAssets": [
+    "benchmark-report.json",
+    "benchmark-summary.md",
+    "environment.json",
+    "metadata.json",
+    "release-proof.md",
+    "benchmark-delta.md",
+    "release-notes-proof.md",
+    "release-blockers.md",
+    "public-proof-status.md",
+    "public-proof-status.json",
+    "flagship-demo-pack.md",
+    "flagship-demo-share-pack.tar.gz",
+    "intelligent-camera-success.png",
+    "intelligent-camera-run.mp4",
+    "caption.txt",
+    "device-evidence-handoff.md",
+    "device-evidence-handoff.json",
+    "device-evidence-handoff.tar.gz",
+    "release-body.md",
+    "artifact-manifest.json",
+    "checksums.txt"
+  ]
+}

@@ -1,6 +1,6 @@
 import Foundation
 import CoreML
-import Vision
+@preconcurrency import Vision
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -10,7 +10,7 @@ import CoreImage
 import os.log
 
 /// Advanced image enhancement processor with AI-powered upscaling and quality improvements
-public class ImageEnhancementProcessor {
+public final class ImageEnhancementProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "ImageEnhancement")
@@ -188,20 +188,14 @@ public class ImageEnhancementProcessor {
         _ images: [PlatformImage],
         options: EnhancementOptions
     ) async throws -> [ImageEnhancementResult] {
-        
-        return try await withThrowingTaskGroup(of: ImageEnhancementResult.self) { group in
-            for image in images {
-                group.addTask {
-                    try await self.enhance(image, options: options)
-                }
-            }
-            
-            var results: [ImageEnhancementResult] = []
-            for try await result in group {
-                results.append(result)
-            }
-            return results
+        var results: [ImageEnhancementResult] = []
+        results.reserveCapacity(images.count)
+
+        for image in images {
+            results.append(try await enhance(image, options: options))
         }
+
+        return results
     }
     
     // MARK: - Private Enhancement Methods

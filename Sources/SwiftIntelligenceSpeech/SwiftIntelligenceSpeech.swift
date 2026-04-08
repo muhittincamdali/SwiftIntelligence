@@ -157,7 +157,7 @@ public actor SwiftIntelligenceSpeech {
         currentRecognitionText = ""
         recognitionConfidence = 0.0
         
-        return AsyncStream { continuation in
+        return AsyncStream(SpeechRecognitionResult.self) { continuation in
             // Create recognition request
             recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
             
@@ -182,7 +182,7 @@ public actor SwiftIntelligenceSpeech {
             try? audioEngine.start()
             
             // Start recognition task
-            recognitionTask = speechRecognizer.recognizeRequest(recognitionRequest) { [weak self] result, error in
+            recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
                 guard let self = self else { return }
                 
                 if let result = result {
@@ -194,19 +194,20 @@ public actor SwiftIntelligenceSpeech {
                     }
                     
                     let recognitionResult = SpeechRecognitionResult(
-                        processingTime: Date().timeIntervalSince(startTime),
-                        confidence: confidence,
                         transcription: transcription,
+                        confidence: confidence,
+                        alternatives: result.transcriptions.prefix(3).map { $0.formattedString },
                         segments: result.bestTranscription.segments.map { segment in
                             SpeechSegment(
                                 text: segment.substring,
                                 confidence: segment.confidence,
-                                duration: segment.duration,
-                                timestamp: segment.timestamp
+                                timestamp: segment.timestamp,
+                                duration: segment.duration
                             )
                         },
-                        isFinal: result.isFinal,
-                        detectedLanguage: language
+                        language: language,
+                        processingTime: Date().timeIntervalSince(startTime),
+                        metadata: ["is_final": String(result.isFinal)]
                     )
                     
                     continuation.yield(recognitionResult)
@@ -265,13 +266,14 @@ public actor SwiftIntelligenceSpeech {
         
         let startTime = Date()
         logger.info("Starting speech recognition from file: \(audioURL.lastPathComponent)", category: "Speech")
+        let currentLanguage = self.currentLanguage
         
         let request = SFSpeechURLRecognitionRequest(url: audioURL)
         request.shouldReportPartialResults = false
         request.requiresOnDeviceRecognition = options.requireOnDeviceRecognition
         
         return try await withCheckedThrowingContinuation { continuation in
-            speechRecognizer.recognizeRequest(request) { [weak self] result, error in
+            speechRecognizer.recognitionTask(with: request) { [weak self] result, error in
                 guard let self = self else { return }
                 
                 if let error = error {
@@ -287,19 +289,20 @@ public actor SwiftIntelligenceSpeech {
                 let duration = Date().timeIntervalSince(startTime)
                 
                 let recognitionResult = SpeechRecognitionResult(
-                    processingTime: duration,
-                    confidence: confidence,
                     transcription: transcription,
+                    confidence: confidence,
+                    alternatives: result.transcriptions.prefix(3).map { $0.formattedString },
                     segments: result.bestTranscription.segments.map { segment in
                         SpeechSegment(
                             text: segment.substring,
                             confidence: segment.confidence,
-                            duration: segment.duration,
-                            timestamp: segment.timestamp
+                            timestamp: segment.timestamp,
+                            duration: segment.duration
                         )
                     },
-                    isFinal: true,
-                    detectedLanguage: self.currentLanguage
+                    language: currentLanguage,
+                    processingTime: duration,
+                    metadata: ["is_final": "true"]
                 )
                 
                 Task {
@@ -379,10 +382,12 @@ public actor SwiftIntelligenceSpeech {
     // MARK: - Audio Session Management
     
     private func setupAudioSession() async throws {
+        #if canImport(UIKit)
         let audioSession = AVAudioSession.sharedInstance()
         
         try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        #endif
     }
     
     // MARK: - Language Management

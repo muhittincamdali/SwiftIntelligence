@@ -2,87 +2,54 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build and Test
+  package:
+    name: Swift Package Build and Test
     runs-on: macos-14
-    
-    strategy:
-      matrix:
-        xcode: ['15.4']
-        destination: ['platform=iOS Simulator,name=iPhone 15,OS=17.5']
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_${{ matrix.xcode }}.app
-    
-    - name: Show Xcode Version
-      run: xcodebuild -version
-    
-    - name: Cache Swift Packages
-      uses: actions/cache@v4
-      with:
-        path: .build
-        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-        restore-keys: |
-          ${{ runner.os }}-spm-
-    
-    - name: Build
-      run: |
-        set -o pipefail
-        xcodebuild build \
-          -scheme ${{ github.event.repository.name }} \
-          -destination "${{ matrix.destination }}" \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          | xcpretty
-    
-    - name: Run Tests
-      run: |
-        set -o pipefail
-        xcodebuild test \
-          -scheme ${{ github.event.repository.name }} \
-          -destination "${{ matrix.destination }}" \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          | xcpretty
-      continue-on-error: true
 
-  swift-build:
-    name: Swift Package Build
-    runs-on: macos-14
-    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Build Package
-      run: swift build -v
-      continue-on-error: true
-    
-    - name: Run Package Tests
-      run: swift test -v
-      continue-on-error: true
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  lint:
-    name: SwiftLint
-    runs-on: macos-14
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Install SwiftLint
-      run: brew install swiftlint
-    
-    - name: Run SwiftLint
-      run: swiftlint lint --reporter github-actions-logging
-      continue-on-error: true
+      - name: Show Swift Version
+        run: swift --version
 
+      - name: Build
+        run: swift build
+
+      - name: Validate Flagship Demo
+        run: bash Scripts/validate-flagship-demo.sh
+
+      - name: Validate Flagship Media Policy
+        run: bash Scripts/validate-flagship-media-assets.sh
+
+      - name: Validate Examples
+        run: bash Scripts/validate-examples.sh
+
+      - name: Test
+        run: swift test
+
+      - name: Benchmark Smoke Profile
+        run: bash Scripts/run-benchmarks.sh smoke Benchmarks/Results/ci-smoke
+
+      - name: Validate Proof Surfaces
+        run: bash Scripts/validate-proof-surfaces.sh
+
+      - name: Upload Benchmark Smoke Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-smoke-artifacts
+          path: |
+            Benchmarks/Results/ci-smoke/benchmark-report.json
+            Benchmarks/Results/ci-smoke/benchmark-summary.md
+            Benchmarks/Results/ci-smoke/environment.json
+          if-no-files-found: error

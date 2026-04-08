@@ -1,246 +1,202 @@
 import Foundation
 import SwiftIntelligenceCore
+import SwiftIntelligenceML
 import SwiftIntelligenceNLP
 import SwiftIntelligenceVision
 import SwiftIntelligenceSpeech
 import SwiftIntelligencePrivacy
 
-/// SwiftIntelligence Framework - Basic Usage Examples
-/// Demonstrates key AI/ML capabilities across all modules
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
+/// Basic modular examples for the active SwiftIntelligence package graph.
 @main
 struct SwiftIntelligenceDemo {
-    
+    @MainActor
     static func main() async {
-        print("🧠 SwiftIntelligence Framework - Basic Usage Demo")
-        print("================================================")
-        
+        SwiftIntelligenceCore.shared.configure(with: .production)
+
         await runNLPDemo()
         await runVisionDemo()
         await runSpeechDemo()
         await runPrivacyDemo()
-        
-        print("\n✅ All demos completed successfully!")
+        await runMLDemo()
+
+        SwiftIntelligenceCore.shared.cleanup()
     }
-    
-    // MARK: - Natural Language Processing Demo
-    
+
     static func runNLPDemo() async {
-        print("\n📝 NLP Module Demo")
-        print("-----------------")
-        
+        print("\nNLP Demo")
+
         do {
-            let nlpEngine = NLPEngine.shared
-            
-            // Text analysis
-            let text = "SwiftIntelligence is an amazing AI framework for iOS and macOS!"
-            let result = try await nlpEngine.analyzeText(
-                text,
-                options: NLPAnalysisOptions(
-                    enableSentiment: true,
-                    enableEntities: true,
-                    enableKeywords: true
+            let text = "Apple builds amazing products in Cupertino."
+            let result = try await NLPEngine.shared.analyze(
+                text: text,
+                options: NLPOptions(
+                    includeSentiment: true,
+                    includeEntities: true,
+                    includeKeywords: true,
+                    includeLanguageDetection: true
                 )
             )
-            
-            print("📊 Analysis Results:")
-            print("   Sentiment: \(result.sentiment?.label ?? "Unknown") (\(result.sentiment?.confidence ?? 0.0))")
-            print("   Language: \(result.language)")
-            print("   Keywords: \(result.keywords.prefix(3).map { $0.text }.joined(separator: ", "))")
-            
-            // Text generation
-            let summary = try await nlpEngine.summarizeText(text, maxLength: 50)
-            print("   Summary: \(summary.summary)")
-            
+
+            let sentiment = result.analysisResults["sentiment"] as? SentimentResult
+            let entities = result.analysisResults["entities"] as? [NamedEntity]
+            let keywords = result.analysisResults["keywords"] as? [Keyword]
+
+            print("Language: \(result.detectedLanguage.rawValue)")
+            print("Sentiment: \(sentiment?.sentiment.rawValue ?? "unknown")")
+            print("Entities: \(entities?.map(\.text) ?? [])")
+            print("Keywords: \(keywords?.prefix(3).map(\.word) ?? [])")
         } catch {
-            print("❌ NLP Error: \(error)")
+            print("NLP error: \(error)")
         }
     }
-    
-    // MARK: - Computer Vision Demo
-    
+
+    @MainActor
     static func runVisionDemo() async {
-        print("\n👁️ Vision Module Demo")
-        print("--------------------")
-        
-        do {
-            let visionEngine = VisionEngine.shared
-            
-            // Create a sample image (in real usage, load from file)
-            #if canImport(UIKit)
-            guard let image = createSampleImage() else {
-                print("❌ Could not create sample image")
-                return
-            }
-            #else
-            print("⚠️ Vision demo requires UIKit (iOS/tvOS)")
+        print("\nVision Demo")
+
+        guard let image = makeSampleImage() else {
+            print("Vision demo skipped: sample image could not be created")
             return
-            #endif
-            
-            // Object detection
-            let detectionResult = try await visionEngine.detectObjects(
-                in: image,
-                options: ObjectDetectionOptions(
-                    confidenceThreshold: 0.5,
-                    enableClassification: true
-                )
-            )
-            
-            print("🔍 Detection Results:")
-            print("   Objects found: \(detectionResult.detectedObjects.count)")
-            for object in detectionResult.detectedObjects.prefix(3) {
-                print("   - \(object.classification): \(String(format: "%.1f%%", object.confidence * 100))")
-            }
-            
-            // Text recognition
-            let textResult = try await visionEngine.recognizeText(
-                in: image,
-                options: TextRecognitionOptions.default
-            )
-            
-            if !textResult.recognizedText.isEmpty {
-                print("📝 Text Recognition:")
-                print("   Text: \(textResult.recognizedText.prefix(50))...")
-            }
-            
+        }
+
+        let engine = VisionEngine.shared
+
+        do {
+            try await engine.initialize()
+            defer { Task { await engine.shutdown() } }
+
+            let classification = try await engine.classifyImage(image, options: .default)
+            print("Top label: \(classification.classifications.first?.label ?? "unknown")")
+
+            let ocr = try await engine.recognizeText(in: image, options: .default)
+            print("Recognized text: \(ocr.recognizedText)")
         } catch {
-            print("❌ Vision Error: \(error)")
+            print("Vision error: \(error)")
         }
     }
-    
-    // MARK: - Speech Processing Demo
-    
+
+    @MainActor
     static func runSpeechDemo() async {
-        print("\n🎤 Speech Module Demo")
-        print("-------------------")
-        
+        print("\nSpeech Demo")
+
+        let voices = SpeechEngine.availableVoices(for: "en-US")
+        print("Available voices: \(voices.prefix(3).map(\.name))")
+
         do {
-            let speechEngine = SpeechEngine.shared
-            
-            // Text-to-Speech
-            let textToSpeak = "Hello from SwiftIntelligence!"
-            let speechResult = try await speechEngine.synthesizeSpeech(
-                from: textToSpeak,
-                options: SpeechSynthesisOptions.default
+            let result = try await SpeechEngine.shared.synthesizeSpeech(
+                from: "Hello from SwiftIntelligence.",
+                options: .default
             )
-            
-            print("🔊 Speech Synthesis:")
-            print("   Text: \(speechResult.originalText)")
-            print("   Duration: \(String(format: "%.1f", speechResult.duration))s")
-            print("   Processing time: \(String(format: "%.3f", speechResult.processingTime))s")
-            
-            // Get available voices
-            let voices = speechEngine.getAvailableVoices(for: "en-US")
-            print("   Available voices: \(voices.count)")
-            
+
+            print("Synthesized duration: \(result.duration)")
         } catch {
-            print("❌ Speech Error: \(error)")
+            print("Speech synthesis error: \(error)")
         }
     }
-    
-    // MARK: - Privacy & Tokenization Demo
-    
+
     static func runPrivacyDemo() async {
-        print("\n🔒 Privacy Module Demo")
-        print("--------------------")
-        
+        print("\nPrivacy Demo")
+
+        let tokenizer = PrivacyTokenizer()
+        let context = TokenizationContext(
+            purpose: .email,
+            sensitivity: .high,
+            retentionPolicy: .temporary
+        )
+
         do {
-            let tokenizer = PrivacyTokenizer()
-            
-            // Tokenize sensitive data
-            let sensitiveEmail = "john.doe@example.com"
-            let context = TokenizationContext(
-                purpose: .email,
-                dataClassification: .sensitive,
-                retentionPolicy: .shortTerm
-            )
-            
-            let tokenizedData = try await tokenizer.tokenize(sensitiveEmail, context: context)
-            print("🛡️ Privacy Tokenization:")
-            print("   Original: \(sensitiveEmail)")
-            print("   Tokenized: \(tokenizedData.tokens.first ?? "N/A")")
-            
-            // Detokenize
-            let detokenized = try await tokenizer.detokenize(tokenizedData)
-            print("   Detokenized: \(detokenized)")
-            print("   Match: \(sensitiveEmail == detokenized ? "✅" : "❌")")
-            
-            // Format-preserving tokenization
-            let creditCard = "4532-1234-5678-9012"
-            let tokenizedCard = try await tokenizer.formatPreservingTokenize(
-                creditCard,
+            let tokenized = try await tokenizer.tokenize("john.doe@example.com", context: context)
+            let restored = try await tokenizer.detokenize(tokenized)
+
+            print("Token: \(tokenized.tokens.first ?? "n/a")")
+            print("Detokenized: \(restored)")
+
+            let maskedCard = try await tokenizer.formatPreservingTokenize(
+                "4532-1234-5678-9012",
                 context: TokenizationContext(
                     purpose: .creditCard,
-                    dataClassification: .highlyConfidential,
-                    retentionPolicy: .shortTerm
+                    sensitivity: .critical,
+                    retentionPolicy: .temporary
                 )
             )
-            print("   Credit Card: \(creditCard) → \(tokenizedCard)")
-            
+
+            print("Format-preserving token: \(maskedCard)")
         } catch {
-            print("❌ Privacy Error: \(error)")
+            print("Privacy error: \(error)")
         }
     }
-    
-    // MARK: - Helper Methods
-    
-    #if canImport(UIKit)
-    static func createSampleImage() -> UIImage? {
-        // Create a simple colored rectangle as sample
-        let size = CGSize(width: 200, height: 100)
-        UIGraphicsBeginImageContext(size)
-        defer { UIGraphicsEndImageContext() }
-        
-        let context = UIGraphicsGetCurrentContext()
-        context?.setFillColor(UIColor.blue.cgColor)
-        context?.fill(CGRect(origin: .zero, size: size))
-        
-        // Add some text
-        let text = "SAMPLE"
-        let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.white,
-            .font: UIFont.boldSystemFont(ofSize: 24)
-        ]
-        
-        let textSize = text.size(withAttributes: attributes)
-        let textRect = CGRect(
-            x: (size.width - textSize.width) / 2,
-            y: (size.height - textSize.height) / 2,
-            width: textSize.width,
-            height: textSize.height
-        )
-        
-        text.draw(in: textRect, withAttributes: attributes)
-        
-        return UIGraphicsGetImageFromCurrentImageContext()
+
+    static func runMLDemo() async {
+        print("\nML Demo")
+
+        do {
+            let engine = try await SwiftIntelligenceML()
+            defer { Task { try? await engine.shutdown() } }
+
+            let training = MLTrainingData(
+                inputs: [
+                    MLInput(features: [0.0, 0.0]),
+                    MLInput(features: [0.1, 0.1]),
+                    MLInput(features: [1.0, 1.0]),
+                    MLInput(features: [1.1, 1.1])
+                ],
+                expectedOutputs: [
+                    MLOutput(prediction: [0], classificationResult: "class_0", confidence: 1.0),
+                    MLOutput(prediction: [0], classificationResult: "class_0", confidence: 1.0),
+                    MLOutput(prediction: [0], classificationResult: "class_1", confidence: 1.0),
+                    MLOutput(prediction: [0], classificationResult: "class_1", confidence: 1.0)
+                ]
+            )
+
+            _ = try await engine.train(modelID: "classification", with: training)
+            let prediction = try await engine.predict(
+                modelID: "classification",
+                input: MLInput(features: [0.05, 0.05])
+            )
+
+            print("Prediction: \(prediction.classificationResult ?? "unknown")")
+        } catch {
+            print("ML error: \(error)")
+        }
     }
-    #endif
-}
 
-// MARK: - Extensions for Demo
+    @MainActor
+    static func makeSampleImage() -> PlatformImage? {
+        #if canImport(UIKit)
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 160, height: 80))
+        return renderer.image { context in
+            UIColor.systemBlue.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 160, height: 80))
 
-extension NLPAnalysisOptions {
-    static let demo = NLPAnalysisOptions(
-        enableSentiment: true,
-        enableEntities: true,
-        enableKeywords: true,
-        enableLanguageDetection: true,
-        enableSummary: true
-    )
-}
-
-extension ObjectDetectionOptions {
-    static let demo = ObjectDetectionOptions(
-        confidenceThreshold: 0.6,
-        enableClassification: true,
-        maxObjects: 10
-    )
-}
-
-extension TextRecognitionOptions {
-    static let demo = TextRecognitionOptions(
-        enablePartialResults: false,
-        requireOnDeviceRecognition: true,
-        addPunctuation: true,
-        detectLanguage: true
-    )
+            let text = "SAMPLE"
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.white,
+                .font: UIFont.boldSystemFont(ofSize: 24)
+            ]
+            text.draw(at: CGPoint(x: 24, y: 24), withAttributes: attributes)
+        }
+        #elseif canImport(AppKit)
+        let size = NSSize(width: 160, height: 80)
+        let image = NSImage(size: size)
+        image.lockFocus()
+        NSColor.systemBlue.setFill()
+        NSBezierPath(rect: NSRect(x: 0, y: 0, width: 160, height: 80)).fill()
+        let text = NSString(string: "SAMPLE")
+        text.draw(
+            at: NSPoint(x: 24, y: 24),
+            withAttributes: [
+                .foregroundColor: NSColor.white,
+                .font: NSFont.boldSystemFont(ofSize: 24)
+            ]
+        )
+        image.unlockFocus()
+        return image
+        #endif
+    }
 }

@@ -25,7 +25,7 @@ public struct NGramLanguageModel: NLPModelProtocol, Sendable {
         
         var embedding = Array(repeating: 0.0, count: dimension)
         
-        for (index, word) in words.enumerated() {
+        for word in words {
             let hash = abs(word.hashValue) % dimension
             embedding[hash] += 1.0 / Double(words.count)
         }
@@ -40,18 +40,7 @@ public struct NGramLanguageModel: NLPModelProtocol, Sendable {
     }
     
     public func analyze(_ text: String) async throws -> NLPAnalysisResult {
-        let startTime = Date()
-        
-        // Generate embeddings
-        let embeddings = try await generateEmbeddings(text)
-        let embeddingResult = TextEmbeddingResult(
-            embeddings: embeddings,
-            dimension: embeddings.count,
-            modelType: "ngram",
-            processingTime: Date().timeIntervalSince(startTime)
-        )
-        
-        let totalProcessingTime = Date().timeIntervalSince(startTime)
+        _ = try await generateEmbeddings(text)
         
         return NLPAnalysisResult(
             sentiment: nil,
@@ -163,18 +152,7 @@ public struct SimpleWordEmbeddingModel: NLPModelProtocol, Sendable {
     }
     
     public func analyze(_ text: String) async throws -> NLPAnalysisResult {
-        let startTime = Date()
-        
-        // Generate embeddings
-        let embeddings = try await generateEmbeddings(text)
-        let embeddingResult = TextEmbeddingResult(
-            embeddings: embeddings,
-            dimension: embeddings.count,
-            modelType: "simple_embedding",
-            processingTime: Date().timeIntervalSince(startTime)
-        )
-        
-        let totalProcessingTime = Date().timeIntervalSince(startTime)
+        _ = try await generateEmbeddings(text)
         
         return NLPAnalysisResult(
             sentiment: nil,
@@ -345,14 +323,12 @@ public struct BasicTextClassifier: NLPModelProtocol, Sendable {
         let bestCategory = scores.max(by: { $0.value < $1.value })?.key ?? categories.first ?? "unknown"
         let confidence = scores[bestCategory] ?? 0.0
         
-        let classificationResult = TextClassificationResult(
+        _ = TextClassificationResult(
             predictedCategory: bestCategory,
             confidence: confidence,
             allScores: scores,
             processingTime: Date().timeIntervalSince(startTime)
         )
-        
-        let totalProcessingTime = Date().timeIntervalSince(startTime)
         
         let sentimentResult = SentimentResult(
             sentiment: SentimentResult.Sentiment(rawValue: bestCategory) ?? .neutral,

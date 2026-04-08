@@ -1,0 +1,72 @@
+name: SwiftIntelligenceBenchmarkHost
+
+options:
+  bundleIdPrefix: com.muhittincamdali
+  deploymentTarget:
+    iOS: "17.0"
+
+packages:
+  SwiftIntelligence:
+    path: ../../..
+
+targets:
+  SwiftIntelligenceBenchmarkHost:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources/SwiftIntelligenceBenchmarkHost
+    dependencies:
+      - package: SwiftIntelligence
+        product: SwiftIntelligenceBenchmarks
+      - package: SwiftIntelligence
+        product: SwiftIntelligenceCore
+    settings:
+      base:
+        APP_BUNDLE_IDENTIFIER: com.muhittincamdali.swiftintelligence.benchmarkhost
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_IDENTIFIER)
+        PRODUCT_NAME: SwiftIntelligenceBenchmarkHost
+        SWIFT_VERSION: "5.9"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
+        INFOPLIST_KEY_CFBundleDisplayName: SwiftIntelligenceBenchmarkHost
+        INFOPLIST_KEY_LSRequiresIPhoneOS: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UIRequiresFullScreen: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+  SwiftIntelligenceBenchmarkHostTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/SwiftIntelligenceBenchmarkHostTests
+    dependencies:
+      - target: SwiftIntelligenceBenchmarkHost
+      - package: SwiftIntelligence
+        product: SwiftIntelligenceBenchmarks
+    settings:
+      base:
+        APP_BUNDLE_IDENTIFIER: com.muhittincamdali.swiftintelligence.benchmarkhost
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_IDENTIFIER).tests
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/SwiftIntelligenceBenchmarkHost.app/SwiftIntelligenceBenchmarkHost
+        BUNDLE_LOADER: $(TEST_HOST)
+        TARGETED_DEVICE_FAMILY: "1,2"
+
+schemes:
+  SwiftIntelligenceBenchmarkHost:
+    build:
+      targets:
+        SwiftIntelligenceBenchmarkHost: all
+        SwiftIntelligenceBenchmarkHostTests: [test]
+    test:
+      targets:
+        - SwiftIntelligenceBenchmarkHostTests

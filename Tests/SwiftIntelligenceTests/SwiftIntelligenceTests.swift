@@ -295,7 +295,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         monitor.startMonitoring()
         
         // When
-        let result = await monitor.measureAsync("Async Test Operation") {
+        let result = try await monitor.measureAsync("Async Test Operation") {
             try await Task.sleep(nanoseconds: 10_000_000) // 0.01 seconds
             return "Async Test Result"
         }

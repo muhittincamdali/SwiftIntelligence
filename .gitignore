@@ -46,6 +46,9 @@ playground.xcworkspace
 # hence it is not needed unless you have added a package configuration file to your project
 .swiftpm
 .build/
+.swiftpm/
+Benchmarks/Results/latest/
+Benchmarks/Results/ci-smoke/
 
 # CocoaPods
 #

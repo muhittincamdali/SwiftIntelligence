@@ -1,6 +1,6 @@
 import Foundation
 import CoreML
-import Vision
+@preconcurrency import Vision
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -10,7 +10,7 @@ import CryptoKit
 import os.log
 
 /// Advanced face recognition processor with enrollment and biometric capabilities
-public class FaceRecognitionProcessor {
+public final class FaceRecognitionProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "FaceRecognition")
@@ -56,7 +56,7 @@ public class FaceRecognitionProcessor {
     
     private func loadEnrolledFaces() async throws {
         enrolledFaces = try await faceDatabase.loadAllEnrolledFaces()
-        logger.info("Loaded \(enrolledFaces.count) enrolled faces")
+        logger.info("Loaded \(self.enrolledFaces.count) enrolled faces")
     }
     
     // MARK: - Face Recognition
@@ -69,7 +69,7 @@ public class FaceRecognitionProcessor {
         
         let startTime = Date()
         
-        guard let cgImage = image.cgImage else {
+        guard let cgImage = cgImage(from: image) else {
             throw FaceRecognitionError.invalidImage
         }
         
@@ -108,7 +108,7 @@ public class FaceRecognitionProcessor {
         
         let startTime = Date()
         
-        guard let cgImage = image.cgImage else {
+        guard let cgImage = cgImage(from: image) else {
             throw FaceRecognitionError.invalidImage
         }
         
@@ -182,20 +182,14 @@ public class FaceRecognitionProcessor {
         _ images: [PlatformImage],
         options: FaceRecognitionOptions
     ) async throws -> [FaceRecognitionResult] {
-        
-        return try await withThrowingTaskGroup(of: FaceRecognitionResult.self) { group in
-            for image in images {
-                group.addTask {
-                    try await self.recognize(in: image, options: options)
-                }
-            }
-            
-            var results: [FaceRecognitionResult] = []
-            for try await result in group {
-                results.append(result)
-            }
-            return results
+        var results: [FaceRecognitionResult] = []
+        results.reserveCapacity(images.count)
+
+        for image in images {
+            results.append(try await recognize(in: image, options: options))
         }
+
+        return results
     }
     
     // MARK: - Face Management
@@ -236,36 +230,30 @@ public class FaceRecognitionProcessor {
         in cgImage: CGImage,
         options: FaceRecognitionOptions
     ) async throws -> [VNFaceObservation] {
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                do {
-                    guard let request = self.faceDetectionModel else {
-                        continuation.resume(throwing: FaceRecognitionError.modelNotInitialized)
-                        return
-                    }
-                    
-                    let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-                    try handler.perform([request])
-                    
-                    let faceObservations = request.results as? [VNFaceObservation] ?? []
-                    
-                    // Filter faces by size and quality
-                    let filteredFaces = faceObservations.filter { observation in
-                        let faceSize = min(
-                            observation.boundingBox.width * CGFloat(cgImage.width),
-                            observation.boundingBox.height * CGFloat(cgImage.height)
-                        )
-                        return faceSize >= self.minFaceSize && faceSize <= self.maxFaceSize
-                    }
-                    .prefix(options.maxFaces)
-                    
-                    continuation.resume(returning: Array(filteredFaces))
-                    
-                } catch {
-                    continuation.resume(throwing: FaceRecognitionError.detectionFailed(error))
-                }
+        guard let request = faceDetectionModel else {
+            throw FaceRecognitionError.modelNotInitialized
+        }
+
+        do {
+            let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+            try handler.perform([request])
+
+            let faceObservations = request.results ?? []
+            let minFaceSize = self.minFaceSize
+            let maxFaceSize = self.maxFaceSize
+
+            let filteredFaces = faceObservations.filter { observation in
+                let faceSize = min(
+                    observation.boundingBox.width * CGFloat(cgImage.width),
+                    observation.boundingBox.height * CGFloat(cgImage.height)
+                )
+                return faceSize >= minFaceSize && faceSize <= maxFaceSize
             }
+            .prefix(options.maxFaces)
+
+            return Array(filteredFaces)
+        } catch {
+            throw FaceRecognitionError.detectionFailed(error)
         }
     }
     
@@ -331,43 +319,29 @@ public class FaceRecognitionProcessor {
         observation: VNFaceObservation,
         image: CGImage
     ) async throws -> FaceLandmarks? {
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                do {
-                    guard let request = self.faceLandmarkModel else {
-                        continuation.resume(throwing: FaceRecognitionError.modelNotInitialized)
-                        return
-                    }
-                    
-                    // Create landmark request for specific face region
-                    let landmarkRequest = VNDetectFaceLandmarksRequest { request, error in
-                        if let error = error {
-                            continuation.resume(throwing: FaceRecognitionError.landmarkExtractionFailed(error))
-                            return
-                        }
-                        
-                        guard let results = request.results as? [VNFaceObservation],
-                              let faceResult = results.first,
-                              let landmarks = faceResult.landmarks else {
-                            continuation.resume(returning: nil)
-                            return
-                        }
-                        
-                        let faceLandmarks = self.convertLandmarks(landmarks, boundingBox: observation.boundingBox, imageSize: CGSize(width: image.width, height: image.height))
-                        continuation.resume(returning: faceLandmarks)
-                    }
-                    
-                    // Set region of interest to the detected face
-                    landmarkRequest.inputFaceObservations = [observation]
-                    
-                    let handler = VNImageRequestHandler(cgImage: image, options: [:])
-                    try handler.perform([landmarkRequest])
-                    
-                } catch {
-                    continuation.resume(throwing: FaceRecognitionError.landmarkExtractionFailed(error))
-                }
+        guard faceLandmarkModel != nil else {
+            throw FaceRecognitionError.modelNotInitialized
+        }
+
+        do {
+            let landmarkRequest = VNDetectFaceLandmarksRequest()
+            landmarkRequest.inputFaceObservations = [observation]
+
+            let handler = VNImageRequestHandler(cgImage: image, options: [:])
+            try handler.perform([landmarkRequest])
+
+            guard let faceResult = landmarkRequest.results?.first,
+                  let landmarks = faceResult.landmarks else {
+                return nil
             }
+
+            return convertLandmarks(
+                landmarks,
+                boundingBox: observation.boundingBox,
+                imageSize: CGSize(width: image.width, height: image.height)
+            )
+        } catch {
+            throw FaceRecognitionError.landmarkExtractionFailed(error)
         }
     }
     
@@ -585,12 +559,12 @@ public class FaceRecognitionProcessor {
         // For now, we'll create a mock template based on face features
         
         let boundingBox = observation.boundingBox
-        let faceFeatures = [
-            boundingBox.origin.x,
-            boundingBox.origin.y,
-            boundingBox.width,
-            boundingBox.height,
-            observation.confidence
+        let faceFeatures: [Double] = [
+            Double(boundingBox.origin.x),
+            Double(boundingBox.origin.y),
+            Double(boundingBox.width),
+            Double(boundingBox.height),
+            Double(observation.confidence)
         ]
         
         // Create a simple feature vector
@@ -757,6 +731,16 @@ public class FaceRecognitionProcessor {
         } else {
             return 1
         }
+    }
+}
+
+private extension FaceRecognitionProcessor {
+    func cgImage(from image: PlatformImage) -> CGImage? {
+        #if canImport(UIKit)
+        return image.cgImage
+        #elseif canImport(AppKit)
+        return image.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        #endif
     }
 }
 

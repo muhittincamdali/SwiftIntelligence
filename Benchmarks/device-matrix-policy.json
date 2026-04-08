@@ -1,0 +1,16 @@
+{
+  "minimumDeviceClasses": 2,
+  "requiredDeviceClasses": [
+    "Mac",
+    "iPhone"
+  ],
+  "recognizedDeviceClasses": [
+    "Mac",
+    "iPhone",
+    "iPad",
+    "visionOS",
+    "tvOS",
+    "watchOS",
+    "Unknown"
+  ]
+}

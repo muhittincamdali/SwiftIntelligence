@@ -5,7 +5,7 @@ import XCTest
 final class SwiftIntelligenceNLPTests: XCTestCase {
     
     func testNLPModuleInitialization() async throws {
-        let nlpModule = await SwiftIntelligenceNLP()
+        let nlpModule = try await SwiftIntelligenceNLP()
         
         let moduleID = await nlpModule.moduleID
         let version = await nlpModule.version
@@ -17,22 +17,23 @@ final class SwiftIntelligenceNLPTests: XCTestCase {
     }
     
     func testNLPModuleHealthCheck() async throws {
-        let nlpModule = await SwiftIntelligenceNLP()
+        let nlpModule = try await SwiftIntelligenceNLP()
         let healthStatus = await nlpModule.healthCheck()
         
         XCTAssertEqual(healthStatus.status, .healthy)
-        XCTAssertEqual(healthStatus.message, "NLP module is operational")
+        XCTAssertTrue(healthStatus.message.contains("NLP Engine operational"))
+        XCTAssertFalse(healthStatus.metrics.isEmpty)
     }
     
     func testNLPModuleValidation() async throws {
-        let nlpModule = await SwiftIntelligenceNLP()
+        let nlpModule = try await SwiftIntelligenceNLP()
         let validationResult = try await nlpModule.validate()
         
         XCTAssertTrue(validationResult.isValid)
     }
     
     func testNLPModuleShutdown() async throws {
-        let nlpModule = await SwiftIntelligenceNLP()
+        let nlpModule = try await SwiftIntelligenceNLP()
         try await nlpModule.shutdown()
         
         let status = await nlpModule.status

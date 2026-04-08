@@ -34,23 +34,40 @@ public struct SpeechVoice: Codable, Sendable {
 
 // MARK: - Speech Synthesis Options
 
-public struct SpeechSynthesisOptions: Codable, Sendable {
+public struct SpeechSynthesisOptions: Hashable, Codable, Sendable {
+    public let language: String
     public let speed: Float
     public let pitch: Float
     public let volume: Float
+    public let preUtteranceDelay: TimeInterval
+    public let postUtteranceDelay: TimeInterval
     public let enableSSML: Bool
     
     public static let `default` = SpeechSynthesisOptions(
+        language: "en-US",
         speed: 1.0,
         pitch: 1.0,
         volume: 1.0,
+        preUtteranceDelay: 0.0,
+        postUtteranceDelay: 0.0,
         enableSSML: false
     )
     
-    public init(speed: Float = 1.0, pitch: Float = 1.0, volume: Float = 1.0, enableSSML: Bool = false) {
+    public init(
+        language: String = "en-US",
+        speed: Float = 1.0,
+        pitch: Float = 1.0,
+        volume: Float = 1.0,
+        preUtteranceDelay: TimeInterval = 0.0,
+        postUtteranceDelay: TimeInterval = 0.0,
+        enableSSML: Bool = false
+    ) {
+        self.language = language
         self.speed = speed
         self.pitch = pitch
         self.volume = volume
+        self.preUtteranceDelay = max(0.0, preUtteranceDelay)
+        self.postUtteranceDelay = max(0.0, postUtteranceDelay)
         self.enableSSML = enableSSML
     }
 }
@@ -97,9 +114,13 @@ public struct SpeechRecognitionOptions: Hashable, Codable, Sendable {
         addPunctuation: true,
         detectLanguage: true
     )
+
+    public var reportPartialResults: Bool {
+        enablePartialResults
+    }
 }
 
-public struct SpeechRecognitionResult: Codable {
+public struct SpeechRecognitionResult: Codable, Sendable {
     public let transcription: String
     public let confidence: Float
     public let alternatives: [String]
@@ -127,7 +148,7 @@ public struct SpeechRecognitionResult: Codable {
     }
 }
 
-public struct SpeechSegment: Codable {
+public struct SpeechSegment: Codable, Sendable {
     public let text: String
     public let confidence: Float
     public let timestamp: TimeInterval
@@ -195,7 +216,7 @@ public struct TextToSpeechOptions: Hashable, Codable, Sendable {
     )
 }
 
-public struct SpeechSynthesisResult: Codable {
+public struct SpeechSynthesisResult: Codable, Sendable {
     public let synthesizedAudio: Data
     public let originalText: String
     public let voice: SpeechVoice?

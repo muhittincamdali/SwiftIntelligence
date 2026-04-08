@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-02T02:43:41Z",
+  "benchmarkProfile": "standard",
+  "platformFamily": "macOS",
+  "deviceName": "Muhittin MacBook Pro (2)",
+  "deviceModel": "arm64",
+  "deviceClass": "Mac",
+  "operatingSystemVersion": "Version 26.4 (Build 25E246)",
+  "processorCount": 18,
+  "physicalMemory": 51539607552,
+  "broadClaimEligible": true,
+  "sources": {
+    "platformFamily": "benchmark-report.json",
+    "deviceName": "environment.json",
+    "deviceModel": "benchmark-report.json",
+    "deviceClass": "derived"
+  }
+}

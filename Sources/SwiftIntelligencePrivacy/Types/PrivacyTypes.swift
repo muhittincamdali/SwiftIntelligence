@@ -49,6 +49,17 @@ public enum DataClassification: String, Codable, Sendable {
     case `internal` = "internal"
     case confidential = "confidential"
     case restricted = "restricted"
+    case topSecret = "top_secret"
+
+    public var protectionLevel: Int {
+        switch self {
+        case .public: return 1
+        case .internal: return 2
+        case .confidential: return 3
+        case .restricted: return 4
+        case .topSecret: return 5
+        }
+    }
 }
 
 public struct ProtectedData: Sendable {
@@ -173,7 +184,7 @@ public struct EncryptionResult: Sendable {
 
 // MARK: - Secure Storage Types
 
-public struct SecureStorageOptions: Hashable, Codable {
+public struct SecureStorageOptions: Hashable, Codable, Sendable {
     public let encryptBeforeStorage: Bool
     public let encryptionAlgorithm: EncryptionAlgorithm
     public let encryptionLevel: EncryptionLevel
@@ -248,7 +259,7 @@ public enum BiometricType: String, CaseIterable, Codable, Sendable {
     }
 }
 
-public struct BiometricAuthOptions: Hashable, Codable {
+public struct BiometricAuthOptions: Hashable, Codable, Sendable {
     public let fallbackToPasscode: Bool
     public let allowDevicePasscode: Bool
     public let maxRetryAttempts: Int
@@ -358,7 +369,7 @@ public enum AnonymizationLevel: String, CaseIterable, Codable, Sendable {
     }
 }
 
-public struct AnonymizationOptions: Hashable, Codable {
+public struct AnonymizationOptions: Hashable, Codable, Sendable {
     public let level: AnonymizationLevel
     public let preserveUtility: Bool
     public let addNoise: Bool
@@ -1214,7 +1225,7 @@ public struct BiometricAuthStatus: Codable, Sendable {
     public static let unavailable = BiometricAuthStatus(
         isEnabled: false,
         availableTypes: [],
-        currentType: .none
+        currentType: BiometricType.none
     )
     
     public static let available = BiometricAuthStatus(

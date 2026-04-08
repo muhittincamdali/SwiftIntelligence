@@ -1,0 +1,33 @@
+{
+  "archivedAt": "2026-04-07T15:02:30Z",
+  "snapshotName": "iphone-baseline-2026-04-07",
+  "gitRef": "iphone-baseline-2026-04-07",
+  "gitCommit": "1b63ab3b42c35b002f8b4d4282a22c748d14008a",
+  "sourceArtifactsDirectory": "Benchmarks/Results/iphone-baseline",
+  "archivedArtifactsDirectory": "Benchmarks/Results/releases/iphone-baseline-2026-04-07",
+  "provenance": {
+    "sourceKind": "physical-device-test",
+    "sourcePath": "com.muhittincamdali.swiftintelligence.benchmarkhost.iphone-q66w5bz37f@00008130-001464181110001C"
+  },
+  "profile": "standard",
+  "generatedAt": "2026-04-07T15:01:01Z",
+  "deviceMetadata": {
+    "generatedAt": "2026-04-07T15:02:30Z",
+    "benchmarkProfile": "standard",
+    "platformFamily": "iOS",
+    "deviceName": "iPhone 15 Pro Max",
+    "deviceModel": "iPhone16,2",
+    "deviceClass": "iPhone",
+    "operatingSystemVersion": "Version 26.3.1 (a) (Build 23D771330a)",
+    "processorCount": 6,
+    "physicalMemory": 8025538560,
+    "notes": "Captured on physical device via xcodebuild test; device alias: Muhittin’s Pro Max; udid: 00008130-001464181110001C",
+    "broadClaimEligible": true,
+    "sources": {
+      "platformFamily": "environment override",
+      "deviceName": "environment override",
+      "deviceModel": "environment override",
+      "deviceClass": "environment override"
+    }
+  }
+}

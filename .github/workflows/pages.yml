@@ -23,12 +23,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build Documentation
-        run: |
-          swift package --allow-writing-to-directory ./docs \
-            generate-documentation \
-            --disable-indexing \
-            --transform-for-static-hosting \
-            --output-path ./docs 2>/dev/null || echo "DocC build skipped"
+        run: bash Scripts/build-docs.sh ./docs
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

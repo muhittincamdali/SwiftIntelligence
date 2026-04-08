@@ -298,7 +298,7 @@ public actor SwiftIntelligencePrivacy {
         let storedData = try await secureStorage.retrieve(key: key, options: options)
         
         // Decrypt if data was encrypted before storage
-        var finalData = storedData
+        let finalData = storedData
         if options.encryptBeforeStorage {
             // Note: In a real implementation, we would need to store encryption metadata
             // to properly decrypt the data. This is a simplified version.

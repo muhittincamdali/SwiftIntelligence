@@ -3,59 +3,86 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
 
 jobs:
   release:
-    name: Create Release
+    name: Validate And Create Release
     runs-on: macos-14
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Build Package
-      run: swift build -c release
-      continue-on-error: true
-    
-    - name: Generate Changelog
-      id: changelog
-      run: |
-        # Get the previous tag
-        PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-        
-        if [ -z "$PREV_TAG" ]; then
-          CHANGELOG=$(git log --pretty=format:"- %s" HEAD)
-        else
-          CHANGELOG=$(git log --pretty=format:"- %s" $PREV_TAG..HEAD)
-        fi
-        
-        echo "changelog<<EOF" >> $GITHUB_OUTPUT
-        echo "$CHANGELOG" >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
-    
-    - name: Create Release
-      uses: softprops/action-gh-release@v2
-      with:
-        body: |
-          ## What's Changed
-          ${{ steps.changelog.outputs.changelog }}
-          
-          ## Installation
-          
-          ### Swift Package Manager
-          ```swift
-          dependencies: [
-              .package(url: "https://github.com/muhittincamdali/${{ github.event.repository.name }}.git", from: "${{ github.ref_name }}")
-          ]
-          ```
-        draft: false
-        prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Refresh Standard Benchmarks
+        run: bash Scripts/run-benchmarks.sh standard Benchmarks/Results/latest
+
+      - name: Prepare Release
+        run: bash Scripts/prepare-release.sh
+
+      - name: Archive Benchmark Evidence
+        id: evidence
+        run: |
+          EVIDENCE_DIR=$(bash Scripts/archive-benchmark-evidence.sh Benchmarks/Results/latest "$GITHUB_REF_NAME")
+          echo "dir=$EVIDENCE_DIR" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare Version
+        id: version
+        run: echo "number=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate Changelog
+        run: bash Scripts/validate-changelog.sh CHANGELOG.md "$GITHUB_REF_NAME"
+
+      - name: Validate Version Surface
+        run: bash Scripts/validate-version-surface.sh "$GITHUB_REF_NAME"
+
+      - name: Validate Benchmark Thresholds
+        run: bash Scripts/validate-benchmark-thresholds.sh Benchmarks/Results/latest Benchmarks/Results Benchmarks/benchmark-thresholds.json
+
+      - name: Build Release Notes
+        id: notes
+        env:
+          EVIDENCE_DIR: ${{ steps.evidence.outputs.dir }}
+        run: |
+          bash Scripts/build-release-notes.sh "$GITHUB_REF_NAME" "$EVIDENCE_DIR" "$EVIDENCE_DIR/release-body.md" "${{ github.event.repository.name }}"
+          {
+            echo "body<<EOF"
+            cat "$EVIDENCE_DIR/release-body.md"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.notes.outputs.body }}
+          files: |
+            ${{ steps.evidence.outputs.dir }}/benchmark-report.json
+            ${{ steps.evidence.outputs.dir }}/benchmark-summary.md
+            ${{ steps.evidence.outputs.dir }}/environment.json
+            ${{ steps.evidence.outputs.dir }}/metadata.json
+            ${{ steps.evidence.outputs.dir }}/release-proof.md
+            ${{ steps.evidence.outputs.dir }}/benchmark-delta.md
+            ${{ steps.evidence.outputs.dir }}/release-notes-proof.md
+            ${{ steps.evidence.outputs.dir }}/release-blockers.md
+            ${{ steps.evidence.outputs.dir }}/public-proof-status.md
+            ${{ steps.evidence.outputs.dir }}/public-proof-status.json
+            ${{ steps.evidence.outputs.dir }}/flagship-demo-pack.md
+            ${{ steps.evidence.outputs.dir }}/flagship-demo-share-pack.tar.gz
+            ${{ steps.evidence.outputs.dir }}/intelligent-camera-success.png
+            ${{ steps.evidence.outputs.dir }}/intelligent-camera-run.mp4
+            ${{ steps.evidence.outputs.dir }}/caption.txt
+            ${{ steps.evidence.outputs.dir }}/device-evidence-handoff.md
+            ${{ steps.evidence.outputs.dir }}/device-evidence-handoff.json
+            ${{ steps.evidence.outputs.dir }}/device-evidence-handoff.tar.gz
+            ${{ steps.evidence.outputs.dir }}/release-body.md
+            ${{ steps.evidence.outputs.dir }}/artifact-manifest.json
+            ${{ steps.evidence.outputs.dir }}/checksums.txt
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

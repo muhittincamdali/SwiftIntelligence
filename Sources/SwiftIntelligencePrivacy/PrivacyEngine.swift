@@ -3,559 +3,333 @@ import CryptoKit
 import LocalAuthentication
 import os.log
 
-/// Advanced Privacy Engine for SwiftIntelligence AI/ML Framework
-/// Provides comprehensive data protection, encryption, and privacy compliance
+/// Privacy engine aligned to the canonical privacy types used in this package.
 @MainActor
-public class PrivacyEngine: NSObject, ObservableObject {
-    
-    // MARK: - Singleton
+public final class PrivacyEngine: NSObject, ObservableObject {
     public static let shared = PrivacyEngine()
-    
-    // MARK: - Properties
+
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "Privacy")
-    private let processingQueue = DispatchQueue(label: "privacy.processing", qos: .userInitiated)
-    
-    // MARK: - Configuration
+    private let biometricContext = LAContext()
+
     @Published public var configuration: PrivacyConfiguration = .default
-    
-    // MARK: - State Management
     @Published public var isPrivacyEnabled = true
     @Published public var encryptionStatus: EncryptionStatus = .inactive
     @Published public var biometricAuthStatus: BiometricAuthStatus = .unavailable
     @Published public var dataRetentionPolicy: DataRetentionPolicy = .default
-    
-    // MARK: - Encryption
+
     private var encryptionKeys: [String: SymmetricKey] = [:]
-    private var keychain: SecureKeychain
-    
-    // MARK: - Biometric Authentication
-    private let biometricContext = LAContext()
-    
-    // MARK: - Data Protection
-    private let dataProtection: DataProtectionManager
-    private let auditLogger: PrivacyAuditLogger
-    
-    // MARK: - Anonymization
-    private let anonymizer: DataAnonymizer
-    private let tokenizer: PrivacyTokenizer
-    
-    // MARK: - Compliance
-    private let complianceManager: ComplianceManager
-    
-    // MARK: - Initialization
+    private let keychain = SecureKeychain()
+    private let dataProtection = DataProtectionManager()
+    private let auditLogger = PrivacyAuditLogger()
+    private let anonymizer = DataAnonymizer()
+    private let tokenizer = PrivacyTokenizer()
+    private let complianceManager = ComplianceManager()
+
     override init() {
-        self.keychain = SecureKeychain()
-        self.dataProtection = DataProtectionManager()
-        self.auditLogger = PrivacyAuditLogger()
-        self.anonymizer = DataAnonymizer()
-        self.tokenizer = PrivacyTokenizer()
-        self.complianceManager = ComplianceManager()
-        
         super.init()
-        
         Task {
             await initializePrivacyEngine()
         }
     }
-    
-    // MARK: - Engine Initialization
-    
+
     private func initializePrivacyEngine() async {
-        logger.info("Initializing Privacy Engine...")
-        
-        // Initialize encryption system
-        await initializeEncryption()
-        
-        // Setup biometric authentication
-        await setupBiometricAuth()
-        
-        // Initialize data protection
-        await initializeDataProtection()
-        
-        // Setup audit logging
-        await setupAuditLogging()
-        
-        // Initialize compliance monitoring
-        await initializeCompliance()
-        
-        logger.info("Privacy Engine initialized successfully")
-    }
-    
-    private func initializeEncryption() async {
         do {
-            // Generate or retrieve master encryption key
-            let masterKey = try await getMasterEncryptionKey()
-            encryptionKeys["master"] = masterKey
-            
-            // Initialize data-specific encryption keys
-            try await generateDataEncryptionKeys()
-            
+            let masterKey = try await getOrCreateKey(identifier: "master_encryption_key")
+            encryptionKeys["master_encryption_key"] = masterKey
             encryptionStatus = .active
-            logger.info("Encryption system initialized")
-            
         } catch {
+            encryptionStatus = .error
             logger.error("Failed to initialize encryption: \(error.localizedDescription)")
-            encryptionStatus = .error(error.localizedDescription)
         }
+
+        biometricAuthStatus = buildBiometricStatus()
+        await dataProtection.initialize(with: dataProtectionConfiguration(from: configuration))
+        await auditLogger.initialize(with: auditLoggingConfiguration(from: configuration))
+        await complianceManager.initialize(with: configuration)
     }
-    
-    private func setupBiometricAuth() async {
-        var error: NSError?
-        
-        guard biometricContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            biometricAuthStatus = .unavailable
-            logger.info("Biometric authentication unavailable: \(error?.localizedDescription ?? "Unknown")")
-            return
-        }
-        
-        let biometryType = biometricContext.biometryType
-        switch biometryType {
-        case .faceID:
-            biometricAuthStatus = .available(.faceID)
-        case .touchID:
-            biometricAuthStatus = .available(.touchID)
-        case .opticID:
-            biometricAuthStatus = .available(.opticID)
-        default:
-            biometricAuthStatus = .unavailable
-        }
-        
-        logger.info("Biometric authentication configured: \(biometricAuthStatus)")
-    }
-    
-    private func initializeDataProtection() async {
-        await dataProtection.initialize(with: configuration.dataProtection)
-        logger.info("Data protection initialized")
-    }
-    
-    private func setupAuditLogging() async {
-        await auditLogger.initialize(with: configuration.auditLogging)
-        logger.info("Privacy audit logging configured")
-    }
-    
-    private func initializeCompliance() async {
-        await complianceManager.initialize(with: configuration.compliance)
-        logger.info("Compliance monitoring initialized")
-    }
-    
-    // MARK: - Configuration Management
-    
+
     public func updateConfiguration(_ config: PrivacyConfiguration) async throws {
-        let oldConfig = configuration
         configuration = config
-        
-        do {
-            // Validate configuration
-            try config.validate()
-            
-            // Update encryption settings
-            if oldConfig.encryption != config.encryption {
-                await updateEncryptionConfiguration(config.encryption)
-            }
-            
-            // Update data protection settings
-            if oldConfig.dataProtection != config.dataProtection {
-                await dataProtection.updateConfiguration(config.dataProtection)
-            }
-            
-            // Update compliance settings
-            if oldConfig.compliance != config.compliance {
-                await complianceManager.updateConfiguration(config.compliance)
-            }
-            
-            // Update audit logging
-            if oldConfig.auditLogging != config.auditLogging {
-                await auditLogger.updateConfiguration(config.auditLogging)
-            }
-            
-            await auditLogger.log(.configurationUpdated, details: [
-                "previous_config": String(describing: oldConfig),
-                "new_config": String(describing: config)
-            ])
-            
-            logger.info("Privacy configuration updated successfully")
-            
-        } catch {
-            // Rollback configuration on failure
-            configuration = oldConfig
-            throw PrivacyError.configurationUpdateFailed(error.localizedDescription)
-        }
-    }
-    
-    // MARK: - Data Encryption
-    
-    /// Encrypt sensitive data using AES-256-GCM
-    public func encryptData(_ data: Data, context: EncryptionContext = .general) async throws -> EncryptedData {
-        guard isPrivacyEnabled else {
-            throw PrivacyError.privacyDisabled
-        }
-        
-        guard encryptionStatus == .active else {
-            throw PrivacyError.encryptionUnavailable
-        }
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                do {
-                    let contextKey = context.rawValue
-                    guard let encryptionKey = self.encryptionKeys[contextKey] ?? self.encryptionKeys["master"] else {
-                        throw PrivacyError.encryptionKeyNotFound(contextKey)
-                    }
-                    
-                    let sealedBox = try AES.GCM.seal(data, using: encryptionKey)
-                    
-                    let encryptedData = EncryptedData(
-                        data: sealedBox.ciphertext,
-                        nonce: sealedBox.nonce,
-                        tag: sealedBox.tag,
-                        context: context,
-                        timestamp: Date(),
-                        algorithm: .aes256GCM
-                    )
-                    
-                    // Log encryption event
-                    Task {
-                        await self.auditLogger.log(.dataEncrypted, details: [
-                            "context": context.rawValue,
-                            "data_size": "\(data.count)",
-                            "algorithm": "AES-256-GCM"
-                        ])
-                    }
-                    
-                    continuation.resume(returning: encryptedData)
-                    
-                } catch {
-                    continuation.resume(throwing: PrivacyError.encryptionFailed(error.localizedDescription))
-                }
-            }
-        }
-    }
-    
-    /// Decrypt encrypted data
-    public func decryptData(_ encryptedData: EncryptedData) async throws -> Data {
-        guard isPrivacyEnabled else {
-            throw PrivacyError.privacyDisabled
-        }
-        
-        guard encryptionStatus == .active else {
-            throw PrivacyError.encryptionUnavailable
-        }
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                do {
-                    let contextKey = encryptedData.context.rawValue
-                    guard let encryptionKey = self.encryptionKeys[contextKey] ?? self.encryptionKeys["master"] else {
-                        throw PrivacyError.encryptionKeyNotFound(contextKey)
-                    }
-                    
-                    let sealedBox = try AES.GCM.SealedBox(
-                        nonce: encryptedData.nonce,
-                        ciphertext: encryptedData.data,
-                        tag: encryptedData.tag
-                    )
-                    
-                    let decryptedData = try AES.GCM.open(sealedBox, using: encryptionKey)
-                    
-                    // Log decryption event
-                    Task {
-                        await self.auditLogger.log(.dataDecrypted, details: [
-                            "context": encryptedData.context.rawValue,
-                            "data_size": "\(decryptedData.count)",
-                            "algorithm": encryptedData.algorithm.rawValue
-                        ])
-                    }
-                    
-                    continuation.resume(returning: decryptedData)
-                    
-                } catch {
-                    continuation.resume(throwing: PrivacyError.decryptionFailed(error.localizedDescription))
-                }
-            }
-        }
-    }
-    
-    // MARK: - Biometric Authentication
-    
-    /// Authenticate using biometrics
-    public func authenticateWithBiometrics(reason: String = "Authenticate to access secure data") async throws -> Bool {
-        guard case .available = biometricAuthStatus else {
-            throw PrivacyError.biometricUnavailable
-        }
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            biometricContext.evaluatePolicy(
-                .deviceOwnerAuthenticationWithBiometrics,
-                localizedReason: reason
-            ) { success, error in
-                if success {
-                    Task {
-                        await self.auditLogger.log(.biometricAuthSuccess, details: [
-                            "reason": reason,
-                            "biometry_type": String(describing: self.biometricContext.biometryType)
-                        ])
-                    }
-                    continuation.resume(returning: true)
-                } else {
-                    let privacyError: PrivacyError
-                    if let error = error as? LAError {
-                        privacyError = self.mapLAError(error)
-                    } else {
-                        privacyError = .biometricAuthFailed(error?.localizedDescription ?? "Unknown error")
-                    }
-                    
-                    Task {
-                        await self.auditLogger.log(.biometricAuthFailure, details: [
-                            "reason": reason,
-                            "error": error?.localizedDescription ?? "Unknown"
-                        ])
-                    }
-                    
-                    continuation.resume(throwing: privacyError)
-                }
-            }
-        }
-    }
-    
-    // MARK: - Data Anonymization
-    
-    /// Anonymize text data by removing or masking PII
-    public func anonymizeText(_ text: String, level: AnonymizationLevel = .standard) async throws -> AnonymizedData {
-        return try await anonymizer.anonymize(text, level: level)
-    }
-    
-    /// Anonymize structured data
-    public func anonymizeData<T: Codable>(_ data: T, level: AnonymizationLevel = .standard) async throws -> AnonymizedData {
-        return try await anonymizer.anonymize(data, level: level)
-    }
-    
-    /// Tokenize sensitive data for secure processing
-    public func tokenizeData(_ data: String, context: TokenizationContext) async throws -> TokenizedData {
-        return try await tokenizer.tokenize(data, context: context)
-    }
-    
-    /// Detokenize previously tokenized data
-    public func detokenizeData(_ tokenizedData: TokenizedData) async throws -> String {
-        return try await tokenizer.detokenize(tokenizedData)
-    }
-    
-    // MARK: - Data Protection
-    
-    /// Apply data protection measures
-    public func protectSensitiveData(_ data: Data, classification: DataClassification) async throws -> ProtectedData {
-        return try await dataProtection.protect(data, classification: classification)
-    }
-    
-    /// Validate data integrity
-    public func validateDataIntegrity(_ protectedData: ProtectedData) async throws -> Bool {
-        return try await dataProtection.validateIntegrity(protectedData)
-    }
-    
-    /// Secure delete of sensitive data
-    public func secureDelete(_ data: inout Data) async throws {
-        try await dataProtection.secureDelete(&data)
-        
-        await auditLogger.log(.secureDataDeletion, details: [
-            "data_size": "\(data.count)",
-            "method": "cryptographic_erasure"
+        dataRetentionPolicy = DataRetentionPolicy(
+            maxAge: config.dataRetentionPeriod,
+            autoDelete: true,
+            compressionEnabled: false,
+            category: .personal
+        )
+        await dataProtection.updateConfiguration(dataProtectionConfiguration(from: config))
+        await auditLogger.updateConfiguration(auditLoggingConfiguration(from: config))
+        await complianceManager.updateConfiguration(config)
+        await auditLogger.log(.configurationChange, details: [
+            "compliance_mode": config.complianceMode.rawValue,
+            "audit_logging": String(config.enableAuditLogging),
         ])
     }
-    
-    // MARK: - Data Retention
-    
-    /// Set data retention policy
+
+    public func encryptData(_ data: Data, context: EncryptionContext = .general) async throws -> EncryptedData {
+        guard isPrivacyEnabled else { throw PrivacyError.permissionDenied }
+
+        let key = try await key(for: context)
+        let sealedBox = try AES.GCM.seal(data, using: key)
+        let payload = sealedBox.ciphertext + sealedBox.tag
+
+        await auditLogger.log(.dataEncryption, details: [
+            "algorithm": context.algorithm.rawValue,
+            "level": context.level.rawValue,
+            "size": String(data.count),
+        ])
+
+        return EncryptedData(
+            encryptedData: payload,
+            keyId: context.keyId,
+            iv: Data(sealedBox.nonce),
+            keyDerivationMethod: "\(context.algorithm.rawValue)-\(context.level.rawValue)"
+        )
+    }
+
+    public func decryptData(_ encryptedData: EncryptedData) async throws -> Data {
+        guard isPrivacyEnabled else { throw PrivacyError.permissionDenied }
+        guard encryptedData.encryptedData.count >= 16 else { throw PrivacyError.invalidData }
+
+        let key = try await getOrCreateKey(identifier: encryptedData.keyId)
+        let ciphertext = encryptedData.encryptedData.dropLast(16)
+        let tag = encryptedData.encryptedData.suffix(16)
+        let nonce = try AES.GCM.Nonce(data: encryptedData.iv)
+        let sealedBox = try AES.GCM.SealedBox(nonce: nonce, ciphertext: ciphertext, tag: tag)
+        let decrypted = try AES.GCM.open(sealedBox, using: key)
+
+        await auditLogger.log(.dataDecryption, details: [
+            "key_id": encryptedData.keyId,
+            "size": String(decrypted.count),
+        ])
+
+        return decrypted
+    }
+
+    public func authenticateWithBiometrics(reason: String = "Authenticate to access secure data") async throws -> Bool {
+        guard configuration.enableBiometricAuthentication else {
+            throw PrivacyError.permissionDenied
+        }
+
+        guard biometricContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) else {
+            throw PrivacyError.biometricAuthFailed("Biometric authentication unavailable")
+        }
+
+        return try await withCheckedThrowingContinuation { continuation in
+            biometricContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, error in
+                if success {
+                    continuation.resume(returning: true)
+                } else {
+                    continuation.resume(throwing: PrivacyError.biometricAuthFailed(error?.localizedDescription ?? "Authentication failed"))
+                }
+            }
+        }
+    }
+
+    public func anonymizeText(_ text: String, level: AnonymizationLevel = .standard) async throws -> AnonymizedData {
+        let result = try await anonymizer.anonymize(text, level: level)
+        await auditLogger.log(.dataAnonymization, details: ["level": level.rawValue])
+        return result
+    }
+
+    public func anonymizeData<T: Codable & Sendable>(_ data: T, level: AnonymizationLevel = .standard) async throws -> AnonymizedData {
+        let result = try await anonymizer.anonymize(data, level: level)
+        await auditLogger.log(.dataAnonymization, details: ["level": level.rawValue, "structured": "true"])
+        return result
+    }
+
+    public func tokenizeData(_ data: String, context: TokenizationContext) async throws -> TokenizedData {
+        let result = try await tokenizer.tokenize(data, context: context)
+        await auditLogger.log(.secureDataStorage, details: ["purpose": context.purpose.rawValue])
+        return result
+    }
+
+    public func detokenizeData(_ tokenizedData: TokenizedData) async throws -> String {
+        let result = try await tokenizer.detokenize(tokenizedData)
+        await auditLogger.log(.secureDataRetrieval, details: ["tokens": String(tokenizedData.tokens.count)])
+        return result
+    }
+
+    public func protectSensitiveData(_ data: Data, classification: DataClassification) async throws -> ProtectedData {
+        let result = try await dataProtection.protect(data, classification: classification)
+        await auditLogger.log(.secureDataStorage, details: ["classification": classification.rawValue])
+        return result
+    }
+
+    public func validateDataIntegrity(_ protectedData: ProtectedData) async throws -> Bool {
+        try await dataProtection.validateIntegrity(protectedData)
+    }
+
+    public func secureDelete(_ data: inout Data) async throws {
+        try await dataProtection.secureDelete(&data)
+        await auditLogger.log(.secureDataDeletion, details: ["remaining_size": String(data.count)])
+    }
+
     public func setDataRetentionPolicy(_ policy: DataRetentionPolicy) async {
         dataRetentionPolicy = policy
         await complianceManager.updateRetentionPolicy(policy)
-        
-        await auditLogger.log(.retentionPolicyUpdated, details: [
-            "policy": String(describing: policy)
-        ])
+        await auditLogger.log(.configurationChange, details: ["retention_max_age": String(policy.maxAge)])
     }
-    
-    /// Check if data should be retained
+
     public func shouldRetainData(_ metadata: DataMetadata) -> Bool {
-        return complianceManager.shouldRetain(metadata, policy: dataRetentionPolicy)
+        complianceManager.shouldRetain(metadata, policy: dataRetentionPolicy)
     }
-    
-    /// Execute data retention cleanup
+
     public func executeRetentionCleanup() async throws -> RetentionCleanupResult {
-        let result = try await complianceManager.executeCleanup(policy: dataRetentionPolicy)
-        
-        await auditLogger.log(.retentionCleanupExecuted, details: [
-            "deleted_items": "\(result.deletedItems)",
-            "freed_space": "\(result.freedSpace)",
-            "execution_time": "\(result.executionTime)"
-        ])
-        
-        return result
+        try await complianceManager.executeCleanup(policy: dataRetentionPolicy)
     }
-    
-    // MARK: - Compliance
-    
-    /// Check GDPR compliance
+
     public func checkGDPRCompliance() async -> ComplianceStatus {
-        return await complianceManager.checkGDPRCompliance()
+        await complianceManager.checkGDPRCompliance()
     }
-    
-    /// Check CCPA compliance
+
     public func checkCCPACompliance() async -> ComplianceStatus {
-        return await complianceManager.checkCCPACompliance()
+        await complianceManager.checkCCPACompliance()
     }
-    
-    /// Generate privacy report
+
     public func generatePrivacyReport(period: DateInterval) async throws -> PrivacyReport {
+        let compliance = await complianceManager.getComplianceStatus()
         let auditEvents = await auditLogger.getEvents(for: period)
-        let complianceStatus = await complianceManager.getComplianceStatus()
-        let encryptionMetrics = getEncryptionMetrics()
-        
+        let vulnerabilities = compliance.violations.map {
+            PrivacyVulnerability(
+                title: $0.type.rawValue,
+                description: $0.description,
+                severity: vulnerabilitySeverity(from: $0.severity),
+                impact: $0.description,
+                mitigation: $0.suggestedResolution ?? "Review and remediate this violation."
+            )
+        }
+
+        var recommendations = compliance.recommendations
+        if auditEvents.isEmpty {
+            recommendations.append("Generate audit activity for the selected period before publishing a privacy score.")
+        }
+
+        let score = max(0, min(1, compliance.score)) * 100
+        let status = vulnerabilities.isEmpty ? "secure" : "attention-required"
+
         return PrivacyReport(
-            period: period,
-            auditEvents: auditEvents,
-            complianceStatus: complianceStatus,
-            encryptionMetrics: encryptionMetrics,
-            generatedAt: Date()
+            status: status,
+            vulnerabilities: vulnerabilities,
+            recommendations: recommendations,
+            score: score
         )
     }
-    
-    // MARK: - Privacy Controls
-    
-    /// Enable/disable privacy features
+
     public func setPrivacyEnabled(_ enabled: Bool) async {
         isPrivacyEnabled = enabled
-        
-        await auditLogger.log(enabled ? .privacyEnabled : .privacyDisabled, details: [
-            "enabled": "\(enabled)"
-        ])
-        
-        logger.info("Privacy features \(enabled ? "enabled" : "disabled")")
+        await auditLogger.log(.configurationChange, details: ["privacy_enabled": String(enabled)])
     }
-    
-    /// Get privacy status
+
     public func getPrivacyStatus() async -> PrivacyStatus {
+        let compliance = await complianceManager.getComplianceStatus()
+        let issues = compliance.violations.map(\.description)
         return PrivacyStatus(
-            isEnabled: isPrivacyEnabled,
-            encryptionStatus: encryptionStatus,
-            biometricAuthStatus: biometricAuthStatus,
-            complianceStatus: await complianceManager.getComplianceStatus(),
-            lastAuditDate: await auditLogger.getLastAuditDate(),
-            dataRetentionPolicy: dataRetentionPolicy
+            isSecure: isPrivacyEnabled && encryptionStatus.isEnabled && compliance.isCompliant,
+            encryptionEnabled: encryptionStatus.isEnabled,
+            dataRetentionCompliant: compliance.violations.contains(where: { $0.type == .dataRetentionExceeded }) == false,
+            accessControlsActive: configuration.enableBiometricAuthentication,
+            lastAudit: await auditLogger.getLastAuditDate(),
+            issues: issues
         )
     }
-    
-    // MARK: - Private Helper Methods
-    
-    private func getMasterEncryptionKey() async throws -> SymmetricKey {
-        if let existingKey = try await keychain.getKey(identifier: "master_encryption_key") {
-            return existingKey
-        }
-        
-        // Generate new master key
-        let newKey = SymmetricKey(size: .bits256)
-        try await keychain.storeKey(newKey, identifier: "master_encryption_key")
-        
-        await auditLogger.log(.masterKeyGenerated, details: [
-            "key_size": "256",
-            "algorithm": "AES-256-GCM"
-        ])
-        
-        return newKey
-    }
-    
-    private func generateDataEncryptionKeys() async throws {
-        let contexts: [EncryptionContext] = [.llm, .vision, .speech, .imageGeneration, .personalData]
-        
-        for context in contexts {
-            let contextKey = context.rawValue
-            if encryptionKeys[contextKey] == nil {
-                let key = SymmetricKey(size: .bits256)
-                encryptionKeys[contextKey] = key
-                
-                // Store in keychain for persistence
-                try await keychain.storeKey(key, identifier: "\(contextKey)_encryption_key")
-            }
-        }
-    }
-    
-    private func updateEncryptionConfiguration(_ config: EncryptionConfiguration) async {
-        // Update encryption settings based on new configuration
-        if config.keyRotationEnabled {
-            await scheduleKeyRotation(interval: config.keyRotationInterval)
-        }
-    }
-    
-    private func scheduleKeyRotation(interval: TimeInterval) async {
-        // Schedule automatic key rotation
-        logger.info("Scheduling key rotation every \(interval) seconds")
-    }
-    
-    private func mapLAError(_ error: LAError) -> PrivacyError {
-        switch error.code {
-        case .authenticationFailed:
-            return .biometricAuthFailed("Authentication failed")
-        case .userCancel:
-            return .biometricAuthCancelled
-        case .userFallback:
-            return .biometricAuthFallback
-        case .biometryNotAvailable:
-            return .biometricUnavailable
-        case .biometryNotEnrolled:
-            return .biometricNotEnrolled
-        case .biometryLockout:
-            return .biometricLockout
-        default:
-            return .biometricAuthFailed(error.localizedDescription)
-        }
-    }
-    
-    private func getEncryptionMetrics() -> EncryptionMetrics {
-        return EncryptionMetrics(
-            totalEncryptedData: 0, // Would track actual metrics
-            encryptionOperations: 0,
-            decryptionOperations: 0,
-            keyRotations: 0,
-            lastKeyRotation: nil
-        )
-    }
-}
 
-// MARK: - Extensions
-
-extension PrivacyEngine {
-    
-    /// Convenience method for encrypting strings
     public func encryptString(_ string: String, context: EncryptionContext = .general) async throws -> EncryptedData {
-        guard let data = string.data(using: .utf8) else {
-            throw PrivacyError.invalidData("Cannot convert string to data")
-        }
+        guard let data = string.data(using: .utf8) else { throw PrivacyError.invalidData }
         return try await encryptData(data, context: context)
     }
-    
-    /// Convenience method for decrypting to strings
+
     public func decryptToString(_ encryptedData: EncryptedData) async throws -> String {
         let data = try await decryptData(encryptedData)
-        guard let string = String(data: data, encoding: .utf8) else {
-            throw PrivacyError.invalidData("Cannot convert data to string")
-        }
+        guard let string = String(data: data, encoding: .utf8) else { throw PrivacyError.invalidData }
         return string
     }
-    
-    /// Batch encrypt multiple data items
+
     public func encryptBatch(_ dataItems: [(Data, EncryptionContext)]) async throws -> [EncryptedData] {
-        return try await withThrowingTaskGroup(of: EncryptedData.self) { group in
-            var results: [EncryptedData] = []
-            
-            for (data, context) in dataItems {
-                group.addTask {
-                    return try await self.encryptData(data, context: context)
-                }
+        var results: [EncryptedData] = []
+        for (data, context) in dataItems {
+            results.append(try await encryptData(data, context: context))
+        }
+        return results
+    }
+
+    private func getOrCreateKey(identifier: String) async throws -> SymmetricKey {
+        if let existingKey = encryptionKeys[identifier] {
+            return existingKey
+        }
+        if let storedKey = try await keychain.getKey(identifier: identifier) {
+            encryptionKeys[identifier] = storedKey
+            return storedKey
+        }
+        let newKey = SymmetricKey(size: .bits256)
+        try await keychain.storeKey(newKey, identifier: identifier)
+        encryptionKeys[identifier] = newKey
+        return newKey
+    }
+
+    private func key(for context: EncryptionContext) async throws -> SymmetricKey {
+        try await getOrCreateKey(identifier: context.keyId)
+    }
+
+    private func buildBiometricStatus() -> BiometricAuthStatus {
+        guard configuration.enableBiometricAuthentication else {
+            return .unavailable
+        }
+        var error: NSError?
+        guard biometricContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            return .unavailable
+        }
+        switch biometricContext.biometryType {
+        case .faceID:
+            return BiometricAuthStatus(isEnabled: true, availableTypes: [.faceID], currentType: .faceID)
+        case .touchID:
+            return BiometricAuthStatus(isEnabled: true, availableTypes: [.touchID], currentType: .touchID)
+        default:
+            return .available
+        }
+    }
+
+    private func auditLoggingConfiguration(from config: PrivacyConfiguration) -> AuditLoggingConfiguration {
+        AuditLoggingConfiguration(
+            level: config.enableAuditLogging ? .info : .error,
+            destination: .file,
+            retentionPeriod: config.dataRetentionPeriod,
+            encryptionEnabled: config.defaultEncryptionLevel == .high || config.defaultEncryptionLevel == .maximum,
+            realTimeMonitoring: config.enableAuditLogging,
+            alertThresholds: .default
+        )
+    }
+
+    private func dataProtectionConfiguration(from config: PrivacyConfiguration) -> DataProtectionConfiguration {
+        let memoryProtection: MemoryProtectionLevel = {
+            switch config.defaultEncryptionLevel {
+            case .low: return .basic
+            case .medium, .high: return .enhanced
+            case .maximum: return .maximum
             }
-            
-            for try await result in group {
-                results.append(result)
+        }()
+        let diskProtection: DiskProtectionLevel = {
+            switch config.defaultEncryptionLevel {
+            case .low: return .basic
+            case .medium, .high: return .enhanced
+            case .maximum: return .maximum
             }
-            
-            return results
+        }()
+        return DataProtectionConfiguration(
+            enableIntegrityChecks: true,
+            enableSecureDelete: true,
+            enableCompression: false,
+            enableEncryption: true,
+            memoryProtection: memoryProtection,
+            diskProtection: diskProtection
+        )
+    }
+
+    private func vulnerabilitySeverity(from severity: ViolationSeverity) -> PrivacyVulnerability.VulnerabilitySeverity {
+        switch severity {
+        case .low: return .low
+        case .medium: return .medium
+        case .high: return .high
+        case .critical: return .critical
         }
     }
 }

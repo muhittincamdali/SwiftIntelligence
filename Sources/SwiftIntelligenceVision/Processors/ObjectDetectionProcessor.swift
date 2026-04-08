@@ -1,6 +1,6 @@
 import Foundation
 import CoreML
-import Vision
+@preconcurrency import Vision
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -10,7 +10,7 @@ import AVFoundation
 import os.log
 
 /// Advanced object detection processor with real-time capabilities
-public class ObjectDetectionProcessor {
+public final class ObjectDetectionProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "ObjectDetection")
@@ -131,13 +131,18 @@ public class ObjectDetectionProcessor {
     
     /// Real-time object detection from camera feed
     public func detectRealtime(
-        from sampleBuffer: CMSampleBuffer,
+        from sampleBuffer: sending CMSampleBuffer,
         options: DetectionOptions
     ) async throws -> ObjectDetectionResult {
         
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             throw DetectionError.invalidBuffer
         }
+
+        let imageSize = CGSize(
+            width: CVPixelBufferGetWidth(pixelBuffer),
+            height: CVPixelBufferGetHeight(pixelBuffer)
+        )
         
         let startTime = Date()
         trackingSequence += 1
@@ -148,6 +153,7 @@ public class ObjectDetectionProcessor {
         // Perform detection
         let detectedObjects = try await performRealtimeDetection(
             pixelBuffer: pixelBuffer,
+            imageSize: imageSize,
             modelName: modelName,
             options: options
         )
@@ -168,10 +174,7 @@ public class ObjectDetectionProcessor {
             processingTime: processingTime,
             confidence: confidence,
             detectedObjects: trackedObjects,
-            imageSize: CGSize(
-                width: CVPixelBufferGetWidth(pixelBuffer),
-                height: CVPixelBufferGetHeight(pixelBuffer)
-            ),
+            imageSize: imageSize,
             frameNumber: trackingSequence
         )
     }
@@ -220,12 +223,27 @@ public class ObjectDetectionProcessor {
         modelName: String,
         options: DetectionOptions
     ) async throws -> [DetectedObject] {
-        
+        if let model = models[modelName] {
+            return try await performCoreMLDetection(
+                cgImage: cgImage,
+                model: model,
+                options: options
+            )
+        }
+
+        logger.notice("Object detection model '\(modelName)' unavailable; falling back to built-in rectangle detection.")
+        return try await performBuiltInDetection(cgImage: cgImage, options: options)
+    }
+
+    private func performCoreMLDetection(
+        cgImage: CGImage,
+        model: VNCoreMLModel,
+        options: DetectionOptions
+    ) async throws -> [DetectedObject] {
         return try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
                 do {
-                    // Create detection request
-                    let request = VNCoreMLRequest(model: try self.getModel(modelName)) { request, error in
+                    let request = VNCoreMLRequest(model: model) { request, error in
                         if let error = error {
                             continuation.resume(throwing: DetectionError.processingFailed(error))
                             return
@@ -252,45 +270,68 @@ public class ObjectDetectionProcessor {
             }
         }
     }
-    
-    private func performRealtimeDetection(
-        pixelBuffer: CVPixelBuffer,
-        modelName: String,
+
+    private func performBuiltInDetection(
+        cgImage: CGImage,
         options: DetectionOptions
     ) async throws -> [DetectedObject] {
-        
-        return try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
                 do {
-                    // Create detection request
-                    let request = VNCoreMLRequest(model: try self.getModel(modelName)) { request, error in
-                        if let error = error {
-                            continuation.resume(throwing: DetectionError.processingFailed(error))
-                            return
-                        }
-                        
-                        let detectedObjects = self.processDetectionResults(
-                            request.results,
-                            options: options,
-                            imageSize: CGSize(
-                                width: CVPixelBufferGetWidth(pixelBuffer),
-                                height: CVPixelBufferGetHeight(pixelBuffer)
-                            )
-                        )
-                        continuation.resume(returning: detectedObjects)
-                    }
-                    
-                    // Configure for real-time
-                    request.imageCropAndScaleOption = .scaleFit
-                    
-                    // Perform detection
-                    let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
+                    let request = VNDetectRectanglesRequest()
+                    request.minimumConfidence = options.confidenceThreshold
+                    request.maximumObservations = options.maxObjects
+                    request.minimumAspectRatio = 0.2
+                    request.quadratureTolerance = 25
+
+                    let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                     try handler.perform([request])
-                    
+
+                    let rectangles = (request.results ?? []).enumerated().map { index, observation in
+                        DetectedObject(
+                            identifier: "document_region_\(index + 1)",
+                            label: "Document Region",
+                            confidence: observation.confidence,
+                            boundingBox: self.convertBoundingBox(
+                                observation.boundingBox,
+                                imageSize: CGSize(width: cgImage.width, height: cgImage.height)
+                            ),
+                            category: .other,
+                            attributes: [
+                                "source": "vn_detect_rectangles",
+                                "aspectRatio": String(format: "%.2f", observation.boundingBox.width / max(observation.boundingBox.height, 0.0001))
+                            ]
+                        )
+                    }
+
+                    continuation.resume(returning: rectangles)
                 } catch {
                     continuation.resume(throwing: DetectionError.processingFailed(error))
                 }
             }
+        }
+    }
+    
+    private func performRealtimeDetection(
+        pixelBuffer: CVPixelBuffer,
+        imageSize: CGSize,
+        modelName: String,
+        options: DetectionOptions
+    ) async throws -> [DetectedObject] {
+        do {
+            let request = try VNCoreMLRequest(model: getModel(modelName))
+            request.imageCropAndScaleOption = .scaleFit
+
+            let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
+            try handler.perform([request])
+
+            return processDetectionResults(
+                request.results,
+                options: options,
+                imageSize: imageSize
+            )
+        } catch {
+            throw DetectionError.processingFailed(error)
         }
     }
     
@@ -408,11 +449,8 @@ public class ObjectDetectionProcessor {
         // 85 = x, y, w, h, confidence, 80 class probabilities
         
         let numDetections = multiArray.shape[1].intValue
-        let numAttributes = multiArray.shape[2].intValue
         
         for i in 0..<numDetections {
-            let baseIndex = i * numAttributes
-            
             // Extract bounding box coordinates (normalized)
             let centerX = multiArray[[0, i, 0] as [NSNumber]].floatValue
             let centerY = multiArray[[0, i, 1] as [NSNumber]].floatValue

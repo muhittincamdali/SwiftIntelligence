@@ -8,6 +8,13 @@ import os.log
 /// Advanced Speech Recognition and Synthesis Engine with multilingual support
 @MainActor
 public class SpeechEngine: NSObject, ObservableObject {
+    private final class SpeechRecognitionCacheEntry: NSObject {
+        let value: SpeechRecognitionResult
+
+        init(_ value: SpeechRecognitionResult) {
+            self.value = value
+        }
+    }
     
     // MARK: - Singleton
     public static let shared = SpeechEngine()
@@ -45,7 +52,7 @@ public class SpeechEngine: NSObject, ObservableObject {
     @Published public var recognitionError: Error?
     
     // MARK: - Cache and Storage
-    private let cache = NSCache<NSString, AnyObject>()
+    private let cache = NSCache<NSString, SpeechRecognitionCacheEntry>()
     private let voiceCache = NSCache<NSString, NSData>()
     
     // MARK: - Configuration
@@ -280,8 +287,8 @@ public class SpeechEngine: NSObject, ObservableObject {
         
         // Check cache
         let cacheKey = NSString(string: "\(audioURL.path)_\(language)")
-        if let cachedResult = cache.object(forKey: cacheKey) as? SpeechRecognitionResult {
-            return cachedResult
+        if let cachedResult = cache.object(forKey: cacheKey) {
+            return cachedResult.value
         }
         
         guard let recognizer = SFSpeechRecognizer(locale: Locale(identifier: language)) else {
@@ -315,7 +322,7 @@ public class SpeechEngine: NSObject, ObservableObject {
                 )
                 
                 // Cache result
-                self.cache.setObject(speechResult, forKey: cacheKey)
+                self.cache.setObject(SpeechRecognitionCacheEntry(speechResult), forKey: cacheKey)
                 
                 continuation.resume(returning: speechResult)
             }
@@ -352,14 +359,13 @@ public class SpeechEngine: NSObject, ObservableObject {
         voice: SpeechVoice? = nil,
         options: SpeechSynthesisOptions = .default
     ) async throws -> SpeechSynthesisResult {
-        
         let startTime = Date()
-        
+
         // Check cache
-        let cacheKey = NSString(string: "\(text.hashValue)_\(voice?.identifier ?? "default")_\(options.hashValue)")
+        let cacheKey = NSString(string: "\(text.hashValue)_\(voice?.identifier ?? "default")_\(options.language)_\(options.speed)_\(options.pitch)_\(options.volume)")
         if let cachedData = voiceCache.object(forKey: cacheKey) {
             return SpeechSynthesisResult(
-                synthesizedAudio: cachedData,
+                synthesizedAudio: cachedData as Data,
                 originalText: text,
                 voice: voice,
                 duration: 0, // Would need to calculate from audio data
@@ -376,23 +382,30 @@ public class SpeechEngine: NSObject, ObservableObject {
             utterance.voice = currentVoice
         }
         
-        utterance.rate = options.rate
+        utterance.rate = options.speed
         utterance.pitchMultiplier = options.pitch
         utterance.volume = options.volume
-        utterance.preUtteranceDelay = options.preDelay
-        utterance.postUtteranceDelay = options.postDelay
+        utterance.preUtteranceDelay = options.preUtteranceDelay
+        utterance.postUtteranceDelay = options.postUtteranceDelay
         
         return try await withCheckedThrowingContinuation { continuation in
-            var synthesisResult: SpeechSynthesisResult?
-            
             // Create a temporary delegate to handle completion
             let delegate = TemporarySynthesisDelegate { result, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let result = result {
+                    let completedResult = SpeechSynthesisResult(
+                        synthesizedAudio: result.synthesizedAudio,
+                        originalText: result.originalText,
+                        voice: result.voice ?? voice,
+                        duration: result.duration,
+                        processingTime: Date().timeIntervalSince(startTime),
+                        metadata: result.metadata
+                    )
+
                     // Cache result
-                    self.voiceCache.setObject(result.synthesizedAudio, forKey: cacheKey)
-                    continuation.resume(returning: result)
+                    self.voiceCache.setObject(completedResult.synthesizedAudio as NSData, forKey: cacheKey)
+                    continuation.resume(returning: completedResult)
                 }
             }
             
@@ -418,9 +431,8 @@ public class SpeechEngine: NSObject, ObservableObject {
         voice: SpeechVoice? = nil,
         options: SpeechSynthesisOptions = .default
     ) async throws -> Data {
-        
         return try await withCheckedThrowingContinuation { continuation in
-            var audioData = Data()
+            let audioData = Data()
             
             let utterance = AVSpeechUtterance(string: text)
             
@@ -428,7 +440,7 @@ public class SpeechEngine: NSObject, ObservableObject {
                 utterance.voice = AVSpeechSynthesisVoice(identifier: voice.identifier)
             }
             
-            utterance.rate = options.rate
+            utterance.rate = options.speed
             utterance.pitchMultiplier = options.pitch
             utterance.volume = options.volume
             
@@ -446,6 +458,11 @@ public class SpeechEngine: NSObject, ObservableObject {
     
     /// Get available voices for language
     public func getAvailableVoices(for language: String) -> [SpeechVoice] {
+        Self.availableVoices(for: language)
+    }
+
+    /// Get available voices for language without initializing the shared engine.
+    public static func availableVoices(for language: String) -> [SpeechVoice] {
         let voices = AVSpeechSynthesisVoice.speechVoices()
         
         return voices
@@ -521,7 +538,7 @@ public class SpeechEngine: NSObject, ObservableObject {
     
     /// Apply noise reduction to audio
     public func applyNoiseReduction(to audioURL: URL) async throws -> URL {
-        guard let noiseReductionModel = customSpeechModels["NoiseReductionModel"] else {
+        guard customSpeechModels["NoiseReductionModel"] != nil else {
             throw SpeechError.modelNotAvailable
         }
         
@@ -532,7 +549,7 @@ public class SpeechEngine: NSObject, ObservableObject {
     
     /// Enhance speech audio quality
     public func enhanceSpeechAudio(_ audioURL: URL) async throws -> URL {
-        guard let enhancementModel = customSpeechModels["SpeechEnhancementModel"] else {
+        guard customSpeechModels["SpeechEnhancementModel"] != nil else {
             throw SpeechError.modelNotAvailable
         }
         
@@ -558,7 +575,7 @@ public class SpeechEngine: NSObject, ObservableObject {
     // MARK: - Private Helper Methods
     
     private func enhanceTranscriptionWithTurkishModel(_ transcription: String) async {
-        guard let turkishModel = turkishSpeechModel else { return }
+        guard turkishSpeechModel != nil else { return }
         
         // Process transcription with Turkish-specific model
         // This would improve accuracy for Turkish speech patterns
@@ -585,7 +602,7 @@ public class SpeechEngine: NSObject, ObservableObject {
     }
     
     private func detectVoiceActivity() async -> Bool {
-        guard let vad = voiceActivityDetector else { return true }
+        guard voiceActivityDetector != nil else { return true }
         
         // Process current audio buffer through VAD model
         // This is simplified - would need actual audio analysis
@@ -597,7 +614,7 @@ public class SpeechEngine: NSObject, ObservableObject {
         return text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    private func mapQuality(_ quality: AVSpeechSynthesisVoiceQuality) -> SpeechVoice.VoiceQuality {
+    private static func mapQuality(_ quality: AVSpeechSynthesisVoiceQuality) -> SpeechVoice.VoiceQuality {
         switch quality {
         case .default: return .standard
         case .enhanced: return .enhanced
@@ -606,7 +623,7 @@ public class SpeechEngine: NSObject, ObservableObject {
         }
     }
     
-    private func mapGender(_ gender: AVSpeechSynthesisVoiceGender) -> SpeechVoice.VoiceGender {
+    private static func mapGender(_ gender: AVSpeechSynthesisVoiceGender) -> SpeechVoice.VoiceGender {
         switch gender {
         case .male: return .male
         case .female: return .female

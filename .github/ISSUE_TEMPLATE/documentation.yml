@@ -8,8 +8,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping us improve SwiftIntelligence documentation! 📚
-        Good documentation is essential for developer experience.
+        Documentation should reflect the current modular package graph, current workflows, and current validation rules.
+        If you found a stale legacy reference, call it out explicitly so it can be removed rather than preserved.
+        If the issue changes adoption guidance, call out the affected first-success path, comparison page, or public claim.
 
   - type: dropdown
     id: doc-type
@@ -39,21 +40,21 @@ body:
       description: Which module's documentation needs attention?
       options:
         - Core
-        - NLP (Natural Language Processing)
+        - ML
+        - NLP
         - Vision
         - Speech
-        - ML (Machine Learning)
         - Privacy
+        - Reasoning
         - Network
         - Cache
         - Metrics
-        - Reasoning
-        - Image Generation
-        - visionOS
+        - Benchmarks
         - General documentation
         - API Reference
         - Getting Started
         - Examples
+        - Security / Release / CI
     validations:
       required: true
 
@@ -101,6 +102,33 @@ body:
         As a beginner developer, I need...
         As an experienced iOS developer, I want...
         As someone new to AI/ML, I would like...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: adoption-surface
+    attributes:
+      label: Adoption Surface
+      description: Which first-user decision surface is affected?
+      options:
+        - README / first impression
+        - Getting Started / first success path
+        - Comparison pages / raw Apple API decision
+        - Example or demo guide
+        - Proof / release / benchmark status page
+        - General docs only
+    validations:
+      required: true
+
+  - type: textarea
+    id: truthfulness-impact
+    attributes:
+      label: Truthfulness Impact
+      description: Does this issue affect a public claim, proof surface, or readiness statement?
+      placeholder: |
+        - README says X but generated proof says Y
+        - comparison page implies a capability that the example does not prove
+        - no public claim impact
     validations:
       required: true
 
@@ -190,6 +218,8 @@ body:
         - label: I searched for existing documentation issues
           required: true
         - label: I checked the latest version of the documentation
+          required: true
+        - label: I verified whether the issue is caused by legacy inactive APIs or products
           required: true
         - label: I provided specific suggestions for improvement
           required: true

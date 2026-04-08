@@ -1,0 +1,38 @@
+{
+  "readinessFile": "Documentation/Generated/Benchmark-Readiness.md",
+  "files": [
+    "README.md",
+    "ROADMAP.md",
+    "PROJECT_STATUS.md",
+    "Documentation/Showcase.md",
+    "Documentation/Positioning.md",
+    "Documentation/Comparisons/README.md",
+    "Documentation/Comparisons/NLP.md",
+    "Documentation/Comparisons/Vision.md",
+    "Documentation/Comparisons/Speech.md",
+    "Documentation/Comparisons/Privacy.md"
+  ],
+  "forbiddenPatternsWhenNotReady": [
+    "\\bbest-in-class\\b",
+    "\\bworld-class\\b",
+    "\\bindustry-leading\\b",
+    "\\bproduction-ready\\b",
+    "\\bbenchmark leader\\b",
+    "\\bperformance leader\\b",
+    "\\bleading benchmark\\b"
+  ],
+  "allowedContextPatterns": [
+    "\\bnot\\b",
+    "does not prove",
+    "do not claim",
+    "without",
+    "missing",
+    "unproven",
+    "avoid",
+    "pretending",
+    "instead of",
+    "lose if",
+    "not ready",
+    "not yet"
+  ]
+}

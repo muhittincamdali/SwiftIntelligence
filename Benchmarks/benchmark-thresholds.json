@@ -1,0 +1,8 @@
+{
+  "maxPerformanceScoreDropPercent": 10.0,
+  "maxAverageExecutionTimeIncreasePercent": 15.0,
+  "maxTotalMemoryIncreasePercent": 20.0,
+  "maxPerWorkloadExecutionTimeIncreasePercent": 25.0,
+  "maxPerWorkloadPeakMemoryIncreasePercent": 30.0,
+  "maxRegressedWorkloadCount": 5
+}

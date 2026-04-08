@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-07T15:02:30Z",
+  "artifactDirectory": "Benchmarks/Results/iphone-baseline",
+  "fileCount": 4,
+  "files": [
+    {
+      "name": "benchmark-report.json",
+      "relativePath": "Benchmarks/Results/iphone-baseline/benchmark-report.json",
+      "size": 619261,
+      "sha256": "098748cc51ff3cbea4e47bd96944bf8ecb6f6081828c7aa8171ea3db894ae9ad"
+    },
+    {
+      "name": "benchmark-summary.md",
+      "relativePath": "Benchmarks/Results/iphone-baseline/benchmark-summary.md",
+      "size": 1476,
+      "sha256": "466fc89d83f287b9e88fec96e9d3bcacccbcec27a1cd91999df13f637b29e8f7"
+    },
+    {
+      "name": "device-metadata.json",
+      "relativePath": "Benchmarks/Results/iphone-baseline/device-metadata.json",
+      "size": 678,
+      "sha256": "b4d9931e5eb2308660da2d3a14e7b6efaa4ccc125fc8ce17a5c0c603af5e5061"
+    },
+    {
+      "name": "environment.json",
+      "relativePath": "Benchmarks/Results/iphone-baseline/environment.json",
+      "size": 197,
+      "sha256": "3fad03a311feba2e800e0a8c316ad811e3829dc0fcbfc6d36899a3f54f7aa914"
+    }
+  ]
+}
