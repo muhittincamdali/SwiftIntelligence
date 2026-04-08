@@ -72,11 +72,11 @@
     <text x="956" y="696" fill="#9FC5FF" font-size="20" font-weight="700">Mac + iPhone floor, release-grade posture</text>
   </g>
 
-  <rect x="92" y="756" width="1216" height="72" rx="24" fill="url(#line)" stroke="#FFFFFF" stroke-opacity="0.08"/>
+  <rect x="92" y="748" width="1216" height="88" rx="24" fill="url(#line)" stroke="#FFFFFF" stroke-opacity="0.08"/>
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <text x="126" y="801" fill="#FFFFFF" font-size="24" font-weight="800">Flagship flow:</text>
-    <text x="306" y="801" fill="#D7E6FF" font-size="24" font-weight="500">Vision -> NLP -> Privacy -> release proof</text>
-    <text x="842" y="801" fill="#FFFFFF" font-size="24" font-weight="800">Current strongest demo:</text>
-    <text x="1138" y="801" fill="#9FC5FF" font-size="24" font-weight="700">IntelligentCamera</text>
+    <text x="126" y="790" fill="#FFFFFF" font-size="22" font-weight="800">Flagship flow</text>
+    <text x="126" y="822" fill="#D7E6FF" font-size="22" font-weight="600">Vision -> NLP -> Privacy -> release proof</text>
+    <text x="760" y="790" fill="#FFFFFF" font-size="22" font-weight="800">Current strongest demo</text>
+    <text x="760" y="822" fill="#9FC5FF" font-size="22" font-weight="700">IntelligentCamera</text>
   </g>
 </svg>
