@@ -106,7 +106,10 @@ cp "$ROOT_DIR/Documentation/Generated/Public-Proof-Status.md" "$EXPORT_DIR/Publi
 cp "$ROOT_DIR/Documentation/Generated/public-proof-status.json" "$EXPORT_DIR/public-proof-status.json"
 cp "$ROOT_DIR/.github/ISSUE_TEMPLATE/device_evidence.yml" "$EXPORT_DIR/GitHub/device_evidence.yml"
 
-mapfile -t device_classes < <(ruby -rjson -e 'payload = JSON.parse(File.read(ARGV[0])); Array(payload["entries"]).each { |entry| puts entry.fetch("deviceClass") }' "$QUEUE_JSON")
+device_classes=()
+while IFS= read -r device_class; do
+  device_classes+=("$device_class")
+done < <(ruby -rjson -e 'payload = JSON.parse(File.read(ARGV[0])); Array(payload["entries"]).each { |entry| puts entry.fetch("deviceClass") }' "$QUEUE_JSON")
 
 for device_class in "${device_classes[@]}"; do
   slug="$(echo "$device_class" | tr '[:upper:]' '[:lower:]')"
