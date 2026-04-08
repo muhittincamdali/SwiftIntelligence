@@ -40,7 +40,7 @@
     <text x="556" y="634" fill="#D7E6FF" font-size="22" font-weight="500">Voice output</text>
 
     <rect x="948" y="404" width="344" height="228" rx="28" fill="#10281D" stroke="#34C759" stroke-opacity="0.26"/>
-    <text x="976" y="448" fill="#B5F0C5" font-size="22" font-weight="700">Trust + transport</text>
+    <text x="976" y="448" fill="#B5F0C5" font-size="20" font-weight="700">Trust + transport</text>
     <text x="976" y="490" fill="#FFFFFF" font-size="28" font-weight="800">Privacy + Network</text>
     <text x="976" y="526" fill="#FFFFFF" font-size="28" font-weight="800">+ Metrics</text>
     <text x="976" y="566" fill="#D7E6FF" font-size="22" font-weight="500">Tokenization</text>
@@ -49,8 +49,7 @@
 
     <rect x="244" y="680" width="912" height="94" rx="24" fill="#1B1B14" stroke="#FF9F0A" stroke-opacity="0.26"/>
     <text x="276" y="724" fill="#FFD4A6" font-size="20" font-weight="700">Release operating system</text>
-    <text x="276" y="754" fill="#FFFFFF" font-size="18" font-weight="800">Benchmarks -> proof pages -> release bundles</text>
-    <text x="708" y="754" fill="#FFFFFF" font-size="18" font-weight="800">-> public claims</text>
+    <text x="276" y="754" fill="#FFFFFF" font-size="17" font-weight="800">Benchmarks -> proof pages -> release bundles -> public claims</text>
   </g>
 
   <path d="M700 362V404" stroke="#D7E6FF" stroke-opacity="0.4" stroke-width="4"/>
