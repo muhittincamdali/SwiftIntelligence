@@ -129,8 +129,12 @@ public actor SwiftIntelligenceNetwork {
     private func setupNetworkMonitoringCallbacks() async {
         // Network status change callback
         await networkMonitor.setNetworkStatusChangeCallback { [weak self] status in
-            Task { @MainActor in
-                await self?.handleNetworkStatusChange(status)
+            guard let self else {
+                return
+            }
+
+            Task {
+                await self.handleNetworkStatusChange(status)
             }
         }
     }
