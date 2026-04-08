@@ -111,16 +111,18 @@ while IFS= read -r device_class; do
   device_classes+=("$device_class")
 done < <(ruby -rjson -e 'payload = JSON.parse(File.read(ARGV[0])); Array(payload["entries"]).each { |entry| puts entry.fetch("deviceClass") }' "$QUEUE_JSON")
 
-for device_class in "${device_classes[@]}"; do
-  slug="$(echo "$device_class" | tr '[:upper:]' '[:lower:]')"
-  source_dir="$ROOT_DIR/Documentation/Generated/Device-Capture-Packets/$slug"
-  if [[ ! -d "$source_dir" ]]; then
-    echo "Missing packet directory for $device_class: $source_dir" >&2
-    exit 1
-  fi
+if [[ ${#device_classes[@]} -gt 0 ]]; then
+  for device_class in "${device_classes[@]}"; do
+    slug="$(echo "$device_class" | tr '[:upper:]' '[:lower:]')"
+    source_dir="$ROOT_DIR/Documentation/Generated/Device-Capture-Packets/$slug"
+    if [[ ! -d "$source_dir" ]]; then
+      echo "Missing packet directory for $device_class: $source_dir" >&2
+      exit 1
+    fi
 
-  cp -R "$source_dir" "$EXPORT_DIR/Device-Capture-Packets/$slug"
-done
+    cp -R "$source_dir" "$EXPORT_DIR/Device-Capture-Packets/$slug"
+  done
+fi
 
 exported_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 git_commit="$(git -C "$ROOT_DIR" rev-parse HEAD 2>/dev/null || true)"
