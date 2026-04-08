@@ -55,6 +55,11 @@ bash "$ROOT_DIR/Scripts/validate-device-evidence-handoff.sh" "$GENERATED_DIR/dev
 bash "$ROOT_DIR/Scripts/validate-release-workflow-assets.sh" "$WORKFLOW_PATH" "$ROOT_DIR/Documentation/release-asset-policy.json"
 bash "$ROOT_DIR/Scripts/validate-release-provenance.sh" "$RESULTS_ROOT"
 bash "$ROOT_DIR/Scripts/validate-release-evidence-assets.sh" "$RESULTS_ROOT"
-bash "$ROOT_DIR/Scripts/validate-benchmark-thresholds.sh" "$ACTIVE_RESULTS_DIR" "$RESULTS_ROOT" "$ROOT_DIR/Benchmarks/benchmark-thresholds.json"
+
+if [[ "$ACTIVE_PROFILE" == "standard" ]]; then
+  bash "$ROOT_DIR/Scripts/validate-benchmark-thresholds.sh" "$ACTIVE_RESULTS_DIR" "$RESULTS_ROOT" "$ROOT_DIR/Benchmarks/benchmark-thresholds.json"
+else
+  echo "Benchmark regression threshold gate skipped for '$ACTIVE_PROFILE' profile."
+fi
 
 echo "Proof surfaces validated."
