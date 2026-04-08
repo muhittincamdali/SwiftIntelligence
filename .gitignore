@@ -47,7 +47,6 @@ playground.xcworkspace
 .swiftpm
 .build/
 .swiftpm/
-Benchmarks/Results/latest/
 Benchmarks/Results/ci-smoke/
 Benchmarks/Results/device-attachments.*/
 Benchmarks/Results/device-build-log.*

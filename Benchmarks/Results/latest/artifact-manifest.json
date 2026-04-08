@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-08T18:03:48Z",
+  "artifactDirectory": "Benchmarks/Results/latest",
+  "fileCount": 4,
+  "files": [
+    {
+      "name": "benchmark-report.json",
+      "relativePath": "Benchmarks/Results/latest/benchmark-report.json",
+      "size": 619258,
+      "sha256": "d6821d4949ce63e5cb8fa33475a186f0f826c72fbf9dd2457eb8f2223e47450b"
+    },
+    {
+      "name": "benchmark-summary.md",
+      "relativePath": "Benchmarks/Results/latest/benchmark-summary.md",
+      "size": 1467,
+      "sha256": "7bde757a9ed9f9391f4eaafe62c15b25bfce7ae65e153c7f1e93c13abef78218"
+    },
+    {
+      "name": "device-metadata.json",
+      "relativePath": "Benchmarks/Results/latest/device-metadata.json",
+      "size": 529,
+      "sha256": "1f20606b72c900532bc04ff6c102465d4cebbb2a379a1c6c7f126b635e8040dc"
+    },
+    {
+      "name": "environment.json",
+      "relativePath": "Benchmarks/Results/latest/environment.json",
+      "size": 194,
+      "sha256": "59c3673c583df09581e806dc305d049dc25b2caeb225eb4876e3e60a080d766b"
+    }
+  ]
+}
