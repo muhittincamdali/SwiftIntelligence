@@ -5,6 +5,7 @@ This folder is the entry point for implementation notes, usage guides, and proof
 ## Start Here
 
 - [Five-Minute Success Path](Getting-Started.md#five-minute-success-path)
+- [README Languages](README-Languages.md)
 - [Intelligent Camera demo guide](../Examples/DemoApps/IntelligentCamera/README.md)
 - [Getting Started](Getting-Started.md)
 - [Documentation Status](DOCUMENTATION_STATUS.md)

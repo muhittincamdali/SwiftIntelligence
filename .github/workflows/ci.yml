@@ -32,6 +32,9 @@ jobs:
       - name: Validate Flagship Media Policy
         run: bash Scripts/validate-flagship-media-assets.sh
 
+      - name: Validate README Localizations
+        run: bash Scripts/validate-readme-localizations.sh
+
       - name: Validate Examples
         run: bash Scripts/validate-examples.sh
 
