@@ -49,6 +49,15 @@ playground.xcworkspace
 .swiftpm/
 Benchmarks/Results/latest/
 Benchmarks/Results/ci-smoke/
+Benchmarks/Results/device-attachments.*/
+Benchmarks/Results/device-build-log.*
+Benchmarks/Results/device-derived-data.*/
+Benchmarks/Results/device-list.*
+Benchmarks/Results/device-pull.*/
+Benchmarks/Results/device-xcresult*/
+Benchmarks/Results/device-xcresult*.xcresult/
+Benchmarks/Results/iphone-device-run/
+Benchmarks/Results/iphone-smoke-device-check/
 
 # CocoaPods
 #
