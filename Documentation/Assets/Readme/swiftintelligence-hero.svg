@@ -1,0 +1,89 @@
+<svg width="1400" height="840" viewBox="0 0 1400 840" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="122" y1="64" x2="1264" y2="776" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07111F"/>
+      <stop offset="0.5" stop-color="#101C31"/>
+      <stop offset="1" stop-color="#071726"/>
+    </linearGradient>
+    <radialGradient id="glowBlue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1134 164) rotate(132.343) scale(393.33 346.268)">
+      <stop stop-color="#0A84FF" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#0A84FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowOrange" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(310 734) rotate(-36.2974) scale(456.567 316.941)">
+      <stop stop-color="#FF8A00" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#FF8A00" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="card" x1="942" y1="184" x2="1236" y2="648" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#18283F" stop-opacity="0.94"/>
+      <stop offset="1" stop-color="#101B2C" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="pill" x1="0" y1="0" x2="160" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1400" height="840" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="32" flood-color="#000814" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="840" rx="36" fill="url(#bg)"/>
+  <rect width="1400" height="840" rx="36" fill="url(#glowBlue)"/>
+  <rect width="1400" height="840" rx="36" fill="url(#glowOrange)"/>
+
+  <g opacity="0.7">
+    <circle cx="1118" cy="180" r="10" fill="#0A84FF"/>
+    <circle cx="1178" cy="244" r="7" fill="#5AC8FA"/>
+    <circle cx="1216" cy="154" r="7" fill="#FF9F0A"/>
+    <path d="M1118 180L1178 244L1216 154" stroke="#9FC5FF" stroke-opacity="0.45" stroke-width="2"/>
+    <circle cx="1042" cy="602" r="12" fill="#FF8A00"/>
+    <circle cx="1194" cy="544" r="8" fill="#FFD166"/>
+    <circle cx="1274" cy="628" r="9" fill="#34C759"/>
+    <path d="M1042 602L1194 544L1274 628" stroke="#FFD8AE" stroke-opacity="0.35" stroke-width="2"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="66" y="72" width="764" height="696" rx="32" fill="#0C1728" fill-opacity="0.6" stroke="#EEF3FF" stroke-opacity="0.08"/>
+    <rect x="892" y="144" width="430" height="552" rx="32" fill="url(#card)" stroke="#EEF3FF" stroke-opacity="0.08"/>
+  </g>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <rect x="110" y="118" width="176" height="42" rx="21" fill="url(#pill)" stroke="#FFFFFF" stroke-opacity="0.16"/>
+    <text x="144" y="145" fill="#DDEBFF" font-size="20" font-weight="700">APPLE-NATIVE AI</text>
+
+    <text x="110" y="250" fill="#FFFFFF" font-size="86" font-weight="800">SwiftIntelligence</text>
+    <text x="110" y="314" fill="#9FC5FF" font-size="34" font-weight="700">Modular on-device AI for Apple platforms</text>
+
+    <text x="110" y="398" fill="#EAF2FF" font-size="28" font-weight="500">Build real developer flows across Vision, NaturalLanguage, Speech,</text>
+    <text x="110" y="438" fill="#EAF2FF" font-size="28" font-weight="500">privacy controls, benchmarks, and release proof.</text>
+
+    <rect x="110" y="500" width="204" height="52" rx="18" fill="#F05138"/>
+    <text x="144" y="533" fill="#FFFFFF" font-size="24" font-weight="800">Vision</text>
+    <rect x="330" y="500" width="248" height="52" rx="18" fill="#0A84FF"/>
+    <text x="364" y="533" fill="#FFFFFF" font-size="24" font-weight="800">NaturalLanguage</text>
+    <rect x="594" y="500" width="178" height="52" rx="18" fill="#34C759"/>
+    <text x="628" y="533" fill="#FFFFFF" font-size="24" font-weight="800">Privacy</text>
+
+    <rect x="110" y="580" width="662" height="124" rx="26" fill="#F7FAFF" fill-opacity="0.08" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <text x="146" y="628" fill="#FFFFFF" font-size="28" font-weight="750">Flagship Path</text>
+    <text x="146" y="668" fill="#D4E3FF" font-size="24" font-weight="500">IntelligentCamera proves the strongest current workflow:</text>
+    <text x="146" y="704" fill="#FFFFFF" font-size="30" font-weight="800">Vision → NLP → Privacy</text>
+
+    <text x="932" y="212" fill="#FFFFFF" font-size="34" font-weight="800">Release Signal</text>
+
+    <rect x="932" y="244" width="350" height="92" rx="24" fill="#0E213A" stroke="#5AC8FA" stroke-opacity="0.28"/>
+    <text x="962" y="286" fill="#9FC5FF" font-size="22" font-weight="700">Publish readiness</text>
+    <text x="962" y="319" fill="#FFFFFF" font-size="34" font-weight="800">ready</text>
+
+    <rect x="932" y="356" width="350" height="92" rx="24" fill="#1D1A0D" stroke="#FF8A00" stroke-opacity="0.28"/>
+    <text x="962" y="398" fill="#FFD4A6" font-size="22" font-weight="700">Distribution posture</text>
+    <text x="962" y="431" fill="#FFFFFF" font-size="34" font-weight="800">release-grade</text>
+
+    <rect x="932" y="468" width="350" height="92" rx="24" fill="#0F231A" stroke="#34C759" stroke-opacity="0.28"/>
+    <text x="962" y="510" fill="#B5F0C5" font-size="22" font-weight="700">Required device floor</text>
+    <text x="962" y="543" fill="#FFFFFF" font-size="34" font-weight="800">Mac + iPhone</text>
+
+    <rect x="932" y="580" width="350" height="92" rx="24" fill="#1D152A" stroke="#BF5AF2" stroke-opacity="0.28"/>
+    <text x="962" y="622" fill="#E6C8FF" font-size="22" font-weight="700">Flagship media</text>
+    <text x="962" y="655" fill="#FFFFFF" font-size="34" font-weight="800">published</text>
+  </g>
+</svg>

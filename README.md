@@ -1,80 +1,141 @@
 <div align="center">
+  <img src="Documentation/Assets/Readme/swiftintelligence-hero.svg" width="100%" alt="SwiftIntelligence hero banner" />
+</div>
 
-# SwiftIntelligence
-
-### Modular on-device AI for Apple platforms
+<div align="center">
 
 [![Swift](https://img.shields.io/badge/Swift-5.9+-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
-[![Platforms](https://img.shields.io/badge/Platforms-iOS%2017%2B%20%7C%20macOS%2014%2B%20%7C%20tvOS%2017%2B%20%7C%20watchOS%2010%2B%20%7C%20visionOS%201%2B-007AFF?style=for-the-badge&logo=apple)](https://developer.apple.com)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![SPM](https://img.shields.io/badge/SPM-Compatible-FA7343?style=for-the-badge&logo=swift)](https://swift.org/package-manager/)
+[![Apple Platforms](https://img.shields.io/badge/Apple-iOS%2017%2B%20%7C%20macOS%2014%2B%20%7C%20tvOS%2017%2B%20%7C%20watchOS%2010%2B%20%7C%20visionOS%201%2B-0A84FF?style=for-the-badge&logo=apple&logoColor=white)](https://developer.apple.com)
+[![Publish Readiness](https://img.shields.io/badge/Publish%20Readiness-ready-34C759?style=for-the-badge)](Documentation/Generated/Benchmark-Readiness.md)
+[![Proof Posture](https://img.shields.io/badge/Proof%20Posture-release--grade-FF9F0A?style=for-the-badge)](Documentation/Generated/Public-Proof-Status.md)
+[![Required Devices](https://img.shields.io/badge/Required%20Devices-Mac%20%2B%20iPhone-5AC8FA?style=for-the-badge)](Documentation/Generated/Release-Benchmark-Matrix.md)
+[![License](https://img.shields.io/badge/License-MIT-111827?style=for-the-badge)](LICENSE)
 
-**Privacy-first • Native frameworks only • Modular Apple AI toolkit**
+<br />
 
-[Getting Started](Documentation/Getting-Started.md) • [Documentation Index](Documentation/README.md) • [Positioning](Documentation/Positioning.md) • [GitHub Distribution](Documentation/GitHub-Distribution.md) • [Benchmarks](Documentation/Benchmark-Baselines.md) • [Roadmap](ROADMAP.md) • [Security](SECURITY.md) • [Contributing](CONTRIBUTING.md)
+[![Start Here](https://img.shields.io/badge/Start%20Here-5%20Minute%20Success%20Path-F05138?style=for-the-badge&labelColor=0D1117)](Documentation/Getting-Started.md#five-minute-success-path)
+[![Flagship Demo](https://img.shields.io/badge/Flagship%20Demo-IntelligentCamera-0A84FF?style=for-the-badge&labelColor=0D1117)](Examples/DemoApps/IntelligentCamera/README.md)
+[![Proof Surface](https://img.shields.io/badge/Proof%20Surface-Public%20Status-34C759?style=for-the-badge&labelColor=0D1117)](Documentation/Generated/Public-Proof-Status.md)
+[![Showcase Media](https://img.shields.io/badge/Showcase%20Media-published-BF5AF2?style=for-the-badge&labelColor=0D1117)](Documentation/Assets/Flagship-Demo/README.md)
 
 </div>
 
----
+<p align="center">
+  <strong>SwiftIntelligence</strong> is a modular, privacy-first AI toolkit for Apple developers who want a real product path across
+  <code>Vision</code>, <code>NaturalLanguage</code>, <code>Speech</code>, privacy controls, benchmarks, and release proof.
+</p>
 
-## Why SwiftIntelligence?
+<p align="center">
+  It is not a generic cross-platform inference runtime. It is an Apple-native developer toolkit built to make on-device AI flows easier to compose,
+  easier to validate, and harder to fake.
+</p>
 
-SwiftIntelligence is a modular AI toolkit for Apple platforms built on native frameworks such as Vision, NaturalLanguage, Speech, Core ML, and AVFoundation.
+<p align="center">
+  <a href="Documentation/Getting-Started.md">Getting Started</a> •
+  <a href="Documentation/Comparisons/README.md">Comparisons</a> •
+  <a href="Documentation/Positioning.md">Positioning</a> •
+  <a href="Documentation/Showcase.md">Showcase</a> •
+  <a href="Documentation/Generated/Public-Proof-Status.md">Public Proof Status</a> •
+  <a href="Documentation/Generated/Latest-Release-Proof.md">Latest Release Proof</a> •
+  <a href="ROADMAP.md">Roadmap</a>
+</p>
 
-It is intentionally positioned as a modular Apple AI developer toolkit, not as a generic cross-platform inference runtime. The current competitive framing is documented in [Documentation/Positioning.md](Documentation/Positioning.md).
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
-The current package graph is intentionally modular:
+## Why This Repo Feels Different
 
-- `SwiftIntelligenceCore`
-- `SwiftIntelligenceML`
-- `SwiftIntelligenceNLP`
-- `SwiftIntelligenceVision`
-- `SwiftIntelligenceSpeech`
-- `SwiftIntelligenceReasoning`
-- `SwiftIntelligencePrivacy`
-- `SwiftIntelligenceNetwork`
-- `SwiftIntelligenceCache`
-- `SwiftIntelligenceMetrics`
-- `SwiftIntelligenceBenchmarks`
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <h3>Apple-Native by Design</h3>
+      <p>Built around <code>Vision</code>, <code>NaturalLanguage</code>, <code>Speech</code>, <code>Core ML</code>, and privacy-aware workflows instead of hiding Apple APIs behind a vague abstraction layer.</p>
+    </td>
+    <td width="33%" valign="top">
+      <h3>Proof, Not Hype</h3>
+      <p>Public claims are tied to benchmark artifacts, generated proof surfaces, immutable release bundles, and explicit device coverage policy.</p>
+    </td>
+    <td width="33%" valign="top">
+      <h3>Modular Product Surface</h3>
+      <p>Adopt only the modules you need, keep the binary surface smaller, and evaluate the strongest path first with a maintained flagship flow.</p>
+    </td>
+  </tr>
+</table>
 
-This keeps adoption explicit, reduces binary surface area, and makes Swift 6 concurrency hardening easier to validate.
+## At a Glance
 
-## Current Status
+| Signal | Current truth |
+| --- | --- |
+| Positioning | Modular on-device AI toolkit for Apple platforms |
+| Strongest path | `Vision -> NLP -> Privacy` |
+| Flagship demo | [`IntelligentCamera`](Examples/DemoApps/IntelligentCamera/README.md) |
+| Publish readiness | `ready` |
+| Distribution posture | `release-grade` |
+| Required release floor | `Mac + iPhone` |
+| Flagship media | `published` |
+| Benchmarks | Generated, versioned, release-linked |
+| Public proof | [`Public-Proof-Status.md`](Documentation/Generated/Public-Proof-Status.md) |
 
-- Active modular package graph is building cleanly.
-- `swift test` is passing on the current branch.
-- Publish readiness is `ready` under the current required device matrix: `Mac + iPhone`.
-- The current public proof posture is `release-grade`.
-- CI now exercises build, example validation, tests, `smoke` benchmark evidence, and proof-surface validators.
-- Security automation includes CodeQL, dependency review, and OpenSSF Scorecard workflows.
-- Vision and NLP concurrency migration work is actively maintained.
-- Performance claims are expected to be backed by benchmark artifacts in [Documentation/Benchmark-Baselines.md](Documentation/Benchmark-Baselines.md).
-- The current claim envelope and immutable release proof are published in [Documentation/Generated/Public-Proof-Status.md](Documentation/Generated/Public-Proof-Status.md) and [Documentation/Generated/Latest-Release-Proof.md](Documentation/Generated/Latest-Release-Proof.md).
-- Competitive positioning and win conditions are documented in [Documentation/Positioning.md](Documentation/Positioning.md).
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
-## Why Adopt Now
+## Flagship Experience
 
-- strongest current path is a real multi-module Apple-native flow: `Vision -> NLP -> Privacy`
-- flagship demo has its own guide and smoke-check: [IntelligentCamera](Examples/DemoApps/IntelligentCamera/README.md), `bash Scripts/validate-flagship-demo.sh`
-- flagship media path now includes published repo-native screenshot and recording assets: [Flagship Media](Documentation/Assets/Flagship-Demo/README.md), [Screenshot](Documentation/Assets/Flagship-Demo/intelligent-camera-success.png), [Recording](Documentation/Assets/Flagship-Demo/intelligent-camera-run.mp4)
-- release proof is not hand-wavy: [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) and [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md)
-- required release device floor is already covered with immutable `Mac + iPhone` evidence
+<p align="center">
+  <a href="Examples/DemoApps/IntelligentCamera/README.md">
+    <img src="Documentation/Assets/Flagship-Demo/intelligent-camera-success.png" width="100%" alt="SwiftIntelligence IntelligentCamera flagship demo screenshot" />
+  </a>
+</p>
+
+<p align="center">
+  Real repo-native flagship media for the maintained demo path.
+  <a href="Documentation/Assets/Flagship-Demo/intelligent-camera-run.mp4">Recording</a> •
+  <a href="Documentation/Assets/Flagship-Demo/caption.txt">Caption</a> •
+  <a href="Documentation/Assets/Flagship-Demo/README.md">Media policy</a>
+</p>
+
+`IntelligentCamera` is the fastest honest proof of value in this repo. It combines:
+
+- `SwiftIntelligenceVision` for classification, OCR, and detection
+- `SwiftIntelligenceNLP` for summary generation
+- `SwiftIntelligencePrivacy` for tokenized privacy preview
+- generated proof surfaces so the demo path is not separated from release discipline
+
+If you only test one thing first, test this path.
+
+```bash
+bash Scripts/validate-flagship-demo.sh
+```
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
+## Start Here
+
+| Your goal | Install | Best first page |
+| --- | --- | --- |
+| Evaluate the strongest product story | `Core + Vision + NLP + Privacy` | [5-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path) |
+| Compare against raw Apple NLP APIs | `Core + NLP` | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
+| Compare against raw Apple Vision APIs | `Core + Vision` | [Vision vs Apple Vision](Documentation/Comparisons/Vision-vs-AppleVision.md) |
+| Add privacy controls around AI features | `Privacy + protected feature module` | [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) |
+| Validate trust before adoption | none | [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) |
+| Review performance posture | `Benchmarks` | [Benchmark Baselines](Documentation/Benchmark-Baselines.md) |
+
+> Use SwiftIntelligence if you want a maintained Apple-native workflow across modules.
+> Stay on raw Apple APIs if you only need a single untouched framework call and do not want an additional package layer.
 
 ## Who This Is For
 
-- Apple-platform teams that want to compose `Vision`, `NaturalLanguage`, `Speech`, and privacy controls inside one Swift package workflow
-- teams that want a stronger developer path than raw framework-by-framework integration
-- maintainers who care about proof surfaces, example validation, and release discipline before making public claims
+- Apple-platform teams shipping on-device features with `Vision`, `NaturalLanguage`, `Speech`, and privacy-sensitive data
+- engineers who want a stronger developer path than raw framework-by-framework assembly
+- maintainers who care about evidence, release discipline, benchmark thresholds, and example validation
 
 ## Who Should Not Use This
 
 - teams looking for a cross-platform inference runtime
-- teams whose main problem is model conversion, quantization, or Python-first ML tooling
-- teams that only need one untouched Apple framework API and do not want an additional package layer
+- teams centered on Python-first training, model conversion, or quantization tooling
+- apps that only need one low-level Apple API call without a multi-module workflow
 
-## Installation
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
-Fastest honest first install is the flagship path: `Vision -> NLP -> Privacy`.
+## Install the Strongest Path
 
 ```swift
 dependencies: [
@@ -93,36 +154,7 @@ targets: [
 ]
 ```
 
-If you do not need the flagship path, module-first entry points live in [Getting Started](Documentation/Getting-Started.md) and the raw Apple API comparisons live in [Documentation/Comparisons](Documentation/Comparisons/README.md).
-
-## 5-Minute Success Path
-
-Fastest honest first win in this repo:
-
-1. Add `SwiftIntelligenceCore`, `SwiftIntelligenceVision`, `SwiftIntelligenceNLP`, and `SwiftIntelligencePrivacy`.
-2. Open the flagship `IntelligentCamera` flow.
-3. Verify the repo and examples locally.
-
-Use this if you want to evaluate the repo on its strongest axis: `Vision -> NLP -> Privacy`.
-
-Install the minimal flagship set:
-
-```swift
-.product(name: "SwiftIntelligenceCore", package: "SwiftIntelligence"),
-.product(name: "SwiftIntelligenceVision", package: "SwiftIntelligence"),
-.product(name: "SwiftIntelligenceNLP", package: "SwiftIntelligence"),
-.product(name: "SwiftIntelligencePrivacy", package: "SwiftIntelligence")
-```
-
-Then start with:
-
-- [Getting Started](Documentation/Getting-Started.md)
-- [Intelligent Camera demo guide](Examples/DemoApps/IntelligentCamera/README.md)
-- [Intelligent Camera demo source](Examples/DemoApps/IntelligentCamera/IntelligentCameraApp.swift)
-- [Showcase proof narrative](Documentation/Showcase.md)
-- [Latest immutable release proof](Documentation/Generated/Latest-Release-Proof.md)
-
-Local verification:
+Then validate the repo the same way the public docs describe it:
 
 ```bash
 swift build
@@ -131,109 +163,112 @@ bash Scripts/validate-examples.sh
 swift test
 ```
 
-## Quick Start By Module
+## Module Surface
 
-| First goal | Products | Start here |
-| --- | --- | --- |
-| `Vision -> NLP -> Privacy` flagship flow | `Core + Vision + NLP + Privacy` | [Getting Started](Documentation/Getting-Started.md#five-minute-success-path) |
-| NLP-first app | `Core + NLP` | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
-| Vision-first app | `Core + Vision` | [Vision vs Apple Vision](Documentation/Comparisons/Vision-vs-AppleVision.md) |
-| Speech-first app | `Speech` | [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
-| Privacy-aware AI flow | `Privacy + protected feature module` | [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) |
-| Benchmarks and proof surfaces | `Benchmarks` | [Documentation/Benchmark-Baselines.md](Documentation/Benchmark-Baselines.md) |
+<details open>
+<summary><strong>Core modules and what they do</strong></summary>
 
-If you are unsure where to begin, use the flagship path first. Only stay on raw Apple APIs when you need direct low-level control and do not need the multi-module workflow this repo optimizes for.
-
-## Module Map
-
-| Module | Scope |
+| Module | Role |
 | --- | --- |
-| `SwiftIntelligenceCore` | Shared configuration, logging, metrics, runtime utilities |
+| `SwiftIntelligenceCore` | Shared configuration, logging, runtime utilities |
 | `SwiftIntelligenceML` | On-device training, prediction, evaluation, cache management |
 | `SwiftIntelligenceNLP` | Sentiment, entities, keywords, summaries, topics |
 | `SwiftIntelligenceVision` | Classification, detection, OCR, segmentation, enhancement |
-| `SwiftIntelligenceSpeech` | Voice catalogs, synthesis, speech-related types |
-| `SwiftIntelligencePrivacy` | Tokenization, anonymization, compliance, secure storage |
+| `SwiftIntelligenceSpeech` | Speech-related types, synthesis, voice catalogs |
+| `SwiftIntelligencePrivacy` | Tokenization, anonymization, secure storage, compliance helpers |
 | `SwiftIntelligenceReasoning` | Higher-level reasoning primitives |
 | `SwiftIntelligenceNetwork` | Network-layer helpers |
 | `SwiftIntelligenceCache` | Cache primitives |
 | `SwiftIntelligenceMetrics` | Metrics and observability support |
-| `SwiftIntelligenceBenchmarks` | Benchmark runners and performance baselines |
+| `SwiftIntelligenceBenchmarks` | Benchmark runners, artifacts, thresholds, baselines |
 
-## Documentation
+</details>
 
-Start here:
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
-- [Documentation Index](Documentation/README.md)
-- [Positioning](Documentation/Positioning.md)
-- [GitHub Distribution](Documentation/GitHub-Distribution.md)
-- [Module Comparisons](Documentation/Comparisons/README.md)
-- [5-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path)
-- [Intelligent Camera demo guide](Examples/DemoApps/IntelligentCamera/README.md)
-- [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md)
-- [Vision vs Apple Vision](Documentation/Comparisons/Vision-vs-AppleVision.md)
-- [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md)
-- [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md)
-- [Showcase](Documentation/Showcase.md)
-- [Flagship Media](Documentation/Assets/Flagship-Demo/README.md)
-- [Generated Proof Snapshot](Documentation/Generated/Proof-Snapshot.md)
-- [Generated Benchmark History](Documentation/Generated/Benchmark-History.md)
-- [Generated Benchmark Comparison](Documentation/Generated/Benchmark-Comparison.md)
-- [Generated Benchmark Methodology](Documentation/Generated/Benchmark-Methodology.md)
-- [Generated Benchmark Timeline](Documentation/Generated/Benchmark-Timeline.md)
-- [Generated Release Benchmark Matrix](Documentation/Generated/Release-Benchmark-Matrix.md)
-- [Generated Release Proof Timeline](Documentation/Generated/Release-Proof-Timeline.md)
-- [Generated Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md)
-- [Generated Benchmark Readiness](Documentation/Generated/Benchmark-Readiness.md)
-- [Generated Release Candidate Plan](Documentation/Generated/Release-Candidate-Plan.md)
-- [Generated Device Capture Packets](Documentation/Generated/Device-Capture-Packets.md)
-- [Generated Device Evidence Intake](Documentation/Generated/Device-Evidence-Intake.md)
-- [Generated Device Evidence Queue](Documentation/Generated/Device-Evidence-Queue.md)
-- [Generated Device Evidence Handoff](Documentation/Generated/Device-Evidence-Handoff.md)
-- [Generated Release Blockers](Documentation/Generated/Release-Blockers.md)
-- [Generated Public Proof Status](Documentation/Generated/Public-Proof-Status.md)
-- [Getting Started](Documentation/Getting-Started.md)
-- [Architecture](Documentation/Architecture.md)
-- [API Reference](Documentation/API-Reference.md)
-- [Performance Baselines](Documentation/Benchmark-Baselines.md)
-- [Security Guide](Documentation/Security.md)
+## Proof Surface
+
+This repo is designed so README language, release language, and proof language do not drift apart.
+
+| If you want to verify... | Start here |
+| --- | --- |
+| current public claim envelope | [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) |
+| immutable release-grade bundle | [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md) |
+| readiness and required device matrix | [Benchmark Readiness](Documentation/Generated/Benchmark-Readiness.md) |
+| release blockers | [Release Blockers](Documentation/Generated/Release-Blockers.md) |
+| benchmark history and methodology | [Benchmark History](Documentation/Generated/Benchmark-History.md), [Benchmark Methodology](Documentation/Generated/Benchmark-Methodology.md) |
+| release evidence flow | [Release Process](Documentation/Release-Process.md) |
+
+Public performance wording is expected to stay inside the current claim envelope documented in the generated proof pages.
 
 ## Benchmarks
 
-Public performance claims should be backed by generated benchmark output:
+Run the standard benchmark profile:
 
 ```bash
 bash Scripts/run-benchmarks.sh standard
 ```
 
-For optional additional device evidence collection, use:
+Collect additional optional device evidence:
 
 ```bash
-bash Scripts/run-benchmarks-for-device.sh --profile standard --output-dir Benchmarks/Results/device-run --device-name "iPhone 16" --device-model "iPhone17,3" --device-class iPhone --platform-family iOS --export-archive /absolute/path/to/benchmark-export.tar.gz
+bash Scripts/run-benchmarks-for-device.sh \
+  --profile standard \
+  --output-dir Benchmarks/Results/device-run \
+  --device-name "iPhone 16" \
+  --device-model "iPhone17,3" \
+  --device-class iPhone \
+  --platform-family iOS \
+  --export-archive /absolute/path/to/benchmark-export.tar.gz
 ```
 
-If the benchmark run was captured on another machine, import it with:
+Import an external evidence bundle:
 
 ```bash
-bash Scripts/import-benchmark-evidence.sh /absolute/path/to/benchmark-export.tar.gz iphone-baseline-2026-04-02
+bash Scripts/import-benchmark-evidence.sh \
+  /absolute/path/to/benchmark-export.tar.gz \
+  iphone-baseline-2026-04-02
 ```
 
-Artifacts are written under `Benchmarks/Results/latest`.
-Each validated artifact set now also carries normalized `device-metadata.json`, a manifest, and a SHA-256 checksum list.
-Release validation also applies regression thresholds against the latest immutable release baseline when one exists.
-Under the current release policy, the required immutable device classes are `Mac` and `iPhone`; extra device classes are optional expansion rather than release blockers.
+Under the current release policy, the required immutable device classes are `Mac` and `iPhone`. Additional classes are expansion, not release blockers.
 
-The current public proof surface is summarized in [Documentation/Showcase.md](Documentation/Showcase.md).
-Historical evidence, methodology, timeline, release matrix, release proof surfaces, and latest-vs-release deltas are published in [Documentation/Generated/Benchmark-History.md](Documentation/Generated/Benchmark-History.md), [Documentation/Generated/Benchmark-Methodology.md](Documentation/Generated/Benchmark-Methodology.md), [Documentation/Generated/Benchmark-Timeline.md](Documentation/Generated/Benchmark-Timeline.md), [Documentation/Generated/Release-Benchmark-Matrix.md](Documentation/Generated/Release-Benchmark-Matrix.md), [Documentation/Generated/Release-Proof-Timeline.md](Documentation/Generated/Release-Proof-Timeline.md), [Documentation/Generated/Latest-Release-Proof.md](Documentation/Generated/Latest-Release-Proof.md), and [Documentation/Generated/Benchmark-Comparison.md](Documentation/Generated/Benchmark-Comparison.md).
-Current publish readiness is summarized in [Documentation/Generated/Benchmark-Readiness.md](Documentation/Generated/Benchmark-Readiness.md).
-The next execution waves for release-grade benchmark evidence are summarized in [Documentation/Generated/Release-Candidate-Plan.md](Documentation/Generated/Release-Candidate-Plan.md).
-Exact device capture commands for any future expansion waves are generated in [Documentation/Generated/Device-Evidence-Plan.md](Documentation/Generated/Device-Evidence-Plan.md).
-Ready-to-hand-off capture/import packets for future device classes are generated in [Documentation/Generated/Device-Capture-Packets.md](Documentation/Generated/Device-Capture-Packets.md).
-Maintainer-facing intake summaries for those packetized waves are generated in [Documentation/Generated/Device-Evidence-Intake.md](Documentation/Generated/Device-Evidence-Intake.md).
-The current device-evidence execution queue is generated in [Documentation/Generated/Device-Evidence-Queue.md](Documentation/Generated/Device-Evidence-Queue.md).
-The current release-proof blocker summary is generated in [Documentation/Generated/Release-Blockers.md](Documentation/Generated/Release-Blockers.md).
-The current public claim/distribution envelope is generated in [Documentation/Generated/Public-Proof-Status.md](Documentation/Generated/Public-Proof-Status.md).
-High-visibility benchmark/performance wording is also gated by `Scripts/validate-public-claims.sh` until multi-device readiness becomes `ready`.
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
+## Documentation Map
+
+<details open>
+<summary><strong>Best first docs</strong></summary>
+
+- [Getting Started](Documentation/Getting-Started.md)
+- [Documentation Index](Documentation/README.md)
+- [Positioning](Documentation/Positioning.md)
+- [Comparisons](Documentation/Comparisons/README.md)
+- [Showcase](Documentation/Showcase.md)
+- [Flagship Media](Documentation/Assets/Flagship-Demo/README.md)
+- [GitHub Distribution](Documentation/GitHub-Distribution.md)
+
+</details>
+
+<details>
+<summary><strong>Generated proof and release docs</strong></summary>
+
+- [Proof Snapshot](Documentation/Generated/Proof-Snapshot.md)
+- [Benchmark History](Documentation/Generated/Benchmark-History.md)
+- [Benchmark Comparison](Documentation/Generated/Benchmark-Comparison.md)
+- [Benchmark Timeline](Documentation/Generated/Benchmark-Timeline.md)
+- [Release Benchmark Matrix](Documentation/Generated/Release-Benchmark-Matrix.md)
+- [Release Proof Timeline](Documentation/Generated/Release-Proof-Timeline.md)
+- [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md)
+- [Benchmark Readiness](Documentation/Generated/Benchmark-Readiness.md)
+- [Release Candidate Plan](Documentation/Generated/Release-Candidate-Plan.md)
+- [Device Capture Packets](Documentation/Generated/Device-Capture-Packets.md)
+- [Device Evidence Intake](Documentation/Generated/Device-Evidence-Intake.md)
+- [Device Evidence Queue](Documentation/Generated/Device-Evidence-Queue.md)
+- [Device Evidence Handoff](Documentation/Generated/Device-Evidence-Handoff.md)
+- [Release Blockers](Documentation/Generated/Release-Blockers.md)
+- [Public Proof Status](Documentation/Generated/Public-Proof-Status.md)
+
+</details>
 
 ## Development
 
@@ -241,11 +276,8 @@ High-visibility benchmark/performance wording is also gated by `Scripts/validate
 swift build
 bash Scripts/validate-examples.sh
 swift test
+bash Scripts/prepare-release.sh
 ```
-
-The repository currently treats package build, example validation, and test correctness as the primary release gate.
-Release notes are expected to come from curated `CHANGELOG.md` entries plus immutable benchmark evidence.
-Public installation snippets are expected to match the latest numbered release in `CHANGELOG.md`.
 
 ## Contributing
 
