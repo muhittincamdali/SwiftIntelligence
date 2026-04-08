@@ -163,6 +163,7 @@ For each feature publish:
 - keep release provenance validation in `Scripts/validate-release-provenance.sh`
 - keep threshold policy in `Benchmarks/benchmark-thresholds.json`
 - keep CI exercising at least the `smoke` profile and preserving its artifacts
+- keep release regression threshold gates tied to `standard` release-grade evidence, not hosted `smoke` CI artifacts
 - version the benchmark inputs and methodology notes
 - keep one markdown summary and one machine-readable JSON artifact
 - keep environment metadata alongside results
