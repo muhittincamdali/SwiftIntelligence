@@ -12,6 +12,7 @@ bash Scripts/validate-examples.sh
 swift test
 bash Scripts/validate-changelog.sh
 bash Scripts/validate-version-surface.sh
+bash Scripts/validate-readme-localizations.sh
 bash Scripts/validate-flagship-media-assets.sh
 bash Scripts/generate-flagship-media-status.sh "$ROOT_DIR/Documentation/flagship-media-policy.json" "$ROOT_DIR/Documentation/Assets/Flagship-Demo/README.md" "$ROOT_DIR/Documentation/Generated/Flagship-Media-Status.md" "$ROOT_DIR/Documentation/Generated/flagship-media-status.json"
 bash Scripts/generate-proof-snapshot.sh "$ROOT_DIR/Benchmarks/Results/latest" "$ROOT_DIR/Documentation/Generated/Proof-Snapshot.md"

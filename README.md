@@ -17,6 +17,7 @@
 [![Flagship Demo](https://img.shields.io/badge/Flagship%20Demo-IntelligentCamera-0A84FF?style=for-the-badge&labelColor=0D1117)](Examples/DemoApps/IntelligentCamera/README.md)
 [![Proof Surface](https://img.shields.io/badge/Proof%20Surface-Public%20Status-34C759?style=for-the-badge&labelColor=0D1117)](Documentation/Generated/Public-Proof-Status.md)
 [![Showcase Media](https://img.shields.io/badge/Showcase%20Media-published-BF5AF2?style=for-the-badge&labelColor=0D1117)](Documentation/Assets/Flagship-Demo/README.md)
+[![README Languages](https://img.shields.io/badge/README%20Languages-18-111827?style=for-the-badge&labelColor=0D1117)](Documentation/README-Languages.md)
 
 </div>
 
@@ -32,12 +33,35 @@
 
 <p align="center">
   <a href="Documentation/Getting-Started.md">Getting Started</a> •
+  <a href="Documentation/README-Languages.md">README Languages</a> •
   <a href="Documentation/Comparisons/README.md">Comparisons</a> •
   <a href="Documentation/Positioning.md">Positioning</a> •
   <a href="Documentation/Showcase.md">Showcase</a> •
   <a href="Documentation/Generated/Public-Proof-Status.md">Public Proof Status</a> •
   <a href="Documentation/Generated/Latest-Release-Proof.md">Latest Release Proof</a> •
   <a href="ROADMAP.md">Roadmap</a>
+</p>
+
+<p align="center">
+  Languages:
+  <a href="README.md">EN</a> •
+  <a href="README_AR.md">AR</a> •
+  <a href="README_DE.md">DE</a> •
+  <a href="README_ES.md">ES</a> •
+  <a href="README_FR.md">FR</a> •
+  <a href="README_HI.md">HI</a> •
+  <a href="README_ID.md">ID</a> •
+  <a href="README_IT.md">IT</a> •
+  <a href="README_JA.md">JA</a> •
+  <a href="README_KO.md">KO</a> •
+  <a href="README_NL.md">NL</a> •
+  <a href="README_PL.md">PL</a> •
+  <a href="README_PT-BR.md">PT-BR</a> •
+  <a href="README_RU.md">RU</a> •
+  <a href="README_TR.md">TR</a> •
+  <a href="README_UK.md">UK</a> •
+  <a href="README_VI.md">VI</a> •
+  <a href="README_ZH-CN.md">ZH-CN</a>
 </p>
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
