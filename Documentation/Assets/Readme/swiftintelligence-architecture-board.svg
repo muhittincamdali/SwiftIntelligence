@@ -21,7 +21,8 @@
   <g filter="url(#shadow)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
     <rect x="108" y="238" width="1184" height="124" rx="28" fill="#102239" stroke="#5AC8FA" stroke-opacity="0.24"/>
     <text x="140" y="286" fill="#9FC5FF" font-size="22" font-weight="700">App workflow layer</text>
-    <text x="140" y="330" fill="#FFFFFF" font-size="32" font-weight="800">IntelligentCamera, SmartTranslator, VoiceAssistant, and future productized demos</text>
+    <text x="140" y="326" fill="#FFFFFF" font-size="28" font-weight="800">IntelligentCamera, SmartTranslator, VoiceAssistant,</text>
+    <text x="140" y="362" fill="#FFFFFF" font-size="28" font-weight="800">and future productized demos</text>
 
     <rect x="108" y="404" width="344" height="228" rx="28" fill="#111F35" stroke="#F05138" stroke-opacity="0.26"/>
     <text x="136" y="448" fill="#FFB3A8" font-size="22" font-weight="700">Perception</text>
@@ -32,21 +33,23 @@
 
     <rect x="528" y="404" width="344" height="228" rx="28" fill="#102239" stroke="#0A84FF" stroke-opacity="0.26"/>
     <text x="556" y="448" fill="#9FC5FF" font-size="22" font-weight="700">Language + reasoning</text>
-    <text x="556" y="492" fill="#FFFFFF" font-size="34" font-weight="800">NLP + Speech + Reasoning</text>
-    <text x="556" y="540" fill="#D7E6FF" font-size="22" font-weight="500">Summary</text>
-    <text x="556" y="574" fill="#D7E6FF" font-size="22" font-weight="500">Entities and intent</text>
-    <text x="556" y="608" fill="#D7E6FF" font-size="22" font-weight="500">Voice output</text>
+    <text x="556" y="490" fill="#FFFFFF" font-size="30" font-weight="800">NLP + Speech</text>
+    <text x="556" y="526" fill="#FFFFFF" font-size="30" font-weight="800">+ Reasoning</text>
+    <text x="556" y="566" fill="#D7E6FF" font-size="22" font-weight="500">Summary</text>
+    <text x="556" y="600" fill="#D7E6FF" font-size="22" font-weight="500">Entities and intent</text>
+    <text x="556" y="634" fill="#D7E6FF" font-size="22" font-weight="500">Voice output</text>
 
     <rect x="948" y="404" width="344" height="228" rx="28" fill="#10281D" stroke="#34C759" stroke-opacity="0.26"/>
     <text x="976" y="448" fill="#B5F0C5" font-size="22" font-weight="700">Trust + transport</text>
-    <text x="976" y="492" fill="#FFFFFF" font-size="34" font-weight="800">Privacy + Network + Metrics</text>
-    <text x="976" y="540" fill="#D7E6FF" font-size="22" font-weight="500">Tokenization</text>
-    <text x="976" y="574" fill="#D7E6FF" font-size="22" font-weight="500">Boundary controls</text>
-    <text x="976" y="608" fill="#D7E6FF" font-size="22" font-weight="500">Observability</text>
+    <text x="976" y="490" fill="#FFFFFF" font-size="28" font-weight="800">Privacy + Network</text>
+    <text x="976" y="526" fill="#FFFFFF" font-size="28" font-weight="800">+ Metrics</text>
+    <text x="976" y="566" fill="#D7E6FF" font-size="22" font-weight="500">Tokenization</text>
+    <text x="976" y="600" fill="#D7E6FF" font-size="22" font-weight="500">Boundary controls</text>
+    <text x="976" y="634" fill="#D7E6FF" font-size="22" font-weight="500">Observability</text>
 
     <rect x="276" y="690" width="848" height="80" rx="24" fill="#1B1B14" stroke="#FF9F0A" stroke-opacity="0.26"/>
     <text x="308" y="740" fill="#FFD4A6" font-size="22" font-weight="700">Release operating system:</text>
-    <text x="594" y="740" fill="#FFFFFF" font-size="24" font-weight="800">Benchmarks -> proof pages -> release bundles -> public claims</text>
+    <text x="534" y="740" fill="#FFFFFF" font-size="22" font-weight="800">Benchmarks -> proof pages -> release bundles -> public claims</text>
   </g>
 
   <path d="M700 362V404" stroke="#D7E6FF" stroke-opacity="0.4" stroke-width="4"/>
