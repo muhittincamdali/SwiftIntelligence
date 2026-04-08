@@ -9,9 +9,15 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
     
     override func setUp() async throws {
         core = SwiftIntelligenceCore.shared
+        core.performanceMonitor.clearMetrics()
+        core.errorHandler.clearHistory()
+        core.resetConfiguration()
+        core.performanceMonitor.startMonitoring()
     }
     
     override func tearDown() async throws {
+        core.performanceMonitor.clearMetrics()
+        core.errorHandler.clearHistory()
         core.cleanup()
     }
     
@@ -187,7 +193,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         let monitor = core.performanceMonitor
         monitor.startMonitoring()
         
-        let result = await monitor.measureAsync("Async Test Block") {
+        let result = try await monitor.measureAsync("Async Test Block") {
             try await Task.sleep(nanoseconds: 10_000_000) // 0.01 seconds
             return "Async Test Result"
         }

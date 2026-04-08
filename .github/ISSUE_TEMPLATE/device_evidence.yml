@@ -1,0 +1,164 @@
+name: 📱 Device Evidence Submission
+description: Submit or request benchmark device evidence for release-grade performance coverage
+title: "[DEVICE EVIDENCE] "
+labels: ["benchmarks", "device-evidence", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when adding missing release-grade device evidence or when requesting maintainer help for an iPhone/iPad benchmark capture.
+        Before filing, read `Documentation/Generated/Device-Evidence-Runbook.md`, `Documentation/Generated/Device-Evidence-Intake.md`, and `Documentation/Benchmark-Baselines.md`.
+        Physical-device truth matters here: do not submit simulator, guessed metadata, or rewritten Mac artifacts as mobile evidence.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request Type
+      description: What is this issue for?
+      options:
+        - I captured new device evidence in this repo and need review
+        - I imported external device evidence and need review
+        - I need a maintainer to capture missing device evidence
+        - I found invalid or stale device evidence in the archive
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device_class
+    attributes:
+      label: Device Class
+      description: Which normalized device class does this issue affect?
+      options:
+        - iPhone
+        - iPad
+        - Mac
+        - visionOS
+        - tvOS
+        - watchOS
+        - Multiple device classes
+        - Unknown
+    validations:
+      required: true
+
+  - type: input
+    id: snapshot_name
+    attributes:
+      label: Snapshot Name
+      description: Which immutable snapshot name is affected?
+      placeholder: e.g., iphone-baseline-2026-04-02
+    validations:
+      required: false
+
+  - type: input
+    id: device_identity
+    attributes:
+      label: Device Identity
+      description: Provide normalized device metadata when known
+      placeholder: e.g., iPhone 16 / iPhone17,3 / Apple A18 / iOS 19.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: benchmark_profile
+    attributes:
+      label: Benchmark Profile
+      description: Which benchmark profile is involved?
+      options:
+        - standard
+        - smoke
+        - exhaustive
+        - Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence_source
+    attributes:
+      label: Evidence Source
+      description: Explain whether the run was captured in this repo or imported from another machine
+      placeholder: |
+        - Captured locally with `Scripts/run-benchmarks-for-device.sh`
+        - Imported from another machine with `Scripts/import-benchmark-evidence.sh`
+        - Need maintainer hardware access for this device class
+    validations:
+      required: true
+
+  - type: textarea
+    id: artifact_paths
+    attributes:
+      label: Artifact Paths
+      description: List the relevant artifact or archive paths
+      placeholder: |
+        Benchmarks/Results/latest
+        Benchmarks/Results/releases/iphone-baseline-2026-04-02
+        Documentation/Generated/Device-Coverage-Matrix.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation_commands
+    attributes:
+      label: Validation Commands
+      description: Paste the commands you ran or the commands maintainers should run
+      render: bash
+      placeholder: |
+        bash Scripts/validate-benchmarks.sh standard Benchmarks/Results/latest
+        bash Scripts/validate-device-evidence.sh
+        bash Scripts/prepare-release.sh
+    validations:
+      required: true
+
+  - type: textarea
+    id: gap_or_problem
+    attributes:
+      label: Gap or Problem
+      description: What is still missing or blocked?
+      placeholder: |
+        - Missing iPad release bundle
+        - Imported evidence validates but device coverage matrix did not update
+        - Need maintainer to run on physical hardware
+    validations:
+      required: true
+
+  - type: dropdown
+    id: release-surface-impact
+    attributes:
+      label: Release Surface Impact
+      description: Which public/release surface should change once this evidence is accepted?
+      options:
+        - Device coverage matrix only
+        - Public proof status and readiness
+        - Release blockers / candidate plan
+        - Latest release proof bundle
+        - Multiple generated proof surfaces
+        - Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add links, notes, or supporting details
+      placeholder: Include PR links, external export notes, or methodology constraints
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Confirm the relevant evidence steps before submitting
+      options:
+        - label: I checked `Documentation/Generated/Device-Evidence-Plan.md` for the current missing device classes
+          required: true
+        - label: I checked `Documentation/Generated/Device-Coverage-Matrix.md` for current archive coverage
+          required: true
+        - label: I attached or referenced the benchmark artifact paths, or explained why they are unavailable
+          required: true
+        - label: I ran `bash Scripts/validate-device-evidence.sh` or explained why I could not
+          required: false
+        - label: I am not using this form for security issues or generic feature requests
+          required: true

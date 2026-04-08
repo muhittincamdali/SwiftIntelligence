@@ -1,8 +1,14 @@
 blank_issues_enabled: false
 contact_links:
   - name: 📖 Documentation
-    url: https://github.com/muhittincamdali/SwiftIntelligence#readme
-    about: Check out the documentation first
+    url: https://github.com/muhittincamdali/SwiftIntelligence/tree/main/Documentation
+    about: Check the current docs index and guides first
+  - name: 📊 Device Evidence Runbook
+    url: https://github.com/muhittincamdali/SwiftIntelligence/blob/main/Documentation/Generated/Device-Evidence-Runbook.md
+    about: Use the generated capture and import checklist before opening a device-evidence issue
+  - name: 🔒 Security Policy
+    url: https://github.com/muhittincamdali/SwiftIntelligence/blob/main/SECURITY.md
+    about: Use the private vulnerability reporting path for security issues
   - name: 💬 Discussions
     url: https://github.com/muhittincamdali/SwiftIntelligence/discussions
     about: Ask questions and discuss ideas

@@ -1,15 +1,13 @@
 import Foundation
-import NaturalLanguage
+@preconcurrency import NaturalLanguage
 import CoreML
 import os.log
 
 /// Advanced sentiment analysis processor with multilingual support
-public class SentimentProcessor {
+public final class SentimentProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "SentimentAnalysis")
-    private let processingQueue = DispatchQueue(label: "sentiment.processing", qos: .userInitiated)
-    
     // MARK: - Models and Resources
     private var sentimentModels: [NLLanguage: NLModel] = [:]
     private var turkishSentimentModel: NLModel?
@@ -218,8 +216,6 @@ public class SentimentProcessor {
         options: SentimentAnalysisOptions = .default
     ) async throws -> SentimentResult {
         
-        let startTime = Date()
-        
         // Validate input
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw NLPError.invalidText
@@ -240,8 +236,6 @@ public class SentimentProcessor {
             language: detectedLanguage,
             options: options
         )
-        
-        let processingTime = Date().timeIntervalSince(startTime)
         
         // Cache result
         let wrapper = SentimentResultWrapper(result: result)
@@ -369,22 +363,11 @@ public class SentimentProcessor {
         model: NLModel,
         language: NLLanguage
     ) async throws -> SentimentResult {
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                do {
-                    guard let prediction = model.predictedLabel(for: text) else {
-                        throw NLPError.modelPredictionFailed
-                    }
-                    
-                    let result = self.parseModelPrediction(prediction, text: text, language: language)
-                    continuation.resume(returning: result)
-                    
-                } catch {
-                    continuation.resume(throwing: error)
-                }
-            }
+        guard let prediction = model.predictedLabel(for: text) else {
+            throw NLPError.modelPredictionFailed
         }
+
+        return parseModelPrediction(prediction, language: language)
     }
     
     private func ruleBasedSentimentAnalysis(
@@ -408,7 +391,7 @@ public class SentimentProcessor {
         var isNegated = false
         var intensifierMultiplier = 1.0
         
-        for (index, word) in words.enumerated() {
+        for word in words {
             // Check for negation
             if negations.contains(word) {
                 isNegated = true
@@ -579,7 +562,8 @@ public class SentimentProcessor {
         return tokens
     }
     
-    private func parseModelPrediction(_ prediction: String, text: String, language: NLLanguage) -> SentimentAnalysisResult {
+    private func parseModelPrediction(_ prediction: String, language: NLLanguage) -> SentimentAnalysisResult {
+        _ = language
         // Parse the model's prediction
         // Format expected: "sentiment,score,confidence"
         
@@ -626,7 +610,7 @@ public class SentimentProcessor {
 
 // MARK: - Supporting Types
 
-public struct SentimentAnalysisOptions: Hashable, Codable {
+public struct SentimentAnalysisOptions: Hashable, Codable, Sendable {
     public let includeEmotions: Bool
     public let includeAspectSentiment: Bool
     public let detailedAnalysis: Bool
@@ -660,12 +644,12 @@ struct InternalSentimentAnalysisResult {
     var aspectSentiments: [AspectSentiment]
 }
 
-public struct Emotion: Codable {
+public struct Emotion: Codable, Sendable {
     public let type: EmotionType
     public let intensity: Float // 0.0 to 1.0
     public let keywords: [String]
     
-    public enum EmotionType: String, CaseIterable, Codable {
+    public enum EmotionType: String, CaseIterable, Codable, Sendable {
         case joy = "joy"
         case anger = "anger"
         case sadness = "sadness"
@@ -686,7 +670,7 @@ public struct Emotion: Codable {
     }
 }
 
-public struct AspectSentiment: Codable {
+public struct AspectSentiment: Codable, Sendable {
     public let aspect: String
     public let sentiment: SentimentResult.Sentiment
     public let score: Float

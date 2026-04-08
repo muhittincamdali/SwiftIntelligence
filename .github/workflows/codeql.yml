@@ -1,0 +1,45 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "25 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: Analyze (Swift)
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: swift
+            build-mode: manual
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4.35.1
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          dependency-caching: true
+
+      - name: Build Swift Package
+        run: swift build
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v4.35.1
+        with:
+          category: "/language:${{ matrix.language }}"

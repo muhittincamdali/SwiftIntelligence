@@ -1,9 +1,9 @@
 import Foundation
-import NaturalLanguage
+@preconcurrency import NaturalLanguage
 import os.log
 
 /// Advanced configuration system for Natural Language Processing operations
-public struct NLPConfiguration {
+public struct NLPConfiguration: Sendable {
     
     // MARK: - Core Settings
     public let enableTurkishNLP: Bool
@@ -195,20 +195,20 @@ extension NLPConfiguration {
 
 // MARK: - Configuration Enums
 
-public enum ModelLoadingStrategy {
+public enum ModelLoadingStrategy: Sendable {
     case lazy          // Load models on demand
     case preload       // Load all models at startup
     case selective     // Load based on usage patterns
 }
 
-public enum KeywordExtractionMethod {
+public enum KeywordExtractionMethod: Sendable {
     case frequency     // Simple word frequency
     case tfidf        // Term Frequency-Inverse Document Frequency
     case rake         // Rapid Automatic Keyword Extraction
     case textrank     // PageRank-based keyword extraction
 }
 
-public enum TopicModelingAlgorithm {
+public enum TopicModelingAlgorithm: Sendable {
     case simple       // Simple keyword clustering
     case lda          // Latent Dirichlet Allocation
     case nmf          // Non-negative Matrix Factorization

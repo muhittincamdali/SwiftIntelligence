@@ -1,0 +1,12 @@
+{
+  "assetRoot": "Documentation/Assets/Flagship-Demo",
+  "statusValues": [
+    "not-published",
+    "published"
+  ],
+  "requiredFilesWhenPublished": [
+    "intelligent-camera-success.png",
+    "intelligent-camera-run.mp4",
+    "caption.txt"
+  ]
+}

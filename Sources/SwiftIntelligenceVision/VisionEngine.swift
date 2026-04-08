@@ -1,7 +1,7 @@
 import Foundation
 import SwiftIntelligenceCore
-import CoreML
-import Vision
+@preconcurrency import CoreML
+@preconcurrency import Vision
 import CoreImage
 #if canImport(UIKit)
 import UIKit
@@ -144,20 +144,15 @@ public class VisionEngine: ObservableObject {
         options: ClassificationOptions = .default
     ) async throws -> [ImageClassificationResult] {
         try ensureInitialized()
-        
-        return try await withThrowingTaskGroup(of: ImageClassificationResult.self) { group in
-            for image in images {
-                group.addTask {
-                    try await self.classifyImage(image, options: options)
-                }
-            }
-            
-            var results: [ImageClassificationResult] = []
-            for try await result in group {
-                results.append(result)
-            }
-            return results
+
+        var results: [ImageClassificationResult] = []
+        results.reserveCapacity(images.count)
+
+        for image in images {
+            results.append(try await classifyImage(image, options: options))
         }
+
+        return results
     }
     
     // MARK: - Object Detection
@@ -195,7 +190,7 @@ public class VisionEngine: ObservableObject {
     
     /// Real-time object detection from camera feed
     public func detectObjectsRealtime(
-        from sampleBuffer: CMSampleBuffer,
+        from sampleBuffer: sending CMSampleBuffer,
         options: DetectionOptions = .default
     ) async throws -> ObjectDetectionResult {
         guard let processor = detectionProcessor else {
@@ -450,20 +445,15 @@ public class VisionEngine: ObservableObject {
         _ operations: [VisionOperation]
     ) async throws -> [VisionResult] {
         try ensureInitialized()
-        
-        return try await withThrowingTaskGroup(of: VisionResult.self) { group in
-            for operation in operations {
-                group.addTask {
-                    try await self.executeOperation(operation)
-                }
-            }
-            
-            var results: [VisionResult] = []
-            for try await result in group {
-                results.append(result)
-            }
-            return results
+
+        var results: [VisionResult] = []
+        results.reserveCapacity(operations.count)
+
+        for operation in operations {
+            results.append(try await executeOperation(operation))
         }
+
+        return results
     }
     
     // MARK: - Performance & Monitoring

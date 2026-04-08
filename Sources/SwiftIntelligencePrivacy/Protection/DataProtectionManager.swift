@@ -3,7 +3,7 @@ import CryptoKit
 import os.log
 
 /// Advanced data protection manager providing integrity checks, secure deletion, and data classification
-public class DataProtectionManager {
+public final class DataProtectionManager: @unchecked Sendable {
     
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "DataProtection")
     private var configuration: DataProtectionConfiguration = .default
@@ -63,9 +63,8 @@ public class DataProtectionManager {
         return ProtectedData(
             data: protectedData,
             classification: classification,
-            checksum: checksum,
-            protectionApplied: appliedProtections,
-            timestamp: Date()
+            protections: appliedProtections,
+            checksum: checksum
         )
     }
     
@@ -75,18 +74,14 @@ public class DataProtectionManager {
     public func validateIntegrity(_ protectedData: ProtectedData) async throws -> Bool {
         return try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
-                do {
-                    let currentChecksum = self.generateIntegrityChecksum(protectedData.data)
-                    let isValid = currentChecksum == protectedData.checksum
-                    
-                    if !isValid {
-                        self.logger.error("Data integrity validation failed for classified data")
-                    }
-                    
-                    continuation.resume(returning: isValid)
-                } catch {
-                    continuation.resume(throwing: error)
+                let currentChecksum = self.generateIntegrityChecksum(protectedData.data)
+                let isValid = currentChecksum == protectedData.checksum
+
+                if !isValid {
+                    self.logger.error("Data integrity validation failed for classified data")
                 }
+
+                continuation.resume(returning: isValid)
             }
         }
     }
@@ -108,29 +103,17 @@ public class DataProtectionManager {
     /// Securely delete sensitive data using cryptographic erasure
     public func secureDelete(_ data: inout Data) async throws {
         guard configuration.enableSecureDelete else {
-            data = Data() // Simple clear if secure delete disabled
+            data = Data()
             return
         }
-        
-        try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                do {
-                    // Method 1: Cryptographic erasure (preferred for encrypted data)
-                    try self.performCryptographicErasure(&data)
-                    
-                    // Method 2: Memory overwriting for additional security
-                    try self.performMemoryOverwriting(&data)
-                    
-                    // Method 3: Zero fill the data
-                    data = Data(count: 0)
-                    
-                    self.logger.debug("Secure data deletion completed")
-                    continuation.resume()
-                } catch {
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+
+        var workingCopy = data
+        try performCryptographicErasure(&workingCopy)
+        try performMemoryOverwriting(&workingCopy)
+        workingCopy = Data()
+        data = workingCopy
+
+        logger.debug("Secure data deletion completed")
     }
     
     private func performCryptographicErasure(_ data: inout Data) throws {
@@ -170,17 +153,13 @@ public class DataProtectionManager {
         case .none:
             return data
             
-        case .low:
+        case .basic:
             // Basic memory clearing after use
             return data
             
-        case .medium:
+        case .enhanced:
             // Memory locking to prevent swapping
             return try lockMemoryPages(data)
-            
-        case .high:
-            // Memory encryption and locking
-            return try encryptAndLockMemory(data)
             
         case .maximum:
             // Maximum security: encrypted, locked, and obfuscated
@@ -242,15 +221,15 @@ public class DataProtectionManager {
         case .none:
             return data
             
-        case .fileSystem:
+        case .basic:
             // Rely on file system encryption
             return data
             
-        case .application:
+        case .enhanced:
             // Application-level encryption
             return try encryptForDiskStorage(data, classification: classification)
             
-        case .full:
+        case .maximum:
             // Full encryption with additional protections
             return try applyFullDiskProtection(data, classification: classification)
         }

@@ -1,7 +1,7 @@
 import Foundation
-import NaturalLanguage
+@preconcurrency import NaturalLanguage
 import CoreML
-import Vision
+@preconcurrency import Vision
 import os.log
 
 /// Advanced Natural Language Processing engine with multilingual support
@@ -13,8 +13,6 @@ public class NLPEngine: ObservableObject {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "NLP")
-    private let processingQueue = DispatchQueue(label: "nlp.processing", qos: .userInitiated)
-    
     // MARK: - NL Framework Components
     private let languageRecognizer = NLLanguageRecognizer()
     private let tokenizer = NLTokenizer(unit: .word)
@@ -42,7 +40,7 @@ public class NLPEngine: ObservableObject {
         cache.countLimit = 1000
         cache.totalCostLimit = 50_000_000 // 50MB
         
-        Task {
+        Task { @MainActor in
             try await initializeModels()
         }
     }
@@ -67,10 +65,12 @@ public class NLPEngine: ObservableObject {
         let supportedLanguages: [NLLanguage] = [.english, .turkish, .spanish, .french, .german, .italian, .portuguese]
         
         for language in supportedLanguages {
+            guard let model = createSentimentModel(for: language) else {
+                continue
+            }
+
             do {
-                if let model = try? NLModel(mlModel: createSentimentModel(for: language)) {
-                    sentimentModels[language] = model
-                }
+                sentimentModels[language] = try NLModel(mlModel: model)
             } catch {
                 logger.warning("Failed to load sentiment model for \(language.rawValue): \(error.localizedDescription)")
             }
@@ -203,17 +203,8 @@ public class NLPEngine: ObservableObject {
     ) async throws -> [NamedEntity] {
         
         let detectedLanguage = language ?? detectLanguage(text: text)
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                do {
-                    let entities = self.performNamedEntityRecognition(text: text, language: detectedLanguage)
-                    continuation.resume(returning: entities)
-                } catch {
-                    continuation.resume(throwing: NLPError.processingFailed(error))
-                }
-            }
-        }
+
+        return performNamedEntityRecognition(text: text, language: detectedLanguage)
     }
     
     /// Extract keywords from text
@@ -409,21 +400,13 @@ public class NLPEngine: ObservableObject {
         model: NLModel,
         language: NLLanguage
     ) async throws -> SentimentResult {
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                do {
-                    guard let prediction = try? model.predictedLabel(for: text) else {
-                        throw NLPError.modelPredictionFailed
-                    }
-                    
-                    let result = self.parseSentimentPrediction(prediction, text: text)
-                    continuation.resume(returning: result)
-                } catch {
-                    continuation.resume(throwing: error)
-                }
-            }
+        _ = language
+
+        guard let prediction = model.predictedLabel(for: text) else {
+            throw NLPError.modelPredictionFailed
         }
+
+        return parseSentimentPrediction(prediction, text: text)
     }
     
     private func basicSentimentAnalysis(text: String, language: NLLanguage) async throws -> SentimentResult {
@@ -487,6 +470,7 @@ public class NLPEngine: ObservableObject {
                     text: String(text[tokenRange]),
                     type: mapNLTagToEntityType(tag),
                     range: tokenRange,
+                    in: text,
                     confidence: 0.8 // NLTagger doesn't provide confidence scores
                 )
                 entities.append(entity)
@@ -501,10 +485,9 @@ public class NLPEngine: ObservableObject {
         guard let model = turkishNLPModel else {
             throw NLPError.modelNotInitialized
         }
-        
-        // Perform Turkish-specific analysis
-        // This could include morphological analysis, Turkish-specific entity recognition, etc.
-        
+        _ = text
+        _ = model
+
         return TurkishAnalysisResult(
             morphologicalAnalysis: [],
             turkishEntities: [],
@@ -515,11 +498,18 @@ public class NLPEngine: ObservableObject {
     
     // MARK: - Helper Methods
     
-    private func createSentimentModel(for language: NLLanguage) -> MLModel {
-        // In a real implementation, this would load actual trained models
-        // For now, return a placeholder
-        let configuration = MLModelConfiguration()
-        return try! MLModel(contentsOf: Bundle.main.url(forResource: "DummyModel", withExtension: "mlmodel")!)
+    private func createSentimentModel(for language: NLLanguage) -> MLModel? {
+        guard let modelURL = Bundle.main.url(forResource: "DummyModel", withExtension: "mlmodel") else {
+            logger.debug("Bundled sentiment model missing for \(language.rawValue); using fallback analysis")
+            return nil
+        }
+
+        do {
+            return try MLModel(contentsOf: modelURL)
+        } catch {
+            logger.warning("Failed to initialize bundled sentiment model for \(language.rawValue): \(error.localizedDescription)")
+            return nil
+        }
     }
     
     private func parseSentimentPrediction(_ prediction: String, text: String) -> SentimentResult {

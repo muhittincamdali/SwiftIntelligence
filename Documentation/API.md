@@ -1,494 +1,209 @@
-# SwiftIntelligence API Reference
+# SwiftIntelligence API Overview
 
-Complete API documentation for SwiftIntelligence framework.
+This document describes the active public surface of the current modular package graph.
 
-## Table of Contents
+For installation and first-run setup, start with [Getting-Started.md](Getting-Started.md).
 
-1. [Core Module](#core-module)
-2. [ML Models](#ml-models)
-3. [NLP Processing](#nlp-processing)
-4. [Vision Analysis](#vision-analysis)
-5. [Prediction Engine](#prediction-engine)
-6. [Data Processing](#data-processing)
+## Active Entry Points
 
----
+| Product | Primary Entry Point |
+| --- | --- |
+| `SwiftIntelligenceCore` | `SwiftIntelligenceCore.shared` |
+| `SwiftIntelligenceML` | `SwiftIntelligenceML` actor |
+| `SwiftIntelligenceNLP` | `NLPEngine.shared` |
+| `SwiftIntelligenceVision` | `VisionEngine.shared` |
+| `SwiftIntelligenceSpeech` | `SpeechEngine.shared` and `SpeechEngine.availableVoices(for:)` |
+| `SwiftIntelligencePrivacy` | `SwiftIntelligencePrivacy` actor and `PrivacyTokenizer` |
 
 ## Core Module
 
-### IntelligenceEngine
-
-The main entry point for SwiftIntelligence operations.
+`SwiftIntelligenceCore` owns shared configuration, logging, performance monitoring, and error handling.
 
 ```swift
-public final class IntelligenceEngine {
-    /// Shared instance
-    public static let shared: IntelligenceEngine
-    
-    /// Initialize with configuration
-    public init(configuration: Configuration = .default)
-    
-    /// Start engine
-    public func start() async throws
-    
-    /// Stop engine
-    public func stop()
-}
+import SwiftIntelligenceCore
+
+SwiftIntelligenceCore.shared.configure(with: .production)
+
+let memory = SwiftIntelligenceCore.shared.memoryUsage()
+let cpu = SwiftIntelligenceCore.shared.cpuUsage()
 ```
 
-#### Configuration
+Important types:
+
+- `IntelligenceConfiguration`
+- `PerformanceProfile`
+- `PrivacyLevel`
+- `CachePolicy`
+- `IntelligenceLogLevel`
+
+Preset configurations:
+
+- `IntelligenceConfiguration.development`
+- `IntelligenceConfiguration.production`
+- `IntelligenceConfiguration.testing`
+
+## NLP Module
+
+`NLPEngine` is a `@MainActor` singleton focused on text analysis and convenience APIs.
+
+Verified public operations:
+
+- `analyze(text:options:)`
+- `analyzeSentiment(text:language:)`
+- `extractNamedEntities(text:language:)`
+- `extractKeywords(text:language:maxCount:)`
+- `extractTopics(text:language:topicCount:)`
+- `summarizeText(text:maxSentences:)`
+- `translateText(_:from:to:)`
+
+Example:
 
 ```swift
-public struct Configuration {
-    /// Default configuration
-    public static let `default`: Configuration
-    
-    /// Enable GPU acceleration
-    public var useGPU: Bool
-    
-    /// Maximum concurrent operations
-    public var maxConcurrency: Int
-    
-    /// Cache policy
-    public var cachePolicy: CachePolicy
-    
-    /// Logging level
-    public var logLevel: LogLevel
-}
-```
+import SwiftIntelligenceNLP
 
-#### Usage
-
-```swift
-// Initialize engine
-let engine = IntelligenceEngine(configuration: .default)
-try await engine.start()
-
-// Use modules
-let nlpResult = try await engine.nlp.process("Hello world")
-let visionResult = try await engine.vision.analyze(image)
-
-// Stop when done
-engine.stop()
-```
-
----
-
-## ML Models
-
-### MLModelManager
-
-Manages machine learning models.
-
-```swift
-public final class MLModelManager {
-    /// Load model from URL
-    public func loadModel(from url: URL) async throws -> MLModel
-    
-    /// Load model from bundle
-    public func loadModel(named name: String, bundle: Bundle) async throws -> MLModel
-    
-    /// Unload model
-    public func unloadModel(_ identifier: String)
-    
-    /// Get loaded models
-    public var loadedModels: [String: MLModel] { get }
-}
-```
-
-### MLPredictor
-
-Performs ML predictions.
-
-```swift
-public protocol MLPredictor {
-    associatedtype Input
-    associatedtype Output
-    
-    /// Predict single input
-    func predict(_ input: Input) async throws -> Output
-    
-    /// Batch prediction
-    func predictBatch(_ inputs: [Input]) async throws -> [Output]
-}
-```
-
-#### PredictionResult
-
-```swift
-public struct PredictionResult<T> {
-    /// Predicted value
-    public let value: T
-    
-    /// Confidence score (0-1)
-    public let confidence: Float
-    
-    /// Processing time
-    public let processingTime: TimeInterval
-    
-    /// Additional metadata
-    public let metadata: [String: Any]
-}
-```
-
----
-
-## NLP Processing
-
-### NLPProcessor
-
-Natural language processing operations.
-
-```swift
-public final class NLPProcessor {
-    /// Full text analysis
-    public func process(_ text: String) async throws -> NLPResult
-    
-    /// Sentiment analysis
-    public func analyzeSentiment(_ text: String) -> SentimentScore
-    
-    /// Entity extraction
-    public func extractEntities(_ text: String) -> [NamedEntity]
-    
-    /// Tokenization
-    public func tokenize(_ text: String) -> [Token]
-    
-    /// Language detection
-    public func detectLanguage(_ text: String) -> String?
-    
-    /// Key phrase extraction
-    public func extractKeyPhrases(_ text: String) -> [String]
-}
-```
-
-### NLPResult
-
-```swift
-public struct NLPResult {
-    public let text: String
-    public let language: String?
-    public let sentiment: SentimentScore
-    public let entities: [NamedEntity]
-    public let tokens: [Token]
-    public let keyPhrases: [String]
-    public let processingTime: TimeInterval
-}
-```
-
-### SentimentScore
-
-```swift
-public struct SentimentScore {
-    /// Score (-1 to 1)
-    public let score: Double
-    
-    /// Sentiment label
-    public let label: SentimentLabel
-    
-    /// Confidence
-    public let confidence: Double
-    
-    public enum SentimentLabel {
-        case positive
-        case negative
-        case neutral
-        case mixed
-    }
-}
-```
-
-### NamedEntity
-
-```swift
-public struct NamedEntity {
-    public let text: String
-    public let type: EntityType
-    public let range: Range<String.Index>?
-    
-    public enum EntityType {
-        case person
-        case organization
-        case location
-        case date
-        case money
-        case percentage
-        case other
-    }
-}
-```
-
-#### Usage
-
-```swift
-let processor = NLPProcessor()
-
-// Full analysis
-let result = try await processor.process("Apple announced new iPhone in California.")
-print("Sentiment: \(result.sentiment.label)")
-print("Entities: \(result.entities)")
-
-// Quick sentiment
-let sentiment = processor.analyzeSentiment("I love this!")
-print("Score: \(sentiment.score)")
-```
-
----
-
-## Vision Analysis
-
-### VisionAnalyzer
-
-Computer vision operations.
-
-```swift
-public final class VisionAnalyzer {
-    /// Initialize with options
-    public init(
-        minimumConfidence: Float = 0.5,
-        textRecognitionLevel: VNRequestTextRecognitionLevel = .accurate
+let result = try await NLPEngine.shared.analyze(
+    text: "Apple builds amazing products in Cupertino.",
+    options: NLPOptions(
+        includeSentiment: true,
+        includeEntities: true,
+        includeKeywords: true,
+        includeLanguageDetection: true
     )
-    
-    /// Full image analysis
-    public func analyze(_ image: CGImage) async throws -> VisionAnalysisResult
-    
-    /// Object detection
-    public func detectObjects(_ image: CGImage) async throws -> [DetectedObject]
-    
-    /// Text recognition
-    public func recognizeText(_ image: CGImage) async throws -> [RecognizedText]
-    
-    /// Face detection
-    public func detectFaces(_ image: CGImage) async throws -> [DetectedFace]
-    
-    /// Barcode detection
-    public func detectBarcodes(_ image: CGImage) async throws -> [DetectedBarcode]
-    
-    /// Image classification
-    public func classifyImage(_ image: CGImage) async throws -> [ImageClassification]
+)
+```
+
+## Vision Module
+
+`VisionEngine` is a `@MainActor` singleton. It must be initialized before use and shut down when you are done with long-lived sessions.
+
+Verified public operations:
+
+- `initialize()`
+- `classifyImage(_:options:)`
+- `batchClassifyImages(_:options:)`
+- `detectObjects(in:options:)`
+- `detectObjectsRealtime(from:options:)`
+- `recognizeFaces(in:options:)`
+- `enrollFace(from:identity:options:)`
+- `recognizeText(in:options:)`
+- `analyzeDocument(_:options:)`
+- `segmentImage(_:options:)`
+- `createCutoutMask(for:subject:)`
+- `generateImage(from:options:)`
+- `generateVariations(of:count:options:)`
+- `enhanceImage(_:options:)`
+- `denoiseImage(_:strength:)`
+- `applyStyle(to:style:options:)`
+- `applyCustomStyle(to:styleImage:options:)`
+- `batchProcess(_:)`
+- `optimizeMemory()`
+- `shutdown()`
+
+Example:
+
+```swift
+import SwiftIntelligenceVision
+
+@MainActor
+func runVision(image: PlatformImage) async throws {
+    let engine = VisionEngine.shared
+    try await engine.initialize()
+    defer { Task { await engine.shutdown() } }
+
+    let result = try await engine.detectObjects(in: image, options: .default)
+    print(result.detectedObjects.count)
 }
 ```
 
-### VisionAnalysisResult
+## Speech Module
+
+`SpeechEngine` is a `@MainActor` singleton for recognition, synthesis, and voice discovery.
+
+Verified public operations:
+
+- `startSpeechRecognition(language:options:)`
+- `stopSpeechRecognition()`
+- `recognizeSpeech(from:language:options:)`
+- `batchRecognizeSpeech(from:language:options:)`
+- `synthesizeSpeech(from:voice:options:)`
+- `generateSpeechAudio(from:voice:options:)`
+- `getAvailableVoices(for:)`
+- `SpeechEngine.availableVoices(for:)`
+- `startRealtimeSpeechProcessing(language:options:)`
+
+Example:
 
 ```swift
-public struct VisionAnalysisResult {
-    public let objects: [DetectedObject]
-    public let texts: [RecognizedText]
-    public let faces: [DetectedFace]
-    public let barcodes: [DetectedBarcode]
-    public let imageClassifications: [ImageClassification]
-    public let processingTime: TimeInterval
-}
+import SwiftIntelligenceSpeech
+
+let voices = SpeechEngine.availableVoices(for: "en-US")
+print(voices.map(\.name))
 ```
 
-### DetectedObject
+## ML Module
+
+`SwiftIntelligenceML` is an actor that owns model registration, training, inference, evaluation, and cache operations.
+
+Verified public operations:
+
+- `registerModel(_:withID:)`
+- `availableModels()`
+- `removeModel(withID:)`
+- `train(modelID:with:)`
+- `predict(modelID:input:)`
+- `batchPredict(modelID:inputs:)`
+- `evaluate(modelID:testData:)`
+- `getPerformanceMetrics()`
+- `clearCache()`
+- `getCacheStats()`
+- `initialize()`
+- `shutdown()`
+- `validate()`
+- `healthCheck()`
+
+Example:
 
 ```swift
-public struct DetectedObject {
-    public let label: String
-    public let confidence: Float
-    public let boundingBox: CGRect
-}
+import SwiftIntelligenceML
+
+let ml = try await SwiftIntelligenceML()
+let models = await ml.availableModels()
+print(models)
 ```
 
-### DetectedFace
+## Privacy Module
 
-```swift
-public struct DetectedFace {
-    public let boundingBox: CGRect
-    public let landmarks: FaceLandmarks?
-    public let roll: CGFloat?
-    public let yaw: CGFloat?
-    public let quality: Float?
-}
-```
+There are two practical entry points:
 
-#### Usage
+- `SwiftIntelligencePrivacy` actor for encryption, secure storage, anonymization, compliance, and audit operations
+- `PrivacyTokenizer` for reversible tokenization of sensitive strings
 
-```swift
-let analyzer = VisionAnalyzer(minimumConfidence: 0.6)
+Verified privacy actor operations include:
 
-// Full analysis
-let result = try await analyzer.analyze(image)
-print("Found \(result.faces.count) faces")
-print("Texts: \(result.texts.map { $0.text })")
+- `encryptData(_:algorithm:level:)`
+- `decryptData(_:verifyIntegrity:)`
+- `storeSecureData(_:key:options:)`
+- `retrieveSecureData(key:options:)`
+- `deleteSecureData(key:)`
+- `authenticateWithBiometrics(reason:options:)`
+- `anonymizeData(_:options:)`
+- `applyPrivacyPolicy(_:to:)`
+- `getAuditLog(filter:)`
+- `clearAuditLog()`
+- `exportAuditLog(format:)`
 
-// Specific detection
-let faces = try await analyzer.detectFaces(image)
-let texts = try await analyzer.recognizeText(image)
-```
+Verified tokenizer operations include:
 
----
+- `tokenize(_:context:)`
+- `detokenize(_:)`
+- `tokenizeBatch(_:)`
+- `detokenizeBatch(_:)`
+- `formatPreservingTokenize(_:context:)`
 
-## Prediction Engine
+## Non-Goals of This Document
 
-### PredictionEngine
+This file intentionally does not document:
 
-Time series and pattern prediction.
-
-```swift
-public final class PredictionEngine {
-    /// Predict next values
-    public func predict(
-        values: [Double],
-        steps: Int
-    ) async throws -> [PredictedValue]
-    
-    /// Detect anomalies
-    public func detectAnomalies(
-        values: [Double],
-        sensitivity: Float
-    ) -> [Anomaly]
-    
-    /// Find patterns
-    public func findPatterns(
-        values: [Double]
-    ) -> [Pattern]
-}
-```
-
-### PredictedValue
-
-```swift
-public struct PredictedValue {
-    public let value: Double
-    public let confidence: Float
-    public let lowerBound: Double
-    public let upperBound: Double
-}
-```
-
-### Anomaly
-
-```swift
-public struct Anomaly {
-    public let index: Int
-    public let value: Double
-    public let expectedRange: ClosedRange<Double>
-    public let severity: Severity
-    
-    public enum Severity {
-        case low
-        case medium
-        case high
-        case critical
-    }
-}
-```
-
----
-
-## Data Processing
-
-### DataPreprocessor
-
-Data preparation utilities.
-
-```swift
-public final class DataPreprocessor {
-    /// Normalize values
-    public func normalize(_ values: [Double]) -> [Double]
-    
-    /// Standardize values
-    public func standardize(_ values: [Double]) -> [Double]
-    
-    /// One-hot encode
-    public func oneHotEncode(_ categories: [String]) -> [[Int]]
-    
-    /// Fill missing values
-    public func fillMissing(
-        _ values: [Double?],
-        strategy: FillStrategy
-    ) -> [Double]
-    
-    public enum FillStrategy {
-        case mean
-        case median
-        case mode
-        case constant(Double)
-        case forward
-        case backward
-    }
-}
-```
-
-### FeatureExtractor
-
-```swift
-public final class FeatureExtractor {
-    /// Extract statistical features
-    public func extractStatisticalFeatures(
-        _ values: [Double]
-    ) -> StatisticalFeatures
-    
-    /// Extract frequency features
-    public func extractFrequencyFeatures(
-        _ values: [Double]
-    ) -> FrequencyFeatures
-}
-```
-
-### StatisticalFeatures
-
-```swift
-public struct StatisticalFeatures {
-    public let mean: Double
-    public let median: Double
-    public let standardDeviation: Double
-    public let variance: Double
-    public let min: Double
-    public let max: Double
-    public let range: Double
-    public let skewness: Double
-    public let kurtosis: Double
-}
-```
-
----
-
-## Error Handling
-
-### IntelligenceError
-
-```swift
-public enum IntelligenceError: Error {
-    case modelNotFound(String)
-    case modelLoadFailed(String, underlying: Error)
-    case predictionFailed(String)
-    case invalidInput(String)
-    case processingTimeout
-    case resourceUnavailable
-    case configurationError(String)
-}
-```
-
----
-
-## Performance Tips
-
-1. **Batch Processing**: Use batch methods for multiple inputs
-2. **Caching**: Enable caching for repeated operations
-3. **GPU Acceleration**: Enable GPU when available
-4. **Async Operations**: Use async/await for non-blocking execution
-
----
-
-## Thread Safety
-
-All public APIs are thread-safe and support concurrent access. Use actors internally for state management.
-
----
-
-## Platform Support
-
-| Platform | Minimum Version |
-|----------|----------------|
-| iOS | 15.0+ |
-| macOS | 12.0+ |
-| tvOS | 15.0+ |
-| watchOS | 8.0+ |
-| visionOS | 1.0+ |
-
----
-
-**Version**: 2.0.0  
-**Last Updated**: 2025
+- legacy umbrella `IntelligenceEngine` APIs
+- non-active products removed from the current package graph
+- hypothetical cloud-provider integrations that are not part of the active build

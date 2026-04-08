@@ -82,7 +82,7 @@ public actor RateLimiter {
             let waitTime = 1.0 / Double(requestsPerSecond)
             try await Task.sleep(nanoseconds: UInt64(waitTime * 1_000_000_000))
             
-            await addToken()
+            addToken()
         }
     }
     
@@ -233,7 +233,9 @@ public actor RequestQueue {
         self.enablePersistence = enablePersistence
         
         if enablePersistence {
-            loadPersistedQueue()
+            Task {
+                await loadPersistedQueue()
+            }
         }
     }
     

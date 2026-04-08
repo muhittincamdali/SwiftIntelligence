@@ -1,198 +1,112 @@
 # Contributing to SwiftIntelligence
 
-Thank you for your interest in contributing to SwiftIntelligence! This document provides guidelines and information for contributors.
+SwiftIntelligence is currently optimized around a modular Swift package graph and Swift 6 migration work. Contributions are welcome, but they need to preserve package stability first.
 
-## 🌟 How to Contribute
+## Before You Start
 
-### Reporting Issues
+- Read [README.md](README.md), [Documentation/README.md](Documentation/README.md), and [Examples/README.md](Examples/README.md).
+- Search existing issues and pull requests before opening a new one.
+- Keep changes scoped. Large mixed refactors are hard to review and easy to break.
 
-**Before creating an issue:**
-- Search existing issues to avoid duplicates
-- Check the [documentation](README.md) and [FAQ](Documentation/FAQ.md)
-- Ensure you're using the latest version
+## What We Accept
 
-**When creating an issue:**
-- Use descriptive titles
-- Provide detailed reproduction steps
-- Include environment information (iOS version, Xcode version, etc.)
-- Add relevant code samples or screenshots
+- Bug fixes in active modules
+- Swift 6 concurrency hardening
+- Test improvements
+- Example and documentation fixes aligned with the active modular graph
+- Performance work backed by benchmark output
 
-### Suggesting Features
+## What We Usually Reject
 
-We welcome feature suggestions! Please:
-- Check existing feature requests first
-- Explain the use case and benefit
-- Consider if it fits the framework's scope
-- Provide implementation ideas if possible
+- New abstraction layers without a concrete need
+- Changes that revive inactive umbrella APIs without an explicit restore plan
+- Marketing claims without measurable proof
+- Massive multi-area rewrites without a staged rollout
 
-### Code Contributions
-
-We follow a fork-and-pull-request workflow:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Implement** your changes following our guidelines
-4. **Test** your changes thoroughly
-5. **Commit** with descriptive messages
-6. **Push** to your fork
-7. **Create** a pull request
-
-## 🛠️ Development Setup
-
-### Prerequisites
-
-- **Xcode 15.0+**
-- **Swift 5.9+**
-- **macOS 14.0+** (for development)
-
-### Getting Started
+## Local Workflow
 
 ```bash
-# Clone your fork
-git clone https://github.com/YOUR_USERNAME/SwiftIntelligence.git
-cd SwiftIntelligence
-
-# Build the project
 swift build
-
-# Run tests
+bash Scripts/validate-flagship-demo.sh
+bash Scripts/validate-examples.sh
 swift test
-
-# Open in Xcode
-open Package.swift
 ```
 
-### Project Structure
+If your change affects benchmark-sensitive code, also run:
 
-```
-SwiftIntelligence/
-├── Sources/
-│   ├── SwiftIntelligenceCore/      # Core framework functionality
-│   ├── SwiftIntelligenceNLP/       # Natural Language Processing
-│   ├── SwiftIntelligenceVision/    # Computer Vision
-│   ├── SwiftIntelligenceSpeech/    # Speech Processing
-│   ├── SwiftIntelligenceML/        # Machine Learning
-│   ├── SwiftIntelligencePrivacy/   # Privacy & Security
-│   └── ...                         # Additional modules
-├── Tests/                          # Unit and integration tests
-├── Examples/                       # Usage examples
-├── Documentation/                  # Additional documentation
-└── Resources/                      # Data files and resources
+```bash
+bash Scripts/run-benchmarks.sh standard
 ```
 
-## 📝 Coding Standards
+If your change affects public benchmark claims or device evidence, also run:
 
-### Swift Style Guide
-
-We follow Apple's [Swift API Design Guidelines](https://swift.org/documentation/api-design-guidelines/) with these additions:
-
-#### Naming Conventions
-
-```swift
-// ✅ Good
-class TextAnalysisEngine {
-    func analyzeText(_ text: String) -> AnalysisResult { }
-    private var isProcessing: Bool = false
-}
-
-// ❌ Avoid
-class text_analysis_engine {
-    func analyze_text(_ text: String) -> analysis_result { }
-    private var processing: Bool = false
-}
+```bash
+bash Scripts/validate-device-evidence.sh
+bash Scripts/validate-transfer-chain.sh
+bash Scripts/validate-release-provenance.sh
+bash Scripts/validate-public-claims.sh
 ```
 
-#### Code Organization
+If your change adds or updates non-Mac release evidence, also record the exact capture or import command path:
 
-```swift
-// MARK: - Public Interface
-public class MyProcessor {
-    // MARK: - Properties
-    private let configuration: Configuration
-    
-    // MARK: - Initialization
-    public init(configuration: Configuration) {
-        self.configuration = configuration
-    }
-    
-    // MARK: - Public Methods
-    public func process(_ input: String) async throws -> Result {
-        // Implementation
-    }
-    
-    // MARK: - Private Methods
-    private func validate(_ input: String) -> Bool {
-        // Implementation
-    }
-}
+```bash
+bash Scripts/run-benchmarks-for-device.sh ...
+# or
+bash Scripts/import-benchmark-evidence.sh ...
 ```
 
-#### Concurrency and Sendable
+## Pull Request Rules
 
-All new code must support Swift 6 strict concurrency:
+- One pull request should solve one problem.
+- Describe the user-visible or maintainer-visible impact.
+- Describe the first-user path impact if README, onboarding, examples, or comparisons changed.
+- List the modules touched.
+- Include validation commands you ran.
+- Update docs/examples if the public API changed.
+- State whether any public claim, proof wording, or readiness wording changed.
+- If benchmark evidence moved, mention which device classes were added, changed, or still missing.
+- If you added imported or captured device evidence, include the snapshot name and normalized device metadata in the PR description.
 
-```swift
-// ✅ Good - Proper Sendable conformance
-public struct Configuration: Sendable {
-    public let timeout: TimeInterval
-    public let enableLogging: Bool
-}
+Use the PR template completely. Empty sections for product impact or public-claim impact usually mean the change was not described well enough.
 
-// ✅ Good - Actor for thread-safe state
-@MainActor
-public class UIProcessor {
-    private var isProcessing = false
-    
-    public func process() async {
-        isProcessing = true
-        // Process on main actor
-        isProcessing = false
-    }
-}
+## Device Evidence Intake
 
-// ✅ Good - Sendable closure
-func processAsync(_ handler: @Sendable @escaping (Result) -> Void) {
-    // Implementation
-}
+Use the `Device Evidence Submission` issue form for:
+
+- missing iPhone/iPad release coverage
+- imported external benchmark bundles that need maintainer review
+- invalid archived device metadata or broken coverage matrix state
+
+Before opening that issue, check:
+
+- [Documentation/Generated/Device-Evidence-Plan.md](Documentation/Generated/Device-Evidence-Plan.md)
+- [Documentation/Generated/Device-Coverage-Matrix.md](Documentation/Generated/Device-Coverage-Matrix.md)
+- [Documentation/Generated/Device-Evidence-Runbook.md](Documentation/Generated/Device-Evidence-Runbook.md)
+
+Do not submit simulator output, guessed metadata, or rewritten Mac artifacts as mobile evidence.
+
+## Code Expectations
+
+- Prefer straightforward code over clever code.
+- Match the existing module boundaries.
+- Keep public APIs documented.
+- Treat Swift 6 actor isolation and Sendable correctness as release-quality concerns, not optional cleanup.
+
+## Example Changes
+
+If you touch anything under `Examples/`, the new validation gate must still pass:
+
+```bash
+bash Scripts/validate-flagship-demo.sh
+bash Scripts/validate-examples.sh
 ```
 
-### Documentation
+Do not add examples that depend on inactive products or stale umbrella entry points.
 
-All public APIs must be documented:
+## Security
 
-```swift
-/// Analyzes text sentiment using machine learning models.
-/// 
-/// This method processes the input text and returns a sentiment analysis
-/// result with confidence scores.
-/// 
-/// - Parameter text: The text to analyze. Must not be empty.
-/// - Returns: Analysis result containing sentiment and confidence scores.
-/// - Throws: `NLPError.invalidInput` if text is empty or invalid.
-/// 
-/// Example:
-/// ```swift
-/// let analyzer = SentimentAnalyzer()
-/// let result = try await analyzer.analyzeSentiment("I love Swift!")
-/// print(result.sentiment) // .positive
-/// ```
-public func analyzeSentiment(_ text: String) async throws -> SentimentResult {
-    // Implementation
-}
-```
-
-## Development Process
-1. Fork the repo
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
-
-## Code Style
-- Use Swift 5.9+ features
-- Follow Apple's Swift API Design Guidelines
-- Write tests for new features
-- Update documentation
+Do not open public issues for vulnerabilities. Use [SECURITY.md](SECURITY.md).
 
 ## License
-By contributing, you agree that your contributions will be licensed under MIT License.
+
+By contributing, you agree that your contributions are licensed under the [MIT License](LICENSE).

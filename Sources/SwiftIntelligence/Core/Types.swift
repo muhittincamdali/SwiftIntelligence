@@ -1,6 +1,5 @@
 import Foundation
 import CoreML
-import UIKit
 
 // MARK: - Core Protocols
 

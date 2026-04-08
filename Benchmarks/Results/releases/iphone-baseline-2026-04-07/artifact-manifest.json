@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-04-08T13:41:51Z",
+  "artifactDirectory": "Benchmarks/Results/releases/iphone-baseline-2026-04-07",
+  "fileCount": 19,
+  "files": [
+    {
+      "name": "benchmark-delta.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/benchmark-delta.md",
+      "size": 1853,
+      "sha256": "c5f3b2d89d4bf147496697cde9ece498c50c90b254266734ff672377f4535ca3"
+    },
+    {
+      "name": "benchmark-report.json",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/benchmark-report.json",
+      "size": 619261,
+      "sha256": "098748cc51ff3cbea4e47bd96944bf8ecb6f6081828c7aa8171ea3db894ae9ad"
+    },
+    {
+      "name": "benchmark-summary.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/benchmark-summary.md",
+      "size": 1476,
+      "sha256": "466fc89d83f287b9e88fec96e9d3bcacccbcec27a1cd91999df13f637b29e8f7"
+    },
+    {
+      "name": "caption.txt",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/caption.txt",
+      "size": 68,
+      "sha256": "fa2b3dac44ac56ad47f655dfad3449583439e3d378d6e5c69a65565454674906"
+    },
+    {
+      "name": "device-evidence-handoff.json",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/device-evidence-handoff.json",
+      "size": 1035,
+      "sha256": "29cc73a52c6a1d1c5be366ada9db3029cbd13f0abe6443761472324cd3c72c54"
+    },
+    {
+      "name": "device-evidence-handoff.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/device-evidence-handoff.md",
+      "size": 969,
+      "sha256": "a9fdf1ce2a48d1cdaf444a4ee280f42a7e7a4b75a50e42dadbcb62de8b519707"
+    },
+    {
+      "name": "device-metadata.json",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/device-metadata.json",
+      "size": 678,
+      "sha256": "b4d9931e5eb2308660da2d3a14e7b6efaa4ccc125fc8ce17a5c0c603af5e5061"
+    },
+    {
+      "name": "environment.json",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/environment.json",
+      "size": 197,
+      "sha256": "3fad03a311feba2e800e0a8c316ad811e3829dc0fcbfc6d36899a3f54f7aa914"
+    },
+    {
+      "name": "flagship-demo-pack.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/flagship-demo-pack.md",
+      "size": 2548,
+      "sha256": "1e7ef3225dcc4633699ba41448a1d8bda27f7a749d335ae91a695c265573258d"
+    },
+    {
+      "name": "flagship-demo-share-pack.tar.gz",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/flagship-demo-share-pack.tar.gz",
+      "size": 12734,
+      "sha256": "9b50326a96f055dde2b8663b396a67a264e036de34d84d43d4e12a4e45f497dc"
+    },
+    {
+      "name": "intelligent-camera-run.mp4",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/intelligent-camera-run.mp4",
+      "size": 10752,
+      "sha256": "b7dcdfdd6a321f2c4149db755ff2f6e6271614b8d9b9cb3b9b23a9febbb28a93"
+    },
+    {
+      "name": "intelligent-camera-success.png",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/intelligent-camera-success.png",
+      "size": 86099,
+      "sha256": "63d06a4e8622d34a0cbfc6645d381e915c2226d75742615ed4912bab367ce8f4"
+    },
+    {
+      "name": "metadata.json",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/metadata.json",
+      "size": 1332,
+      "sha256": "68d73fb17aea3819b8695ee3061e0523272cfa5a798ca9866b17e9fbe24dce6c"
+    },
+    {
+      "name": "public-proof-status.json",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/public-proof-status.json",
+      "size": 666,
+      "sha256": "125d080b80eccf374aa9c310311f9773efea9afd8119152158445991fd639042"
+    },
+    {
+      "name": "public-proof-status.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/public-proof-status.md",
+      "size": 1187,
+      "sha256": "830f7e0a38698211fabbe8a568e3b616ba4dd0a496c665f03ecf7643e5bdcfad"
+    },
+    {
+      "name": "release-blockers.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/release-blockers.md",
+      "size": 1204,
+      "sha256": "7b5d21ff4dc5ef16f51ff3ae4dc38e434aa99a3c16673885b51e301fa82134f0"
+    },
+    {
+      "name": "release-body.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/release-body.md",
+      "size": 9123,
+      "sha256": "1a6011594ac02d796954b95893ccc73a05aeded9c994e8052a164fcaa083f6b0"
+    },
+    {
+      "name": "release-notes-proof.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/release-notes-proof.md",
+      "size": 7658,
+      "sha256": "1154e19914c7c86bba3f31476344d3492b9aed0cacc7cff3d0ee846b8f36b186"
+    },
+    {
+      "name": "release-proof.md",
+      "relativePath": "Benchmarks/Results/releases/iphone-baseline-2026-04-07/release-proof.md",
+      "size": 1012,
+      "sha256": "24703c00eaf96e0d451383d7d929ff40ada1ea317582ef32ddfcfb710ef2dfca"
+    }
+  ]
+}

@@ -1,11 +1,12 @@
 import Foundation
 import Security
 import CryptoKit
+import LocalAuthentication
 import os.log
 
 /// Secure keychain manager for SwiftIntelligence Privacy Layer
 /// Provides encrypted storage and retrieval of cryptographic keys and sensitive data
-public class SecureKeychain {
+public final class SecureKeychain: @unchecked Sendable {
     
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "SecureKeychain")
     private let serviceIdentifier = "com.swiftintelligence.privacy"
@@ -196,6 +197,7 @@ public class SecureKeychain {
         identifier: String,
         biometricPrompt: String = "Authenticate to access secure data"
     ) async throws {
+        _ = biometricPrompt
         var access: SecAccessControl?
         var error: Unmanaged<CFError>?
         
@@ -215,14 +217,16 @@ public class SecureKeychain {
             throw KeychainError.accessControlCreationFailed
         }
         
+        let authenticationContext = LAContext()
+        authenticationContext.interactionNotAllowed = false
+
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: "\(serviceIdentifier).biometric",
             kSecAttrAccount as String: identifier,
             kSecValueData as String: data,
             kSecAttrAccessControl as String: accessControl,
-            kSecUseAuthenticationUI as String: kSecUseAuthenticationUIAllow,
-            kSecUseAuthenticationContext as String: biometricPrompt
+            kSecUseAuthenticationContext as String: authenticationContext
         ]
         
         if let accessGroup = accessGroup {
@@ -247,46 +251,43 @@ public class SecureKeychain {
         identifier: String,
         biometricPrompt: String = "Authenticate to access secure data"
     ) async throws -> Data? {
+        let authenticationContext = LAContext()
+        authenticationContext.interactionNotAllowed = false
+
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: "\(serviceIdentifier).biometric",
             kSecAttrAccount as String: identifier,
             kSecReturnData as String: true,
             kSecMatchLimit as String: kSecMatchLimitOne,
-            kSecUseAuthenticationUI as String: kSecUseAuthenticationUIAllow,
-            kSecUseOperationPrompt as String: biometricPrompt
+            kSecUseAuthenticationContext as String: authenticationContext
         ]
         
         if let accessGroup = accessGroup {
             query[kSecAttrAccessGroup as String] = accessGroup
         }
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            DispatchQueue.global(qos: .userInitiated).async {
-                var result: AnyObject?
-                let status = SecItemCopyMatching(query as CFDictionary, &result)
-                
-                DispatchQueue.main.async {
-                    guard status == errSecSuccess else {
-                        if status == errSecItemNotFound {
-                            continuation.resume(returning: nil)
-                        } else {
-                            self.logger.error("Failed to retrieve biometric-protected data \(identifier): \(status)")
-                            continuation.resume(throwing: KeychainError.retrievalError(status))
-                        }
-                        return
-                    }
-                    
-                    guard let data = result as? Data else {
-                        continuation.resume(throwing: KeychainError.invalidData)
-                        return
-                    }
-                    
-                    self.logger.debug("Biometric-protected data retrieved: \(identifier)")
-                    continuation.resume(returning: data)
-                }
-            }
+
+        if authenticationContext.responds(to: Selector(("setLocalizedReason:"))) {
+            authenticationContext.setValue(biometricPrompt, forKey: "localizedReason")
         }
+
+        var result: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &result)
+
+        guard status == errSecSuccess else {
+            if status == errSecItemNotFound {
+                return nil
+            }
+            logger.error("Failed to retrieve biometric-protected data \(identifier): \(status)")
+            throw KeychainError.retrievalError(status)
+        }
+
+        guard let data = result as? Data else {
+            throw KeychainError.invalidData
+        }
+
+        logger.debug("Biometric-protected data retrieved: \(identifier)")
+        return data
     }
     
     /// Delete biometric-protected data
@@ -504,7 +505,7 @@ public enum KeychainError: LocalizedError {
         case .invalidData:
             return "Invalid data format"
         case .accessControlError(let error):
-            return "Access control error: \(CFErrorCopyDescription(error))"
+            return "Access control error: \(String(describing: CFErrorCopyDescription(error)))"
         case .accessControlCreationFailed:
             return "Failed to create access control"
         case .invalidBackupFormat:
@@ -529,9 +530,9 @@ public enum KeychainError: LocalizedError {
 // MARK: - Security Accessibility Helpers
 
 public struct SecurityAccessibility {
-    public static let whenUnlockedThisDeviceOnly = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
-    public static let whenUnlocked = kSecAttrAccessibleWhenUnlocked
-    public static let afterFirstUnlockThisDeviceOnly = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-    public static let afterFirstUnlock = kSecAttrAccessibleAfterFirstUnlock
-    public static let whenPasscodeSetThisDeviceOnly = kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly
+    public static var whenUnlockedThisDeviceOnly: CFString { kSecAttrAccessibleWhenUnlockedThisDeviceOnly }
+    public static var whenUnlocked: CFString { kSecAttrAccessibleWhenUnlocked }
+    public static var afterFirstUnlockThisDeviceOnly: CFString { kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly }
+    public static var afterFirstUnlock: CFString { kSecAttrAccessibleAfterFirstUnlock }
+    public static var whenPasscodeSetThisDeviceOnly: CFString { kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly }
 }

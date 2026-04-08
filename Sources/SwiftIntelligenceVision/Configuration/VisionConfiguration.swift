@@ -1,9 +1,9 @@
 import Foundation
-import CoreML
-import Vision
+@preconcurrency import CoreML
+@preconcurrency import Vision
 
 /// Configuration for Vision processing operations
-public struct VisionConfiguration {
+public struct VisionConfiguration: Sendable {
     
     // MARK: - Performance Settings
     
@@ -222,7 +222,7 @@ public struct VisionConfiguration {
 
 // MARK: - Supporting Enums
 
-public enum QualityLevel: String, CaseIterable, Codable {
+public enum QualityLevel: String, CaseIterable, Codable, Sendable {
     case low = "low"
     case balanced = "balanced"
     case high = "high"
@@ -255,7 +255,7 @@ public enum QualityLevel: String, CaseIterable, Codable {
     }
 }
 
-public enum MemoryOptimization: String, CaseIterable, Codable {
+public enum MemoryOptimization: String, CaseIterable, Codable, Sendable {
     case memory = "memory"
     case balanced = "balanced"
     case performance = "performance"
@@ -272,7 +272,7 @@ public enum MemoryOptimization: String, CaseIterable, Codable {
     }
 }
 
-public enum OutputImageFormat: String, CaseIterable, Codable {
+public enum OutputImageFormat: String, CaseIterable, Codable, Sendable {
     case original = "original"
     case jpeg = "jpeg"
     case png = "png"
@@ -292,7 +292,7 @@ public enum OutputImageFormat: String, CaseIterable, Codable {
     }
 }
 
-public enum RealtimePriority: String, CaseIterable, Codable {
+public enum RealtimePriority: String, CaseIterable, Codable, Sendable {
     case low = "low"
     case normal = "normal"
     case high = "high"
@@ -312,7 +312,7 @@ public enum RealtimePriority: String, CaseIterable, Codable {
     }
 }
 
-public enum DataRetentionPolicy: String, CaseIterable, Codable {
+public enum DataRetentionPolicy: String, CaseIterable, Codable, Sendable {
     case none = "none"
     case session = "session"
     case temporary = "temporary"
@@ -332,7 +332,7 @@ public enum DataRetentionPolicy: String, CaseIterable, Codable {
     }
 }
 
-public enum ModelSelectionStrategy: String, CaseIterable, Codable {
+public enum ModelSelectionStrategy: String, CaseIterable, Codable, Sendable {
     case automatic = "automatic"
     case performance = "performance"
     case accuracy = "accuracy"
@@ -355,7 +355,7 @@ public enum ModelSelectionStrategy: String, CaseIterable, Codable {
     }
 }
 
-public enum ModelUpdateBehavior: String, CaseIterable, Codable {
+public enum ModelUpdateBehavior: String, CaseIterable, Codable, Sendable {
     case automatic = "automatic"
     case manual = "manual"
     case disabled = "disabled"
@@ -372,7 +372,7 @@ public enum ModelUpdateBehavior: String, CaseIterable, Codable {
     }
 }
 
-public struct ImagePreprocessingOptions: Codable {
+public struct ImagePreprocessingOptions: Codable, Sendable {
     public let enableNormalization: Bool
     public let enableResize: Bool
     public let enableRotationCorrection: Bool

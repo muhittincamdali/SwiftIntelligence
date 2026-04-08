@@ -8,8 +8,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for your interest in improving SwiftIntelligence! ✨
-        Please provide detailed information about your feature request.
+        Feature requests should fit the active modular package graph and the repo's public Apple-platform focus.
+        Requests centered on inactive products or vague umbrella APIs will be closed or redirected.
 
   - type: textarea
     id: feature-description
@@ -45,17 +45,18 @@ body:
       description: Which SwiftIntelligence module should this feature be added to?
       options:
         - Core
-        - NLP (Natural Language Processing)
+        - ML
+        - NLP
         - Vision
         - Speech
-        - ML (Machine Learning)
         - Privacy
+        - Reasoning
         - Network
         - Cache
         - Metrics
-        - Reasoning
-        - Image Generation
-        - visionOS
+        - Benchmarks
+        - Examples
+        - Documentation / CI
         - New module
         - Cross-module
     validations:
@@ -72,7 +73,7 @@ body:
         - Developer experience enhancement
         - New API/interface
         - Platform support
-        - Integration with external service
+        - Infrastructure / tooling
         - Documentation improvement
         - Testing/debugging tool
         - Other
@@ -168,7 +169,9 @@ body:
       options:
         - label: I searched for existing feature requests and didn't find a duplicate
           required: true
-        - label: This feature aligns with SwiftIntelligence's AI/ML focus
+        - label: This feature aligns with the active modular package graph
+          required: true
+        - label: I explained why existing modules or examples are insufficient
           required: true
         - label: I'm willing to provide additional clarification if needed
           required: true

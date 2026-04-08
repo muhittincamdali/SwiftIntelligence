@@ -1,6 +1,6 @@
 import Foundation
 import CoreML
-import Vision
+@preconcurrency import Vision
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -163,12 +163,27 @@ public class ImageClassificationProcessor: @unchecked Sendable {
         modelName: String,
         options: ClassificationOptions
     ) async throws -> [Classification] {
-        
+        if let model = models[modelName] {
+            return try await performCoreMLClassification(
+                cgImage: cgImage,
+                model: model,
+                options: options
+            )
+        }
+
+        logger.notice("Classification model '\(modelName)' unavailable; falling back to built-in Vision classification.")
+        return try await performBuiltInClassification(cgImage: cgImage, options: options)
+    }
+
+    private func performCoreMLClassification(
+        cgImage: CGImage,
+        model: VNCoreMLModel,
+        options: ClassificationOptions
+    ) async throws -> [Classification] {
         return try await withCheckedThrowingContinuation { continuation in
             processingQueue.async {
                 do {
-                    // Create Vision request
-                    let request = VNCoreMLRequest(model: try self.getModel(modelName)) { request, error in
+                    let request = VNCoreMLRequest(model: model) { request, error in
                         if let error = error {
                             continuation.resume(throwing: ClassificationError.processingFailed(error))
                             return
@@ -193,6 +208,27 @@ public class ImageClassificationProcessor: @unchecked Sendable {
                     let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                     try handler.perform([request])
                     
+                } catch {
+                    continuation.resume(throwing: ClassificationError.processingFailed(error))
+                }
+            }
+        }
+    }
+
+    private func performBuiltInClassification(
+        cgImage: CGImage,
+        options: ClassificationOptions
+    ) async throws -> [Classification] {
+        try await withCheckedThrowingContinuation { continuation in
+            processingQueue.async {
+                do {
+                    let request = VNClassifyImageRequest()
+                    let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+                    try handler.perform([request])
+
+                    let observations = request.results ?? []
+                    let classifications = self.processObservations(observations, options: options)
+                    continuation.resume(returning: classifications)
                 } catch {
                     continuation.resume(throwing: ClassificationError.processingFailed(error))
                 }
@@ -289,7 +325,7 @@ public class ImageClassificationProcessor: @unchecked Sendable {
         return ImageProperties(
             size: size,
             colorSpace: cgImage?.colorSpace?.name as String? ?? "unknown",
-            hasAlpha: cgImage?.alphaInfo != .none,
+            hasAlpha: cgImage?.alphaInfo != CGImageAlphaInfo.none,
             orientation: orientation,
             dominantColors: dominantColors,
             averageBrightness: brightness,
@@ -379,9 +415,6 @@ public class ImageClassificationProcessor: @unchecked Sendable {
         // In a real implementation, you would use more sophisticated algorithms like k-means clustering
         
         let sampleSize = 50
-        let width = cgImage.width
-        let height = cgImage.height
-        
         let bytesPerPixel = 4
         let bytesPerRow = sampleSize * bytesPerPixel
         let bitmapData = UnsafeMutablePointer<UInt8>.allocate(capacity: sampleSize * sampleSize * bytesPerPixel)

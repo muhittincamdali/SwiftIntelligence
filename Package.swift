@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftIntelligence",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
         .macOS(.v14),
@@ -11,12 +12,6 @@ let package = Package(
         .visionOS(.v1)
     ],
     products: [
-        // Main umbrella framework
-        .library(
-            name: "SwiftIntelligence",
-            targets: ["SwiftIntelligence"]
-        ),
-        
         // Core modules
         .library(
             name: "SwiftIntelligenceCore",
@@ -45,10 +40,6 @@ let package = Package(
             targets: ["SwiftIntelligenceReasoning"]
         ),
         .library(
-            name: "SwiftIntelligenceImageGeneration",
-            targets: ["SwiftIntelligenceImageGeneration"]
-        ),
-        .library(
             name: "SwiftIntelligencePrivacy",
             targets: ["SwiftIntelligencePrivacy"]
         ),
@@ -71,35 +62,16 @@ let package = Package(
         .library(
             name: "SwiftIntelligenceBenchmarks",
             targets: ["SwiftIntelligenceBenchmarks"]
+        ),
+        .executable(
+            name: "Benchmarks",
+            targets: ["Benchmarks"]
         )
     ],
     dependencies: [
         // Using only Apple's native frameworks, no external dependencies
     ],
     targets: [
-        // MARK: - Main Target
-        .target(
-            name: "SwiftIntelligence",
-            dependencies: [
-                "SwiftIntelligenceCore",
-                "SwiftIntelligenceML",
-                "SwiftIntelligenceNLP",
-                "SwiftIntelligenceVision",
-                "SwiftIntelligenceSpeech",
-                "SwiftIntelligenceReasoning",
-                "SwiftIntelligenceImageGeneration",
-                "SwiftIntelligencePrivacy",
-                "SwiftIntelligenceNetwork",
-                "SwiftIntelligenceCache",
-                "SwiftIntelligenceMetrics",
-                "SwiftIntelligenceBenchmarks"
-            ],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency"),
-                .enableUpcomingFeature("BareSlashRegexLiterals")
-            ]
-        ),
-        
         // MARK: - Core Module
         .target(
             name: "SwiftIntelligenceCore",
@@ -141,18 +113,10 @@ let package = Package(
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
-        
+
         .target(
             name: "SwiftIntelligenceReasoning",
             dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceML"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        .target(
-            name: "SwiftIntelligenceImageGeneration",
-            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceVision"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
@@ -198,13 +162,16 @@ let package = Package(
                 .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
-        
-        // MARK: - Test Targets
-        .testTarget(
-            name: "SwiftIntelligenceTests",
-            dependencies: ["SwiftIntelligence"]
+
+        .executableTarget(
+            name: "Benchmarks",
+            dependencies: ["SwiftIntelligenceBenchmarks"],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
         ),
         
+        // MARK: - Test Targets
         .testTarget(
             name: "SwiftIntelligenceCoreTests",
             dependencies: ["SwiftIntelligenceCore"]
@@ -228,6 +195,11 @@ let package = Package(
         .testTarget(
             name: "SwiftIntelligenceSpeechTests",
             dependencies: ["SwiftIntelligenceSpeech"]
+        ),
+
+        .testTarget(
+            name: "SwiftIntelligenceBenchmarksDeviceTests",
+            dependencies: ["SwiftIntelligenceBenchmarks"]
         )
     ]
 )

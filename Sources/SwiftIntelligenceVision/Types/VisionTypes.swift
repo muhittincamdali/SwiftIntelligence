@@ -37,7 +37,7 @@ public protocol VisionResult: Codable, Sendable {
 
 // MARK: - Image Classification
 
-public struct ClassificationOptions: Hashable, Codable {
+public struct ClassificationOptions: Hashable, Codable, Sendable {
     public let maxResults: Int
     public let confidenceThreshold: Float
     public let useCustomModel: Bool
@@ -100,7 +100,7 @@ public struct ImageClassificationResult: VisionResult {
     }
 }
 
-public struct Classification: Codable {
+public struct Classification: Codable, Sendable {
     public let identifier: String
     public let label: String
     public let confidence: Float
@@ -184,7 +184,7 @@ public struct ObjectDetectionResult: VisionResult {
     }
 }
 
-public struct DetectedObject: Codable {
+public struct DetectedObject: Codable, Sendable {
     public let identifier: String
     public let label: String
     public let confidence: Float
@@ -212,7 +212,7 @@ public struct DetectedObject: Codable {
     }
 }
 
-public enum ObjectCategory: String, CaseIterable, Codable {
+public enum ObjectCategory: String, CaseIterable, Codable, Sendable {
     case person = "person"
     case animal = "animal"
     case vehicle = "vehicle"
@@ -228,7 +228,7 @@ public enum ObjectCategory: String, CaseIterable, Codable {
 
 // MARK: - Face Recognition
 
-public struct FaceRecognitionOptions: Hashable, Codable {
+public struct FaceRecognitionOptions: Hashable, Codable, Sendable {
     public let enableLandmarks: Bool
     public let enableExpressions: Bool
     public let enableAgeEstimation: Bool
@@ -298,7 +298,7 @@ public struct FaceRecognitionResult: VisionResult {
     }
 }
 
-public struct DetectedFace: Codable {
+public struct DetectedFace: Codable, Sendable {
     public let boundingBox: CGRect
     public let confidence: Float
     public let identity: FaceIdentity?
@@ -329,7 +329,7 @@ public struct DetectedFace: Codable {
     }
 }
 
-public struct FaceIdentity: Codable {
+public struct FaceIdentity: Codable, Sendable {
     public let personID: String
     public let name: String?
     public let confidence: Float
@@ -341,7 +341,7 @@ public struct FaceIdentity: Codable {
     }
 }
 
-public struct FaceLandmarks: Codable {
+public struct FaceLandmarks: Codable, Sendable {
     public let leftEye: CGPoint
     public let rightEye: CGPoint
     public let nose: CGPoint
@@ -354,7 +354,7 @@ public struct FaceLandmarks: Codable {
     public let faceContour: [CGPoint]
 }
 
-public struct FaceExpressions: Codable {
+public struct FaceExpressions: Codable, Sendable {
     public let neutral: Float
     public let happy: Float
     public let sad: Float
@@ -379,7 +379,7 @@ public struct FaceExpressions: Codable {
     }
 }
 
-public struct AgeEstimate: Codable {
+public struct AgeEstimate: Codable, Sendable {
     public let estimatedAge: Int
     public let ageRange: ClosedRange<Int>
     public let confidence: Float
@@ -391,24 +391,24 @@ public struct AgeEstimate: Codable {
     }
 }
 
-public struct GenderClassification: Codable {
+public struct GenderClassification: Codable, Sendable {
     public let gender: Gender
     public let confidence: Float
     
-    public enum Gender: String, Codable {
+    public enum Gender: String, Codable, Sendable {
         case male = "male"
         case female = "female"
         case unknown = "unknown"
     }
 }
 
-public struct FaceQuality: Codable {
+public struct FaceQuality: Codable, Sendable {
     public let overallQuality: Float
     public let sharpness: Float
     public let brightness: Float
     public let pose: PoseQuality
     
-    public struct PoseQuality: Codable {
+    public struct PoseQuality: Codable, Sendable {
         public let pitch: Float
         public let yaw: Float
         public let roll: Float
@@ -418,7 +418,7 @@ public struct FaceQuality: Codable {
 
 // MARK: - Face Enrollment
 
-public struct FaceEnrollmentOptions: Hashable, Codable {
+public struct FaceEnrollmentOptions: Hashable, Codable, Sendable {
     public let requireHighQuality: Bool
     public let minimumFaceSize: CGSize
     public let allowMultipleFaces: Bool
@@ -473,7 +473,7 @@ public struct FaceEnrollmentResult: VisionResult {
 
 // MARK: - Text Recognition
 
-public enum TextRecognitionLevel: String, Codable {
+public enum TextRecognitionLevel: String, Codable, Sendable {
     case accurate = "accurate"
     case fast = "fast"
     
@@ -487,7 +487,7 @@ public enum TextRecognitionLevel: String, Codable {
     }
 }
 
-public struct TextRecognitionOptions: Hashable, Codable {
+public struct TextRecognitionOptions: Hashable, Codable, Sendable {
     public let recognitionLanguages: [String]
     public let recognitionLevel: TextRecognitionLevel
     public let enableAutomaticTextNormalization: Bool
@@ -582,7 +582,7 @@ public struct TextBlock: Codable, Sendable {
     }
 }
 
-public struct CharacterBox: Codable {
+public struct CharacterBox: Codable, Sendable {
     public let character: String
     public let boundingBox: CGRect
     public let confidence: Float
@@ -590,7 +590,7 @@ public struct CharacterBox: Codable {
 
 // MARK: - Document Analysis
 
-public struct DocumentAnalysisOptions: Hashable, Codable {
+public struct DocumentAnalysisOptions: Hashable, Codable, Sendable {
     public let enableLayoutAnalysis: Bool
     public let enableTableDetection: Bool
     public let enableFormFieldDetection: Bool
@@ -611,7 +611,7 @@ public struct DocumentAnalysisOptions: Hashable, Codable {
     public static let `default` = DocumentAnalysisOptions()
 }
 
-public enum DocumentOutputFormat: String, CaseIterable, Codable {
+public enum DocumentOutputFormat: String, CaseIterable, Codable, Sendable {
     case plainText = "plain_text"
     case structured = "structured"
     case markdown = "markdown"
@@ -653,19 +653,19 @@ public struct DocumentAnalysisResult: VisionResult {
     }
 }
 
-public struct DocumentLayout: Codable {
+public struct DocumentLayout: Codable, Sendable {
     public let paragraphs: [DocumentParagraph]
     public let headings: [DocumentHeading]
     public let readingOrder: [String]
     
-    public struct DocumentParagraph: Codable {
+    public struct DocumentParagraph: Codable, Sendable {
         public let id: String
         public let text: String
         public let boundingBox: CGRect
         public let confidence: Float
     }
     
-    public struct DocumentHeading: Codable {
+    public struct DocumentHeading: Codable, Sendable {
         public let id: String
         public let text: String
         public let level: Int
@@ -674,12 +674,12 @@ public struct DocumentLayout: Codable {
     }
 }
 
-public struct DocumentTable: Codable {
+public struct DocumentTable: Codable, Sendable {
     public let boundingBox: CGRect
     public let rows: [[TableCell]]
     public let confidence: Float
     
-    public struct TableCell: Codable {
+    public struct TableCell: Codable, Sendable {
         public let text: String
         public let boundingBox: CGRect
         public let rowSpan: Int
@@ -687,14 +687,14 @@ public struct DocumentTable: Codable {
     }
 }
 
-public struct FormField: Codable {
+public struct FormField: Codable, Sendable {
     public let fieldType: FieldType
     public let label: String?
     public let value: String?
     public let boundingBox: CGRect
     public let confidence: Float
     
-    public enum FieldType: String, Codable {
+    public enum FieldType: String, Codable, Sendable {
         case textField = "text_field"
         case checkbox = "checkbox"
         case radioButton = "radio_button"
@@ -709,7 +709,7 @@ public struct FormField: Codable {
 
 // MARK: - Image Properties
 
-public struct ImageProperties: Codable {
+public struct ImageProperties: Codable, Sendable {
     public let size: CGSize
     public let colorSpace: String
     public let hasAlpha: Bool
@@ -719,7 +719,7 @@ public struct ImageProperties: Codable {
     public let contrast: Float
     public let saturation: Float
     
-    public enum ImageOrientation: String, Codable {
+    public enum ImageOrientation: String, Codable, Sendable {
         case up = "up"
         case down = "down"
         case left = "left"
@@ -731,12 +731,12 @@ public struct ImageProperties: Codable {
     }
 }
 
-public struct DominantColor: Codable {
+public struct DominantColor: Codable, Sendable {
     public let color: ColorInfo
     public let percentage: Float
     public let pixelCount: Int
     
-    public struct ColorInfo: Codable {
+    public struct ColorInfo: Codable, Sendable {
         public let red: Float
         public let green: Float
         public let blue: Float
@@ -760,7 +760,7 @@ public struct DominantColor: Codable {
 
 // MARK: - Cutout Mask Types
 
-public enum SegmentationSubject: String, CaseIterable, Codable {
+public enum SegmentationSubject: String, CaseIterable, Codable, Sendable {
     case foreground = "foreground"
     case background = "background"
     case person = "person"
@@ -780,13 +780,13 @@ public struct CutoutMaskResult: VisionResult {
     public let imageSize: CGSize
     public let maskFormat: MaskFormat
     
-    public enum MaskFormat: String, CaseIterable, Codable {
+    public enum MaskFormat: String, CaseIterable, Codable, Sendable {
         case png = "png"
         case alpha = "alpha"
         case binary = "binary"
     }
     
-    public enum MaskQuality: String, CaseIterable, Codable {
+    public enum MaskQuality: String, CaseIterable, Codable, Sendable {
         case low = "low"
         case medium = "medium"
         case high = "high"
@@ -818,14 +818,14 @@ public struct CutoutMaskResult: VisionResult {
 
 // MARK: - Image Generation Types
 
-public struct ImageGenerationOptions: Hashable, Codable {
+public struct ImageGenerationOptions: Hashable, Codable, Sendable {
     public let prompt: String
     public let style: GenerationStyle
     public let size: GenerationSize
     public let quality: GenerationQuality
     public let count: Int
     
-    public enum GenerationStyle: String, CaseIterable, Codable {
+    public enum GenerationStyle: String, CaseIterable, Codable, Sendable {
         case photorealistic = "photorealistic"
         case artistic = "artistic"
         case cartoon = "cartoon"
@@ -834,7 +834,7 @@ public struct ImageGenerationOptions: Hashable, Codable {
         case watercolor = "watercolor"
     }
     
-    public enum GenerationSize: String, CaseIterable, Codable {
+    public enum GenerationSize: String, CaseIterable, Codable, Sendable {
         case small = "256x256"
         case medium = "512x512"
         case large = "1024x1024"
@@ -842,7 +842,7 @@ public struct ImageGenerationOptions: Hashable, Codable {
         case portrait = "1024x1792"
     }
     
-    public enum GenerationQuality: String, CaseIterable, Codable {
+    public enum GenerationQuality: String, CaseIterable, Codable, Sendable {
         case standard = "standard"
         case high = "high"
         case ultra = "ultra"
@@ -876,7 +876,7 @@ public struct ImageGenerationResult: VisionResult {
     public let prompt: String
     public let options: ImageGenerationOptions
     
-    public struct GeneratedImage: Codable {
+    public struct GeneratedImage: Codable, Sendable {
         public let imageData: Data
         public let format: String
         public let size: CGSize
@@ -926,13 +926,13 @@ public struct ImageVariationResult: VisionResult {
     public let variations: [ImageVariation]
     public let originalImageSize: CGSize
     
-    public struct ImageVariation: Codable {
+    public struct ImageVariation: Codable, Sendable {
         public let imageData: Data
         public let variationType: VariationType
         public let similarity: Float
         public let format: String
         
-        public enum VariationType: String, CaseIterable, Codable {
+        public enum VariationType: String, CaseIterable, Codable, Sendable {
             case style_transfer = "style_transfer"
             case color_variation = "color_variation"
             case composition_change = "composition_change"
@@ -973,7 +973,7 @@ public struct ImageVariationResult: VisionResult {
 
 // MARK: - Image Variation Types
 
-public struct VariationOptions: Hashable, Codable {
+public struct VariationOptions: Hashable, Codable, Sendable {
     public let count: Int
     public let variationType: ImageVariationResult.ImageVariation.VariationType
     public let similarity: Float
@@ -996,13 +996,13 @@ public struct VariationOptions: Hashable, Codable {
 
 // MARK: - Image Enhancement Types
 
-public struct EnhancementOptions: Hashable, Codable {
+public struct EnhancementOptions: Hashable, Codable, Sendable {
     public let enhancementType: EnhancementType
     public let intensity: Float
     public let preserveOriginalColors: Bool
     public let upscaleFactor: Float
     
-    public enum EnhancementType: String, CaseIterable, Codable {
+    public enum EnhancementType: String, CaseIterable, Codable, Sendable {
         case sharpen = "sharpen"
         case denoise = "denoise"
         case upscale = "upscale"
@@ -1040,7 +1040,7 @@ public struct ImageEnhancementResult: VisionResult {
     public let enhancementType: EnhancementType
     public let improvementMetrics: ImprovementMetrics
     
-    public struct ImprovementMetrics: Codable {
+    public struct ImprovementMetrics: Codable, Sendable {
         public let sharpnessImprovement: Float
         public let noiseReduction: Float
         public let colorAccuracy: Float
@@ -1086,13 +1086,13 @@ public struct ImageEnhancementResult: VisionResult {
 
 // MARK: - Style Transfer Types
 
-public struct StyleTransferOptions: Hashable, Codable {
+public struct StyleTransferOptions: Hashable, Codable, Sendable {
     public let style: ArtisticStyle
     public let intensity: Float
     public let preserveContent: Bool
     public let outputResolution: StyleResolution
     
-    public enum StyleResolution: String, CaseIterable, Codable {
+    public enum StyleResolution: String, CaseIterable, Codable, Sendable {
         case low = "512x512"
         case medium = "1024x1024"
         case high = "2048x2048"
@@ -1113,7 +1113,7 @@ public struct StyleTransferOptions: Hashable, Codable {
     public static let `default` = StyleTransferOptions()
 }
 
-public enum ArtisticStyle: String, CaseIterable, Codable {
+public enum ArtisticStyle: String, CaseIterable, Codable, Sendable {
     case impressionist = "impressionist"
     case cubist = "cubist"
     case abstract = "abstract"
@@ -1140,7 +1140,7 @@ public struct StyleTransferResult: VisionResult {
     public let styleIntensity: Float
     public let qualityMetrics: StyleQualityMetrics
     
-    public struct StyleQualityMetrics: Codable {
+    public struct StyleQualityMetrics: Codable, Sendable {
         public let contentPreservation: Float
         public let styleAdherence: Float
         public let artisticQuality: Float
@@ -1186,96 +1186,64 @@ public struct StyleTransferResult: VisionResult {
     }
 }
 
-// MARK: - Custom Extensions for Codable
-
-extension CGRect: Codable {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let x = try container.decode(CGFloat.self, forKey: .x)
-        let y = try container.decode(CGFloat.self, forKey: .y)
-        let width = try container.decode(CGFloat.self, forKey: .width)
-        let height = try container.decode(CGFloat.self, forKey: .height)
-        self.init(x: x, y: y, width: width, height: height)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(origin.x, forKey: .x)
-        try container.encode(origin.y, forKey: .y)
-        try container.encode(size.width, forKey: .width)
-        try container.encode(size.height, forKey: .height)
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case x, y, width, height
-    }
-}
-
-extension CGPoint: Codable {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let x = try container.decode(CGFloat.self, forKey: .x)
-        let y = try container.decode(CGFloat.self, forKey: .y)
-        self.init(x: x, y: y)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(x, forKey: .x)
-        try container.encode(y, forKey: .y)
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case x, y
-    }
-}
-
-extension CGSize: Codable {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let width = try container.decode(CGFloat.self, forKey: .width)
-        let height = try container.decode(CGFloat.self, forKey: .height)
-        self.init(width: width, height: height)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(width, forKey: .width)
-        try container.encode(height, forKey: .height)
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case width, height
-    }
-}
-
 // MARK: - Image Segmentation Types
 
-public struct SegmentationOptions: Hashable, Codable {
+public struct SegmentationOptions: Hashable, Codable, Sendable {
     public let segmentationType: SegmentationType
     public let minimumConfidence: Float
     public let includeMasks: Bool
     public let includeEdges: Bool
+    public let refinementEnabled: Bool
+    public let backgroundRemoval: Bool
     
-    public enum SegmentationType: String, CaseIterable, Codable {
+    public enum SegmentationType: String, CaseIterable, Codable, Sendable {
         case semantic = "semantic"
         case instance = "instance"
         case panoptic = "panoptic"
+        case person = "person"
+        case object = "object"
+        case scene = "scene"
     }
     
     public init(
         segmentationType: SegmentationType = .semantic,
         minimumConfidence: Float = 0.5,
         includeMasks: Bool = true,
-        includeEdges: Bool = false
+        includeEdges: Bool = false,
+        refinementEnabled: Bool = false,
+        backgroundRemoval: Bool = false
     ) {
         self.segmentationType = segmentationType
         self.minimumConfidence = minimumConfidence
         self.includeMasks = includeMasks
         self.includeEdges = includeEdges
+        self.refinementEnabled = refinementEnabled
+        self.backgroundRemoval = backgroundRemoval
+    }
+
+    public init(
+        segmentationType: SegmentationType = .semantic,
+        minimumConfidence: Float = 0.5,
+        outputMasks: Bool,
+        includeEdges: Bool = false,
+        refinementEnabled: Bool = false,
+        backgroundRemoval: Bool = false
+    ) {
+        self.init(
+            segmentationType: segmentationType,
+            minimumConfidence: minimumConfidence,
+            includeMasks: outputMasks,
+            includeEdges: includeEdges,
+            refinementEnabled: refinementEnabled,
+            backgroundRemoval: backgroundRemoval
+        )
     }
     
     public static let `default` = SegmentationOptions()
+
+    public var outputMasks: Bool {
+        includeMasks
+    }
 }
 
 public struct ImageSegmentationResult: VisionResult {
@@ -1307,7 +1275,7 @@ public struct ImageSegmentationResult: VisionResult {
     }
 }
 
-public struct ImageSegment: Codable {
+public struct ImageSegment: Codable, Sendable {
     public let id: String
     public let label: String
     public let confidence: Float
@@ -1329,7 +1297,7 @@ public struct ImageSegment: Codable {
     }
 }
 
-public struct SegmentationMask: Codable {
+public struct SegmentationMask: Codable, Sendable {
     public let segmentId: String
     public let maskData: Data
     public let width: Int
@@ -1380,7 +1348,7 @@ public struct EnhancementMetrics: Codable, Sendable {
 
 // MARK: - Missing Image Generation Types
 
-public struct ImageSize: Hashable, Codable {
+public struct ImageSize: Hashable, Codable, Sendable {
     public let width: Int
     public let height: Int
     

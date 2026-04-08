@@ -1,7 +1,7 @@
 import Foundation
 import SwiftIntelligenceCore
-import Vision
-import CoreML
+@preconcurrency import Vision
+@preconcurrency import CoreML
 import CoreImage
 import AVFoundation
 
@@ -95,39 +95,24 @@ public actor SwiftIntelligenceVision {
         
         let cgImage = image
         
-        var classifications: [Classification] = []
-        var confidence: Float = 0.0
-        
-        // Create classification request
-        let classificationRequest = VNClassifyImageRequest { request, error in
-            if let error = error {
-                self.logger.error("Classification error: \(error)", category: "Vision")
-                return
-            }
-            
-            guard let observations = request.results as? [VNClassificationObservation] else {
-                return
-            }
-            
-            let filteredObservations = observations
-                .filter { $0.confidence >= options.confidenceThreshold }
-                .prefix(options.maxResults)
-            
-            classifications = filteredObservations.map { observation in
+        let classificationRequest = VNClassifyImageRequest()
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+        try handler.perform([classificationRequest])
+
+        let observations = classificationRequest.results ?? []
+        let filteredObservations = observations
+            .filter { $0.confidence >= options.confidenceThreshold }
+            .prefix(options.maxResults)
+
+        let classifications = filteredObservations.map { observation in
                 Classification(
                     identifier: observation.identifier,
                     label: observation.identifier,
                     confidence: observation.confidence,
                     hierarchy: []
                 )
-            }
-            
-            confidence = filteredObservations.first?.confidence ?? 0.0
         }
-        
-        // Process image
-        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        try handler.perform([classificationRequest])
+        let confidence = filteredObservations.first?.confidence ?? 0.0
         
         // Generate additional image properties
         let imageProperties = await generateImageProperties(from: image)
@@ -160,25 +145,16 @@ public actor SwiftIntelligenceVision {
         
         let cgImage = image
         
-        var detectedObjects: [DetectedObject] = []
-        var confidence: Float = 0.0
-        
-        // Create object detection request (using rectangles as a placeholder)
-        let objectDetectionRequest = VNDetectRectanglesRequest { request, error in
-            if let error = error {
-                self.logger.error("Object detection error: \(error)", category: "Vision")
-                return
-            }
-            
-            guard let observations = request.results as? [VNRectangleObservation] else {
-                return
-            }
-            
-            let filteredObservations = observations
-                .filter { $0.confidence >= options.confidenceThreshold }
-                .prefix(options.maxObjects)
-            
-            detectedObjects = filteredObservations.map { observation in
+        let objectDetectionRequest = VNDetectRectanglesRequest()
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+        try handler.perform([objectDetectionRequest])
+
+        let observations = objectDetectionRequest.results ?? []
+        let filteredObservations = observations
+            .filter { $0.confidence >= options.confidenceThreshold }
+            .prefix(options.maxObjects)
+
+        let detectedObjects = filteredObservations.map { observation in
                 // For rectangles, we don't have labels, so we use generic labels
                 let identifier = UUID().uuidString
                 let label = "Rectangle"
@@ -190,14 +166,8 @@ public actor SwiftIntelligenceVision {
                     boundingBox: observation.boundingBox,
                     category: .other
                 )
-            }
-            
-            confidence = filteredObservations.first?.confidence ?? 0.0
         }
-        
-        // Process image
-        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        try handler.perform([objectDetectionRequest])
+        let confidence = filteredObservations.first?.confidence ?? 0.0
         
         let duration = Date().timeIntervalSince(startTime)
         await updateObjectDetectionMetrics(duration: duration, objectCount: detectedObjects.count)
@@ -225,23 +195,14 @@ public actor SwiftIntelligenceVision {
         
         let cgImage = image
         
-        var detectedFaces: [DetectedFace] = []
-        var confidence: Float = 0.0
-        
-        // Create face detection request
-        let faceDetectionRequest = VNDetectFaceRectanglesRequest { request, error in
-            if let error = error {
-                self.logger.error("Face detection error: \(error)", category: "Vision")
-                return
-            }
-            
-            guard let observations = request.results as? [VNFaceObservation] else {
-                return
-            }
-            
-            let filteredObservations = Array(observations.prefix(options.maxFaces))
-            
-            for observation in filteredObservations {
+        let faceDetectionRequest = VNDetectFaceRectanglesRequest()
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+        try handler.perform([faceDetectionRequest])
+
+        let observations = faceDetectionRequest.results ?? []
+        let filteredObservations = Array(observations.prefix(options.maxFaces))
+
+        let detectedFaces = filteredObservations.map { observation in
                 let faceQuality = FaceQuality(
                     overallQuality: Float.random(in: 0.7...0.95),
                     sharpness: Float.random(in: 0.7...0.95),
@@ -259,16 +220,9 @@ public actor SwiftIntelligenceVision {
                     confidence: observation.confidence,
                     quality: faceQuality
                 )
-                
-                detectedFaces.append(detectedFace)
+                return detectedFace
             }
-            
-            confidence = filteredObservations.first?.confidence ?? 0.0
-        }
-        
-        // Process image
-        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        try handler.perform([faceDetectionRequest])
+        let confidence = filteredObservations.first?.confidence ?? 0.0
         
         let duration = Date().timeIntervalSince(startTime)
         await updateFaceRecognitionMetrics(duration: duration, faceCount: detectedFaces.count)
@@ -296,25 +250,21 @@ public actor SwiftIntelligenceVision {
         
         let cgImage = image
         
-        var recognizedText = ""
+        let textRecognitionRequest = VNRecognizeTextRequest()
+
+        // Configure request
+        textRecognitionRequest.recognitionLanguages = options.recognitionLanguages
+        textRecognitionRequest.recognitionLevel = options.recognitionLevel.vnLevel
+        textRecognitionRequest.automaticallyDetectsLanguage = true
+
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+        try handler.perform([textRecognitionRequest])
+
+        let observations = textRecognitionRequest.results ?? []
+        var allText: [String] = []
         var textBlocks: [TextBlock] = []
-        var detectedLanguages: [String] = []
-        var confidence: Float = 0.0
-        
-        // Create text recognition request
-        let textRecognitionRequest = VNRecognizeTextRequest { request, error in
-            if let error = error {
-                self.logger.error("Text recognition error: \(error)", category: "Vision")
-                return
-            }
-            
-            guard let observations = request.results as? [VNRecognizedTextObservation] else {
-                return
-            }
-            
-            var allText: [String] = []
-            
-            for observation in observations {
+
+        for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { continue }
                 
                 allText.append(topCandidate.string)
@@ -327,20 +277,10 @@ public actor SwiftIntelligenceVision {
                 
                 textBlocks.append(textBlock)
             }
-            
-            recognizedText = allText.joined(separator: " ")
-            confidence = textBlocks.first?.confidence ?? 0.0
-            detectedLanguages = options.recognitionLanguages
-        }
-        
-        // Configure request
-        textRecognitionRequest.recognitionLanguages = options.recognitionLanguages
-        textRecognitionRequest.recognitionLevel = options.recognitionLevel.vnLevel
-        textRecognitionRequest.automaticallyDetectsLanguage = true
-        
-        // Process image
-        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        try handler.perform([textRecognitionRequest])
+
+        let recognizedText = allText.joined(separator: " ")
+        let confidence = textBlocks.first?.confidence ?? 0.0
+        let detectedLanguages = options.recognitionLanguages
         
         let duration = Date().timeIntervalSince(startTime)
         await updateTextRecognitionMetrics(duration: duration, textLength: recognizedText.count)

@@ -5,7 +5,7 @@ import XCTest
 final class SwiftIntelligenceMLTests: XCTestCase {
     
     func testMLModuleInitialization() async throws {
-        let mlModule = await SwiftIntelligenceML()
+        let mlModule = try await SwiftIntelligenceML()
         
         let moduleID = await mlModule.moduleID
         let version = await mlModule.version
@@ -17,22 +17,23 @@ final class SwiftIntelligenceMLTests: XCTestCase {
     }
     
     func testMLModuleHealthCheck() async throws {
-        let mlModule = await SwiftIntelligenceML()
+        let mlModule = try await SwiftIntelligenceML()
         let healthStatus = await mlModule.healthCheck()
         
         XCTAssertEqual(healthStatus.status, .healthy)
-        XCTAssertEqual(healthStatus.message, "ML module is operational")
+        XCTAssertTrue(healthStatus.message.contains("ML Engine operational"))
+        XCTAssertFalse(healthStatus.metrics.isEmpty)
     }
     
     func testMLModuleValidation() async throws {
-        let mlModule = await SwiftIntelligenceML()
+        let mlModule = try await SwiftIntelligenceML()
         let validationResult = try await mlModule.validate()
         
         XCTAssertTrue(validationResult.isValid)
     }
     
     func testMLModuleShutdown() async throws {
-        let mlModule = await SwiftIntelligenceML()
+        let mlModule = try await SwiftIntelligenceML()
         try await mlModule.shutdown()
         
         let status = await mlModule.status

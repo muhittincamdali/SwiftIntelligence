@@ -1,10 +1,20 @@
 # SwiftIntelligence
 
-> 🇹🇷 Türkçe | [English](README.md)
+> 🇹🇷 Turkce | [English](README.md)
 
-🧠 Advanced machine learning and AI utilities for Swift applications
+Apple platformlari icin moduler, native-framework-first AI toolkit.
 
-## 📦 Kurulum
+## Durum
+
+- aktif package graph korunuyor
+- `swift test` geciyor
+- ornekler compile-validate ediliyor
+- benchmark ve release proof script tabanli
+
+Bu repo eski umbrella anlatisi yerine aktif modullere odaklanir.
+Public kurulum versiyonu `CHANGELOG.md` icindeki son numarali release ile hizali tutulur.
+
+## Kurulum
 
 ### Swift Package Manager
 
@@ -14,23 +24,23 @@ dependencies: [
 ]
 ```
 
-## 🚀 Hızlı Başlangıç
+Ardindan ihtiyacin olan urunleri ekle:
 
-Detaylı kullanım ve API referansı için [İngilizce README](README.md) dosyasına bakın.
+```swift
+.product(name: "SwiftIntelligenceCore", package: "SwiftIntelligence"),
+.product(name: "SwiftIntelligenceNLP", package: "SwiftIntelligence"),
+.product(name: "SwiftIntelligenceVision", package: "SwiftIntelligence"),
+.product(name: "SwiftIntelligenceSpeech", package: "SwiftIntelligence")
+```
 
-## 📖 Dokümantasyon
+## Baslangic Noktalari
 
 - [README (English)](README.md)
-- [Contributing Guide](CONTRIBUTING.md)
-- [Changelog](CHANGELOG.md)
+- [Documentation Index](Documentation/README.md)
+- [Getting Started](Documentation/Getting-Started.md)
 - [Security Policy](SECURITY.md)
+- [Roadmap](ROADMAP.md)
 
-## 📄 Lisans
+## Not
 
-MIT License - detaylar için [LICENSE](LICENSE) dosyasına bakın.
-
-## 👨‍💻 Geliştirici
-
-**Muhittin Camdali**
-
-[![GitHub](https://img.shields.io/badge/GitHub-muhittincamdali-181717?style=flat&logo=github)](https://github.com/muhittincamdali)
+Eski dokumanlar veya inactive urun referanslari gorursen aktif gercek olarak `Package.swift`, testler ve validation script’lerini esas al.

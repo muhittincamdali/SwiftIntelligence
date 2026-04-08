@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-07T15:02:30Z",
+  "benchmarkProfile": "standard",
+  "platformFamily": "iOS",
+  "deviceName": "iPhone 15 Pro Max",
+  "deviceModel": "iPhone16,2",
+  "deviceClass": "iPhone",
+  "operatingSystemVersion": "Version 26.3.1 (a) (Build 23D771330a)",
+  "processorCount": 6,
+  "physicalMemory": 8025538560,
+  "notes": "Captured on physical device via xcodebuild test; device alias: Muhittin’s Pro Max; udid: 00008130-001464181110001C",
+  "broadClaimEligible": true,
+  "sources": {
+    "platformFamily": "environment override",
+    "deviceName": "environment override",
+    "deviceModel": "environment override",
+    "deviceClass": "environment override"
+  }
+}

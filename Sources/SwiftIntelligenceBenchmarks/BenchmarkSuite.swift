@@ -20,7 +20,7 @@ public final class BenchmarkSuite {
     
     // MARK: - Benchmark Configuration
     
-    public struct BenchmarkConfig: Sendable {
+    public struct BenchmarkConfig: Codable, Sendable {
         public let iterations: Int
         public let warmupIterations: Int
         public let measurementInterval: TimeInterval
@@ -72,7 +72,7 @@ public final class BenchmarkSuite {
         name: String,
         config: BenchmarkConfig = .default,
         operation: @escaping () async throws -> T
-    ) async rethrows -> BenchmarkResult {
+    ) async throws -> BenchmarkResult {
         logger.info("Starting benchmark: \(name)", category: "Benchmark")
         
         let session = BenchmarkSession(name: name, config: config)
@@ -187,19 +187,7 @@ public final class BenchmarkSuite {
     }
     
     private func getCurrentCPUUsage() -> Double {
-        var info = proc_taskinfo()
-        let result = proc_pidinfo(
-            getpid(),
-            PROC_PIDTASKINFO,
-            0,
-            &info,
-            Int32(MemoryLayout<proc_taskinfo>.size)
-        )
-        
-        guard result == Int32(MemoryLayout<proc_taskinfo>.size) else { return 0 }
-        
-        let totalTime = info.pti_total_user + info.pti_total_system
-        return Double(totalTime) / 1_000_000_000 // Convert to seconds
+        Double(clock()) / Double(CLOCKS_PER_SEC)
     }
     
     // MARK: - Result Calculation
@@ -388,12 +376,5 @@ extension Array where Element == Int64 {
     var average: Int64 {
         guard !isEmpty else { return 0 }
         return reduce(0, +) / Int64(count)
-    }
-}
-
-extension Array where Element == Double {
-    var average: Double {
-        guard !isEmpty else { return 0 }
-        return reduce(0, +) / Double(count)
     }
 }

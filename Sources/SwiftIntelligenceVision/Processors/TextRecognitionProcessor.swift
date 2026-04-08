@@ -1,7 +1,7 @@
 import Foundation
 import SwiftIntelligenceCore
 import CoreML
-import Vision
+@preconcurrency import Vision
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -11,7 +11,7 @@ import NaturalLanguage
 import os.log
 
 /// Advanced text recognition processor with multi-language support and document analysis
-public class TextRecognitionProcessor: @unchecked Sendable {
+public final class TextRecognitionProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "TextRecognition")
@@ -306,10 +306,7 @@ public class TextRecognitionProcessor: @unchecked Sendable {
                     let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                     try handler.perform([request])
                     
-                    guard let observations = request.results as? [VNRecognizedTextObservation] else {
-                        continuation.resume(returning: [])
-                        return
-                    }
+                    let observations = request.results ?? []
                     
                     let textBlocks = self.processTextObservations(
                         observations,
@@ -363,35 +360,25 @@ public class TextRecognitionProcessor: @unchecked Sendable {
         
         var characterBoxes: [CharacterBox] = []
         
-        // Try to get character-level bounding boxes
-        do {
-            let range = text.startIndex..<text.endIndex
-            // Get the single bounding box from observation
-            let observationBoundingBox = observation.boundingBox
+        let observationBoundingBox = observation.boundingBox
+        let mainBoundingBox = convertBoundingBox(observationBoundingBox, imageSize: imageSize)
+        
+        for (index, character) in text.enumerated() {
+            let estimatedX = mainBoundingBox.origin.x + (mainBoundingBox.width * CGFloat(index) / CGFloat(text.count))
+            let estimatedWidth = mainBoundingBox.width / CGFloat(text.count)
             
-            // Use the main bounding box for all characters (simplified approach)
-            let mainBoundingBox = convertBoundingBox(observationBoundingBox, imageSize: imageSize)
+            let charBox = CGRect(
+                x: estimatedX,
+                y: mainBoundingBox.origin.y,
+                width: estimatedWidth,
+                height: mainBoundingBox.height
+            )
             
-            // Create character boxes with estimated positions
-            for (index, character) in text.enumerated() {
-                let estimatedX = mainBoundingBox.origin.x + (mainBoundingBox.width * CGFloat(index) / CGFloat(text.count))
-                let estimatedWidth = mainBoundingBox.width / CGFloat(text.count)
-                
-                let charBox = CGRect(
-                    x: estimatedX,
-                    y: mainBoundingBox.origin.y,
-                    width: estimatedWidth,
-                    height: mainBoundingBox.height
-                )
-                
-                characterBoxes.append(CharacterBox(
-                    character: String(character),
-                    boundingBox: charBox,
-                    confidence: observation.confidence
-                ))
-            }
-        } catch {
-            // Character-level boxes not available, skip
+            characterBoxes.append(CharacterBox(
+                character: String(character),
+                boundingBox: charBox,
+                confidence: observation.confidence
+            ))
         }
         
         return characterBoxes
@@ -439,8 +426,11 @@ public class TextRecognitionProcessor: @unchecked Sendable {
         // VNDocumentSegmentationObservation is not available, use generic approach
         if let observations = results as? [VNObservation] {
             for (index, observation) in observations.enumerated() {
+                guard let detectedObservation = observation as? VNDetectedObjectObservation else {
+                    continue
+                }
                 let id = "segment_\(index)"
-                let boundingBox = convertBoundingBox(observation.boundingBox, imageSize: imageSize)
+                let boundingBox = convertBoundingBox(detectedObservation.boundingBox, imageSize: imageSize)
                 
                 // Classify as heading or paragraph based on position and size
                 if boundingBox.width > imageSize.width * 0.8 && boundingBox.height < 50 {
@@ -450,7 +440,7 @@ public class TextRecognitionProcessor: @unchecked Sendable {
                         text: "Heading \(headings.count + 1)",
                         level: 1,
                         boundingBox: boundingBox,
-                        confidence: observation.confidence
+                        confidence: detectedObservation.confidence
                     )
                     headings.append(heading)
                 } else {
@@ -459,7 +449,7 @@ public class TextRecognitionProcessor: @unchecked Sendable {
                         id: id,
                         text: "Paragraph \(paragraphs.count + 1)",
                         boundingBox: boundingBox,
-                        confidence: observation.confidence
+                        confidence: detectedObservation.confidence
                     )
                     paragraphs.append(paragraph)
                 }
@@ -580,7 +570,7 @@ public class TextRecognitionProcessor: @unchecked Sendable {
         var company: String?
         var email: String?
         var phone: String?
-        var address: String?
+        let address: String? = nil
         var website: String?
         
         for block in textBlocks {

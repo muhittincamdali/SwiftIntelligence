@@ -352,7 +352,7 @@ public struct Pattern: Sendable {
     public let type: PatternType
     public let occurrences: Int
     
-    public enum PatternType: String, CaseIterable, Codable {
+    public enum PatternType: String, CaseIterable, Codable, Sendable {
         case frequency = "frequency"
         case sequential = "sequential"
         case causal = "causal"
@@ -430,7 +430,7 @@ public struct Explanation: Sendable {
 
 // MARK: - Decision Making Types
 
-public struct DecisionProblem: Codable {
+public struct DecisionProblem: Codable, Sendable {
     public let id: String
     public let title: String
     public let description: String
@@ -458,7 +458,7 @@ public struct DecisionProblem: Codable {
     }
 }
 
-public struct Alternative: Codable {
+public struct Alternative: Codable, Sendable {
     public let id: String
     public let title: String
     public let description: String
@@ -489,13 +489,13 @@ public struct Alternative: Codable {
     }
 }
 
-public struct DecisionCriteria: Codable {
+public struct DecisionCriteria: Codable, Sendable {
     public let name: String
     public let weight: Float
     public let direction: CriteriaDirection
     public let description: String
     
-    public enum CriteriaDirection: String, CaseIterable, Codable {
+    public enum CriteriaDirection: String, CaseIterable, Codable, Sendable {
         case maximize = "maximize"
         case minimize = "minimize"
     }
@@ -508,7 +508,7 @@ public struct DecisionCriteria: Codable {
     }
 }
 
-public struct AlternativeEvaluation: Codable {
+public struct AlternativeEvaluation: Codable, Sendable {
     public let alternative: Alternative
     public let score: Float
     public let criteriaScores: [String: Float]
@@ -568,7 +568,7 @@ public struct DecisionBranch: Sendable {
     }
 }
 
-public struct DecisionResult: Codable {
+public struct DecisionResult: Codable, Sendable {
     public let id: String
     public let timestamp: Date
     public let processingTime: TimeInterval

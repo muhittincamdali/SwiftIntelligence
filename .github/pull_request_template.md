@@ -1,187 +1,82 @@
 # Pull Request
 
-## 📋 Summary
+## Summary
 
-<!-- Provide a brief summary of your changes -->
+<!-- What changed and why? Keep it concrete. -->
 
-## 🎯 Type of Change
+## Change Type
 
-- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
-- [ ] ✨ New feature (non-breaking change that adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] 📚 Documentation update
-- [ ] 🔧 Code refactoring (no functional changes)
-- [ ] ⚡ Performance improvement
-- [ ] 🧪 Test addition or improvement
-- [ ] 🏗️ Build/CI changes
-- [ ] 🔒 Security improvement
+- [ ] Bug fix
+- [ ] Feature
+- [ ] Refactor
+- [ ] Documentation
+- [ ] Build / CI
+- [ ] Performance
+- [ ] Security
+- [ ] Breaking change
 
-## 🧠 Affected Modules
+## Affected Areas
 
 - [ ] Core
-- [ ] NLP (Natural Language Processing)
+- [ ] ML
+- [ ] NLP
 - [ ] Vision
 - [ ] Speech
-- [ ] ML (Machine Learning)
 - [ ] Privacy
-- [ ] Network
-- [ ] Cache
-- [ ] Metrics
 - [ ] Reasoning
-- [ ] Image Generation
-- [ ] visionOS
-- [ ] Tests
-- [ ] Documentation
+- [ ] Network / Cache / Metrics
+- [ ] Benchmarks
 - [ ] Examples
+- [ ] Documentation
+- [ ] GitHub workflows
 
-## 📱 Platform Support
+## Validation
 
-- [ ] iOS
-- [ ] macOS
-- [ ] watchOS
-- [ ] tvOS
-- [ ] visionOS
+- [ ] `swift build`
+- [ ] `bash Scripts/validate-examples.sh`
+- [ ] `bash Scripts/validate-flagship-demo.sh` if flagship demo, onboarding, or comparison surfaces changed
+- [ ] `swift test`
+- [ ] `bash Scripts/run-benchmarks.sh smoke Benchmarks/Results/ci-smoke` if performance-sensitive code changed
+- [ ] `bash Scripts/run-benchmarks.sh standard Benchmarks/Results/latest` if release or public performance claims changed
+- [ ] `bash Scripts/validate-device-evidence.sh` if benchmark/device evidence changed
+- [ ] `bash Scripts/validate-transfer-chain.sh` if benchmark export/import flow changed
+- [ ] `bash Scripts/validate-release-provenance.sh` if release metadata/provenance flow changed
+- [ ] `bash Scripts/import-benchmark-evidence.sh ...` or `bash Scripts/run-benchmarks-for-device.sh ...` details documented below if a non-Mac device bundle was added
 
-## 🔗 Related Issues
+## Security / Privacy
 
-<!-- Link any related issues using "Fixes #123" or "Addresses #456" -->
+- [ ] No secrets, tokens, or credentials were added
+- [ ] External inputs remain validated at system boundaries
+- [ ] Privacy-sensitive flows were reviewed if data transport changed
 
-Fixes #(issue_number)
+## Documentation
 
-## 📝 Detailed Description
+- [ ] README / docs updated if public behavior changed
+- [ ] Examples updated if API usage changed
+- [ ] Changelog updated if the change is maintainer-visible
+- [ ] Device evidence docs updated if benchmark coverage or release proof changed
 
-<!-- Provide a detailed description of your changes -->
+## Product Impact
 
-### What changed?
+- First-user path affected:
+- Best first module affected:
+- Who should use this changed:
+- Who should not use this changed:
 
-<!-- Explain what you changed and why -->
+## Public Claim Impact
 
-### How was this tested?
+- [ ] No public claim changed
+- [ ] Public proof, benchmark, or readiness wording changed and matching docs/generated surfaces were updated
+- [ ] Release-grade claim surface was reviewed for drift
 
-<!-- Describe how you tested your changes -->
+## Device Evidence Details
 
-## 🧪 Testing
+<!-- If benchmark/device evidence changed, record snapshot name, device class, and whether capture/import was used. -->
 
-- [ ] Unit tests added/updated
-- [ ] Integration tests added/updated
-- [ ] Performance tests added/updated (if applicable)
-- [ ] Manual testing completed
-- [ ] All existing tests pass
+## Review Focus
 
-### Test Coverage
+<!-- Call out the highest-risk area for reviewers. -->
 
-<!-- If applicable, include test coverage information -->
+## Related Issues
 
-- [ ] New code is covered by tests
-- [ ] Coverage percentage maintained or improved
-
-## 📚 Documentation
-
-- [ ] Code comments added/updated
-- [ ] API documentation updated
-- [ ] README updated (if needed)
-- [ ] Examples updated (if needed)
-- [ ] Migration guide updated (if breaking change)
-
-## ⚡ Performance Impact
-
-<!-- Describe any performance implications -->
-
-- [ ] No performance impact
-- [ ] Performance improvement (describe below)
-- [ ] Potential performance regression (explain and justify)
-
-### Performance Details
-
-<!-- If there's a performance impact, provide details -->
-
-## 🔒 Security Considerations
-
-- [ ] No security implications
-- [ ] Security review required
-- [ ] Privacy impact assessed
-- [ ] Sensitive data handling reviewed
-
-## 💥 Breaking Changes
-
-<!-- If this is a breaking change, describe the impact -->
-
-- [ ] No breaking changes
-- [ ] Breaking changes documented below
-
-### Breaking Change Details
-
-<!-- Describe what breaks and how to migrate -->
-
-## 📋 Checklist
-
-### Code Quality
-
-- [ ] Code follows the project's style guidelines
-- [ ] SwiftLint passes without warnings
-- [ ] Code is properly documented
-- [ ] No debugging code left in
-- [ ] Proper error handling implemented
-
-### AI/ML Specific
-
-- [ ] Privacy considerations addressed
-- [ ] On-device processing maintained where applicable
-- [ ] Model efficiency considered
-- [ ] Memory usage optimized
-- [ ] Thread safety ensured (actors/Sendable)
-
-### Swift 6 Compatibility
-
-- [ ] Strict concurrency compliance
-- [ ] Sendable conformance added where needed
-- [ ] Actor isolation respected
-- [ ] No concurrency warnings
-
-### Framework Standards
-
-- [ ] Public APIs are well-designed
-- [ ] Backward compatibility considered
-- [ ] Cross-platform compatibility verified
-- [ ] Resource management handled properly
-
-## 🖼️ Screenshots/Recordings
-
-<!-- If applicable, add screenshots or recordings -->
-
-## 🚀 Deployment Notes
-
-<!-- Any special deployment considerations -->
-
-- [ ] No special deployment requirements
-- [ ] Migration scripts needed
-- [ ] Configuration changes required
-- [ ] Version compatibility notes below
-
-## 👥 Review Notes
-
-<!-- Any specific areas you'd like reviewers to focus on -->
-
-### Areas for Review Focus
-
-- [ ] Algorithm correctness
-- [ ] Performance implications
-- [ ] API design
-- [ ] Error handling
-- [ ] Test coverage
-- [ ] Documentation clarity
-- [ ] Security considerations
-
-## 🙏 Additional Context
-
-<!-- Add any additional context or notes for reviewers -->
-
----
-
-**By submitting this pull request, I confirm that:**
-
-- [ ] I have read and agree to the [Contributing Guidelines](CONTRIBUTING.md)
-- [ ] My code follows the project's coding standards
-- [ ] I have tested my changes thoroughly
-- [ ] I am willing to address review feedback
-- [ ] This contribution is my own work or properly attributed
+<!-- Example: Fixes #123 -->

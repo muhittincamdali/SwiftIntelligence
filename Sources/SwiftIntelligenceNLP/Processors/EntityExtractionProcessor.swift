@@ -1,7 +1,7 @@
 import Foundation
-import NaturalLanguage
+@preconcurrency import NaturalLanguage
 import CoreML
-import Vision
+@preconcurrency import Vision
 import os.log
 
 // Cache wrapper for NSCache
@@ -13,12 +13,10 @@ private class CacheWrapper {
 }
 
 /// Advanced named entity recognition and extraction processor
-public class EntityExtractionProcessor {
+public final class EntityExtractionProcessor: @unchecked Sendable {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "EntityExtraction")
-    private let processingQueue = DispatchQueue(label: "entity.extraction", qos: .userInitiated)
-    
     // MARK: - NL Framework Components
     private let tagger = NLTagger(tagSchemes: [.nameType, .lexicalClass])
     
@@ -145,8 +143,6 @@ public class EntityExtractionProcessor {
         let filteredEntities = filterEntitiesByConfidence(mergedEntities, threshold: options.confidenceThreshold)
         
         let processingTime = Date().timeIntervalSince(startTime)
-        let confidence = calculateAverageConfidence(filteredEntities)
-        
         let result = EntityExtractionResult(
             entities: filteredEntities,
             entityCount: filteredEntities.count,
@@ -253,6 +249,7 @@ public class EntityExtractionProcessor {
                     text: entityText,
                     type: entityType,
                     range: tokenRange,
+                    in: text,
                     confidence: confidence
                 )
                 
@@ -315,14 +312,11 @@ public class EntityExtractionProcessor {
         modelName: String,
         language: NLLanguage
     ) async throws -> [NamedEntity] {
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                // In a real implementation, this would process the text through the ML model
-                // For now, return empty array as placeholder
-                continuation.resume(returning: [])
-            }
-        }
+        _ = text
+        _ = model
+        _ = modelName
+        _ = language
+        return []
     }
     
     // MARK: - Entity Processing
@@ -400,7 +394,7 @@ public class EntityExtractionProcessor {
 
 // MARK: - Supporting Types
 
-public struct EntityExtractionOptions: Hashable, Codable {
+public struct EntityExtractionOptions: Hashable, Codable, Sendable {
     public let includeBuiltInEntities: Bool
     public let includePatternEntities: Bool
     public let includeCustomEntities: Bool
@@ -452,7 +446,7 @@ struct EmailPatternMatcher: EntityPatternMatcher {
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = emailRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let emailText = String(text[range])
             
@@ -460,6 +454,7 @@ struct EmailPatternMatcher: EntityPatternMatcher {
                 text: emailText,
                 type: .email,
                 range: range,
+                in: text,
                 confidence: 0.95
             )
         }
@@ -472,7 +467,7 @@ struct PhonePatternMatcher: EntityPatternMatcher {
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = phoneRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let phoneText = String(text[range])
             
@@ -480,6 +475,7 @@ struct PhonePatternMatcher: EntityPatternMatcher {
                 text: phoneText,
                 type: .phoneNumber,
                 range: range,
+                in: text,
                 confidence: 0.9
             )
         }
@@ -492,7 +488,7 @@ struct URLPatternMatcher: EntityPatternMatcher {
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = urlRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let urlText = String(text[range])
             
@@ -500,6 +496,7 @@ struct URLPatternMatcher: EntityPatternMatcher {
                 text: urlText,
                 type: .url,
                 range: range,
+                in: text,
                 confidence: 0.92
             )
         }
@@ -512,7 +509,7 @@ struct DatePatternMatcher: EntityPatternMatcher {
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = dateRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let dateText = String(text[range])
             
@@ -520,6 +517,7 @@ struct DatePatternMatcher: EntityPatternMatcher {
                 text: dateText,
                 type: .date,
                 range: range,
+                in: text,
                 confidence: 0.8
             )
         }
@@ -532,7 +530,7 @@ struct MoneyPatternMatcher: EntityPatternMatcher {
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = moneyRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let moneyText = String(text[range])
             
@@ -540,6 +538,7 @@ struct MoneyPatternMatcher: EntityPatternMatcher {
                 text: moneyText,
                 type: .money,
                 range: range,
+                in: text,
                 confidence: 0.88
             )
         }
@@ -552,7 +551,7 @@ struct IPAddressPatternMatcher: EntityPatternMatcher {
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = ipRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let ipText = String(text[range])
             
@@ -560,6 +559,7 @@ struct IPAddressPatternMatcher: EntityPatternMatcher {
                 text: ipText,
                 type: .other,
                 range: range,
+                in: text,
                 confidence: 0.95
             )
         }
@@ -572,7 +572,7 @@ struct CreditCardPatternMatcher: EntityPatternMatcher {
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = ccRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let ccText = String(text[range])
             
@@ -580,6 +580,7 @@ struct CreditCardPatternMatcher: EntityPatternMatcher {
                 text: ccText,
                 type: .other,
                 range: range,
+                in: text,
                 confidence: 0.85
             )
         }
@@ -592,7 +593,7 @@ struct IBANPatternMatcher: EntityPatternMatcher {
     func findEntities(in text: String, language: NLLanguage) -> [NamedEntity] {
         let matches = ibanRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let ibanText = String(text[range])
             
@@ -600,6 +601,7 @@ struct IBANPatternMatcher: EntityPatternMatcher {
                 text: ibanText,
                 type: .other,
                 range: range,
+                in: text,
                 confidence: 0.9
             )
         }
@@ -615,7 +617,7 @@ struct TurkishIDPatternMatcher: EntityPatternMatcher {
         
         let matches = turkishIDRegex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let idText = String(text[range])
             
@@ -625,6 +627,7 @@ struct TurkishIDPatternMatcher: EntityPatternMatcher {
                     text: idText,
                     type: .other,
                     range: range,
+                    in: text,
                     confidence: 0.95
                 )
             }
@@ -666,7 +669,7 @@ struct PostalCodePatternMatcher: EntityPatternMatcher {
         
         let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
         
-        return matches.compactMap { match in
+        return matches.compactMap { match -> NamedEntity? in
             guard let range = Range(match.range, in: text) else { return nil }
             let postalText = String(text[range])
             
@@ -674,6 +677,7 @@ struct PostalCodePatternMatcher: EntityPatternMatcher {
                 text: postalText,
                 type: .other,
                 range: range,
+                in: text,
                 confidence: 0.7
             )
         }

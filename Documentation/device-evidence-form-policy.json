@@ -1,0 +1,10 @@
+{
+  "defaultRequestType": "I imported external device evidence and need review",
+  "defaultBenchmarkProfile": "standard",
+  "validationCommands": [
+    "bash Scripts/validate-device-evidence.sh",
+    "bash Scripts/prepare-release.sh"
+  ],
+  "coverageArtifactPath": "Documentation/Generated/Device-Coverage-Matrix.md",
+  "issueSubmissionIntro": "Use this text as the maintainer-facing summary when opening `.github/ISSUE_TEMPLATE/device_evidence.yml`."
+}

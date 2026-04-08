@@ -1,399 +1,256 @@
 <div align="center">
 
-# 🧠 SwiftIntelligence
+# SwiftIntelligence
 
-### The Ultimate AI/ML Framework for Apple Platforms
+### Modular on-device AI for Apple platforms
 
 [![Swift](https://img.shields.io/badge/Swift-5.9+-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
-[![Platforms](https://img.shields.io/badge/Platforms-iOS%20|%20macOS%20|%20tvOS%20|%20watchOS%20|%20visionOS-007AFF?style=for-the-badge&logo=apple)](https://developer.apple.com)
+[![Platforms](https://img.shields.io/badge/Platforms-iOS%2017%2B%20%7C%20macOS%2014%2B%20%7C%20tvOS%2017%2B%20%7C%20watchOS%2010%2B%20%7C%20visionOS%201%2B-007AFF?style=for-the-badge&logo=apple)](https://developer.apple.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![SPM](https://img.shields.io/badge/SPM-Compatible-FA7343?style=for-the-badge&logo=swift)](https://swift.org/package-manager/)
 
-**Production-ready • Privacy-first • On-device AI • Battery-optimized**
+**Privacy-first • Native frameworks only • Modular Apple AI toolkit**
 
-[Quick Start](#-quick-start) • [Features](#-features) • [Documentation](#-documentation) • [Examples](#-examples)
+[Getting Started](Documentation/Getting-Started.md) • [Documentation Index](Documentation/README.md) • [Positioning](Documentation/Positioning.md) • [GitHub Distribution](Documentation/GitHub-Distribution.md) • [Benchmarks](Documentation/Benchmark-Baselines.md) • [Roadmap](ROADMAP.md) • [Security](SECURITY.md) • [Contributing](CONTRIBUTING.md)
 
 </div>
 
 ---
 
-## ✨ Why SwiftIntelligence?
+## Why SwiftIntelligence?
 
-SwiftIntelligence is the **world's most comprehensive AI/ML framework** for Apple platforms. It provides a unified, Swift-native API for all AI capabilities—from image classification to time series prediction—with **zero external dependencies**.
+SwiftIntelligence is a modular AI toolkit for Apple platforms built on native frameworks such as Vision, NaturalLanguage, Speech, Core ML, and AVFoundation.
 
-```swift
-// One-liner AI operations
-let classification = try await SwiftIntelligence.classify(image)
-let sentiment = try await SwiftIntelligence.sentiment("I love this app!")
-let objects = try await SwiftIntelligence.detectObjects(in: photo)
-let forecast = try await SwiftIntelligence.forecast(salesData, steps: 30)
-```
+It is intentionally positioned as a modular Apple AI developer toolkit, not as a generic cross-platform inference runtime. The current competitive framing is documented in [Documentation/Positioning.md](Documentation/Positioning.md).
 
-### 🏆 Key Differentiators
+The current package graph is intentionally modular:
 
-| Feature | SwiftIntelligence | Others |
-|---------|-------------------|--------|
-| **Unified API** | ✅ One import, all AI | ❌ Multiple frameworks |
-| **On-Device** | ✅ 100% privacy | ⚠️ Cloud-dependent |
-| **Battery Optimized** | ✅ Neural Engine first | ❌ CPU fallback |
-| **Zero Dependencies** | ✅ Native only | ❌ External libs |
-| **All Platforms** | ✅ iOS/macOS/tvOS/watchOS/visionOS | ⚠️ Limited |
-| **Production Ready** | ✅ Enterprise-grade | ⚠️ Demo quality |
+- `SwiftIntelligenceCore`
+- `SwiftIntelligenceML`
+- `SwiftIntelligenceNLP`
+- `SwiftIntelligenceVision`
+- `SwiftIntelligenceSpeech`
+- `SwiftIntelligenceReasoning`
+- `SwiftIntelligencePrivacy`
+- `SwiftIntelligenceNetwork`
+- `SwiftIntelligenceCache`
+- `SwiftIntelligenceMetrics`
+- `SwiftIntelligenceBenchmarks`
 
----
+This keeps adoption explicit, reduces binary surface area, and makes Swift 6 concurrency hardening easier to validate.
 
-## 🚀 Quick Start
+## Current Status
 
-### Installation
+- Active modular package graph is building cleanly.
+- `swift test` is passing on the current branch.
+- Publish readiness is `ready` under the current required device matrix: `Mac + iPhone`.
+- The current public proof posture is `release-grade`.
+- CI now exercises build, example validation, tests, `smoke` benchmark evidence, and proof-surface validators.
+- Security automation includes CodeQL, dependency review, and OpenSSF Scorecard workflows.
+- Vision and NLP concurrency migration work is actively maintained.
+- Performance claims are expected to be backed by benchmark artifacts in [Documentation/Benchmark-Baselines.md](Documentation/Benchmark-Baselines.md).
+- The current claim envelope and immutable release proof are published in [Documentation/Generated/Public-Proof-Status.md](Documentation/Generated/Public-Proof-Status.md) and [Documentation/Generated/Latest-Release-Proof.md](Documentation/Generated/Latest-Release-Proof.md).
+- Competitive positioning and win conditions are documented in [Documentation/Positioning.md](Documentation/Positioning.md).
 
-**Swift Package Manager**
+## Why Adopt Now
+
+- strongest current path is a real multi-module Apple-native flow: `Vision -> NLP -> Privacy`
+- flagship demo has its own guide and smoke-check: [IntelligentCamera](Examples/DemoApps/IntelligentCamera/README.md), `bash Scripts/validate-flagship-demo.sh`
+- flagship media path now includes published repo-native screenshot and recording assets: [Flagship Media](Documentation/Assets/Flagship-Demo/README.md), [Screenshot](Documentation/Assets/Flagship-Demo/intelligent-camera-success.png), [Recording](Documentation/Assets/Flagship-Demo/intelligent-camera-run.mp4)
+- release proof is not hand-wavy: [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) and [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md)
+- required release device floor is already covered with immutable `Mac + iPhone` evidence
+
+## Who This Is For
+
+- Apple-platform teams that want to compose `Vision`, `NaturalLanguage`, `Speech`, and privacy controls inside one Swift package workflow
+- teams that want a stronger developer path than raw framework-by-framework integration
+- maintainers who care about proof surfaces, example validation, and release discipline before making public claims
+
+## Who Should Not Use This
+
+- teams looking for a cross-platform inference runtime
+- teams whose main problem is model conversion, quantization, or Python-first ML tooling
+- teams that only need one untouched Apple framework API and do not want an additional package layer
+
+## Installation
+
+Fastest honest first install is the flagship path: `Vision -> NLP -> Privacy`.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittinc/SwiftIntelligence.git", from: "2.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.0.0")
+],
+targets: [
+    .target(
+        name: "MyApp",
+        dependencies: [
+            .product(name: "SwiftIntelligenceCore", package: "SwiftIntelligence"),
+            .product(name: "SwiftIntelligenceVision", package: "SwiftIntelligence"),
+            .product(name: "SwiftIntelligenceNLP", package: "SwiftIntelligence"),
+            .product(name: "SwiftIntelligencePrivacy", package: "SwiftIntelligence")
+        ]
+    )
 ]
 ```
 
-**Xcode**
+If you do not need the flagship path, module-first entry points live in [Getting Started](Documentation/Getting-Started.md) and the raw Apple API comparisons live in [Documentation/Comparisons](Documentation/Comparisons/README.md).
 
-1. File → Add Package Dependencies
-2. Enter: `https://github.com/muhittinc/SwiftIntelligence.git`
-3. Select version: `2.0.0` or later
+## 5-Minute Success Path
 
-### Basic Usage
+Fastest honest first win in this repo:
 
-```swift
-import SwiftIntelligence
+1. Add `SwiftIntelligenceCore`, `SwiftIntelligenceVision`, `SwiftIntelligenceNLP`, and `SwiftIntelligencePrivacy`.
+2. Open the flagship `IntelligentCamera` flow.
+3. Verify the repo and examples locally.
 
-// 🖼️ Image Classification
-let result = try await SwiftIntelligence.classify(myImage)
-print("This is a \(result.topLabel!) with \(result.topConfidence!)% confidence")
+Use this if you want to evaluate the repo on its strongest axis: `Vision -> NLP -> Privacy`.
 
-// 📝 Sentiment Analysis
-let sentiment = try await SwiftIntelligence.sentiment("This product is amazing!")
-print("Sentiment: \(sentiment.label) (\(sentiment.score))")
-
-// 🎤 Speech to Text
-let transcription = try await SwiftIntelligence.transcribe(audioURL, language: "en-US")
-print("You said: \(transcription.text)")
-
-// 📈 Time Series Forecasting
-let forecast = try await SwiftIntelligence.forecast(historicalData, steps: 7)
-print("Predicted values: \(forecast.predictions)")
-```
-
----
-
-## 🎯 Features
-
-### 🖼️ Computer Vision
+Install the minimal flagship set:
 
 ```swift
-// Image Classification
-let classification = try await SwiftIntelligence.classify(image)
-
-// Object Detection
-let objects = try await SwiftIntelligence.detectObjects(in: image)
-
-// Face Detection with Landmarks
-let faces = try await SwiftIntelligence.detectFaces(in: image)
-
-// Text Recognition (OCR)
-let text = try await SwiftIntelligence.extractText(from: documentImage)
-
-// Image Description
-let description = try await SwiftIntelligence.describe(image)
-
-// Background Removal
-let cutout = try await SwiftIntelligence.removeBackground(from: image)
-
-// AI Upscaling
-let enhanced = try await SwiftIntelligence.enhance(image, scale: 2.0)
-
-// Image Segmentation
-let segments = try await SwiftIntelligence.segment(image)
+.product(name: "SwiftIntelligenceCore", package: "SwiftIntelligence"),
+.product(name: "SwiftIntelligenceVision", package: "SwiftIntelligence"),
+.product(name: "SwiftIntelligenceNLP", package: "SwiftIntelligence"),
+.product(name: "SwiftIntelligencePrivacy", package: "SwiftIntelligence")
 ```
 
-### 📝 Natural Language Processing
+Then start with:
 
-```swift
-// Sentiment Analysis
-let sentiment = try await SwiftIntelligence.sentiment(text)
+- [Getting Started](Documentation/Getting-Started.md)
+- [Intelligent Camera demo guide](Examples/DemoApps/IntelligentCamera/README.md)
+- [Intelligent Camera demo source](Examples/DemoApps/IntelligentCamera/IntelligentCameraApp.swift)
+- [Showcase proof narrative](Documentation/Showcase.md)
+- [Latest immutable release proof](Documentation/Generated/Latest-Release-Proof.md)
 
-// Entity Extraction
-let entities = try await SwiftIntelligence.extractEntities(from: text)
+Local verification:
 
-// Language Detection
-let language = try await SwiftIntelligence.detectLanguage(text)
-
-// Text Summarization
-let summary = try await SwiftIntelligence.summarize(longText, maxLength: 100)
-
-// Keyword Extraction
-let keywords = try await SwiftIntelligence.extractKeywords(from: text, count: 10)
-
-// Semantic Similarity
-let similarity = try await SwiftIntelligence.similarity(text1, text2)
-
-// Text Classification
-let category = try await SwiftIntelligence.classifyText(text, categories: ["Sports", "Tech", "Politics"])
+```bash
+swift build
+bash Scripts/validate-flagship-demo.sh
+bash Scripts/validate-examples.sh
+swift test
 ```
 
-### 🎤 Speech Processing
+## Quick Start By Module
 
-```swift
-// Speech to Text
-let transcription = try await SwiftIntelligence.transcribe(audioURL, language: "en-US")
+| First goal | Products | Start here |
+| --- | --- | --- |
+| `Vision -> NLP -> Privacy` flagship flow | `Core + Vision + NLP + Privacy` | [Getting Started](Documentation/Getting-Started.md#five-minute-success-path) |
+| NLP-first app | `Core + NLP` | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
+| Vision-first app | `Core + Vision` | [Vision vs Apple Vision](Documentation/Comparisons/Vision-vs-AppleVision.md) |
+| Speech-first app | `Speech` | [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
+| Privacy-aware AI flow | `Privacy + protected feature module` | [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) |
+| Benchmarks and proof surfaces | `Benchmarks` | [Documentation/Benchmark-Baselines.md](Documentation/Benchmark-Baselines.md) |
 
-// Text to Speech
-let audioData = try await SwiftIntelligence.synthesize("Hello, world!", voice: "Samantha")
+If you are unsure where to begin, use the flagship path first. Only stay on raw Apple APIs when you need direct low-level control and do not need the multi-module workflow this repo optimizes for.
 
-// Multi-language Support
-let turkish = try await SwiftIntelligence.transcribe(audioURL, language: "tr-TR")
+## Module Map
+
+| Module | Scope |
+| --- | --- |
+| `SwiftIntelligenceCore` | Shared configuration, logging, metrics, runtime utilities |
+| `SwiftIntelligenceML` | On-device training, prediction, evaluation, cache management |
+| `SwiftIntelligenceNLP` | Sentiment, entities, keywords, summaries, topics |
+| `SwiftIntelligenceVision` | Classification, detection, OCR, segmentation, enhancement |
+| `SwiftIntelligenceSpeech` | Voice catalogs, synthesis, speech-related types |
+| `SwiftIntelligencePrivacy` | Tokenization, anonymization, compliance, secure storage |
+| `SwiftIntelligenceReasoning` | Higher-level reasoning primitives |
+| `SwiftIntelligenceNetwork` | Network-layer helpers |
+| `SwiftIntelligenceCache` | Cache primitives |
+| `SwiftIntelligenceMetrics` | Metrics and observability support |
+| `SwiftIntelligenceBenchmarks` | Benchmark runners and performance baselines |
+
+## Documentation
+
+Start here:
+
+- [Documentation Index](Documentation/README.md)
+- [Positioning](Documentation/Positioning.md)
+- [GitHub Distribution](Documentation/GitHub-Distribution.md)
+- [Module Comparisons](Documentation/Comparisons/README.md)
+- [5-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path)
+- [Intelligent Camera demo guide](Examples/DemoApps/IntelligentCamera/README.md)
+- [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md)
+- [Vision vs Apple Vision](Documentation/Comparisons/Vision-vs-AppleVision.md)
+- [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md)
+- [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md)
+- [Showcase](Documentation/Showcase.md)
+- [Flagship Media](Documentation/Assets/Flagship-Demo/README.md)
+- [Generated Proof Snapshot](Documentation/Generated/Proof-Snapshot.md)
+- [Generated Benchmark History](Documentation/Generated/Benchmark-History.md)
+- [Generated Benchmark Comparison](Documentation/Generated/Benchmark-Comparison.md)
+- [Generated Benchmark Methodology](Documentation/Generated/Benchmark-Methodology.md)
+- [Generated Benchmark Timeline](Documentation/Generated/Benchmark-Timeline.md)
+- [Generated Release Benchmark Matrix](Documentation/Generated/Release-Benchmark-Matrix.md)
+- [Generated Release Proof Timeline](Documentation/Generated/Release-Proof-Timeline.md)
+- [Generated Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md)
+- [Generated Benchmark Readiness](Documentation/Generated/Benchmark-Readiness.md)
+- [Generated Release Candidate Plan](Documentation/Generated/Release-Candidate-Plan.md)
+- [Generated Device Capture Packets](Documentation/Generated/Device-Capture-Packets.md)
+- [Generated Device Evidence Intake](Documentation/Generated/Device-Evidence-Intake.md)
+- [Generated Device Evidence Queue](Documentation/Generated/Device-Evidence-Queue.md)
+- [Generated Device Evidence Handoff](Documentation/Generated/Device-Evidence-Handoff.md)
+- [Generated Release Blockers](Documentation/Generated/Release-Blockers.md)
+- [Generated Public Proof Status](Documentation/Generated/Public-Proof-Status.md)
+- [Getting Started](Documentation/Getting-Started.md)
+- [Architecture](Documentation/Architecture.md)
+- [API Reference](Documentation/API-Reference.md)
+- [Performance Baselines](Documentation/Benchmark-Baselines.md)
+- [Security Guide](Documentation/Security.md)
+
+## Benchmarks
+
+Public performance claims should be backed by generated benchmark output:
+
+```bash
+bash Scripts/run-benchmarks.sh standard
 ```
 
-### 🤖 Machine Learning
+For optional additional device evidence collection, use:
 
-```swift
-// Train Custom Models On-Device
-let modelId = try await SwiftIntelligence.train(.classifier, with: trainingData)
-
-// Make Predictions
-let prediction = try await SwiftIntelligence.predict(model: modelId, input: features)
-
-// Register Core ML Models
-try await SwiftIntelligence.ml.registerModel(myCoreMLModel, name: "MyModel")
+```bash
+bash Scripts/run-benchmarks-for-device.sh --profile standard --output-dir Benchmarks/Results/device-run --device-name "iPhone 16" --device-model "iPhone17,3" --device-class iPhone --platform-family iOS --export-archive /absolute/path/to/benchmark-export.tar.gz
 ```
 
-### 📊 Recommendations
+If the benchmark run was captured on another machine, import it with:
 
-```swift
-// Record User Interactions
-await SwiftIntelligence.recommendations.recordInteraction(
-    userId: "user123",
-    itemId: "item456",
-    type: .purchase
-)
-
-// Get Personalized Recommendations
-let recommendations = try await SwiftIntelligence.recommend(
-    for: "user123",
-    context: ["timeOfDay": "evening"]
-)
-
-// Find Similar Items
-let similar = try await SwiftIntelligence.findSimilar(to: "item456", count: 10)
+```bash
+bash Scripts/import-benchmark-evidence.sh /absolute/path/to/benchmark-export.tar.gz iphone-baseline-2026-04-02
 ```
 
-### 🔍 Anomaly Detection
+Artifacts are written under `Benchmarks/Results/latest`.
+Each validated artifact set now also carries normalized `device-metadata.json`, a manifest, and a SHA-256 checksum list.
+Release validation also applies regression thresholds against the latest immutable release baseline when one exists.
+Under the current release policy, the required immutable device classes are `Mac` and `iPhone`; extra device classes are optional expansion rather than release blockers.
 
-```swift
-// Detect Anomalies in Data
-let anomalies = try await SwiftIntelligence.detectAnomalies(in: sensorData)
+The current public proof surface is summarized in [Documentation/Showcase.md](Documentation/Showcase.md).
+Historical evidence, methodology, timeline, release matrix, release proof surfaces, and latest-vs-release deltas are published in [Documentation/Generated/Benchmark-History.md](Documentation/Generated/Benchmark-History.md), [Documentation/Generated/Benchmark-Methodology.md](Documentation/Generated/Benchmark-Methodology.md), [Documentation/Generated/Benchmark-Timeline.md](Documentation/Generated/Benchmark-Timeline.md), [Documentation/Generated/Release-Benchmark-Matrix.md](Documentation/Generated/Release-Benchmark-Matrix.md), [Documentation/Generated/Release-Proof-Timeline.md](Documentation/Generated/Release-Proof-Timeline.md), [Documentation/Generated/Latest-Release-Proof.md](Documentation/Generated/Latest-Release-Proof.md), and [Documentation/Generated/Benchmark-Comparison.md](Documentation/Generated/Benchmark-Comparison.md).
+Current publish readiness is summarized in [Documentation/Generated/Benchmark-Readiness.md](Documentation/Generated/Benchmark-Readiness.md).
+The next execution waves for release-grade benchmark evidence are summarized in [Documentation/Generated/Release-Candidate-Plan.md](Documentation/Generated/Release-Candidate-Plan.md).
+Exact device capture commands for any future expansion waves are generated in [Documentation/Generated/Device-Evidence-Plan.md](Documentation/Generated/Device-Evidence-Plan.md).
+Ready-to-hand-off capture/import packets for future device classes are generated in [Documentation/Generated/Device-Capture-Packets.md](Documentation/Generated/Device-Capture-Packets.md).
+Maintainer-facing intake summaries for those packetized waves are generated in [Documentation/Generated/Device-Evidence-Intake.md](Documentation/Generated/Device-Evidence-Intake.md).
+The current device-evidence execution queue is generated in [Documentation/Generated/Device-Evidence-Queue.md](Documentation/Generated/Device-Evidence-Queue.md).
+The current release-proof blocker summary is generated in [Documentation/Generated/Release-Blockers.md](Documentation/Generated/Release-Blockers.md).
+The current public claim/distribution envelope is generated in [Documentation/Generated/Public-Proof-Status.md](Documentation/Generated/Public-Proof-Status.md).
+High-visibility benchmark/performance wording is also gated by `Scripts/validate-public-claims.sh` until multi-device readiness becomes `ready`.
 
-// Check Single Value
-let (isAnomaly, score) = try await SwiftIntelligence.isAnomalous(
-    currentValue,
-    baseline: historicalValues
-)
+## Development
 
-// Advanced Isolation Forest
-let outlierIndices = try await SwiftIntelligence.anomaly.detectWithIsolationForest(
-    data: multidimensionalData,
-    contamination: 0.05
-)
+```bash
+swift build
+bash Scripts/validate-examples.sh
+swift test
 ```
 
-### 📈 Time Series Analysis
+The repository currently treats package build, example validation, and test correctness as the primary release gate.
+Release notes are expected to come from curated `CHANGELOG.md` entries plus immutable benchmark evidence.
+Public installation snippets are expected to match the latest numbered release in `CHANGELOG.md`.
 
-```swift
-// Forecast Future Values
-let forecast = try await SwiftIntelligence.forecast(salesHistory, steps: 30)
-print("Predictions: \(forecast.predictions)")
-print("95% Confidence: \(forecast.lowerBounds) - \(forecast.upperBounds)")
+## Contributing
 
-// Detect Trends
-let trends = try await SwiftIntelligence.detectTrends(in: data)
-print("Direction: \(trends.direction), Strength: \(trends.strength)")
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Security reports should go through [SECURITY.md](SECURITY.md), not public issues.
 
-// Decompose Time Series
-let decomposition = try await SwiftIntelligence.timeSeries.decompose(data)
-print("Trend: \(decomposition.trend)")
-print("Seasonal: \(decomposition.seasonal)")
+## License
 
-// Detect Change Points
-let changePoints = try await SwiftIntelligence.timeSeries.detectChangePoints(data)
-```
-
----
-
-## 📚 Documentation
-
-### Architecture
-
-```
-SwiftIntelligence
-├── SwiftIntelligence (Unified API)
-│   ├── VisionEngine          # Computer Vision
-│   ├── NLPEngine             # Natural Language
-│   ├── SpeechEngine          # Speech Processing
-│   ├── MLEngine              # Machine Learning
-│   ├── RecommendationEngine  # Recommendations
-│   ├── AnomalyEngine         # Anomaly Detection
-│   └── TimeSeriesEngine      # Time Series
-├── SwiftIntelligenceCore     # Core Utilities
-├── SwiftIntelligenceML       # ML Types
-├── SwiftIntelligenceNLP      # NLP Types
-├── SwiftIntelligenceVision   # Vision Types
-├── SwiftIntelligenceSpeech   # Speech Types
-└── SwiftIntelligencePrivacy  # Privacy Controls
-```
-
-### Performance Optimization
-
-```swift
-// Configure for your needs
-SwiftIntelligence.configure(Configuration(
-    enableCaching: true,
-    maxCacheSize: 100,
-    preferOnDevice: true,
-    maxConcurrentOperations: 4
-))
-
-// Check system capabilities
-let info = SwiftIntelligence.systemInfo()
-print("Neural Engine: \(info.neuralEngineAvailable)")
-print("Memory: \(info.availableMemory / 1_000_000_000)GB")
-```
-
-### Privacy First
-
-All processing happens **on-device** by default:
-
-- ✅ No data leaves the device
-- ✅ No cloud API keys required
-- ✅ GDPR/CCPA compliant by design
-- ✅ Apple Privacy Nutrition Label ready
-
----
-
-## 📱 Examples
-
-### Image Classification App
-
-```swift
-import SwiftUI
-import SwiftIntelligence
-
-struct ContentView: View {
-    @State private var result: String = ""
-    
-    var body: some View {
-        VStack {
-            Image("sample")
-                .resizable()
-                .scaledToFit()
-            
-            Text(result)
-                .font(.headline)
-            
-            Button("Classify") {
-                Task {
-                    let classification = try await SwiftIntelligence.classify(UIImage(named: "sample")!)
-                    result = classification.topLabel ?? "Unknown"
-                }
-            }
-        }
-    }
-}
-```
-
-### Sentiment Analysis
-
-```swift
-import SwiftIntelligence
-
-func analyzeFeedback(_ feedback: String) async {
-    let sentiment = try await SwiftIntelligence.sentiment(feedback)
-    
-    switch sentiment.label {
-    case .veryPositive, .positive:
-        print("😊 Happy customer!")
-    case .neutral:
-        print("😐 Neutral feedback")
-    case .negative, .veryNegative:
-        print("😟 Needs attention")
-    }
-}
-```
-
-### Real-time Object Detection
-
-```swift
-import SwiftIntelligence
-import AVFoundation
-
-class ObjectDetectionController: UIViewController {
-    func processFrame(_ pixelBuffer: CVPixelBuffer) async {
-        let image = CIImage(cvPixelBuffer: pixelBuffer)
-        let uiImage = UIImage(ciImage: image)
-        
-        let objects = try await SwiftIntelligence.detectObjects(in: uiImage)
-        
-        for object in objects {
-            print("\(object.label): \(object.confidence)% at \(object.boundingBox)")
-        }
-    }
-}
-```
-
----
-
-## 🔧 Requirements
-
-| Platform | Minimum Version |
-|----------|-----------------|
-| iOS | 17.0+ |
-| macOS | 14.0+ |
-| tvOS | 17.0+ |
-| watchOS | 10.0+ |
-| visionOS | 1.0+ |
-| Xcode | 15.0+ |
-| Swift | 5.9+ |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-SwiftIntelligence is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
-
----
-
-## 🙏 Acknowledgments
-
-- Apple's Core ML, Vision, Natural Language, and Speech frameworks
-- The Swift community for inspiration and feedback
-
----
-
-<div align="center">
-
-**Made with ❤️ by [Muhittin Camdali](https://github.com/muhittinc)**
-
-⭐ Star this repo if you find it useful!
-
-[Report Bug](https://github.com/muhittinc/SwiftIntelligence/issues) • [Request Feature](https://github.com/muhittinc/SwiftIntelligence/issues)
-
-</div>
+SwiftIntelligence is released under the [MIT License](LICENSE).

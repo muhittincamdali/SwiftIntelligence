@@ -1,122 +1,82 @@
-# SwiftIntelligence Project Status Report
+# SwiftIntelligence Project Status
 
-## 📊 Overall Status: 85% Complete
+Last updated: 2026-04-07
 
-### ✅ Completed Components
+## Repository Status
 
-#### Phase 1: Foundation (100% Complete)
-- ✅ Package.swift configuration with 12 modules
-- ✅ Multi-platform support (iOS, macOS, watchOS, tvOS, visionOS)
-- ✅ Swift 5.9+ with strict concurrency
-- ✅ Actor-based architecture
-- ✅ Core protocols and abstractions
+`SwiftIntelligence` is in active stabilization and productization, not in a "done" state.
 
-#### Phase 2: Core AI/ML Modules (100% Complete)
-- ✅ **SwiftIntelligenceML** - Machine learning engine
-- ✅ **SwiftIntelligenceNLP** - Natural language processing
-- ✅ **SwiftIntelligenceVision** - Computer vision
-- ✅ **SwiftIntelligenceSpeech** - Speech recognition & TTS
-- ✅ **SwiftIntelligenceReasoning** - Logical reasoning
-- ✅ **SwiftIntelligenceImageGeneration** - Image generation
-- ✅ **SwiftIntelligencePrivacy** - Privacy & security
-- ✅ **SwiftIntelligenceNetwork** - Networking
-- ✅ **SwiftIntelligenceCache** - Caching system
-- ✅ **SwiftIntelligenceMetrics** - Analytics
+The active modular graph is currently the maintained surface:
 
-#### Phase 3: Demo Applications (100% Complete)
-- ✅ iOS Demo App with all 10 engine demos
-- ✅ macOS Demo App structure
-- ✅ Comprehensive UI for each module
-- ✅ Real-time feedback and error handling
-- ✅ Performance monitoring
+- `SwiftIntelligenceCore`
+- `SwiftIntelligenceML`
+- `SwiftIntelligenceNLP`
+- `SwiftIntelligenceVision`
+- `SwiftIntelligenceSpeech`
+- `SwiftIntelligenceReasoning`
+- `SwiftIntelligencePrivacy`
+- `SwiftIntelligenceNetwork`
+- `SwiftIntelligenceCache`
+- `SwiftIntelligenceMetrics`
+- `SwiftIntelligenceBenchmarks`
 
-#### Phase 4: SwiftUILab Foundation (100% Complete)
-- ✅ Package structure for 120+ components
-- ✅ 12 component categories defined
-- ✅ Buttons category with 10 components
-- ✅ Theme system implementation
-- ✅ Multi-platform support
+## What Is True Right Now
 
-### 🔄 Known Issues & TODO
+- `swift test` passes on the current maintained branch
+- example sources are compile-validated through `Scripts/validate-examples.sh`
+- release validation is scripted through `Scripts/prepare-release.sh`
+- proof, release-asset, and device-evidence surfaces can now be validated independently through `Scripts/validate-proof-surfaces.sh`
+- benchmark artifacts are schema/profile validated
+- benchmark artifacts also have manifest/checksum integrity and regression-threshold gates
+- the first immutable benchmark evidence bundle has been archived
+- CodeQL, dependency review, and Scorecard workflows exist for repo hardening
 
-#### Build Issues (Priority: High)
-- ⚠️ NLP module has type definition conflicts
-- ⚠️ Some Sendable protocol warnings
-- ⚠️ ~575 compilation errors need fixing
+## What Is Not True
 
-#### Documentation (Priority: Medium)
-- ⚠️ API documentation incomplete
-- ⚠️ Code comments sparse in some modules
-- ⚠️ Usage examples need expansion
+- the repository is not "100% complete"
+- inactive products should not be treated as maintained
+- every historical document in the repo is not automatically authoritative
+- every module has not finished Swift 6 migration work
+- category leadership is not proven yet
+- public adoption is still behind the repo's technical quality bar
 
-#### Testing (Priority: High)
-- ❌ Unit tests need implementation
-- ❌ Integration tests missing
-- ❌ Performance benchmarks needed
+## Benchmark Evidence Status
 
-### 📁 Project Structure
+Current generated source of truth:
 
-```
-SwiftIntelligence/
-├── Sources/                    # 12 core modules
-│   └── 122 Swift files
-├── DemoApps/
-│   ├── iOS/                   # Complete iOS demo
-│   └── macOS/                 # macOS demo structure
-├── SwiftUILab/                # UI component library
-│   └── 10+ button components
-├── README.md                  # Project documentation
-└── Package.swift              # SPM configuration
-```
+- [Documentation/Generated/Benchmark-Readiness.md](Documentation/Generated/Benchmark-Readiness.md)
+- [Documentation/Generated/Release-Candidate-Plan.md](Documentation/Generated/Release-Candidate-Plan.md)
+- [Documentation/Generated/Device-Evidence-Plan.md](Documentation/Generated/Device-Evidence-Plan.md)
+- [Documentation/Generated/Device-Capture-Packets.md](Documentation/Generated/Device-Capture-Packets.md)
+- [Documentation/Generated/Device-Evidence-Intake.md](Documentation/Generated/Device-Evidence-Intake.md)
+- [Documentation/Generated/Device-Evidence-Queue.md](Documentation/Generated/Device-Evidence-Queue.md)
+- [Documentation/Generated/Release-Blockers.md](Documentation/Generated/Release-Blockers.md)
+- [Documentation/Generated/Public-Proof-Status.md](Documentation/Generated/Public-Proof-Status.md)
 
-### 📈 Metrics
+Current state from those generated surfaces:
 
-- **Total Swift Files**: 122
-- **Lines of Code**: ~25,000+
-- **Modules**: 12 AI/ML + 12 UI categories
-- **Platform Support**: 5 (iOS, macOS, watchOS, tvOS, visionOS)
-- **Demo Views**: 10 comprehensive demos
-- **UI Components**: 10 complete (110 pending)
+- publish readiness: `ready`
+- immutable release baseline: `present`
+- device coverage: `Mac`, `iPhone`
+- missing required classes: `none`
+- former mobile evidence blocker is closed for the current release policy; `iPad` is now optional expansion, not a release gate
 
-### 🎯 Next Steps
+## Active Priorities
 
-1. **Fix Build Errors** (Immediate)
-   - Resolve NLP type conflicts
-   - Fix Sendable warnings
-   - Ensure clean compilation
+1. Keep the active package graph stable and honest.
+2. Continue concurrency and warning cleanup in maintained modules.
+3. Keep the `Mac` + `iPhone` release evidence path reproducible and low-drift.
+4. Use packetized capture/import/intake only for optional future device-class expansion.
+5. Improve adoption surface: README, docs, examples, benchmarks, comparisons, and release proof.
+6. Re-evaluate inactive products only after they can meet the current quality bar.
 
-2. **Complete SwiftUILab** (Phase 5)
-   - Implement remaining 110 components
-   - Add component documentation
-   - Create showcase app
+## Known Strategic Backlog
 
-3. **Testing & Quality** (Phase 6)
-   - Write comprehensive unit tests
-   - Add integration tests
-   - Performance benchmarking
+- higher-signal public comparisons and positioning
+- stronger GitHub discoverability and adoption surfaces
+- tighter module-level documentation and guarantees
+- selective restoration or permanent retirement of stale products
 
-4. **Documentation** (Ongoing)
-   - Complete API documentation
-   - Add inline code comments
-   - Create tutorial content
+## Status Summary
 
-### 💡 Recommendations
-
-1. **Prioritize Build Fixes**: Current compilation errors block progress
-2. **Focus on Core Stability**: Ensure base modules work perfectly
-3. **Incremental Component Development**: Complete SwiftUILab categories one by one
-4. **Continuous Testing**: Add tests as components are fixed
-
-### ✨ Achievements
-
-- Successfully architected comprehensive AI/ML framework
-- Implemented all 10 core AI/ML engines
-- Created full iOS demo application
-- Established solid foundation for 120+ UI components
-- Maintained clean architecture principles throughout
-
----
-
-**Last Updated**: 2025-08-15
-**Status**: Active Development
-**Next Review**: After build fixes
+The repo is in a stronger state than its historical docs suggested, but it is still a managed recovery and leadership sprint, not a finished framework. The release-proof floor is now backed by archived `Mac` and physical `iPhone` evidence, so the next concrete milestone is no longer fake readiness closure; it is stronger positioning, comparisons, and optional device-breadth expansion on top of a truthful release baseline.

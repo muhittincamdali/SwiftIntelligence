@@ -8,8 +8,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a bug! 🐛
-        Please fill out the information below to help us resolve the issue quickly.
+        Report only issues that affect the active modular package graph.
+        If the problem is security-sensitive, use the private reporting path in `SECURITY.md` instead of opening a public issue.
 
   - type: textarea
     id: description
@@ -54,20 +54,21 @@ body:
     id: module
     attributes:
       label: Affected Module
-      description: Which SwiftIntelligence module is affected?
+      description: Which active SwiftIntelligence module is affected?
       options:
         - Core
-        - NLP (Natural Language Processing)
+        - ML
+        - NLP
         - Vision
         - Speech
-        - ML (Machine Learning)
         - Privacy
+        - Reasoning
         - Network
         - Cache
         - Metrics
-        - Reasoning
-        - Image Generation
-        - visionOS
+        - Benchmarks
+        - Examples
+        - Documentation / CI
         - Multiple modules
         - Unknown
     validations:
@@ -111,7 +112,7 @@ body:
     attributes:
       label: Swift Version
       description: What version of Swift are you using?
-      placeholder: e.g., 5.9
+      placeholder: e.g., 5.9, 6.0, 6.x snapshot
     validations:
       required: true
 
@@ -131,12 +132,14 @@ body:
       description: Provide a minimal code sample that reproduces the issue
       render: swift
       placeholder: |
-        import SwiftIntelligence
-        
-        let engine = IntelligenceEngine.shared
-        // Your code here
+        import SwiftIntelligenceCore
+        import SwiftIntelligenceNLP
+
+        SwiftIntelligenceCore.shared.configure(with: .production)
+        let engine = NLPEngine.shared
+        // Minimal reproduction here
     validations:
-      required: false
+      required: true
 
   - type: textarea
     id: error-logs
@@ -165,9 +168,11 @@ body:
       options:
         - label: I searched for existing issues and didn't find a duplicate
           required: true
-        - label: I'm using the latest version of SwiftIntelligence
+        - label: I confirmed this affects the active modular package graph, not a legacy umbrella API
           required: true
-        - label: I tested this on a clean project to rule out conflicts
+        - label: I included a minimal reproduction or exact failing command
+          required: false
+        - label: I ran `swift test` or the closest relevant validation step before filing
           required: false
         - label: I'm willing to provide additional information if needed
           required: true
