@@ -17,7 +17,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Manual Smoke Mode
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Dependency Review is PR-scoped."
+          echo "Manual dispatch only verifies that the workflow can start successfully."
+
       - name: Dependency Review
+        if: github.event_name == 'pull_request'
         uses: actions/dependency-review-action@v4.9.0
         with:
           fail-on-severity: moderate
