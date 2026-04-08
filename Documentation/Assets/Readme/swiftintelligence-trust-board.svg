@@ -16,7 +16,8 @@
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
     <text x="96" y="122" fill="#FFFFFF" font-size="52" font-weight="800">Trust and Distribution Surface</text>
-    <text x="96" y="166" fill="#AFC6E9" font-size="24" font-weight="500">The repo is run like a product surface: public claims, release assets, community health, and maintainer guidance stay aligned.</text>
+    <text x="96" y="166" fill="#AFC6E9" font-size="21" font-weight="500">The repo is run like a product surface: public claims, release assets,</text>
+    <text x="96" y="196" fill="#AFC6E9" font-size="21" font-weight="500">community health, and maintainer guidance stay aligned.</text>
   </g>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
@@ -29,10 +30,11 @@
 
     <rect x="512" y="220" width="376" height="214" rx="28" fill="url(#panel)" stroke="#0A84FF" stroke-opacity="0.26"/>
     <text x="540" y="266" fill="#9FC5FF" font-size="22" font-weight="700">Community health</text>
-    <text x="540" y="316" fill="#FFFFFF" font-size="34" font-weight="800">Contribution quality bar</text>
-    <text x="540" y="358" fill="#D7E6FF" font-size="20" font-weight="500">Contributing, issue forms, code of conduct,</text>
-    <text x="540" y="388" fill="#D7E6FF" font-size="20" font-weight="500">security policy, and support routing are</text>
-    <text x="540" y="418" fill="#D7E6FF" font-size="20" font-weight="500">explicit and strict.</text>
+    <text x="540" y="312" fill="#FFFFFF" font-size="30" font-weight="800">Contribution quality</text>
+    <text x="540" y="346" fill="#FFFFFF" font-size="30" font-weight="800">bar</text>
+    <text x="540" y="382" fill="#D7E6FF" font-size="20" font-weight="500">Contributing, issue forms, code of conduct,</text>
+    <text x="540" y="412" fill="#D7E6FF" font-size="20" font-weight="500">security policy, and support routing are</text>
+    <text x="540" y="442" fill="#D7E6FF" font-size="20" font-weight="500">explicit and strict.</text>
 
     <rect x="932" y="220" width="376" height="214" rx="28" fill="url(#panel)" stroke="#FF9F0A" stroke-opacity="0.26"/>
     <text x="960" y="266" fill="#FFD4A6" font-size="22" font-weight="700">Distribution</text>
