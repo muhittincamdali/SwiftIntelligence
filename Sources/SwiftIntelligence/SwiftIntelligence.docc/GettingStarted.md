@@ -22,7 +22,7 @@ The recommended way to install SwiftIntelligence is through Swift Package Manage
 1. In Xcode, select **File → Add Package Dependencies**
 2. Enter the repository URL:
    ```
-   https://github.com/username/SwiftIntelligence
+   https://github.com/muhittincamdali/SwiftIntelligence
    ```
 3. Select the version rule (e.g., "Up to Next Major Version")
 4. Choose the modules you need
@@ -44,8 +44,8 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/username/SwiftIntelligence",
-            from: "1.0.0"
+            url: "https://github.com/muhittincamdali/SwiftIntelligence",
+            from: "1.2.0"
         )
     ],
     targets: [
@@ -325,7 +325,7 @@ We provide several sample projects demonstrating various features:
 - **VoiceAssistant**: Speech recognition and synthesis
 - **SmartCamera**: Real-time object detection
 
-Find them in the [Examples](https://github.com/username/SwiftIntelligence/tree/main/Examples) directory.
+Find them in the [Examples](https://github.com/muhittincamdali/SwiftIntelligence/tree/main/Examples) directory.
 
 ## Troubleshooting
 
@@ -346,7 +346,7 @@ Find them in the [Examples](https://github.com/username/SwiftIntelligence/tree/m
 
 ## Getting Help
 
-- **Documentation**: [API Reference](https://github.com/username/SwiftIntelligence/wiki)
-- **Issues**: [GitHub Issues](https://github.com/username/SwiftIntelligence/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/username/SwiftIntelligence/discussions)
+- **Documentation**: [Documentation Hub](https://github.com/muhittincamdali/SwiftIntelligence/tree/main/Documentation)
+- **Issues**: [GitHub Issues](https://github.com/muhittincamdali/SwiftIntelligence/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/muhittincamdali/SwiftIntelligence/discussions)
 - **Stack Overflow**: Tag your questions with `swiftintelligence`

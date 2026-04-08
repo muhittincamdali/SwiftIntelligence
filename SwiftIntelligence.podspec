@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
   # Metadata
   spec.name         = "SwiftIntelligence"
-  spec.version      = "1.0.0"
+  spec.version      = "1.2.0"
   spec.summary      = "Advanced AI/ML Framework for Apple Platforms"
   spec.description  = <<-DESC
     SwiftIntelligence is a comprehensive AI/ML framework designed specifically for Apple platforms.
@@ -14,10 +14,10 @@ Pod::Spec.new do |spec|
     - Multi-platform support (iOS, macOS, watchOS, tvOS, visionOS)
   DESC
   
-  spec.homepage     = "https://github.com/username/SwiftIntelligence"
+  spec.homepage     = "https://github.com/muhittincamdali/SwiftIntelligence"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.author       = { "SwiftIntelligence Team" => "team@swiftintelligence.com" }
-  spec.source       = { :git => "https://github.com/username/SwiftIntelligence.git", :tag => "v#{spec.version}" }
+  spec.source       = { :git => "https://github.com/muhittincamdali/SwiftIntelligence.git", :tag => "v#{spec.version}" }
   
   # Platform Support
   spec.ios.deployment_target     = "17.0"
@@ -173,15 +173,15 @@ Pod::Spec.new do |spec|
   }
   
   # Documentation
-  spec.documentation_url = "https://github.com/username/SwiftIntelligence/wiki"
+  spec.documentation_url = "https://github.com/muhittincamdali/SwiftIntelligence/tree/main/Documentation"
   
   # Social Media
   spec.social_media_url = "https://twitter.com/swiftintelligence"
   
   # Screenshots (for CocoaPods website)
   spec.screenshots = [
-    "https://raw.githubusercontent.com/username/SwiftIntelligence/main/Resources/screenshot1.png",
-    "https://raw.githubusercontent.com/username/SwiftIntelligence/main/Resources/screenshot2.png"
+    "https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/Documentation/Assets/Flagship-Demo/intelligent-camera-success.png",
+    "https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/Documentation/Assets/Readme/swiftintelligence-hero.svg"
   ]
   
   # Requires ARC

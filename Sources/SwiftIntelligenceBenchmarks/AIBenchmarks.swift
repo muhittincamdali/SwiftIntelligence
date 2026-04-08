@@ -9,7 +9,6 @@ import Foundation
 import SwiftIntelligenceCore
 
 /// AI/ML specific benchmarks for SwiftIntelligence Framework
-@MainActor
 public final class AIBenchmarks {
     public enum Profile: String, CaseIterable, Sendable {
         case smoke
@@ -411,7 +410,7 @@ public final class AIBenchmarks {
             results: results,
             analysis: analysis,
             generatedAt: Date(),
-            frameworkVersion: "1.0.0",
+            frameworkVersion: "1.2.0",
             profile: profile.rawValue
         )
         

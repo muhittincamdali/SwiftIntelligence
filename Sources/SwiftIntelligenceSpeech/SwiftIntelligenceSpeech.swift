@@ -17,7 +17,7 @@ public actor SwiftIntelligenceSpeech {
     // MARK: - Properties
     
     public let moduleID = "Speech"
-    public let version = "1.0.0"
+    public let version = "1.2.0"
     public private(set) var status: ModuleStatus = .uninitialized
     
     // MARK: - Speech Components

@@ -28,9 +28,13 @@ struct BenchmarksCLI {
             print("Completed \(report.results.count) benchmark workloads.")
             print("Artifacts written to \(options.outputDirectory.path)")
             print("Performance score: \(String(format: "%.2f", report.analysis.performanceScore))")
+            fflush(stdout)
+            fflush(stderr)
+            Foundation.exit(0)
         } catch {
             fputs("Benchmarks failed: \(error)\n", stderr)
-            exit(1)
+            fflush(stderr)
+            Foundation.exit(1)
         }
     }
 

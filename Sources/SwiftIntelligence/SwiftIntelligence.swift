@@ -33,10 +33,10 @@ public enum SwiftIntelligence {
     // MARK: - Version Info
     
     /// Current framework version
-    public static let version = "2.0.0"
+    public static let version = "1.2.0"
     
     /// Build information
-    public static let build = "2024.02.05"
+    public static let build = "2026.04.08"
     
     // MARK: - Shared Engines
     

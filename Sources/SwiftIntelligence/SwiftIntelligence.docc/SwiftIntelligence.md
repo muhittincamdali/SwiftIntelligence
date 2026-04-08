@@ -125,14 +125,14 @@ let objects = try await visionEngine.detectObjects(in: image)
 Add SwiftIntelligence to your project through Xcode:
 
 1. File → Add Package Dependencies
-2. Enter: `https://github.com/username/SwiftIntelligence`
+2. Enter: `https://github.com/muhittincamdali/SwiftIntelligence`
 3. Select version and add to your target
 
 Or add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/username/SwiftIntelligence", from: "1.0.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence", from: "1.2.0")
 ]
 ```
 
@@ -178,15 +178,15 @@ Optimized for Apple platforms with:
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](https://github.com/username/SwiftIntelligence/blob/main/CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guidelines](https://github.com/muhittincamdali/SwiftIntelligence/blob/main/CONTRIBUTING.md) for details.
 
 ## License
 
-SwiftIntelligence is available under the MIT license. See the [LICENSE](https://github.com/username/SwiftIntelligence/blob/main/LICENSE) file for details.
+SwiftIntelligence is available under the MIT license. See the [LICENSE](https://github.com/muhittincamdali/SwiftIntelligence/blob/main/LICENSE) file for details.
 
 ## Support
 
-- **Documentation**: [Full API Reference](https://github.com/username/SwiftIntelligence/wiki)
-- **Issues**: [GitHub Issues](https://github.com/username/SwiftIntelligence/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/username/SwiftIntelligence/discussions)
-- **Security**: [Security Policy](https://github.com/username/SwiftIntelligence/blob/main/SECURITY.md)
+- **Documentation**: [Documentation Hub](https://github.com/muhittincamdali/SwiftIntelligence/tree/main/Documentation)
+- **Issues**: [GitHub Issues](https://github.com/muhittincamdali/SwiftIntelligence/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/muhittincamdali/SwiftIntelligence/discussions)
+- **Security**: [Security Policy](https://github.com/muhittincamdali/SwiftIntelligence/blob/main/SECURITY.md)

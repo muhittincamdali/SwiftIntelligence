@@ -21,7 +21,7 @@ What is not active today:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittinc/SwiftIntelligence.git", from: "1.0.0")
+    .package(url: "https://github.com/muhittinc/SwiftIntelligence.git", from: "1.2.0")
 ]
 ```
 

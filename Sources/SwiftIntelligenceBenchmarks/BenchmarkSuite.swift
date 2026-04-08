@@ -9,7 +9,6 @@ import Foundation
 import SwiftIntelligenceCore
 
 /// Comprehensive performance benchmark suite for SwiftIntelligence Framework
-@MainActor
 public final class BenchmarkSuite {
     
     // MARK: - Properties

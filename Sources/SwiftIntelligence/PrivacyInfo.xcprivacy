@@ -208,7 +208,7 @@
         <key>NSPrivacyContactInfoEmail</key>
         <string>privacy@swiftintelligence.com</string>
         <key>NSPrivacyContactInfoWebsite</key>
-        <string>https://github.com/username/SwiftIntelligence/blob/main/SECURITY.md</string>
+        <string>https://github.com/muhittincamdali/SwiftIntelligence/blob/main/SECURITY.md</string>
     </dict>
     
     <!-- Data Retention Policy -->
@@ -224,7 +224,7 @@
     
     <!-- Privacy Policy Link -->
     <key>NSPrivacyPolicyURL</key>
-    <string>https://github.com/username/SwiftIntelligence/blob/main/SECURITY.md#privacy-policy</string>
+    <string>https://github.com/muhittincamdali/SwiftIntelligence/blob/main/SECURITY.md#privacy-policy</string>
     
     <!-- Data Sharing Practices -->
     <key>NSPrivacyDataSharing</key>

@@ -12,7 +12,7 @@ final class SwiftIntelligenceMLTests: XCTestCase {
         let status = await mlModule.status
         
         XCTAssertEqual(moduleID, "ML")
-        XCTAssertEqual(version, "1.0.0")
+        XCTAssertEqual(version, "1.2.0")
         XCTAssertEqual(status, .ready)
     }
     

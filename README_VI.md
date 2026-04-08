@@ -22,7 +22,7 @@ Bo cong cu AI on-device theo kieu modular cho nen tang Apple. No ket hop `Vision
 ## Cai dat
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.0.0")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.0")
 ```
 
 Duong vao de xuat:
