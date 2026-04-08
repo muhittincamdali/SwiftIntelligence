@@ -9,10 +9,14 @@
 
 ## Best Channel by Need
 
-- bug report: open a GitHub issue with the bug template
-- feature request: open a GitHub issue with the feature template
-- documentation problem: open a documentation issue
-- security issue: use [SECURITY.md](SECURITY.md), not public issues
+| Need | Best path |
+| --- | --- |
+| bug report | open a GitHub issue with the bug template |
+| feature request | open a GitHub issue with the feature template |
+| documentation problem | open a documentation issue |
+| performance / benchmark drift | open a performance issue and include validation commands |
+| device evidence intake | use the device evidence issue form |
+| security issue | use [SECURITY.md](SECURITY.md), not public issues |
 
 ## What Makes Support Faster
 
@@ -20,6 +24,19 @@
 - exact Swift / Xcode / OS version
 - minimal reproduction
 - whether `swift build`, `bash Scripts/validate-flagship-demo.sh`, `bash Scripts/validate-examples.sh`, and `swift test` pass locally
+- whether `bash Scripts/prepare-release.sh` still passes if the change touches proof, release, or benchmark surfaces
+
+## Operational Note
+
+If GitHub-hosted runners are externally blocked, local maintainer validation remains the authoritative path for triage:
+
+```bash
+swift build
+bash Scripts/validate-flagship-demo.sh
+bash Scripts/validate-examples.sh
+swift test
+bash Scripts/prepare-release.sh
+```
 
 ## Scope Note
 

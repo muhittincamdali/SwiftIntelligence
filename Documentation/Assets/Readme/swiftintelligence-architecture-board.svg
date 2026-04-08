@@ -1,0 +1,58 @@
+<svg width="1400" height="860" viewBox="0 0 1400 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="54" x2="1278" y2="790" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07111F"/>
+      <stop offset="0.5" stop-color="#121E31"/>
+      <stop offset="1" stop-color="#091724"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1400" height="860" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="34" flood-color="#000814" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="860" rx="40" fill="url(#bg)"/>
+  <rect x="60" y="58" width="1280" height="744" rx="34" fill="#0B1728" fill-opacity="0.72" stroke="#F2F7FF" stroke-opacity="0.08"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <text x="96" y="122" fill="#FFFFFF" font-size="52" font-weight="800">Architecture Map</text>
+    <text x="96" y="166" fill="#AFC6E9" font-size="24" font-weight="500">A clear modular graph with app-facing workflows on top and proof infrastructure underneath.</text>
+  </g>
+
+  <g filter="url(#shadow)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <rect x="108" y="238" width="1184" height="124" rx="28" fill="#102239" stroke="#5AC8FA" stroke-opacity="0.24"/>
+    <text x="140" y="286" fill="#9FC5FF" font-size="22" font-weight="700">App workflow layer</text>
+    <text x="140" y="330" fill="#FFFFFF" font-size="32" font-weight="800">IntelligentCamera, SmartTranslator, VoiceAssistant, and future productized demos</text>
+
+    <rect x="108" y="404" width="344" height="228" rx="28" fill="#111F35" stroke="#F05138" stroke-opacity="0.26"/>
+    <text x="136" y="448" fill="#FFB3A8" font-size="22" font-weight="700">Perception</text>
+    <text x="136" y="492" fill="#FFFFFF" font-size="34" font-weight="800">Vision + ML</text>
+    <text x="136" y="540" fill="#D7E6FF" font-size="22" font-weight="500">Classification</text>
+    <text x="136" y="574" fill="#D7E6FF" font-size="22" font-weight="500">Detection</text>
+    <text x="136" y="608" fill="#D7E6FF" font-size="22" font-weight="500">OCR</text>
+
+    <rect x="528" y="404" width="344" height="228" rx="28" fill="#102239" stroke="#0A84FF" stroke-opacity="0.26"/>
+    <text x="556" y="448" fill="#9FC5FF" font-size="22" font-weight="700">Language + reasoning</text>
+    <text x="556" y="492" fill="#FFFFFF" font-size="34" font-weight="800">NLP + Speech + Reasoning</text>
+    <text x="556" y="540" fill="#D7E6FF" font-size="22" font-weight="500">Summary</text>
+    <text x="556" y="574" fill="#D7E6FF" font-size="22" font-weight="500">Entities and intent</text>
+    <text x="556" y="608" fill="#D7E6FF" font-size="22" font-weight="500">Voice output</text>
+
+    <rect x="948" y="404" width="344" height="228" rx="28" fill="#10281D" stroke="#34C759" stroke-opacity="0.26"/>
+    <text x="976" y="448" fill="#B5F0C5" font-size="22" font-weight="700">Trust + transport</text>
+    <text x="976" y="492" fill="#FFFFFF" font-size="34" font-weight="800">Privacy + Network + Metrics</text>
+    <text x="976" y="540" fill="#D7E6FF" font-size="22" font-weight="500">Tokenization</text>
+    <text x="976" y="574" fill="#D7E6FF" font-size="22" font-weight="500">Boundary controls</text>
+    <text x="976" y="608" fill="#D7E6FF" font-size="22" font-weight="500">Observability</text>
+
+    <rect x="276" y="690" width="848" height="80" rx="24" fill="#1B1B14" stroke="#FF9F0A" stroke-opacity="0.26"/>
+    <text x="308" y="740" fill="#FFD4A6" font-size="22" font-weight="700">Release operating system:</text>
+    <text x="594" y="740" fill="#FFFFFF" font-size="24" font-weight="800">Benchmarks -> proof pages -> release bundles -> public claims</text>
+  </g>
+
+  <path d="M700 362V404" stroke="#D7E6FF" stroke-opacity="0.4" stroke-width="4"/>
+  <path d="M280 364V404" stroke="#D7E6FF" stroke-opacity="0.25" stroke-width="3"/>
+  <path d="M1120 364V404" stroke="#D7E6FF" stroke-opacity="0.25" stroke-width="3"/>
+  <path d="M280 632V690" stroke="#D7E6FF" stroke-opacity="0.2" stroke-width="3"/>
+  <path d="M700 632V690" stroke="#D7E6FF" stroke-opacity="0.3" stroke-width="4"/>
+  <path d="M1120 632V690" stroke="#D7E6FF" stroke-opacity="0.2" stroke-width="3"/>
+</svg>

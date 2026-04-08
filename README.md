@@ -6,6 +6,10 @@
 
 [![Swift](https://img.shields.io/badge/Swift-5.9+-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
 [![Apple Platforms](https://img.shields.io/badge/Apple-iOS%2017%2B%20%7C%20macOS%2014%2B%20%7C%20tvOS%2017%2B%20%7C%20watchOS%2010%2B%20%7C%20visionOS%201%2B-0A84FF?style=for-the-badge&logo=apple&logoColor=white)](https://developer.apple.com)
+[![Release](https://img.shields.io/github/v/release/muhittincamdali/SwiftIntelligence?display_name=tag&style=for-the-badge&logo=github)](https://github.com/muhittincamdali/SwiftIntelligence/releases)
+[![Stars](https://img.shields.io/github/stars/muhittincamdali/SwiftIntelligence?style=for-the-badge&logo=github)](https://github.com/muhittincamdali/SwiftIntelligence/stargazers)
+[![Contributors](https://img.shields.io/github/contributors/muhittincamdali/SwiftIntelligence?style=for-the-badge)](https://github.com/muhittincamdali/SwiftIntelligence/graphs/contributors)
+[![Last Commit](https://img.shields.io/github/last-commit/muhittincamdali/SwiftIntelligence?style=for-the-badge)](https://github.com/muhittincamdali/SwiftIntelligence/commits/main)
 [![Publish Readiness](https://img.shields.io/badge/Publish%20Readiness-ready-34C759?style=for-the-badge)](Documentation/Generated/Benchmark-Readiness.md)
 [![Proof Posture](https://img.shields.io/badge/Proof%20Posture-release--grade-FF9F0A?style=for-the-badge)](Documentation/Generated/Public-Proof-Status.md)
 [![Required Devices](https://img.shields.io/badge/Required%20Devices-Mac%20%2B%20iPhone-5AC8FA?style=for-the-badge)](Documentation/Generated/Release-Benchmark-Matrix.md)
@@ -101,6 +105,23 @@
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
+## Product Surface
+
+<p align="center">
+  <img src="Documentation/Assets/Readme/swiftintelligence-capability-board.svg" width="100%" alt="SwiftIntelligence capability board" />
+</p>
+
+| Product lane | What it gives you | Best first link |
+| --- | --- | --- |
+| Vision | Classification, OCR, detection, segmentation, enhancement | [IntelligentCamera](Examples/DemoApps/IntelligentCamera/README.md) |
+| NaturalLanguage | Summary, entities, keywords, topics, language-aware analysis | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
+| Speech | Voice output and assistant-style flows | [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
+| Privacy | Tokenization, anonymization, safer AI boundaries | [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) |
+| Benchmarks | Thresholds, history, manifests, regression validation | [Benchmark Baselines](Documentation/Benchmark-Baselines.md) |
+| Release Proof | Public proof status, blockers, immutable release bundle | [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md) |
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
 ## Flagship Experience
 
 <p align="center">
@@ -128,6 +149,22 @@ If you only test one thing first, test this path.
 ```bash
 bash Scripts/validate-flagship-demo.sh
 ```
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
+## Architecture Signal
+
+<p align="center">
+  <img src="Documentation/Assets/Readme/swiftintelligence-architecture-board.svg" width="100%" alt="SwiftIntelligence architecture board" />
+</p>
+
+| Layer | Maintained surfaces |
+| --- | --- |
+| Product workflows | `IntelligentCamera`, `SmartTranslator`, `VoiceAssistant`, future flagship demos |
+| Perception | `SwiftIntelligenceVision`, `SwiftIntelligenceML` |
+| Language | `SwiftIntelligenceNLP`, `SwiftIntelligenceSpeech`, `SwiftIntelligenceReasoning` |
+| Trust and transport | `SwiftIntelligencePrivacy`, `SwiftIntelligenceNetwork`, `SwiftIntelligenceMetrics`, `SwiftIntelligenceCache` |
+| Release operating system | `SwiftIntelligenceBenchmarks`, generated proof pages, release bundles, media pack |
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
@@ -225,6 +262,52 @@ This repo is designed so README language, release language, and proof language d
 
 Public performance wording is expected to stay inside the current claim envelope documented in the generated proof pages.
 
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
+## GitHub Surface
+
+<p align="center">
+  <img src="Documentation/Assets/Readme/swiftintelligence-trust-board.svg" width="100%" alt="SwiftIntelligence trust and distribution board" />
+</p>
+
+| Surface | Current posture | Link |
+| --- | --- | --- |
+| About | Category-specific description, Apple-native scope | [GitHub Distribution](Documentation/GitHub-Distribution.md) |
+| Topics | `swift`, `coreml`, `ios`, `macos`, `privacy`, `speech`, `vision-framework`, more | [GitHub Distribution](Documentation/GitHub-Distribution.md) |
+| README | Landing-page style, 18-language entry surface | [README Languages](Documentation/README-Languages.md) |
+| Releases | Immutable proof-linked release assets | [Releases](https://github.com/muhittincamdali/SwiftIntelligence/releases) |
+| Changelog | Maintainer-visible numbered history | [CHANGELOG.md](CHANGELOG.md) |
+| License | MIT | [LICENSE](LICENSE) |
+| Code of Conduct | Contributor Covenant 2.1 | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) |
+| Contributing | Strict quality bar and public-claim rules | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Security | Advisory-first intake, trusted artifact posture | [SECURITY.md](SECURITY.md) |
+| Support | Issue routing and local maintainer validation floor | [SUPPORT.md](SUPPORT.md) |
+| Copilot | Repo-level custom instructions | [.github/copilot-instructions.md](.github/copilot-instructions.md) |
+| Funding | GitHub Sponsors support path | [.github/FUNDING.yml](.github/FUNDING.yml) |
+| Contributors | Open contributor graph | [Contributors](https://github.com/muhittincamdali/SwiftIntelligence/graphs/contributors) |
+| Packages | 11 Swift products, Apple-platform native package graph | [Package.swift](Package.swift) |
+| Deployments | Public Pages URL not published; repo-native docs and release assets are the real surface | [Documentation Index](Documentation/README.md) |
+| Activity | Star history, commit history, discussions, issues | [Commits](https://github.com/muhittincamdali/SwiftIntelligence/commits/main) |
+
+### Support the Project
+
+If SwiftIntelligence saves implementation time or reduces evaluation friction, support the repo here:
+
+- [GitHub Sponsors](https://github.com/sponsors/muhittincamdali)
+- [Funding configuration](.github/FUNDING.yml)
+
+### Automation Note
+
+GitHub-hosted runners are currently affected by an external account-level billing lock. Local repo gates remain the canonical quality floor until that blocker is cleared:
+
+```bash
+swift build
+bash Scripts/validate-flagship-demo.sh
+bash Scripts/validate-examples.sh
+swift test
+bash Scripts/prepare-release.sh
+```
+
 ## Benchmarks
 
 Run the standard benchmark profile:
@@ -257,6 +340,12 @@ bash Scripts/import-benchmark-evidence.sh \
 Under the current release policy, the required immutable device classes are `Mac` and `iPhone`. Additional classes are expansion, not release blockers.
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
+## Activity and Community
+
+[![Star History Chart](https://api.star-history.com/svg?repos=muhittincamdali/SwiftIntelligence&type=Date)](https://star-history.com/#muhittincamdali/SwiftIntelligence&Date)
+
+[![Contributors](https://contrib.rocks/image?repo=muhittincamdali/SwiftIntelligence)](https://github.com/muhittincamdali/SwiftIntelligence/graphs/contributors)
 
 ## Documentation Map
 

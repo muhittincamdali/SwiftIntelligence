@@ -1,14 +1,14 @@
 # GitHub Distribution
 
-Last updated: 2026-04-07
+Last updated: 2026-04-08
 
 This page defines the public GitHub-facing metadata for SwiftIntelligence.
 
 ## Current About Box
 
-Source of truth checked against the GitHub repository API on 2026-04-07.
+Source of truth checked against the GitHub repository API on 2026-04-08.
 
-- description: `Modular on-device AI toolkit for Apple platforms using Vision, NaturalLanguage, Speech, and Core ML.`
+- description: `Privacy-first modular AI toolkit for Apple developers with Vision, NaturalLanguage, Speech, benchmarks, and release proof.`
 - homepage: `none`
 - primary repo URL: `https://github.com/muhittincamdali/SwiftIntelligence`
 
@@ -23,10 +23,16 @@ Source of truth checked against the GitHub repository API on 2026-04-07.
 - `natural-language`
 - `on-device-ml`
 - `privacy`
+- `privacy-first`
 - `speech`
 - `swift`
+- `swift-ai`
 - `swift-package-manager`
+- `tvos`
+- `visionos`
 - `vision-framework`
+- `watchos`
+- `apple-developer-tools`
 
 ## Distribution Rules
 
@@ -36,6 +42,18 @@ Source of truth checked against the GitHub repository API on 2026-04-07.
 - README, About box, and positioning docs must tell the same category story
 - public proof links must point to generated status and immutable release proof, not ad-hoc claims
 - issue forms and PR template must ask for public-claim impact and evidence truthfulness when relevant
+- GitHub-hosted workflows should not be presented as green if an external account-level blocker prevents runner start
+
+## Current Operational Note
+
+As of 2026-04-08, GitHub-hosted workflow execution is affected by an account-level billing lock that prevents macOS runners from starting.
+
+Operational policy while that blocker exists:
+
+- keep workflow definitions versioned in the repo
+- do not fake green CI state
+- use repo-local validation as the authoritative release gate
+- pause failing GitHub-hosted workflows rather than continuously emitting false-negative red checks
 
 ## First Links For New Visitors
 

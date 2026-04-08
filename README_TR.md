@@ -6,6 +6,10 @@
 
 [![Turkce](https://img.shields.io/badge/Dil-Turkce-F05138?style=for-the-badge&labelColor=0D1117)](README_TR.md)
 [![English](https://img.shields.io/badge/Language-English-0A84FF?style=for-the-badge&labelColor=0D1117)](README.md)
+[![Release](https://img.shields.io/github/v/release/muhittincamdali/SwiftIntelligence?display_name=tag&style=for-the-badge&logo=github)](https://github.com/muhittincamdali/SwiftIntelligence/releases)
+[![Stars](https://img.shields.io/github/stars/muhittincamdali/SwiftIntelligence?style=for-the-badge&logo=github)](https://github.com/muhittincamdali/SwiftIntelligence/stargazers)
+[![Contributors](https://img.shields.io/github/contributors/muhittincamdali/SwiftIntelligence?style=for-the-badge)](https://github.com/muhittincamdali/SwiftIntelligence/graphs/contributors)
+[![Last Commit](https://img.shields.io/github/last-commit/muhittincamdali/SwiftIntelligence?style=for-the-badge)](https://github.com/muhittincamdali/SwiftIntelligence/commits/main)
 [![Publish Readiness](https://img.shields.io/badge/Publish%20Readiness-ready-34C759?style=for-the-badge)](Documentation/Generated/Benchmark-Readiness.md)
 [![Proof Posture](https://img.shields.io/badge/Proof%20Posture-release--grade-FF9F0A?style=for-the-badge)](Documentation/Generated/Public-Proof-Status.md)
 [![Required Devices](https://img.shields.io/badge/Required%20Devices-Mac%20%2B%20iPhone-5AC8FA?style=for-the-badge)](Documentation/Generated/Release-Benchmark-Matrix.md)
@@ -99,6 +103,23 @@
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
+## Urun Yuzeyi
+
+<p align="center">
+  <img src="Documentation/Assets/Readme/swiftintelligence-capability-board.svg" width="100%" alt="SwiftIntelligence capability board" />
+</p>
+
+| Hat | Ne saglar | Ilk guclu link |
+| --- | --- | --- |
+| Vision | Classification, OCR, detection, segmentation, enhancement | [IntelligentCamera](Examples/DemoApps/IntelligentCamera/README.md) |
+| NaturalLanguage | Summary, entities, keywords, topics, language-aware analysis | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
+| Speech | Voice output ve assistant-style akislar | [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
+| Privacy | Tokenization, anonymization, daha guvenli AI boundaries | [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) |
+| Benchmarks | Threshold, history, manifest, regression validation | [Benchmark Baselines](Documentation/Benchmark-Baselines.md) |
+| Release Proof | Public proof status, blockers, immutable release bundle | [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md) |
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
 ## Flagship Deneyim
 
 <p align="center">
@@ -126,6 +147,22 @@ Ilk bakman gereken tek sey olacaksa bu olsun:
 ```bash
 bash Scripts/validate-flagship-demo.sh
 ```
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
+## Mimari Sinyali
+
+<p align="center">
+  <img src="Documentation/Assets/Readme/swiftintelligence-architecture-board.svg" width="100%" alt="SwiftIntelligence architecture board" />
+</p>
+
+| Katman | Maintain edilen yuzey |
+| --- | --- |
+| Uygulama akislar | `IntelligentCamera`, `SmartTranslator`, `VoiceAssistant`, yeni flagship demolar |
+| Perception | `SwiftIntelligenceVision`, `SwiftIntelligenceML` |
+| Language | `SwiftIntelligenceNLP`, `SwiftIntelligenceSpeech`, `SwiftIntelligenceReasoning` |
+| Trust ve transport | `SwiftIntelligencePrivacy`, `SwiftIntelligenceNetwork`, `SwiftIntelligenceMetrics`, `SwiftIntelligenceCache` |
+| Release operating system | `SwiftIntelligenceBenchmarks`, generated proof docs, release bundle, media pack |
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
@@ -220,6 +257,54 @@ Bu repoda README dili, release dili ve proof dili birbirinden kopmamasi icin tas
 | release blockers | [Release Blockers](Documentation/Generated/Release-Blockers.md) |
 | benchmark gecmisi ve methodology | [Benchmark History](Documentation/Generated/Benchmark-History.md), [Benchmark Methodology](Documentation/Generated/Benchmark-Methodology.md) |
 | release evidence flow | [Release Process](Documentation/Release-Process.md) |
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
+## GitHub Yuzeyi
+
+<p align="center">
+  <img src="Documentation/Assets/Readme/swiftintelligence-trust-board.svg" width="100%" alt="SwiftIntelligence trust and distribution board" />
+</p>
+
+| Yuzey | Mevcut posture | Link |
+| --- | --- | --- |
+| About | kategori net, Apple-native scope net | [GitHub Distribution](Documentation/GitHub-Distribution.md) |
+| README | landing-page hissi veren, 18 dilli giris yuzeyi | [README Languages](Documentation/README-Languages.md) |
+| Releases | immutable proof-linked release assets | [Releases](https://github.com/muhittincamdali/SwiftIntelligence/releases) |
+| License | MIT | [LICENSE](LICENSE) |
+| Code of Conduct | Contributor Covenant 2.1 | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) |
+| Contributing | yuksek kalite bar'i ve public-claim kurallari | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Security | advisory-first intake | [SECURITY.md](SECURITY.md) |
+| Support | issue routing ve maintainer validation floor | [SUPPORT.md](SUPPORT.md) |
+| Copilot | repo-level custom instructions | [.github/copilot-instructions.md](.github/copilot-instructions.md) |
+| Funding | GitHub Sponsors support path | [.github/FUNDING.yml](.github/FUNDING.yml) |
+| Packages | 11 Swift product | [Package.swift](Package.swift) |
+| Deployments | public Pages URL yok; repo-native docs ve release assets esas yuzey | [Documentation Index](Documentation/README.md) |
+
+### Destek
+
+- [GitHub Sponsors](https://github.com/sponsors/muhittincamdali)
+- [Funding configuration](.github/FUNDING.yml)
+
+### Otomasyon Notu
+
+GitHub-hosted runner'lar su an external account-level billing lock nedeniyle bloklu. Bu nedenle repo icin authoritative quality floor su local gate setidir:
+
+```bash
+swift build
+bash Scripts/validate-flagship-demo.sh
+bash Scripts/validate-examples.sh
+swift test
+bash Scripts/prepare-release.sh
+```
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
+## Aktivite ve Community
+
+[![Star History Chart](https://api.star-history.com/svg?repos=muhittincamdali/SwiftIntelligence&type=Date)](https://star-history.com/#muhittincamdali/SwiftIntelligence&Date)
+
+[![Contributors](https://contrib.rocks/image?repo=muhittincamdali/SwiftIntelligence)](https://github.com/muhittincamdali/SwiftIntelligence/graphs/contributors)
 
 ## Gelistirme
 

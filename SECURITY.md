@@ -44,8 +44,19 @@ Treat the following as current guidance:
 - do not expose secrets in examples, tests, or benchmark artifacts
 - do not assume inactive products are maintained
 - review privacy-sensitive flows before enabling network transport
-- keep CodeQL, dependency review, and OpenSSF Scorecard workflows green
+- keep CodeQL, dependency review, and OpenSSF Scorecard definitions maintained; if GitHub-hosted runners are externally blocked, use repo-local validation until the account-level blocker is cleared
 - treat benchmark, example, and release artifacts as part of the trusted supply-chain surface
+
+## Security Operations Matrix
+
+| Surface | Current policy |
+| --- | --- |
+| Vulnerability intake | Prefer GitHub Security Advisories |
+| Public issues | Do not use for vulnerabilities |
+| Sensitive examples | Never commit secrets, tokens, or production credentials |
+| Privacy-sensitive benchmark output | Treat as trusted release surface, not disposable scratch data |
+| GitHub-hosted security workflows | Keep definitions current; re-enable active execution when external account billing lock is resolved |
+| Local maintainer gate | `bash Scripts/prepare-release.sh` remains the canonical repo-side validation floor |
 
 ## Response Expectations
 
@@ -59,3 +70,4 @@ Please allow time for triage, remediation, validation, and release preparation b
 
 - [Documentation/Security.md](Documentation/Security.md)
 - [SUPPORT.md](SUPPORT.md)
+- [.github/copilot-instructions.md](.github/copilot-instructions.md)
