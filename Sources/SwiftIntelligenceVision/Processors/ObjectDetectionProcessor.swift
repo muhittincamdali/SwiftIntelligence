@@ -130,8 +130,9 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
     }
     
     /// Real-time object detection from camera feed
+    @MainActor
     public func detectRealtime(
-        from sampleBuffer: sending CMSampleBuffer,
+        from sampleBuffer: CMSampleBuffer,
         options: DetectionOptions
     ) async throws -> ObjectDetectionResult {
         
@@ -151,7 +152,7 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
         let modelName = "yolo_v8_nano"
         
         // Perform detection
-        let detectedObjects = try await performRealtimeDetection(
+        let detectedObjects = try performRealtimeDetection(
             pixelBuffer: pixelBuffer,
             imageSize: imageSize,
             modelName: modelName,
@@ -317,7 +318,7 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
         imageSize: CGSize,
         modelName: String,
         options: DetectionOptions
-    ) async throws -> [DetectedObject] {
+    ) throws -> [DetectedObject] {
         do {
             let request = try VNCoreMLRequest(model: getModel(modelName))
             request.imageCropAndScaleOption = .scaleFit

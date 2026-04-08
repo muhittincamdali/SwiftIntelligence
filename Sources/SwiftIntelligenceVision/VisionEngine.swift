@@ -190,7 +190,7 @@ public class VisionEngine: ObservableObject {
     
     /// Real-time object detection from camera feed
     public func detectObjectsRealtime(
-        from sampleBuffer: sending CMSampleBuffer,
+        from sampleBuffer: CMSampleBuffer,
         options: DetectionOptions = .default
     ) async throws -> ObjectDetectionResult {
         guard let processor = detectionProcessor else {
