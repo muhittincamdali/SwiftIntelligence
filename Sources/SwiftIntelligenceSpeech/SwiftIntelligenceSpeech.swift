@@ -335,12 +335,13 @@ public actor SwiftIntelligenceSpeech {
         utterance.volume = options.volume
         
         isPlaying = true
+        let speechModule = self
         
         return try await withCheckedThrowingContinuation { continuation in
             let delegate = SpeechSynthesizerDelegate(
-                onFinish: { [weak self] in
+                onFinish: {
                     Task {
-                        await self?.setPlayingState(false)
+                        await speechModule.setPlayingState(false)
                     }
                     continuation.resume()
                 },
