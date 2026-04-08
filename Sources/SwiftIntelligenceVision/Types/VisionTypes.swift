@@ -434,6 +434,20 @@ public struct FaceEnrollmentOptions: Hashable, Codable, Sendable {
     }
     
     public static let `default` = FaceEnrollmentOptions()
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(requireHighQuality)
+        hasher.combine(minimumFaceSize.width)
+        hasher.combine(minimumFaceSize.height)
+        hasher.combine(allowMultipleFaces)
+    }
+
+    public static func == (lhs: FaceEnrollmentOptions, rhs: FaceEnrollmentOptions) -> Bool {
+        lhs.requireHighQuality == rhs.requireHighQuality &&
+        lhs.minimumFaceSize.width == rhs.minimumFaceSize.width &&
+        lhs.minimumFaceSize.height == rhs.minimumFaceSize.height &&
+        lhs.allowMultipleFaces == rhs.allowMultipleFaces
+    }
 }
 
 public struct FaceEnrollmentResult: VisionResult {
