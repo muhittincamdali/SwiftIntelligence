@@ -19,9 +19,11 @@ if [[ "$WORKFLOW_PATH" != /* ]]; then
 fi
 
 ACTIVE_RESULTS_DIR="$RESULTS_ROOT/latest"
+ACTIVE_PROFILE="standard"
 
 if [[ ! -f "$ACTIVE_RESULTS_DIR/benchmark-report.json" && -f "$RESULTS_ROOT/ci-smoke/benchmark-report.json" ]]; then
   ACTIVE_RESULTS_DIR="$RESULTS_ROOT/ci-smoke"
+  ACTIVE_PROFILE="smoke"
 fi
 
 bash "$ROOT_DIR/Scripts/generate-proof-snapshot.sh" "$ACTIVE_RESULTS_DIR" "$GENERATED_DIR/Proof-Snapshot.md"
@@ -41,7 +43,7 @@ bash "$ROOT_DIR/Scripts/generate-public-proof-status.sh" "$GENERATED_DIR/Benchma
 bash "$ROOT_DIR/Scripts/generate-flagship-demo-pack.sh" "$GENERATED_DIR/Public-Proof-Status.md" "$GENERATED_DIR/Latest-Release-Proof.md" "$GENERATED_DIR/Flagship-Demo-Pack.md"
 bash "$ROOT_DIR/Scripts/generate-device-evidence-handoff.sh" "$GENERATED_DIR/Device-Evidence-Queue.md" "$GENERATED_DIR/device-evidence-queue.json" "$GENERATED_DIR/Device-Evidence-Intake.md" "$GENERATED_DIR/Device-Evidence-Runbook.md" "$GENERATED_DIR/public-proof-status.json" "$GENERATED_DIR/Device-Evidence-Handoff.md" "$GENERATED_DIR/device-evidence-handoff.json"
 bash "$ROOT_DIR/Scripts/generate-evidence-provenance-report.sh" "$RESULTS_ROOT" "$GENERATED_DIR/Evidence-Provenance.md"
-bash "$ROOT_DIR/Scripts/validate-benchmarks.sh" standard "$ACTIVE_RESULTS_DIR"
+bash "$ROOT_DIR/Scripts/validate-benchmarks.sh" "$ACTIVE_PROFILE" "$ACTIVE_RESULTS_DIR"
 bash "$ROOT_DIR/Scripts/validate-transfer-chain.sh" "$ACTIVE_RESULTS_DIR"
 bash "$ROOT_DIR/Scripts/validate-device-evidence.sh" "$RESULTS_ROOT" "$ROOT_DIR/Benchmarks/device-matrix-policy.json"
 bash "$ROOT_DIR/Scripts/validate-device-capture-packets.sh" "$GENERATED_DIR/Device-Coverage-Matrix.md" "$GENERATED_DIR/Device-Capture-Packets" "$GENERATED_DIR/Device-Capture-Packets.md"
