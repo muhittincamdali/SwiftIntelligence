@@ -1,74 +1,70 @@
-<svg width="1400" height="840" viewBox="0 0 1400 840" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+<svg width="1400" height="860" viewBox="0 0 1400 860" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="840" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#06101D"/>
-      <stop offset="0.55" stop-color="#101C31"/>
-      <stop offset="1" stop-color="#081624"/>
+    <linearGradient id="bg" x1="64" y1="48" x2="1332" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081322"/>
+      <stop offset="0.52" stop-color="#0E1B31"/>
+      <stop offset="1" stop-color="#091423"/>
     </linearGradient>
-    <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1140 170) rotate(132) scale(360 320)">
-      <stop stop-color="#0A84FF" stop-opacity="0.55"/>
+    <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1148 164) rotate(135) scale(360 330)">
+      <stop stop-color="#0A84FF" stop-opacity="0.48"/>
       <stop offset="1" stop-color="#0A84FF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="amberGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(284 760) rotate(-33) scale(420 280)">
-      <stop stop-color="#FF8A00" stop-opacity="0.34"/>
+    <radialGradient id="amberGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(248 808) rotate(-21) scale(380 250)">
+      <stop stop-color="#FF8A00" stop-opacity="0.28"/>
       <stop offset="1" stop-color="#FF8A00" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#182740" stop-opacity="0.94"/>
-      <stop offset="1" stop-color="#0E1A2C" stop-opacity="0.92"/>
-    </linearGradient>
-    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#FFFFFF" stop-opacity="0.18"/>
-      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.04"/>
+    <linearGradient id="panel" x1="860" y1="136" x2="1260" y2="676" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#162641" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#0E192B" stop-opacity="0.94"/>
     </linearGradient>
   </defs>
 
-  <rect width="1400" height="840" rx="36" fill="url(#bg)"/>
-  <rect width="1400" height="840" rx="36" fill="url(#blueGlow)"/>
-  <rect width="1400" height="840" rx="36" fill="url(#amberGlow)"/>
+  <rect width="1400" height="860" rx="38" fill="#050B16"/>
+  <rect x="36" y="34" width="1328" height="792" rx="38" fill="url(#bg)"/>
+  <rect x="36" y="34" width="1328" height="792" rx="38" fill="url(#blueGlow)"/>
+  <rect x="36" y="34" width="1328" height="792" rx="38" fill="url(#amberGlow)"/>
 
-  <rect x="74" y="82" width="720" height="640" rx="34" fill="#0B1728" fill-opacity="0.72" stroke="#EEF3FF" stroke-opacity="0.08"/>
-  <rect x="860" y="142" width="456" height="514" rx="32" fill="url(#panel)" stroke="#EEF3FF" stroke-opacity="0.08"/>
+  <rect x="86" y="84" width="690" height="622" rx="32" fill="#0A1526" fill-opacity="0.76" stroke="#F3F7FF" stroke-opacity="0.08"/>
+  <rect x="846" y="140" width="452" height="510" rx="30" fill="url(#panel)" stroke="#F3F7FF" stroke-opacity="0.08"/>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <rect x="118" y="126" width="180" height="42" rx="21" fill="url(#glass)" stroke="#FFFFFF" stroke-opacity="0.14"/>
-    <text x="150" y="153" fill="#DBE9FF" font-size="20" font-weight="700">APPLE-NATIVE AI</text>
+    <rect x="126" y="124" width="188" height="40" rx="20" fill="#132238" stroke="#EEF4FF" stroke-opacity="0.10"/>
+    <text x="154" y="150" fill="#DBE8FF" font-size="20" font-weight="700">APPLE-NATIVE AI</text>
 
-    <text x="118" y="252" fill="#FFFFFF" font-size="76" font-weight="800">SwiftIntelligence</text>
-    <text x="118" y="312" fill="#9FC5FF" font-size="30" font-weight="700">Modular on-device AI for Apple platforms</text>
+    <text x="126" y="248" fill="#FFFFFF" font-size="80" font-weight="800">SwiftIntelligence</text>
+    <text x="126" y="306" fill="#9FC5FF" font-size="30" font-weight="700">Modular on-device AI for Apple platforms</text>
 
-    <text x="118" y="392" fill="#EAF2FF" font-size="24" font-weight="500">Build real developer workflows across Vision,</text>
-    <text x="118" y="428" fill="#EAF2FF" font-size="24" font-weight="500">NaturalLanguage, Speech, privacy controls,</text>
-    <text x="118" y="464" fill="#EAF2FF" font-size="24" font-weight="500">benchmarks, and release proof.</text>
+    <text x="126" y="392" fill="#E7F0FF" font-size="24" font-weight="500">Ship real Apple-native workflows across Vision,</text>
+    <text x="126" y="428" fill="#E7F0FF" font-size="24" font-weight="500">NaturalLanguage, Speech, privacy controls,</text>
+    <text x="126" y="464" fill="#E7F0FF" font-size="24" font-weight="500">benchmarks, and release proof.</text>
 
-    <rect x="118" y="520" width="170" height="48" rx="18" fill="#F05138"/>
-    <text x="159" y="551" fill="#FFFFFF" font-size="22" font-weight="800">Vision</text>
-    <rect x="306" y="520" width="232" height="48" rx="18" fill="#0A84FF"/>
-    <text x="349" y="551" fill="#FFFFFF" font-size="22" font-weight="800">NaturalLanguage</text>
-    <rect x="556" y="520" width="160" height="48" rx="18" fill="#34C759"/>
-    <text x="601" y="551" fill="#FFFFFF" font-size="22" font-weight="800">Privacy</text>
+    <rect x="126" y="524" width="166" height="50" rx="18" fill="#F05138"/>
+    <text x="169" y="556" fill="#FFFFFF" font-size="22" font-weight="800">Vision</text>
+    <rect x="310" y="524" width="228" height="50" rx="18" fill="#0A84FF"/>
+    <text x="351" y="556" fill="#FFFFFF" font-size="22" font-weight="800">NaturalLanguage</text>
+    <rect x="556" y="524" width="158" height="50" rx="18" fill="#34C759"/>
+    <text x="603" y="556" fill="#FFFFFF" font-size="22" font-weight="800">Privacy</text>
 
-    <rect x="118" y="606" width="600" height="94" rx="24" fill="#F7FAFF" fill-opacity="0.08" stroke="#FFFFFF" stroke-opacity="0.08"/>
-    <text x="154" y="646" fill="#FFFFFF" font-size="24" font-weight="760">Flagship Path</text>
-    <text x="154" y="676" fill="#D7E6FF" font-size="20" font-weight="500">IntelligentCamera proves the strongest maintained flow.</text>
-    <text x="154" y="706" fill="#FFFFFF" font-size="28" font-weight="800">Vision → NLP → Privacy</text>
+    <rect x="126" y="610" width="610" height="74" rx="22" fill="#F7FAFF" fill-opacity="0.06" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <text x="160" y="642" fill="#DCE8FF" font-size="19" font-weight="700">Flagship path</text>
+    <text x="160" y="673" fill="#FFFFFF" font-size="30" font-weight="800">IntelligentCamera  →  Vision  →  NLP  →  Privacy</text>
 
-    <text x="904" y="218" fill="#FFFFFF" font-size="34" font-weight="800">Release Signal</text>
+    <text x="888" y="212" fill="#FFFFFF" font-size="34" font-weight="800">Release Signal</text>
 
-    <rect x="904" y="252" width="368" height="78" rx="22" fill="#0E213A" stroke="#5AC8FA" stroke-opacity="0.24"/>
-    <text x="934" y="286" fill="#9FC5FF" font-size="21" font-weight="700">Publish readiness</text>
-    <text x="934" y="314" fill="#FFFFFF" font-size="32" font-weight="800">ready</text>
+    <rect x="888" y="246" width="368" height="78" rx="22" fill="#0D1F36" stroke="#5AC8FA" stroke-opacity="0.22"/>
+    <text x="918" y="280" fill="#9FC5FF" font-size="21" font-weight="700">Publish readiness</text>
+    <text x="918" y="309" fill="#FFFFFF" font-size="32" font-weight="800">ready</text>
 
-    <rect x="904" y="348" width="368" height="78" rx="22" fill="#1D1A0D" stroke="#FF8A00" stroke-opacity="0.24"/>
-    <text x="934" y="382" fill="#FFD4A6" font-size="21" font-weight="700">Distribution posture</text>
-    <text x="934" y="410" fill="#FFFFFF" font-size="32" font-weight="800">release-grade</text>
+    <rect x="888" y="342" width="368" height="78" rx="22" fill="#1B160B" stroke="#FF9F0A" stroke-opacity="0.22"/>
+    <text x="918" y="376" fill="#FFD6AA" font-size="21" font-weight="700">Proof posture</text>
+    <text x="918" y="405" fill="#FFFFFF" font-size="32" font-weight="800">release-grade</text>
 
-    <rect x="904" y="444" width="368" height="78" rx="22" fill="#0F231A" stroke="#34C759" stroke-opacity="0.24"/>
-    <text x="934" y="478" fill="#B5F0C5" font-size="21" font-weight="700">Required device floor</text>
-    <text x="934" y="506" fill="#FFFFFF" font-size="32" font-weight="800">Mac + iPhone</text>
+    <rect x="888" y="438" width="368" height="78" rx="22" fill="#0C2118" stroke="#34C759" stroke-opacity="0.22"/>
+    <text x="918" y="472" fill="#B8F2C7" font-size="21" font-weight="700">Required devices</text>
+    <text x="918" y="501" fill="#FFFFFF" font-size="32" font-weight="800">Mac + iPhone</text>
 
-    <rect x="904" y="540" width="368" height="78" rx="22" fill="#1D152A" stroke="#BF5AF2" stroke-opacity="0.24"/>
-    <text x="934" y="574" fill="#E6C8FF" font-size="21" font-weight="700">Flagship media</text>
-    <text x="934" y="602" fill="#FFFFFF" font-size="32" font-weight="800">published</text>
+    <rect x="888" y="534" width="368" height="78" rx="22" fill="#1A1325" stroke="#BF5AF2" stroke-opacity="0.22"/>
+    <text x="918" y="568" fill="#E6CBFF" font-size="21" font-weight="700">Flagship media</text>
+    <text x="918" y="597" fill="#FFFFFF" font-size="32" font-weight="800">published</text>
   </g>
 </svg>
