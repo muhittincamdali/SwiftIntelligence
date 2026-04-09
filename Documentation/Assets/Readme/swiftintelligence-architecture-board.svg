@@ -15,14 +15,16 @@
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
     <text x="96" y="122" fill="#FFFFFF" font-size="52" font-weight="800">Architecture Map</text>
-    <text x="96" y="166" fill="#AFC6E9" font-size="24" font-weight="500">A clear modular graph with app-facing workflows on top and proof infrastructure underneath.</text>
+    <text x="96" y="164" fill="#AFC6E9" font-size="21" font-weight="500">A clear modular graph with app-facing workflows on top</text>
+    <text x="96" y="194" fill="#AFC6E9" font-size="21" font-weight="500">and proof infrastructure underneath.</text>
   </g>
 
   <g filter="url(#shadow)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <rect x="108" y="238" width="1184" height="124" rx="28" fill="#102239" stroke="#5AC8FA" stroke-opacity="0.24"/>
+    <rect x="108" y="238" width="1184" height="140" rx="28" fill="#102239" stroke="#5AC8FA" stroke-opacity="0.24"/>
     <text x="140" y="286" fill="#9FC5FF" font-size="22" font-weight="700">App workflow layer</text>
-    <text x="140" y="326" fill="#FFFFFF" font-size="28" font-weight="800">IntelligentCamera, SmartTranslator, VoiceAssistant,</text>
-    <text x="140" y="362" fill="#FFFFFF" font-size="28" font-weight="800">and future productized demos</text>
+    <text x="140" y="324" fill="#FFFFFF" font-size="26" font-weight="800">IntelligentCamera, SmartTranslator,</text>
+    <text x="140" y="356" fill="#FFFFFF" font-size="26" font-weight="800">VoiceAssistant, and future</text>
+    <text x="140" y="388" fill="#FFFFFF" font-size="26" font-weight="800">productized demos</text>
 
     <rect x="108" y="404" width="344" height="228" rx="28" fill="#111F35" stroke="#F05138" stroke-opacity="0.26"/>
     <text x="136" y="448" fill="#FFB3A8" font-size="22" font-weight="700">Perception</text>
@@ -52,9 +54,9 @@
     <text x="276" y="754" fill="#FFFFFF" font-size="17" font-weight="800">Benchmarks -> proof pages -> release bundles -> public claims</text>
   </g>
 
-  <path d="M700 362V404" stroke="#D7E6FF" stroke-opacity="0.4" stroke-width="4"/>
-  <path d="M280 364V404" stroke="#D7E6FF" stroke-opacity="0.25" stroke-width="3"/>
-  <path d="M1120 364V404" stroke="#D7E6FF" stroke-opacity="0.25" stroke-width="3"/>
+  <path d="M700 378V404" stroke="#D7E6FF" stroke-opacity="0.4" stroke-width="4"/>
+  <path d="M280 380V404" stroke="#D7E6FF" stroke-opacity="0.25" stroke-width="3"/>
+  <path d="M1120 380V404" stroke="#D7E6FF" stroke-opacity="0.25" stroke-width="3"/>
   <path d="M280 632V690" stroke="#D7E6FF" stroke-opacity="0.2" stroke-width="3"/>
   <path d="M700 632V690" stroke="#D7E6FF" stroke-opacity="0.3" stroke-width="4"/>
   <path d="M1120 632V690" stroke="#D7E6FF" stroke-opacity="0.2" stroke-width="3"/>

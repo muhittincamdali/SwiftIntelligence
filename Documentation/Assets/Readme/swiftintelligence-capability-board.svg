@@ -19,37 +19,38 @@
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
     <text x="96" y="124" fill="#FFFFFF" font-size="52" font-weight="800">Product Surface</text>
-    <text x="96" y="168" fill="#AFC6E9" font-size="24" font-weight="500">The repo is designed as an Apple-native workflow stack, not a pile of disconnected wrappers.</text>
+    <text x="96" y="166" fill="#AFC6E9" font-size="21" font-weight="500">The repo is designed as an Apple-native workflow stack,</text>
+    <text x="96" y="196" fill="#AFC6E9" font-size="21" font-weight="500">not a pile of disconnected wrappers.</text>
   </g>
 
   <g filter="url(#shadow)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <rect x="92" y="224" width="376" height="220" rx="28" fill="#111F35" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="92" y="224" width="376" height="232" rx="28" fill="#111F35" stroke="#F2F7FF" stroke-opacity="0.08"/>
     <rect x="112" y="248" width="108" height="38" rx="19" fill="#F05138"/>
     <text x="142" y="274" fill="#FFFFFF" font-size="18" font-weight="800">Vision</text>
     <text x="116" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Scene understanding</text>
     <text x="116" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Classification, OCR, detection,</text>
     <text x="116" y="394" fill="#D7E6FF" font-size="19" font-weight="500">segmentation, and image enhancement</text>
     <text x="116" y="424" fill="#D7E6FF" font-size="19" font-weight="500">inside one maintained module.</text>
-    <text x="116" y="448" fill="#9FC5FF" font-size="19" font-weight="700">Best first path: IntelligentCamera</text>
+    <text x="116" y="450" fill="#9FC5FF" font-size="18" font-weight="700">Best first path: IntelligentCamera</text>
 
-    <rect x="512" y="224" width="376" height="220" rx="28" fill="#102239" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="512" y="224" width="376" height="232" rx="28" fill="#102239" stroke="#F2F7FF" stroke-opacity="0.08"/>
     <rect x="532" y="248" width="170" height="38" rx="19" fill="#0A84FF"/>
     <text x="548" y="274" fill="#FFFFFF" font-size="17" font-weight="800">NaturalLanguage</text>
     <text x="536" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Text intelligence</text>
     <text x="536" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Summaries, entities, keywords, topics,</text>
     <text x="536" y="394" fill="#D7E6FF" font-size="19" font-weight="500">and language-aware pipeline building</text>
     <text x="536" y="424" fill="#D7E6FF" font-size="19" font-weight="500">on Apple frameworks.</text>
-    <text x="536" y="448" fill="#9FC5FF" font-size="18" font-weight="700">Compare against raw</text>
-    <text x="536" y="474" fill="#9FC5FF" font-size="18" font-weight="700">NaturalLanguage APIs</text>
+    <text x="536" y="450" fill="#9FC5FF" font-size="18" font-weight="700">Compare against raw</text>
+    <text x="536" y="476" fill="#9FC5FF" font-size="18" font-weight="700">NaturalLanguage APIs</text>
 
-    <rect x="932" y="224" width="376" height="220" rx="28" fill="#10281D" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="932" y="224" width="376" height="232" rx="28" fill="#10281D" stroke="#F2F7FF" stroke-opacity="0.08"/>
     <rect x="952" y="248" width="116" height="38" rx="19" fill="#34C759"/>
     <text x="980" y="274" fill="#FFFFFF" font-size="18" font-weight="800">Privacy</text>
     <text x="956" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Guard rails</text>
     <text x="956" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Tokenization, anonymization, and</text>
     <text x="956" y="394" fill="#D7E6FF" font-size="19" font-weight="500">secure handling for AI flows that</text>
     <text x="956" y="424" fill="#D7E6FF" font-size="19" font-weight="500">should stay privacy-first.</text>
-    <text x="956" y="448" fill="#B5F0C5" font-size="19" font-weight="700">Security-aware by default</text>
+    <text x="956" y="450" fill="#B5F0C5" font-size="18" font-weight="700">Security-aware by default</text>
 
     <rect x="92" y="490" width="376" height="220" rx="28" fill="#171A30" stroke="#F2F7FF" stroke-opacity="0.08"/>
     <rect x="112" y="514" width="120" height="38" rx="19" fill="#BF5AF2"/>
@@ -82,11 +83,11 @@
     <text x="956" y="740" fill="#9FC5FF" font-size="18" font-weight="700">release-grade posture</text>
   </g>
 
-  <rect x="92" y="768" width="1216" height="88" rx="24" fill="url(#line)" stroke="#FFFFFF" stroke-opacity="0.08"/>
+  <rect x="92" y="780" width="1216" height="76" rx="24" fill="url(#line)" stroke="#FFFFFF" stroke-opacity="0.08"/>
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <text x="126" y="810" fill="#FFFFFF" font-size="22" font-weight="800">Flagship flow</text>
-    <text x="126" y="842" fill="#D7E6FF" font-size="22" font-weight="600">Vision -> NLP -> Privacy -> release proof</text>
-    <text x="760" y="810" fill="#FFFFFF" font-size="22" font-weight="800">Current strongest demo</text>
-    <text x="760" y="842" fill="#9FC5FF" font-size="22" font-weight="700">IntelligentCamera</text>
+    <text x="126" y="812" fill="#FFFFFF" font-size="21" font-weight="800">Flagship flow</text>
+    <text x="126" y="838" fill="#D7E6FF" font-size="20" font-weight="600">Vision -> NLP -> Privacy -> release proof</text>
+    <text x="760" y="812" fill="#FFFFFF" font-size="21" font-weight="800">Current strongest demo</text>
+    <text x="760" y="838" fill="#9FC5FF" font-size="20" font-weight="700">IntelligentCamera</text>
   </g>
 </svg>
