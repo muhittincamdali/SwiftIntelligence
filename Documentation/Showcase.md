@@ -83,6 +83,7 @@ Current limitation:
 
 Where to verify:
 
+- guide: [SmartTranslator demo guide](../Examples/DemoApps/SmartTranslator/README.md)
 - source: [SmartTranslatorApp.swift](../Examples/DemoApps/SmartTranslator/SmartTranslatorApp.swift)
 - command: `bash Scripts/validate-examples.sh`
 
@@ -104,6 +105,7 @@ Current limitation:
 
 Where to verify:
 
+- guide: [VoiceAssistant demo guide](../Examples/DemoApps/VoiceAssistant/README.md)
 - source: [VoiceAssistantApp.swift](../Examples/DemoApps/VoiceAssistant/VoiceAssistantApp.swift)
 - command: `bash Scripts/validate-examples.sh`
 
@@ -118,6 +120,7 @@ Current release/trust envelope:
 
 Current proof entry points:
 
+- [Trust Start](Trust-Start.md)
 - [Public Proof Status](Generated/Public-Proof-Status.md)
 - [Benchmark Readiness](Generated/Benchmark-Readiness.md)
 - [Latest Release Proof](Generated/Latest-Release-Proof.md)

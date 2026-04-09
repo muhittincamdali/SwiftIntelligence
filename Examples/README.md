@@ -22,8 +22,8 @@ Why:
 | Example | Flow | Maturity | Best use |
 | --- | --- | --- | --- |
 | [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | `Vision -> NLP -> Privacy` | flagship | evaluate the strongest current repo story |
-| `DemoApps/SmartTranslator/SmartTranslatorApp.swift` | `NLP -> Privacy -> Speech` | maintained secondary | evaluate text-to-output workflow composition |
-| `DemoApps/VoiceAssistant/VoiceAssistantApp.swift` | `NLP -> Privacy -> Speech` | maintained secondary | evaluate assistant-style response flows |
+| [SmartTranslator](DemoApps/SmartTranslator/README.md) | `NLP -> Privacy -> Speech` | maintained secondary | evaluate text-to-output workflow composition |
+| [VoiceAssistant](DemoApps/VoiceAssistant/README.md) | `NLP -> Privacy -> Speech` | maintained secondary | evaluate assistant-style response flows |
 | `DemoApps/PersonalAITutor/PersonalAITutorApp.swift` | tutor-style workflow | source-validated | inspect package coverage, not flagship polish |
 | `DemoApps/ARCreativeStudio/ARCreativeStudioApp.swift` | vision-heavy creative workflow | source-validated | inspect breadth, not best-first onboarding |
 | [BasicUsage.swift](BasicUsage.swift) | minimal API surface | compile-validated | understand smallest integration path |
@@ -35,8 +35,8 @@ Why:
 | Your goal | Start here |
 | --- | --- |
 | see the strongest product-quality path | [IntelligentCamera](DemoApps/IntelligentCamera/README.md) |
-| inspect text-heavy workflow composition | `DemoApps/SmartTranslator/SmartTranslatorApp.swift` |
-| inspect assistant-style UX | `DemoApps/VoiceAssistant/VoiceAssistantApp.swift` |
+| inspect text-heavy workflow composition | [SmartTranslator](DemoApps/SmartTranslator/README.md) |
+| inspect assistant-style UX | [VoiceAssistant](DemoApps/VoiceAssistant/README.md) |
 | inspect the smallest code sample | [BasicUsage.swift](BasicUsage.swift) |
 | review the public narrative behind these demos | [Documentation/Showcase.md](../Documentation/Showcase.md) |
 
