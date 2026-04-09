@@ -121,7 +121,9 @@ public actor SwiftIntelligenceML {
         trainingQueue.append(task)
         
         do {
-            let result = try await modelWrapper.model.train(with: data)
+            var model = modelWrapper.model
+            let result = try await model.train(with: data)
+            modelWrapper.model = model
             
             // Update the model in registry after training
             modelRegistry[modelID] = modelWrapper

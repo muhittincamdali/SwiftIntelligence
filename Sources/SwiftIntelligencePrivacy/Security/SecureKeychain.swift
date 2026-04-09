@@ -20,7 +20,7 @@ public final class SecureKeychain: @unchecked Sendable {
     // MARK: - Key Storage
     
     /// Store a symmetric key in the keychain
-    public func storeKey(_ key: SymmetricKey, identifier: String, accessibility: CFString = kSecAttrAccessibleWhenUnlockedThisDeviceOnly) async throws {
+    public func storeKey(_ key: SymmetricKey, identifier: String, accessibility: CFString = kSecAttrAccessibleWhenUnlockedThisDeviceOnly) throws {
         let keyData = key.withUnsafeBytes { Data($0) }
         
         var query: [String: Any] = [
@@ -36,7 +36,7 @@ public final class SecureKeychain: @unchecked Sendable {
         }
         
         // Delete existing key if present
-        try await deleteKey(identifier: identifier)
+        try deleteKey(identifier: identifier)
         
         let status = SecItemAdd(query as CFDictionary, nil)
         
@@ -49,7 +49,7 @@ public final class SecureKeychain: @unchecked Sendable {
     }
     
     /// Retrieve a symmetric key from the keychain
-    public func getKey(identifier: String) async throws -> SymmetricKey? {
+    public func getKey(identifier: String) throws -> SymmetricKey? {
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: serviceIdentifier,
@@ -82,7 +82,7 @@ public final class SecureKeychain: @unchecked Sendable {
     }
     
     /// Delete a key from the keychain
-    public func deleteKey(identifier: String) async throws {
+    public func deleteKey(identifier: String) throws {
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: serviceIdentifier,
@@ -382,21 +382,21 @@ public final class SecureKeychain: @unchecked Sendable {
     // MARK: - Key Rotation
     
     /// Rotate a symmetric key
-    public func rotateKey(identifier: String, accessibility: CFString = kSecAttrAccessibleWhenUnlockedThisDeviceOnly) async throws -> SymmetricKey {
+    public func rotateKey(identifier: String, accessibility: CFString = kSecAttrAccessibleWhenUnlockedThisDeviceOnly) throws -> SymmetricKey {
         // Generate new key
         let newKey = SymmetricKey(size: .bits256)
         
         // Store the new key
-        try await storeKey(newKey, identifier: identifier, accessibility: accessibility)
+        try storeKey(newKey, identifier: identifier, accessibility: accessibility)
         
         logger.info("Key rotated: \(identifier)")
         return newKey
     }
     
     /// Check if a key exists
-    public func keyExists(identifier: String) async throws -> Bool {
+    public func keyExists(identifier: String) throws -> Bool {
         do {
-            let key = try await getKey(identifier: identifier)
+            let key = try getKey(identifier: identifier)
             return key != nil
         } catch KeychainError.retrievalError(let status) where status == errSecItemNotFound {
             return false
@@ -411,7 +411,7 @@ public final class SecureKeychain: @unchecked Sendable {
         var keyData: [String: Data] = [:]
         
         for keyIdentifier in keys {
-            if let key = try await getKey(identifier: keyIdentifier) {
+            if let key = try getKey(identifier: keyIdentifier) {
                 let keyBytes = key.withUnsafeBytes { Data($0) }
                 keyData[keyIdentifier] = keyBytes
             }
@@ -453,7 +453,7 @@ public final class SecureKeychain: @unchecked Sendable {
         
         for (identifier, data) in keyData {
             let key = SymmetricKey(data: data)
-            try await storeKey(key, identifier: identifier)
+            try storeKey(key, identifier: identifier)
         }
         
         logger.info("Keys imported from backup")

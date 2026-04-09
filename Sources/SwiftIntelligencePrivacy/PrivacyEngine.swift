@@ -256,12 +256,12 @@ public final class PrivacyEngine: NSObject, ObservableObject {
         if let existingKey = encryptionKeys[identifier] {
             return existingKey
         }
-        if let storedKey = try await keychain.getKey(identifier: identifier) {
+        if let storedKey = try keychain.getKey(identifier: identifier) {
             encryptionKeys[identifier] = storedKey
             return storedKey
         }
         let newKey = SymmetricKey(size: .bits256)
-        try await keychain.storeKey(newKey, identifier: identifier)
+        try keychain.storeKey(newKey, identifier: identifier)
         encryptionKeys[identifier] = newKey
         return newKey
     }

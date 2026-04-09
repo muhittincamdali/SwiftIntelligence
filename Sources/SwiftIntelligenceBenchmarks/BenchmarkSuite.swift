@@ -9,6 +9,8 @@ import Foundation
 @preconcurrency import Darwin
 import SwiftIntelligenceCore
 
+private let benchmarkTaskPort: mach_port_t = mach_task_self_
+
 /// Comprehensive performance benchmark suite for SwiftIntelligence Framework
 public final class BenchmarkSuite {
     
@@ -174,7 +176,7 @@ public final class BenchmarkSuite {
         let result = withUnsafeMutablePointer(to: &info) {
             $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
                 task_info(
-                    mach_task_self_,
+                    benchmarkTaskPort,
                     task_flavor_t(MACH_TASK_BASIC_INFO),
                     $0,
                     &count

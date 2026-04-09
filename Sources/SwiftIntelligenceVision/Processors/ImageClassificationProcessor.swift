@@ -8,7 +8,10 @@ import AppKit
 #endif
 import os.log
 
+private let imageClassificationTaskPort: mach_port_t = mach_task_self_
+
 /// Advanced image classification processor with multiple model support
+@MainActor
 public class ImageClassificationProcessor: @unchecked Sendable {
     
     // MARK: - Properties
@@ -124,19 +127,14 @@ public class ImageClassificationProcessor: @unchecked Sendable {
         _ images: [PlatformImage],
         options: ClassificationOptions
     ) async throws -> [ImageClassificationResult] {
-        return try await withThrowingTaskGroup(of: ImageClassificationResult.self) { group in
-            for image in images {
-                group.addTask {
-                    try await self.classify(image, options: options)
-                }
-            }
-            
-            var results: [ImageClassificationResult] = []
-            for try await result in group {
-                results.append(result)
-            }
-            return results
+        var results: [ImageClassificationResult] = []
+        results.reserveCapacity(images.count)
+
+        for image in images {
+            results.append(try await classify(image, options: options))
         }
+
+        return results
     }
     
     // MARK: - Private Methods
@@ -180,7 +178,7 @@ public class ImageClassificationProcessor: @unchecked Sendable {
         model: VNCoreMLModel,
         options: ClassificationOptions
     ) async throws -> [Classification] {
-        return try await withCheckedThrowingContinuation { continuation in
+        let observations: [VNClassificationObservation] = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[VNClassificationObservation], Error>) in
             processingQueue.async {
                 do {
                     let request = VNCoreMLRequest(model: model) { request, error in
@@ -193,12 +191,8 @@ public class ImageClassificationProcessor: @unchecked Sendable {
                             continuation.resume(throwing: ClassificationError.invalidResults)
                             return
                         }
-                        
-                        let classifications = self.processObservations(
-                            observations,
-                            options: options
-                        )
-                        continuation.resume(returning: classifications)
+
+                        continuation.resume(returning: observations)
                     }
                     
                     // Configure request
@@ -213,27 +207,29 @@ public class ImageClassificationProcessor: @unchecked Sendable {
                 }
             }
         }
+
+        return processObservations(observations, options: options)
     }
 
     private func performBuiltInClassification(
         cgImage: CGImage,
         options: ClassificationOptions
     ) async throws -> [Classification] {
-        try await withCheckedThrowingContinuation { continuation in
+        let observations: [VNClassificationObservation] = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[VNClassificationObservation], Error>) in
             processingQueue.async {
                 do {
                     let request = VNClassifyImageRequest()
                     let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                     try handler.perform([request])
 
-                    let observations = request.results ?? []
-                    let classifications = self.processObservations(observations, options: options)
-                    continuation.resume(returning: classifications)
+                    continuation.resume(returning: request.results ?? [])
                 } catch {
                     continuation.resume(throwing: ClassificationError.processingFailed(error))
                 }
             }
         }
+
+        return processObservations(observations, options: options)
     }
     
     private func getModel(_ modelName: String) throws -> VNCoreMLModel {
@@ -550,7 +546,7 @@ public class ImageClassificationProcessor: @unchecked Sendable {
         
         let result = withUnsafeMutablePointer(to: &info) {
             $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(mach_task_self_, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
+                task_info(imageClassificationTaskPort, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
             }
         }
         

@@ -10,6 +10,7 @@ import AVFoundation
 import os.log
 
 /// Advanced object detection processor with real-time capabilities
+@MainActor
 public final class ObjectDetectionProcessor: @unchecked Sendable {
     
     // MARK: - Properties
@@ -185,19 +186,14 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
         _ images: [PlatformImage],
         options: DetectionOptions
     ) async throws -> [ObjectDetectionResult] {
-        return try await withThrowingTaskGroup(of: ObjectDetectionResult.self) { group in
-            for image in images {
-                group.addTask {
-                    try await self.detect(in: image, options: options)
-                }
-            }
-            
-            var results: [ObjectDetectionResult] = []
-            for try await result in group {
-                results.append(result)
-            }
-            return results
+        var results: [ObjectDetectionResult] = []
+        results.reserveCapacity(images.count)
+
+        for image in images {
+            results.append(try await detect(in: image, options: options))
         }
+
+        return results
     }
     
     // MARK: - Private Methods
@@ -241,7 +237,7 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
         model: VNCoreMLModel,
         options: DetectionOptions
     ) async throws -> [DetectedObject] {
-        return try await withCheckedThrowingContinuation { continuation in
+        let results: [Any]? = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[Any]?, Error>) in
             processingQueue.async {
                 do {
                     let request = VNCoreMLRequest(model: model) { request, error in
@@ -249,13 +245,8 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
                             continuation.resume(throwing: DetectionError.processingFailed(error))
                             return
                         }
-                        
-                        let detectedObjects = self.processDetectionResults(
-                            request.results,
-                            options: options,
-                            imageSize: CGSize(width: cgImage.width, height: cgImage.height)
-                        )
-                        continuation.resume(returning: detectedObjects)
+
+                        continuation.resume(returning: request.results)
                     }
                     
                     // Configure request
@@ -270,13 +261,19 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
                 }
             }
         }
+
+        return processDetectionResults(
+            results,
+            options: options,
+            imageSize: CGSize(width: cgImage.width, height: cgImage.height)
+        )
     }
 
     private func performBuiltInDetection(
         cgImage: CGImage,
         options: DetectionOptions
     ) async throws -> [DetectedObject] {
-        try await withCheckedThrowingContinuation { continuation in
+        let rectangles: [VNRectangleObservation] = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[VNRectangleObservation], Error>) in
             processingQueue.async {
                 do {
                     let request = VNDetectRectanglesRequest()
@@ -288,28 +285,28 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
                     let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                     try handler.perform([request])
 
-                    let rectangles = (request.results ?? []).enumerated().map { index, observation in
-                        DetectedObject(
-                            identifier: "document_region_\(index + 1)",
-                            label: "Document Region",
-                            confidence: observation.confidence,
-                            boundingBox: self.convertBoundingBox(
-                                observation.boundingBox,
-                                imageSize: CGSize(width: cgImage.width, height: cgImage.height)
-                            ),
-                            category: .other,
-                            attributes: [
-                                "source": "vn_detect_rectangles",
-                                "aspectRatio": String(format: "%.2f", observation.boundingBox.width / max(observation.boundingBox.height, 0.0001))
-                            ]
-                        )
-                    }
-
-                    continuation.resume(returning: rectangles)
+                    continuation.resume(returning: request.results ?? [])
                 } catch {
                     continuation.resume(throwing: DetectionError.processingFailed(error))
                 }
             }
+        }
+
+        return rectangles.enumerated().map { index, observation in
+            DetectedObject(
+                identifier: "document_region_\(index + 1)",
+                label: "Document Region",
+                confidence: observation.confidence,
+                boundingBox: convertBoundingBox(
+                    observation.boundingBox,
+                    imageSize: CGSize(width: cgImage.width, height: cgImage.height)
+                ),
+                category: .other,
+                attributes: [
+                    "source": "vn_detect_rectangles",
+                    "aspectRatio": String(format: "%.2f", observation.boundingBox.width / max(observation.boundingBox.height, 0.0001))
+                ]
+            )
         }
     }
     
