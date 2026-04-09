@@ -636,7 +636,7 @@ public class SpeechEngine: NSObject, ObservableObject {
 // MARK: - AVSpeechSynthesizerDelegate
 
 @MainActor
-extension SpeechEngine: AVSpeechSynthesizerDelegate {
+extension SpeechEngine: @preconcurrency AVSpeechSynthesizerDelegate {
     
     public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
         isSpeaking = true
