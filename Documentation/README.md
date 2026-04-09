@@ -1,70 +1,83 @@
-# SwiftIntelligence Documentation
+# SwiftIntelligence Documentation Hub
 
-This folder is the entry point for implementation notes, usage guides, and proof artifacts.
+This hub is organized by intent, not by maintainer file dump.
 
-## Start Here
+## 1. I am evaluating the repo
 
 - [Five-Minute Success Path](Getting-Started.md#five-minute-success-path)
-- [README Languages](README-Languages.md)
-- [Intelligent Camera demo guide](../Examples/DemoApps/IntelligentCamera/README.md)
-- [Getting Started](Getting-Started.md)
-- [Documentation Status](DOCUMENTATION_STATUS.md)
-- [Architecture](Architecture.md)
 - [Positioning](Positioning.md)
-- [GitHub Distribution](GitHub-Distribution.md)
-- [GitHub Copilot Instructions](../.github/copilot-instructions.md)
-- [Code of Conduct](../CODE_OF_CONDUCT.md)
-- [Security Policy](../SECURITY.md)
-- [Support Guide](../SUPPORT.md)
-- [Module Comparisons](Comparisons/README.md)
+- [Competitive Matrix](Comparisons/Competitive-Matrix.md)
 - [Showcase](Showcase.md)
-- [Flagship Media](Assets/Flagship-Demo/README.md)
-- [Generated Flagship Media Status](Generated/Flagship-Media-Status.md)
-- [Generated Flagship Demo Pack](Generated/Flagship-Demo-Pack.md)
-- [Generated Proof Snapshot](Generated/Proof-Snapshot.md)
-- [Generated Benchmark History](Generated/Benchmark-History.md)
-- [Generated Benchmark Comparison](Generated/Benchmark-Comparison.md)
-- [Generated Benchmark Methodology](Generated/Benchmark-Methodology.md)
-- [Generated Benchmark Timeline](Generated/Benchmark-Timeline.md)
-- [Generated Release Benchmark Matrix](Generated/Release-Benchmark-Matrix.md)
-- [Generated Release Proof Timeline](Generated/Release-Proof-Timeline.md)
-- [Generated Latest Release Proof](Generated/Latest-Release-Proof.md)
-- [Generated Benchmark Readiness](Generated/Benchmark-Readiness.md)
-- [Generated Release Candidate Plan](Generated/Release-Candidate-Plan.md)
-- [Generated Device Evidence Plan](Generated/Device-Evidence-Plan.md)
-- [Generated Device Coverage Matrix](Generated/Device-Coverage-Matrix.md)
-- [Generated Device Capture Packets](Generated/Device-Capture-Packets.md)
-- [Generated Device Evidence Runbook](Generated/Device-Evidence-Runbook.md)
-- [Generated Device Evidence Intake](Generated/Device-Evidence-Intake.md)
-- [Generated Device Evidence Queue](Generated/Device-Evidence-Queue.md)
-- [Generated Device Evidence Handoff](Generated/Device-Evidence-Handoff.md)
-- [Generated Release Blockers](Generated/Release-Blockers.md)
-- [Generated Public Proof Status](Generated/Public-Proof-Status.md)
-- [Generated Evidence Provenance](Generated/Evidence-Provenance.md)
-- [GitHub Device Evidence Issue Form](../.github/ISSUE_TEMPLATE/device_evidence.yml)
-- [Proof Surface Validation](../Scripts/validate-proof-surfaces.sh)
-- [Device Evidence Wave Import](../Scripts/complete-device-evidence-wave.sh)
+- [Examples Hub](../Examples/README.md)
+
+## 2. I need the strongest product path
+
+- [IntelligentCamera demo guide](../Examples/DemoApps/IntelligentCamera/README.md)
+- [Flagship media policy](Assets/Flagship-Demo/README.md)
+- [Flagship media status](Generated/Flagship-Media-Status.md)
+- [Flagship demo pack](Generated/Flagship-Demo-Pack.md)
+
+## 3. I want trust, proof, and release reality
+
+- [Public Proof Status](Generated/Public-Proof-Status.md)
+- [Latest Release Proof](Generated/Latest-Release-Proof.md)
+- [Benchmark Readiness](Generated/Benchmark-Readiness.md)
+- [Release Blockers](Generated/Release-Blockers.md)
+- [Release Benchmark Matrix](Generated/Release-Benchmark-Matrix.md)
+- [Release Process](Release-Process.md)
+- [Benchmark Baselines](Benchmark-Baselines.md)
+
+## 4. I want module-level comparisons
+
+- [Comparisons hub](Comparisons/README.md)
+- [NLP vs Apple NaturalLanguage](Comparisons/NLP-vs-NaturalLanguage.md)
+- [Vision vs Apple Vision](Comparisons/Vision-vs-AppleVision.md)
+- [Speech vs Apple Speech](Comparisons/Speech-vs-AppleSpeech.md)
+- [Privacy vs CryptoKit + Security](Comparisons/Privacy-vs-CryptoKit-Security.md)
+
+## 5. I am integrating the package
+
+- [Getting Started](Getting-Started.md)
 - [API Overview](API.md)
 - [API Reference](API-Reference.md)
+- [Architecture](Architecture.md)
 - [Performance Guide](Performance.md)
-- [Benchmark Baselines](Benchmark-Baselines.md)
-- [Release Process](Release-Process.md)
-- [Release Asset Policy](release-asset-policy.json)
-- [Device Evidence Form Policy](device-evidence-form-policy.json)
-- [Security Guide](Security.md)
 - [visionOS Guide](visionOS-Guide.md)
 
-## Maintainer Notes
+## 6. I am contributing or maintaining
 
+- [Contributing](../CONTRIBUTING.md)
+- [GitHub Copilot Instructions](../.github/copilot-instructions.md)
+- [GitHub Distribution](GitHub-Distribution.md)
+- [Security Policy](../SECURITY.md)
+- [Support Guide](../SUPPORT.md)
+- [Documentation Status](DOCUMENTATION_STATUS.md)
 - [Swift Test Blockers](SWIFT_TEST_BLOCKERS.md)
-- [Diagrams](Diagrams/README.md)
 
-## Documentation Standards
+## 7. Generated proof surfaces
 
-- Public examples should reflect the active package graph.
-- Performance claims should be backed by reproducible benchmark output.
-- High-visibility benchmark language should stay conservative until `Benchmark-Readiness.md` reports `ready`.
-- Documentation should prefer modular imports over stale umbrella examples.
-- Legacy documents must be clearly marked until they are rewritten.
-- Release notes should come from `CHANGELOG.md` plus immutable benchmark evidence, not ad-hoc git log text.
-- Public install snippets should match the latest numbered release in `CHANGELOG.md`.
+Use these when you need machine-generated truth, not narrative pages.
+
+- [Proof Snapshot](Generated/Proof-Snapshot.md)
+- [Benchmark History](Generated/Benchmark-History.md)
+- [Benchmark Comparison](Generated/Benchmark-Comparison.md)
+- [Benchmark Methodology](Generated/Benchmark-Methodology.md)
+- [Benchmark Timeline](Generated/Benchmark-Timeline.md)
+- [Release Proof Timeline](Generated/Release-Proof-Timeline.md)
+- [Release Candidate Plan](Generated/Release-Candidate-Plan.md)
+- [Device Evidence Plan](Generated/Device-Evidence-Plan.md)
+- [Device Coverage Matrix](Generated/Device-Coverage-Matrix.md)
+- [Device Capture Packets](Generated/Device-Capture-Packets.md)
+- [Device Evidence Runbook](Generated/Device-Evidence-Runbook.md)
+- [Device Evidence Intake](Generated/Device-Evidence-Intake.md)
+- [Device Evidence Queue](Generated/Device-Evidence-Queue.md)
+- [Device Evidence Handoff](Generated/Device-Evidence-Handoff.md)
+- [Evidence Provenance](Generated/Evidence-Provenance.md)
+
+## Documentation rules
+
+- Public examples must match the active package graph.
+- Competitive pages must compare against primary sources and direct alternatives, not hype strawmen.
+- Public performance language must stay inside the current proof envelope.
+- Public install snippets must match the latest numbered release in `CHANGELOG.md`.
+- The docs hub should send evaluators to outcomes first, then to maintainer detail.

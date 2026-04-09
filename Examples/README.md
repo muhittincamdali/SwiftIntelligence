@@ -1,44 +1,70 @@
-# Examples Status
+# SwiftIntelligence Examples Hub
 
-## Current Examples
+This page exists to answer one practical question:
 
-- [BasicUsage.swift](BasicUsage.swift)
-- [AdvancedFeatures.swift](AdvancedFeatures.swift)
-- `DemoApps/VoiceAssistant/VoiceAssistantApp.swift`
-- `DemoApps/IntelligentCamera/IntelligentCameraApp.swift`
-- `DemoApps/SmartTranslator/SmartTranslatorApp.swift`
-- `DemoApps/PersonalAITutor/PersonalAITutorApp.swift`
-- `DemoApps/ARCreativeStudio/ARCreativeStudioApp.swift`
-- `ServerIntegration/AIServiceClient.swift`
+**What should I run first, and which demos are actually mature enough to trust?**
 
-These files are aligned with the active modular package graph.
+## Best first path
 
-## Flagship Demo Paths
+If you only evaluate one example first, use:
 
-- `IntelligentCamera`: `Vision -> NLP -> Privacy`
-- `SmartTranslator`: `NLP -> Privacy -> Speech`
-- `VoiceAssistant`: `NLP -> Privacy -> Speech`
+- [IntelligentCamera demo guide](DemoApps/IntelligentCamera/README.md)
+- validation command: `bash Scripts/validate-flagship-demo.sh`
 
-## Recommended First Demo
+Why:
 
-If you only run one demo first, use:
+- strongest multi-module story
+- best current media and proof support
+- aligned with the repo's public positioning
 
-- [Demo guide](DemoApps/IntelligentCamera/README.md)
-- `DemoApps/IntelligentCamera/IntelligentCameraApp.swift`
+## Example maturity map
 
-Reason:
+| Example | Flow | Maturity | Best use |
+| --- | --- | --- | --- |
+| [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | `Vision -> NLP -> Privacy` | flagship | evaluate the strongest current repo story |
+| `DemoApps/SmartTranslator/SmartTranslatorApp.swift` | `NLP -> Privacy -> Speech` | maintained secondary | evaluate text-to-output workflow composition |
+| `DemoApps/VoiceAssistant/VoiceAssistantApp.swift` | `NLP -> Privacy -> Speech` | maintained secondary | evaluate assistant-style response flows |
+| `DemoApps/PersonalAITutor/PersonalAITutorApp.swift` | tutor-style workflow | source-validated | inspect package coverage, not flagship polish |
+| `DemoApps/ARCreativeStudio/ARCreativeStudioApp.swift` | vision-heavy creative workflow | source-validated | inspect breadth, not best-first onboarding |
+| [BasicUsage.swift](BasicUsage.swift) | minimal API surface | compile-validated | understand smallest integration path |
+| [AdvancedFeatures.swift](AdvancedFeatures.swift) | broader feature sample | compile-validated | inspect more APIs quickly |
+| `ServerIntegration/AIServiceClient.swift` | network-adjacent support | compile-validated | inspect integration helper surface |
 
-- strongest multi-module maintained flow
-- aligned with the current showcase story
-- best first proof of package-level composition instead of single-feature wrapping
+## Choose by goal
 
-The current proof narrative for these flows lives in [Documentation/Showcase.md](../Documentation/Showcase.md).
-Canonical showcase media rules for the flagship path live in [Documentation/Assets/Flagship-Demo/README.md](../Documentation/Assets/Flagship-Demo/README.md).
+| Your goal | Start here |
+| --- | --- |
+| see the strongest product-quality path | [IntelligentCamera](DemoApps/IntelligentCamera/README.md) |
+| inspect text-heavy workflow composition | `DemoApps/SmartTranslator/SmartTranslatorApp.swift` |
+| inspect assistant-style UX | `DemoApps/VoiceAssistant/VoiceAssistantApp.swift` |
+| inspect the smallest code sample | [BasicUsage.swift](BasicUsage.swift) |
+| review the public narrative behind these demos | [Documentation/Showcase.md](../Documentation/Showcase.md) |
 
-## Validation
+## What is actually validated
 
-- `Scripts/validate-flagship-demo.sh`
-- `Scripts/validate-examples.sh`
+- `bash Scripts/validate-flagship-demo.sh`
+  - smoke-checks the strongest maintained path
+- `bash Scripts/validate-examples.sh`
+  - compile-checks the full example set against the active package graph
 
-`validate-flagship-demo.sh` smoke-checks the repo's strongest demo path.
-`validate-examples.sh` builds a temporary validation package and compile-checks the full example set against the active Swift package products.
+Validation truth:
+
+- `IntelligentCamera` is the only example with full flagship media, proof narrative, and strongest onboarding
+- the other demos are real and compile-validated, but they are not yet presented with the same product polish
+
+## Media and proof
+
+- [Showcase](../Documentation/Showcase.md)
+- [Flagship media policy](../Documentation/Assets/Flagship-Demo/README.md)
+- [Flagship media status](../Documentation/Generated/Flagship-Media-Status.md)
+- [Flagship demo pack](../Documentation/Generated/Flagship-Demo-Pack.md)
+
+## Maintainer rule
+
+Do not market a demo as flagship-quality unless it has:
+
+- a dedicated guide
+- a repeatable run path
+- current media
+- validation coverage
+- a clear role in the repo's public positioning
