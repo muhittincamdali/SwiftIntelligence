@@ -18,6 +18,7 @@ jobs:
   analyze:
     name: Analyze (Swift)
     runs-on: macos-14
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -37,7 +38,7 @@ jobs:
           dependency-caching: true
 
       - name: Build Swift Package
-        run: swift build
+        run: swift build --arch arm64
 
       - name: Analyze
         uses: github/codeql-action/analyze@v4.35.1
