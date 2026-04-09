@@ -2,15 +2,16 @@
 @testable import SwiftIntelligenceML
 @testable import SwiftIntelligenceCore
 
-@MainActor
 final class MLEngineTests: XCTestCase {
     private var mlEngine: SwiftIntelligenceML!
 
+    @MainActor
     override func setUp() async throws {
         mlEngine = try await SwiftIntelligenceML()
         SwiftIntelligenceCore.shared.configure(with: .testing)
     }
 
+    @MainActor
     override func tearDown() async throws {
         try await mlEngine.shutdown()
         SwiftIntelligenceCore.shared.cleanup()

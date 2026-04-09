@@ -12,11 +12,11 @@ import UIKit
 
 /// Performance benchmark tests for SwiftIntelligence framework
 /// Measures execution time, memory usage, and throughput
-@MainActor
 final class PerformanceTests: XCTestCase {
     
     var performanceMonitor: PerformanceMonitor!
     
+    @MainActor
     override func setUp() async throws {
         // Configure for performance testing
         let perfConfig = IntelligenceConfiguration(
@@ -32,6 +32,7 @@ final class PerformanceTests: XCTestCase {
         performanceMonitor.startMonitoring()
     }
     
+    @MainActor
     override func tearDown() async throws {
         performanceMonitor.stopMonitoring()
         SwiftIntelligenceCore.shared.cleanup()
@@ -39,6 +40,7 @@ final class PerformanceTests: XCTestCase {
     
     // MARK: - NLP Performance Tests
     
+    @MainActor
     func testNLPAnalysisPerformance() async throws {
         let text = "SwiftIntelligence is a comprehensive AI framework that provides natural language processing, computer vision, and speech capabilities for Apple platforms. It enables developers to build intelligent applications with ease."
         
@@ -64,6 +66,7 @@ final class PerformanceTests: XCTestCase {
         }
     }
     
+    @MainActor
     func testNLPBatchProcessingPerformance() async throws {
         let texts = Array(1...100).map { index in
             "This is test text number \\(index) for batch processing performance evaluation. It contains various words and concepts to analyze."
@@ -129,6 +132,7 @@ final class PerformanceTests: XCTestCase {
         XCTAssertGreaterThan(speedupRatio, 1.0) // Should have some speedup
     }
     
+    @MainActor
     func testNLPThroughputBenchmark() async throws {
         let testTexts = Array(1...50).map { "Throughput test text \\($0)" }
         let duration: TimeInterval = 10.0 // 10 second benchmark
@@ -162,6 +166,7 @@ final class PerformanceTests: XCTestCase {
     // MARK: - Vision Performance Tests
     
     #if canImport(UIKit)
+    @MainActor
     func testVisionObjectDetectionPerformance() async throws {
         guard let testImage = createPerformanceTestImage() else {
             XCTFail("Failed to create test image")
@@ -188,6 +193,7 @@ final class PerformanceTests: XCTestCase {
         }
     }
     
+    @MainActor
     func testVisionImageProcessingThroughput() async throws {
         let images = (1...20).compactMap { _ in createPerformanceTestImage() }
         guard !images.isEmpty else {
@@ -222,6 +228,7 @@ final class PerformanceTests: XCTestCase {
     
     // MARK: - Speech Performance Tests
     
+    @MainActor
     func testSpeechSynthesisPerformance() async throws {
         let text = "SwiftIntelligence provides high-performance speech synthesis capabilities for Apple platforms."
         
@@ -242,6 +249,7 @@ final class PerformanceTests: XCTestCase {
         }
     }
     
+    @MainActor
     func testSpeechSynthesisThroughput() async throws {
         let texts = Array(1...20).map { "Speech synthesis test text number \\($0)." }
         
@@ -271,6 +279,7 @@ final class PerformanceTests: XCTestCase {
     
     // MARK: - Memory Performance Tests
     
+    @MainActor
     func testMemoryUsageUnderLoad() async throws {
         let initialMemory = SwiftIntelligenceCore.shared.memoryUsage()
         print("Initial memory usage: \\(String(format: "%.2f", Double(initialMemory.used) / 1024 / 1024)) MB")
@@ -348,6 +357,7 @@ final class PerformanceTests: XCTestCase {
         XCTAssertGreaterThan(memoryReclaimed, 0) // Some memory should be reclaimed
     }
     
+    @MainActor
     func testMemoryLeakDetection() async throws {
         let initialMemory = SwiftIntelligenceCore.shared.memoryUsage()
         
@@ -400,6 +410,7 @@ final class PerformanceTests: XCTestCase {
     
     // MARK: - Scalability Tests
     
+    @MainActor
     func testConcurrentUserSimulation() async throws {
         let userCount = 10
         let operationsPerUser = 5

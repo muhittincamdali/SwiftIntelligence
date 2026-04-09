@@ -1,8 +1,6 @@
 import Foundation
-@preconcurrency import Darwin
+import CSwiftIntelligenceSupport
 import os.signpost
-
-private let performanceMonitorTaskPort: mach_port_t = mach_task_self_
 
 /// Performance monitoring system for SwiftIntelligence
 @MainActor
@@ -135,61 +133,54 @@ public final class PerformanceMonitor {
     
     /// Get current memory usage
     public func currentMemoryUsage() -> MemoryUsage {
-        var info = mach_task_basic_info()
-        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size) / 4
-        
-        let result = withUnsafeMutablePointer(to: &info) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(performanceMonitorTaskPort,
-                         task_flavor_t(MACH_TASK_BASIC_INFO),
-                         $0,
-                         &count)
-            }
+        guard let snapshot = currentTaskSnapshot() else {
+            return MemoryUsage(used: 0, total: 0, usedMB: 0, totalMB: 0, percentage: 0)
         }
-        
-        if result == KERN_SUCCESS {
-            let usedMB = Double(info.resident_size) / 1024.0 / 1024.0
-            let totalMB = Double(ProcessInfo.processInfo.physicalMemory) / 1024.0 / 1024.0
-            
-            return MemoryUsage(
-                used: info.resident_size,
-                total: ProcessInfo.processInfo.physicalMemory,
-                usedMB: usedMB,
-                totalMB: totalMB,
-                percentage: (usedMB / totalMB) * 100
-            )
-        }
-        
-        return MemoryUsage(used: 0, total: 0, usedMB: 0, totalMB: 0, percentage: 0)
+
+        let usedMB = Double(snapshot.residentSize) / 1024.0 / 1024.0
+        let totalMB = Double(ProcessInfo.processInfo.physicalMemory) / 1024.0 / 1024.0
+
+        return MemoryUsage(
+            used: snapshot.residentSize,
+            total: ProcessInfo.processInfo.physicalMemory,
+            usedMB: usedMB,
+            totalMB: totalMB,
+            percentage: (usedMB / totalMB) * 100
+        )
     }
     
     /// Get current CPU usage
     public func currentCPUUsage() -> CPUUsage {
-        var info = mach_task_basic_info()
-        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size) / 4
-        
-        let result = withUnsafeMutablePointer(to: &info) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(performanceMonitorTaskPort,
-                         task_flavor_t(MACH_TASK_BASIC_INFO),
-                         $0,
-                         &count)
-            }
+        guard let snapshot = currentTaskSnapshot() else {
+            return CPUUsage(user: 0, system: 0, total: 0, percentage: 0)
         }
-        
-        if result == KERN_SUCCESS {
-            let userTime = Double(info.user_time.seconds) + Double(info.user_time.microseconds) / 1_000_000
-            let systemTime = Double(info.system_time.seconds) + Double(info.system_time.microseconds) / 1_000_000
-            
-            return CPUUsage(
-                user: userTime,
-                system: systemTime,
-                total: userTime + systemTime,
-                percentage: 0 // Would need historical data to calculate percentage
-            )
-        }
-        
-        return CPUUsage(user: 0, system: 0, total: 0, percentage: 0)
+
+        return CPUUsage(
+            user: snapshot.userSeconds,
+            system: snapshot.systemSeconds,
+            total: snapshot.userSeconds + snapshot.systemSeconds,
+            percentage: 0 // Would need historical data to calculate percentage
+        )
+    }
+
+    private func currentTaskSnapshot() -> (residentSize: UInt64, userSeconds: Double, systemSeconds: Double)? {
+        var residentSize: UInt64 = 0
+        var userSeconds = 0.0
+        var systemSeconds = 0.0
+
+        let success = swiftintelligence_get_task_basic_info(
+            &residentSize,
+            &userSeconds,
+            &systemSeconds
+        )
+
+        guard success else { return nil }
+
+        return (
+            residentSize: residentSize,
+            userSeconds: userSeconds,
+            systemSeconds: systemSeconds
+        )
     }
     
     /// Get performance summary

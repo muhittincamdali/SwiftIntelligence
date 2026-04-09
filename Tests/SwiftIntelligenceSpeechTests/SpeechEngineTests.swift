@@ -1,7 +1,6 @@
 @preconcurrency import XCTest
 @testable import SwiftIntelligenceSpeech
 
-@MainActor
 final class SpeechEngineTests: XCTestCase {
     func testSpeechSynthesisOptionsDefaults() {
         let options = SpeechSynthesisOptions.default
@@ -37,6 +36,7 @@ final class SpeechEngineTests: XCTestCase {
         XCTAssertGreaterThan(english?.availableVoices ?? 0, 0)
     }
 
+    @MainActor
     func testAvailableVoicesForEnglishContainMetadata() throws {
         let voices = SpeechEngine.availableVoices(for: "en-US")
         try XCTSkipIf(voices.isEmpty, "No English voices available in this environment")

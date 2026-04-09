@@ -1,5 +1,5 @@
 import Foundation
-@preconcurrency import Darwin
+import CSwiftIntelligenceSupport
 import SwiftIntelligenceCore
 @preconcurrency import CoreML
 @preconcurrency import Vision
@@ -12,8 +12,6 @@ import AppKit
 import AVFoundation
 import Combine
 import os.log
-
-private let visionEngineTaskPort: mach_port_t = mach_task_self_
 
 /// Main vision processing engine for computer vision tasks
 @MainActor
@@ -554,16 +552,9 @@ public class VisionEngine: ObservableObject {
     }
     
     private func getMemoryUsage() -> UInt64 {
-        var info = mach_task_basic_info()
-        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size)/4
-        
-        let result = withUnsafeMutablePointer(to: &info) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(visionEngineTaskPort, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
-            }
-        }
-        
-        return result == KERN_SUCCESS ? info.resident_size : 0
+        var residentSize: UInt64 = 0
+        let success = swiftintelligence_get_task_basic_info(&residentSize, nil, nil)
+        return success ? residentSize : 0
     }
 }
 

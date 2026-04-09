@@ -1,4 +1,5 @@
 import Foundation
+import CSwiftIntelligenceSupport
 import CoreML
 @preconcurrency import Vision
 #if canImport(UIKit)
@@ -7,8 +8,6 @@ import UIKit
 import AppKit
 #endif
 import os.log
-
-private let imageClassificationTaskPort: mach_port_t = mach_task_self_
 
 /// Advanced image classification processor with multiple model support
 @MainActor
@@ -541,16 +540,9 @@ public class ImageClassificationProcessor: @unchecked Sendable {
     }
     
     private func getAvailableMemory() -> UInt64 {
-        var info = mach_task_basic_info()
-        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size)/4
-        
-        let result = withUnsafeMutablePointer(to: &info) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(imageClassificationTaskPort, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
-            }
-        }
-        
-        return result == KERN_SUCCESS ? info.resident_size : 0
+        var residentSize: UInt64 = 0
+        let success = swiftintelligence_get_task_basic_info(&residentSize, nil, nil)
+        return success ? residentSize : 0
     }
 }
 

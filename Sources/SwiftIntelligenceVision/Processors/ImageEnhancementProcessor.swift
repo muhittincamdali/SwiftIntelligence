@@ -10,6 +10,7 @@ import CoreImage
 import os.log
 
 /// Advanced image enhancement processor with AI-powered upscaling and quality improvements
+@MainActor
 public final class ImageEnhancementProcessor: @unchecked Sendable {
     
     // MARK: - Properties

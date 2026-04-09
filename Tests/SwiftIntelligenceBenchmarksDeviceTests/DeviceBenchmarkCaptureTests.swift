@@ -1,7 +1,6 @@
 @preconcurrency import XCTest
 @testable import SwiftIntelligenceBenchmarks
 
-@MainActor
 final class DeviceBenchmarkCaptureTests: XCTestCase {
     private struct CaptureManifest: Codable {
         let profile: String

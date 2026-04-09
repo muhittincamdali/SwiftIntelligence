@@ -151,8 +151,8 @@ public struct MLEvaluationResult: Sendable {
 // MARK: - Model Management
 
 /// Wrapper for ML models
-public struct MLModelWrapper: Sendable {
-    public var model: any MLModelProtocol
+public final class MLModelWrapper: @unchecked Sendable {
+    private var model: any MLModelProtocol
     public let type: MLModelType
     public let createdAt: Date
     public let version: String
@@ -162,6 +162,14 @@ public struct MLModelWrapper: Sendable {
         self.type = type
         self.version = version
         self.createdAt = Date()
+    }
+
+    public func train(with data: MLTrainingData) async throws -> MLTrainingResult {
+        try await model.train(with: data)
+    }
+
+    public func predict(_ input: MLInput) async throws -> MLOutput {
+        try await model.predict(input)
     }
 }
 

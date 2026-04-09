@@ -104,7 +104,7 @@ public actor SwiftIntelligenceML {
             throw IntelligenceError(code: "ML_NOT_READY", message: "ML Engine not ready")
         }
         
-        guard var modelWrapper = modelRegistry[modelID] else {
+        guard let modelWrapper = modelRegistry[modelID] else {
             throw IntelligenceError(code: "MODEL_NOT_FOUND", message: "Model \(modelID) not found")
         }
         
@@ -121,12 +121,7 @@ public actor SwiftIntelligenceML {
         trainingQueue.append(task)
         
         do {
-            var model = modelWrapper.model
-            let result = try await model.train(with: data)
-            modelWrapper.model = model
-            
-            // Update the model in registry after training
-            modelRegistry[modelID] = modelWrapper
+            let result = try await modelWrapper.train(with: data)
             
             // Update performance metrics
             let duration = Date().timeIntervalSince(startTime)
@@ -167,7 +162,7 @@ public actor SwiftIntelligenceML {
         let startTime = Date()
         
         do {
-            let output = try await modelWrapper.model.predict(input)
+            let output = try await modelWrapper.predict(input)
             
             // Cache result
             let result = InferenceResult(output: output, timestamp: Date())

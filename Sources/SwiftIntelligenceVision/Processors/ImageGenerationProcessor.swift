@@ -12,9 +12,9 @@ import CoreImage
 import os.log
 
 /// Advanced image generation processor aligned to the canonical Vision types.
+@MainActor
 public final class ImageGenerationProcessor: @unchecked Sendable {
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "ImageGeneration")
-    private let processingQueue = DispatchQueue(label: "image.generation", qos: .userInitiated)
     private let ciContext = CIContext(options: [.useSoftwareRenderer: false])
 
     private var generationModels: [ImageGenerationOptions.GenerationStyle: VNCoreMLModel] = [:]
@@ -165,21 +165,18 @@ public final class ImageGenerationProcessor: @unchecked Sendable {
         prompt: String,
         options: ImageGenerationOptions
     ) async throws -> [ImageGenerationResult.GeneratedImage] {
-        try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
-                let delay = self.calculateProcessingDelay(options: options)
-                Thread.sleep(forTimeInterval: delay)
+        let delay = calculateProcessingDelay(options: options)
+        if delay > 0 {
+            try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+        }
 
-                let images = (0..<max(1, options.count)).map { index in
-                    let generatedImage = self.createMockGeneratedImage(
-                        prompt: prompt,
-                        options: options,
-                        variantIndex: index
-                    )
-                    return self.generatedImageRecord(from: generatedImage)
-                }
-                continuation.resume(returning: images)
-            }
+        return (0..<max(1, options.count)).map { index in
+            let generatedImage = createMockGeneratedImage(
+                prompt: prompt,
+                options: options,
+                variantIndex: index
+            )
+            return generatedImageRecord(from: generatedImage)
         }
     }
 

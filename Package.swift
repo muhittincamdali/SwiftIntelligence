@@ -75,7 +75,7 @@ let package = Package(
         // MARK: - Core Module
         .target(
             name: "SwiftIntelligenceCore",
-            dependencies: [],
+            dependencies: ["CSwiftIntelligenceSupport"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
@@ -100,7 +100,7 @@ let package = Package(
         
         .target(
             name: "SwiftIntelligenceVision",
-            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceML"],
+            dependencies: ["CSwiftIntelligenceSupport", "SwiftIntelligenceCore", "SwiftIntelligenceML"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
@@ -149,7 +149,7 @@ let package = Package(
         
         .target(
             name: "SwiftIntelligenceMetrics",
-            dependencies: ["SwiftIntelligenceCore"],
+            dependencies: ["CSwiftIntelligenceSupport", "SwiftIntelligenceCore"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
@@ -157,10 +157,16 @@ let package = Package(
         
         .target(
             name: "SwiftIntelligenceBenchmarks",
-            dependencies: ["SwiftIntelligenceCore"],
+            dependencies: ["CSwiftIntelligenceSupport", "SwiftIntelligenceCore"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
+        ),
+
+        .target(
+            name: "CSwiftIntelligenceSupport",
+            path: "Sources/CSwiftIntelligenceSupport",
+            publicHeadersPath: "include"
         ),
 
         .executableTarget(

@@ -8,27 +8,30 @@ import UIKit
 import AppKit
 #endif
 
-@MainActor
 final class VisionEngineTests: XCTestCase {
     private var visionEngine: VisionEngine!
 
+    @MainActor
     override func setUp() async throws {
         visionEngine = VisionEngine.shared
         await visionEngine.shutdown()
         SwiftIntelligenceCore.shared.configure(with: .testing)
     }
 
+    @MainActor
     override func tearDown() async throws {
         await visionEngine.shutdown()
         SwiftIntelligenceCore.shared.cleanup()
         visionEngine = nil
     }
 
+    @MainActor
     func testEngineStartsUninitialized() {
         XCTAssertFalse(visionEngine.isInitialized)
         XCTAssertEqual(visionEngine.processingQueue, 0)
     }
 
+    @MainActor
     func testClassificationRequiresInitialization() async {
         do {
             _ = try await visionEngine.classifyImage(makeTestImage())
@@ -42,6 +45,7 @@ final class VisionEngineTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testDetectionRequiresInitialization() async {
         do {
             _ = try await visionEngine.detectObjects(in: makeTestImage())
@@ -84,6 +88,7 @@ final class VisionEngineTests: XCTestCase {
         XCTAssertTrue(options.backgroundRemoval)
     }
 
+    @MainActor
     private func makeTestImage() -> PlatformImage {
         #if canImport(UIKit)
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 8, height: 8))
