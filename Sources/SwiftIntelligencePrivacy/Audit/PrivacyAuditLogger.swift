@@ -281,11 +281,11 @@ public final class PrivacyAuditLogger: @unchecked Sendable {
 
     private func initializeEncryption() async {
         do {
-            if let existingKey = try await keychain.getKey(identifier: "audit_encryption_key") {
+            if let existingKey = try keychain.getKey(identifier: "audit_encryption_key") {
                 auditEncryptionKey = existingKey
             } else {
                 let newKey = SymmetricKey(size: .bits256)
-                try await keychain.storeKey(newKey, identifier: "audit_encryption_key")
+                try keychain.storeKey(newKey, identifier: "audit_encryption_key")
                 auditEncryptionKey = newKey
             }
         } catch {

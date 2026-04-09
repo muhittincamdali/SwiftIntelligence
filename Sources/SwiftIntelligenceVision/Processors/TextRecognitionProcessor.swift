@@ -11,6 +11,7 @@ import NaturalLanguage
 import os.log
 
 /// Advanced text recognition processor with multi-language support and document analysis
+@MainActor
 public final class TextRecognitionProcessor: @unchecked Sendable {
     
     // MARK: - Properties
@@ -181,20 +182,15 @@ public final class TextRecognitionProcessor: @unchecked Sendable {
         _ images: [PlatformImage],
         options: TextRecognitionOptions
     ) async throws -> [TextRecognitionResult] {
-        
-        return try await withThrowingTaskGroup(of: TextRecognitionResult.self) { group in
-            for image in images {
-                group.addTask {
-                    try await self.recognize(in: image, options: options)
-                }
-            }
-            
-            var results: [TextRecognitionResult] = []
-            for try await result in group {
-                results.append(result)
-            }
-            return results
+
+        var results: [TextRecognitionResult] = []
+        results.reserveCapacity(images.count)
+
+        for image in images {
+            results.append(try await recognize(in: image, options: options))
         }
+
+        return results
     }
     
     // MARK: - Specialized Recognition
@@ -293,10 +289,11 @@ public final class TextRecognitionProcessor: @unchecked Sendable {
     }
     
     private func performTextRecognition(cgImage: CGImage) async throws -> [TextBlock] {
-        return try await withCheckedThrowingContinuation { continuation in
+        let request = textRecognitionRequest
+        let observations: [VNRecognizedTextObservation] = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[VNRecognizedTextObservation], Error>) in
             processingQueue.async {
                 do {
-                    guard let request = self.textRecognitionRequest else {
+                    guard let request else {
                         continuation.resume(throwing: TextRecognitionError.modelNotInitialized)
                         return
                     }
@@ -305,21 +302,19 @@ public final class TextRecognitionProcessor: @unchecked Sendable {
                     
                     let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                     try handler.perform([request])
-                    
-                    let observations = request.results ?? []
-                    
-                    let textBlocks = self.processTextObservations(
-                        observations,
-                        imageSize: CGSize(width: cgImage.width, height: cgImage.height)
-                    )
-                    
-                    continuation.resume(returning: textBlocks)
+
+                    continuation.resume(returning: request.results ?? [])
                     
                 } catch {
                     continuation.resume(throwing: TextRecognitionError.recognitionFailed(error))
                 }
             }
         }
+
+        return processTextObservations(
+            observations,
+            imageSize: CGSize(width: cgImage.width, height: cgImage.height)
+        )
     }
     
     private func processTextObservations(
@@ -385,30 +380,30 @@ public final class TextRecognitionProcessor: @unchecked Sendable {
     }
     
     private func analyzeDocumentLayout(cgImage: CGImage) async throws -> DocumentLayout {
-        return try await withCheckedThrowingContinuation { continuation in
+        let request = documentAnalysisRequest
+        let results: [Any]? = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[Any]?, Error>) in
             processingQueue.async {
                 do {
-                    guard let request = self.documentAnalysisRequest else {
+                    guard let request else {
                         continuation.resume(throwing: TextRecognitionError.modelNotInitialized)
                         return
                     }
                     
                     let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                     try handler.perform([request])
-                    
-                    // Process document segmentation results
-                    let layout = self.processDocumentSegmentation(
-                        request.results,
-                        imageSize: CGSize(width: cgImage.width, height: cgImage.height)
-                    )
-                    
-                    continuation.resume(returning: layout)
+
+                    continuation.resume(returning: request.results)
                     
                 } catch {
                     continuation.resume(throwing: TextRecognitionError.layoutAnalysisFailed(error))
                 }
             }
         }
+
+        return processDocumentSegmentation(
+            results,
+            imageSize: CGSize(width: cgImage.width, height: cgImage.height)
+        )
     }
     
     private func processDocumentSegmentation(

@@ -13,6 +13,8 @@ import AVFoundation
 import Combine
 import os.log
 
+private let visionEngineTaskPort: mach_port_t = mach_task_self_
+
 /// Main vision processing engine for computer vision tasks
 @MainActor
 public class VisionEngine: ObservableObject {
@@ -557,7 +559,7 @@ public class VisionEngine: ObservableObject {
         
         let result = withUnsafeMutablePointer(to: &info) {
             $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(mach_task_self_, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
+                task_info(visionEngineTaskPort, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
             }
         }
         

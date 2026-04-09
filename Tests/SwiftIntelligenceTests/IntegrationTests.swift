@@ -1,4 +1,4 @@
-import XCTest
+@preconcurrency import XCTest
 import Foundation
 @testable import SwiftIntelligence
 @testable import SwiftIntelligenceCore

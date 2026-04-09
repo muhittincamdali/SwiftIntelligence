@@ -1,4 +1,4 @@
-import XCTest
+@preconcurrency import XCTest
 @testable import SwiftIntelligenceCore
 
 /// Test suite for SwiftIntelligenceCore module

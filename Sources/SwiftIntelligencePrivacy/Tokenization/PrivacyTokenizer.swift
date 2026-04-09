@@ -31,12 +31,12 @@ public class PrivacyTokenizer: @unchecked Sendable {
     
     private func initializeTokenizer() async {
         do {
-            if let existingKey = try await keychain.getKey(identifier: "tokenization_key") {
+            if let existingKey = try keychain.getKey(identifier: "tokenization_key") {
                 tokenizationKey = existingKey
             } else {
                 let newKey = SymmetricKey(size: .bits256)
                 do {
-                    try await keychain.storeKey(newKey, identifier: "tokenization_key")
+                    try keychain.storeKey(newKey, identifier: "tokenization_key")
                 } catch {
                     logger.warning("Keychain unavailable for tokenization key storage; using in-memory session key: \(error.localizedDescription)")
                 }

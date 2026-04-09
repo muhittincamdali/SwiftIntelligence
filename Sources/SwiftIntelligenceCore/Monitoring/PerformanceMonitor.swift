@@ -2,6 +2,8 @@ import Foundation
 @preconcurrency import Darwin
 import os.signpost
 
+private let performanceMonitorTaskPort: mach_port_t = mach_task_self_
+
 /// Performance monitoring system for SwiftIntelligence
 @MainActor
 public final class PerformanceMonitor {
@@ -138,7 +140,7 @@ public final class PerformanceMonitor {
         
         let result = withUnsafeMutablePointer(to: &info) {
             $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(mach_task_self_,
+                task_info(performanceMonitorTaskPort,
                          task_flavor_t(MACH_TASK_BASIC_INFO),
                          $0,
                          &count)
@@ -168,7 +170,7 @@ public final class PerformanceMonitor {
         
         let result = withUnsafeMutablePointer(to: &info) {
             $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(mach_task_self_,
+                task_info(performanceMonitorTaskPort,
                          task_flavor_t(MACH_TASK_BASIC_INFO),
                          $0,
                          &count)
