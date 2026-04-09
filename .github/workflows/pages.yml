@@ -42,6 +42,7 @@ jobs:
         with:
           name: github-pages
           path: ./github-pages.tar.gz
+          overwrite: true
           retention-days: 1
 
       - name: Deploy to GitHub Pages
