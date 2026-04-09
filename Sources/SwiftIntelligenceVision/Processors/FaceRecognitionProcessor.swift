@@ -10,6 +10,7 @@ import CryptoKit
 import os.log
 
 /// Advanced face recognition processor with enrollment and biometric capabilities
+@MainActor
 public final class FaceRecognitionProcessor: @unchecked Sendable {
     
     // MARK: - Properties
@@ -746,7 +747,7 @@ private extension FaceRecognitionProcessor {
 
 // MARK: - Face Database
 
-private class FaceDatabase {
+private actor FaceDatabase {
     private let documentsDirectory: URL
     private let facesDirectory: URL
     
@@ -786,7 +787,7 @@ private class FaceDatabase {
 
 // MARK: - Supporting Types
 
-public struct EnrolledFace: Codable {
+public struct EnrolledFace: Codable, Sendable {
     let personID: String
     var identity: String
     let faceTemplate: Data

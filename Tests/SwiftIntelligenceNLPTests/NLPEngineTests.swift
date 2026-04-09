@@ -2,20 +2,22 @@
 @testable import SwiftIntelligenceNLP
 @testable import SwiftIntelligenceCore
 
-@MainActor
 final class NLPEngineTests: XCTestCase {
     private var nlpEngine: NLPEngine!
 
+    @MainActor
     override func setUp() async throws {
         nlpEngine = NLPEngine.shared
         SwiftIntelligenceCore.shared.configure(with: .testing)
     }
 
+    @MainActor
     override func tearDown() async throws {
         SwiftIntelligenceCore.shared.cleanup()
         nlpEngine = nil
     }
 
+    @MainActor
     func testAnalyzeCollectsRequestedSignals() async throws {
         let text = "Apple builds amazing products in Cupertino."
 
@@ -43,6 +45,7 @@ final class NLPEngineTests: XCTestCase {
         XCTAssertFalse(languages?.isEmpty ?? true)
     }
 
+    @MainActor
     func testSentimentAnalysisMatchesWordLists() async throws {
         let positive = try await nlpEngine.analyzeSentiment(text: "I love this fantastic framework")
         let negative = try await nlpEngine.analyzeSentiment(text: "I hate this awful bug")
@@ -53,6 +56,7 @@ final class NLPEngineTests: XCTestCase {
         XCTAssertEqual(neutral.sentiment, .neutral)
     }
 
+    @MainActor
     func testKeywordExtractionRespectsLimit() {
         let keywords = nlpEngine.extractKeywords(
             text: "Machine learning and artificial intelligence power modern machine systems.",
@@ -63,6 +67,7 @@ final class NLPEngineTests: XCTestCase {
         XCTAssertTrue(keywords.contains { $0.word.contains("machine") || $0.word.contains("learning") })
     }
 
+    @MainActor
     func testSummarizeTextReturnsCondensedOutput() async throws {
         let text = """
         SwiftIntelligence brings on-device AI to Apple platforms.
@@ -79,6 +84,7 @@ final class NLPEngineTests: XCTestCase {
         XCTAssertGreaterThan(summary.compressionRatio, 0)
     }
 
+    @MainActor
     func testExtractNamedEntitiesFindsKnownValues() async throws {
         let entities = try await nlpEngine.extractNamedEntities(
             text: "Apple opened a new office in Cupertino."
@@ -88,6 +94,7 @@ final class NLPEngineTests: XCTestCase {
         XCTAssertTrue(entities.contains { $0.text.contains("Apple") || $0.text.contains("Cupertino") })
     }
 
+    @MainActor
     func testExtractTopicsReturnsBoundedTopicCount() async throws {
         let topics = try await nlpEngine.extractTopics(
             text: "Swift, Apple, privacy, performance, on-device AI, and machine learning are central framework themes.",

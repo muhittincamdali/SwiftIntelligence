@@ -1,8 +1,6 @@
 import Foundation
-@preconcurrency import Darwin
+import CSwiftIntelligenceSupport
 import SwiftIntelligenceCore
-
-private let metricsTaskPort: mach_port_t = mach_task_self_
 
 #if canImport(OSLog)
 import OSLog
@@ -362,16 +360,9 @@ public actor SwiftIntelligenceMetrics {
     }
     
     private func getMemoryUsage() -> Int {
-        var info = mach_task_basic_info()
-        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size)/4
-        
-        let result = withUnsafeMutablePointer(to: &info) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(metricsTaskPort, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
-            }
-        }
-        
-        return result == KERN_SUCCESS ? Int(info.resident_size) : 0
+        var residentSize: UInt64 = 0
+        let success = swiftintelligence_get_task_basic_info(&residentSize, nil, nil)
+        return success ? Int(residentSize) : 0
     }
     
     private func getThreadCount() -> Int {

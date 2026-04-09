@@ -10,6 +10,7 @@ import CoreImage
 import os.log
 
 /// Advanced image segmentation processor for semantic and instance segmentation
+@MainActor
 public final class ImageSegmentationProcessor: @unchecked Sendable {
     
     // MARK: - Properties

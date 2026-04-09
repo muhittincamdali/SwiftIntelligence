@@ -3,22 +3,24 @@
 @testable import SwiftIntelligenceCore
 
 /// Comprehensive test suite for SwiftIntelligence framework
-@MainActor
 final class SwiftIntelligenceTests: XCTestCase {
     
     var swiftIntelligence: SwiftIntelligence!
     
+    @MainActor
     override func setUp() async throws {
         swiftIntelligence = SwiftIntelligence.shared
         try await swiftIntelligence.initialize(with: .testing)
     }
     
+    @MainActor
     override func tearDown() async throws {
         try await swiftIntelligence.shutdown()
     }
     
     // MARK: - Framework Tests
     
+    @MainActor
     func testFrameworkInitialization() async throws {
         // Given
         let framework = SwiftIntelligence.shared
@@ -29,6 +31,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertEqual(SwiftIntelligence.build, "2026.04.08")
     }
     
+    @MainActor
     func testFrameworkConfiguration() async throws {
         // Given
         let customConfig = IntelligenceConfiguration.development
@@ -41,6 +44,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertTrue(swiftIntelligence.core.configuration.verboseLogging)
     }
     
+    @MainActor
     func testModuleLoading() async throws {
         // When
         try await swiftIntelligence.loadModule(.ml)
@@ -50,6 +54,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertTrue(swiftIntelligence.activeModules.contains("MachineLearning"))
     }
     
+    @MainActor
     func testModuleUnloading() async throws {
         // Given
         try await swiftIntelligence.loadModule(.ml)
@@ -63,6 +68,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertFalse(swiftIntelligence.activeModules.contains("MachineLearning"))
     }
     
+    @MainActor
     func testMultipleModuleLoading() async throws {
         // When
         try await swiftIntelligence.loadModules([.ml, .nlp, .vision])
@@ -74,6 +80,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertEqual(swiftIntelligence.activeModules.count, 3)
     }
     
+    @MainActor
     func testAllModulesLoading() async throws {
         // When
         try await swiftIntelligence.loadAllModules()
@@ -92,6 +99,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertEqual(swiftIntelligence.activeModules.count, Module.allCases.count)
     }
     
+    @MainActor
     func testHealthCheck() async throws {
         // Given
         try await swiftIntelligence.loadModules([.ml, .nlp])
@@ -107,6 +115,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertTrue(healthReport.activeModules.contains("NaturalLanguageProcessing"))
     }
     
+    @MainActor
     func testErrorHandling() async throws {
         // Given
         let errorHandler = swiftIntelligence.core.errorHandler
@@ -130,6 +139,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertEqual(receivedError?.message, "Test error message")
     }
     
+    @MainActor
     func testPerformanceMonitoring() async throws {
         // Given
         let monitor = swiftIntelligence.core.performanceMonitor
@@ -150,6 +160,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertGreaterThan(summary.averageDuration, 0)
     }
     
+    @MainActor
     func testMemoryUsage() async throws {
         // When
         let memoryUsage = swiftIntelligence.core.memoryUsage()
@@ -163,6 +174,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertLessThanOrEqual(memoryUsage.percentage, 100)
     }
     
+    @MainActor
     func testLogging() async throws {
         // Given
         let logger = swiftIntelligence.core.logger
@@ -272,6 +284,7 @@ final class SwiftIntelligenceTests: XCTestCase {
     
     // MARK: - Performance Tests
     
+    @MainActor
     func testPerformanceMeasurement() async throws {
         // Given
         let monitor = swiftIntelligence.core.performanceMonitor
@@ -289,6 +302,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         XCTAssertEqual(summary.totalOperations, 1)
     }
     
+    @MainActor
     func testAsyncPerformanceMeasurement() async throws {
         // Given
         let monitor = swiftIntelligence.core.performanceMonitor
@@ -313,6 +327,7 @@ final class SwiftIntelligenceTests: XCTestCase {
 
 extension SwiftIntelligenceTests {
     
+    @MainActor
     func testMLEngineInitialization() async throws {
         // When
         try await swiftIntelligence.loadModule(.ml)
@@ -332,6 +347,7 @@ extension SwiftIntelligenceTests {
         XCTAssertEqual(healthStatus.message, "ML Engine is operational")
     }
     
+    @MainActor
     func testNLPEngineInitialization() async throws {
         // When
         try await swiftIntelligence.loadModule(.nlp)
@@ -351,6 +367,7 @@ extension SwiftIntelligenceTests {
         XCTAssertEqual(healthStatus.message, "NLP Engine is operational")
     }
     
+    @MainActor
     func testVisionEngineInitialization() async throws {
         // When
         try await swiftIntelligence.loadModule(.vision)
@@ -375,6 +392,7 @@ extension SwiftIntelligenceTests {
 
 extension SwiftIntelligenceTests {
     
+    @MainActor
     func testFrameworkIntegration() async throws {
         // Given
         let configuration = IntelligenceConfiguration.development
@@ -402,6 +420,7 @@ extension SwiftIntelligenceTests {
 
 extension SwiftIntelligenceTests {
     
+    @MainActor
     func testModuleLoadingPerformance() async throws {
         // Measure module loading time
         measure {
@@ -412,6 +431,7 @@ extension SwiftIntelligenceTests {
         }
     }
     
+    @MainActor
     func testAllModulesLoadingPerformance() async throws {
         // Measure all modules loading time
         measure {

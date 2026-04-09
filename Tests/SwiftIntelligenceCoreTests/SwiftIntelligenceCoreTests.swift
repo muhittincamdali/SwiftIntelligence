@@ -2,11 +2,11 @@
 @testable import SwiftIntelligenceCore
 
 /// Test suite for SwiftIntelligenceCore module
-@MainActor
 final class SwiftIntelligenceCoreTests: XCTestCase {
     
     var core: SwiftIntelligenceCore!
     
+    @MainActor
     override func setUp() async throws {
         core = SwiftIntelligenceCore.shared
         core.performanceMonitor.clearMetrics()
@@ -15,6 +15,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         core.performanceMonitor.startMonitoring()
     }
     
+    @MainActor
     override func tearDown() async throws {
         core.performanceMonitor.clearMetrics()
         core.errorHandler.clearHistory()
@@ -23,12 +24,14 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
     
     // MARK: - Core Tests
     
+    @MainActor
     func testCoreInitialization() {
         XCTAssertNotNil(core)
         XCTAssertEqual(SwiftIntelligenceCore.version, "1.2.0")
         XCTAssertEqual(SwiftIntelligenceCore.buildNumber, "120")
     }
     
+    @MainActor
     func testConfiguration() {
         // Given
         let customConfig = IntelligenceConfiguration(
@@ -46,6 +49,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertTrue(core.configuration.verboseLogging)
     }
     
+    @MainActor
     func testConfigurationReset() {
         // Given
         let customConfig = IntelligenceConfiguration(debugMode: true)
@@ -59,6 +63,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertFalse(core.configuration.debugMode) // Default is false
     }
     
+    @MainActor
     func testMemoryUsage() {
         // When
         let memoryUsage = core.memoryUsage()
@@ -72,6 +77,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertLessThanOrEqual(memoryUsage.percentage, 100)
     }
     
+    @MainActor
     func testCPUUsage() {
         // When
         let cpuUsage = core.cpuUsage()
@@ -85,6 +91,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
     
     // MARK: - Logger Tests
     
+    @MainActor
     func testLogger() {
         let logger = core.logger
         
@@ -103,6 +110,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertNotNil(logger)
     }
     
+    @MainActor
     func testLoggerLevels() {
         let logger = core.logger
         
@@ -127,6 +135,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         logger.critical("Should pass")
     }
     
+    @MainActor
     func testLoggerErrorHandling() {
         let logger = core.logger
         let testError = NSError(domain: "TestDomain", code: 123, userInfo: [NSLocalizedDescriptionKey: "Test error"])
@@ -137,6 +146,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertNotNil(logger)
     }
     
+    @MainActor
     func testLoggerPerformance() {
         let logger = core.logger
         
@@ -147,6 +157,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
     
     // MARK: - Performance Monitor Tests
     
+    @MainActor
     func testPerformanceMonitor() {
         let monitor = core.performanceMonitor
         
@@ -157,6 +168,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertFalse(monitor.isMonitoring)
     }
     
+    @MainActor
     func testOperationTracking() async throws {
         let monitor = core.performanceMonitor
         monitor.startMonitoring()
@@ -175,6 +187,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertGreaterThan(summary.averageDuration, 0)
     }
     
+    @MainActor
     func testMeasureBlock() {
         let monitor = core.performanceMonitor
         monitor.startMonitoring()
@@ -189,6 +202,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertEqual(summary.totalOperations, 1)
     }
     
+    @MainActor
     func testMeasureAsyncBlock() async throws {
         let monitor = core.performanceMonitor
         monitor.startMonitoring()
@@ -205,6 +219,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertGreaterThan(summary.averageDuration, 0.009)
     }
     
+    @MainActor
     func testOperationsByCategory() {
         let monitor = core.performanceMonitor
         monitor.startMonitoring()
@@ -224,6 +239,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertEqual(category2Ops.count, 1)
     }
     
+    @MainActor
     func testClearMetrics() {
         let monitor = core.performanceMonitor
         monitor.startMonitoring()
@@ -243,6 +259,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
     
     // MARK: - Error Handler Tests
     
+    @MainActor
     func testErrorHandler() {
         let errorHandler = core.errorHandler
         let testError = IntelligenceError(
@@ -258,6 +275,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertFalse(errorHandler.errorHistory.first?.recovered ?? true)
     }
     
+    @MainActor
     func testErrorCallback() {
         let errorHandler = core.errorHandler
         var receivedError: IntelligenceError?
@@ -279,6 +297,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertEqual(receivedError?.severity, .high)
     }
     
+    @MainActor
     func testErrorFiltering() {
         let errorHandler = core.errorHandler
         
@@ -297,6 +316,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertEqual(highErrors.first?.error.code, "HIGH")
     }
     
+    @MainActor
     func testErrorsByModule() {
         let errorHandler = core.errorHandler
         
@@ -318,6 +338,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
         XCTAssertEqual(module2Errors.first?.error.code, "ERR2")
     }
     
+    @MainActor
     func testClearErrorHistory() {
         let errorHandler = core.errorHandler
         

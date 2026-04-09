@@ -7,9 +7,8 @@
 
 import Foundation
 @preconcurrency import Darwin
+import CSwiftIntelligenceSupport
 import SwiftIntelligenceCore
-
-private let benchmarkTaskPort: mach_port_t = mach_task_self_
 
 /// Comprehensive performance benchmark suite for SwiftIntelligence Framework
 public final class BenchmarkSuite {
@@ -170,22 +169,9 @@ public final class BenchmarkSuite {
     // MARK: - System Metrics
     
     private func getCurrentMemoryUsage() -> Int64 {
-        var info = mach_task_basic_info()
-        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size) / 4
-        
-        let result = withUnsafeMutablePointer(to: &info) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(
-                    benchmarkTaskPort,
-                    task_flavor_t(MACH_TASK_BASIC_INFO),
-                    $0,
-                    &count
-                )
-            }
-        }
-        
-        guard result == KERN_SUCCESS else { return 0 }
-        return Int64(info.resident_size)
+        var residentSize: UInt64 = 0
+        let success = swiftintelligence_get_task_basic_info(&residentSize, nil, nil)
+        return success ? Int64(residentSize) : 0
     }
     
     private func getCurrentCPUUsage() -> Double {

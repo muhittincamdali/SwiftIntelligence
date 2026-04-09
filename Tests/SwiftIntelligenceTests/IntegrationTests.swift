@@ -13,21 +13,23 @@ import UIKit
 
 /// Integration tests for the complete SwiftIntelligence framework
 /// Tests multi-modal AI workflows and module interactions
-@MainActor
 final class IntegrationTests: XCTestCase {
     
+    @MainActor
     override func setUp() async throws {
         // Configure framework for integration testing
         let testConfig = IntelligenceConfiguration.testing
         SwiftIntelligenceCore.shared.configure(with: testConfig)
     }
     
+    @MainActor
     override func tearDown() async throws {
         SwiftIntelligenceCore.shared.cleanup()
     }
     
     // MARK: - Framework Initialization Tests
     
+    @MainActor
     func testFrameworkInitialization() async throws {
         // Test that all modules can be initialized together
         let core = SwiftIntelligenceCore.shared
@@ -43,6 +45,7 @@ final class IntegrationTests: XCTestCase {
         XCTAssertNotNil(speechEngine)
     }
     
+    @MainActor
     func testFrameworkHealthCheck() async throws {
         let core = SwiftIntelligenceCore.shared
         
@@ -59,6 +62,7 @@ final class IntegrationTests: XCTestCase {
     // MARK: - Multi-Modal Workflow Tests
     
     #if canImport(UIKit)
+    @MainActor
     func testVisionToNLPWorkflow() async throws {
         // Create an image with text
         guard let textImage = createTextImage(text: "SwiftIntelligence AI Framework") else {
@@ -96,6 +100,7 @@ final class IntegrationTests: XCTestCase {
     }
     #endif
     
+    @MainActor
     func testNLPToSpeechWorkflow() async throws {
         // 1. Analyze text with NLP
         let nlpEngine = NLPEngine.shared
@@ -127,6 +132,7 @@ final class IntegrationTests: XCTestCase {
         XCTAssertEqual(speechResult.originalText, summary.summary)
     }
     
+    @MainActor
     func testPrivacyPreservingWorkflow() async throws {
         // 1. Tokenize sensitive data
         let tokenizer = PrivacyTokenizer()
@@ -175,6 +181,7 @@ final class IntegrationTests: XCTestCase {
     
     // MARK: - Performance Integration Tests
     
+    @MainActor
     func testConcurrentModuleProcessing() async throws {
         let testText = "SwiftIntelligence enables powerful AI applications"
         
@@ -213,6 +220,7 @@ final class IntegrationTests: XCTestCase {
         XCTAssertLessThan(totalTime, 5.0)
     }
     
+    @MainActor
     func testHighThroughputProcessing() async throws {
         let texts = Array(1...20).map { "Test text number \($0) for high throughput processing" }
         
@@ -252,6 +260,7 @@ final class IntegrationTests: XCTestCase {
     
     // MARK: - Error Handling Integration Tests
     
+    @MainActor
     func testCascadingErrorHandling() async throws {
         let errorHandler = SwiftIntelligenceCore.shared.errorHandler
         
@@ -294,6 +303,7 @@ final class IntegrationTests: XCTestCase {
     
     // MARK: - Memory Management Tests
     
+    @MainActor
     func testMemoryUsageUnderLoad() async throws {
         let initialMemory = SwiftIntelligenceCore.shared.memoryUsage()
         
@@ -344,6 +354,7 @@ final class IntegrationTests: XCTestCase {
     
     // MARK: - Configuration Integration Tests
     
+    @MainActor
     func testConfigurationPropagation() async throws {
         // Test that configuration changes propagate to all modules
         let customConfig = IntelligenceConfiguration(

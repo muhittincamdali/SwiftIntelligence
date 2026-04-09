@@ -11,6 +11,7 @@ import CoreImage
 import os.log
 
 /// Advanced style transfer processor for artistic image transformation
+@MainActor
 public final class StyleTransferProcessor: @unchecked Sendable {
     
     // MARK: - Properties
