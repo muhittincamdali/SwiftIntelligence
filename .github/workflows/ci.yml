@@ -35,6 +35,9 @@ jobs:
       - name: Validate README Localizations
         run: bash Scripts/validate-readme-localizations.sh
 
+      - name: Validate README Visual Assets
+        run: bash Scripts/validate-readme-visual-assets.sh
+
       - name: Validate Examples
         run: bash Scripts/validate-examples.sh
 
