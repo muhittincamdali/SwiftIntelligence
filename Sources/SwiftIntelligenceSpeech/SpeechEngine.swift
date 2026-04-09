@@ -635,26 +635,33 @@ public class SpeechEngine: NSObject, ObservableObject {
 
 // MARK: - AVSpeechSynthesizerDelegate
 
-@MainActor
-extension SpeechEngine: @preconcurrency AVSpeechSynthesizerDelegate {
+extension SpeechEngine: AVSpeechSynthesizerDelegate {
     
-    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
-        isSpeaking = true
-        logger.info("Speech synthesis started")
+    nonisolated public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
+        Task { @MainActor in
+            isSpeaking = true
+            logger.info("Speech synthesis started")
+        }
     }
     
-    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        isSpeaking = false
-        logger.info("Speech synthesis finished")
+    nonisolated public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        Task { @MainActor in
+            isSpeaking = false
+            logger.info("Speech synthesis finished")
+        }
     }
     
-    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
-        logger.info("Speech synthesis paused")
+    nonisolated public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
+        Task { @MainActor in
+            logger.info("Speech synthesis paused")
+        }
     }
     
-    public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-        isSpeaking = false
-        logger.info("Speech synthesis cancelled")
+    nonisolated public func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        Task { @MainActor in
+            isSpeaking = false
+            logger.info("Speech synthesis cancelled")
+        }
     }
 }
 
