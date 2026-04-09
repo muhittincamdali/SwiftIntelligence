@@ -15,20 +15,20 @@
   <rect x="60" y="58" width="1280" height="784" rx="34" fill="#0B1728" fill-opacity="0.72" stroke="#F2F7FF" stroke-opacity="0.08"/>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <text x="96" y="122" fill="#FFFFFF" font-size="52" font-weight="800">Trust and Distribution Surface</text>
+    <text x="96" y="122" fill="#FFFFFF" font-size="50" font-weight="800">Trust and Distribution Surface</text>
     <text x="96" y="166" fill="#AFC6E9" font-size="21" font-weight="500">The repo is run like a product surface: public claims, release assets,</text>
     <text x="96" y="196" fill="#AFC6E9" font-size="21" font-weight="500">community health, and maintainer guidance stay aligned.</text>
   </g>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <rect x="92" y="220" width="376" height="214" rx="28" fill="url(#panel)" stroke="#34C759" stroke-opacity="0.26"/>
+    <rect x="92" y="220" width="376" height="226" rx="28" fill="url(#panel)" stroke="#34C759" stroke-opacity="0.26"/>
     <text x="120" y="266" fill="#B5F0C5" font-size="22" font-weight="700">Proof</text>
     <text x="120" y="316" fill="#FFFFFF" font-size="34" font-weight="800">Release-grade truth</text>
     <text x="120" y="358" fill="#D7E6FF" font-size="20" font-weight="500">Generated readiness, public proof status,</text>
     <text x="120" y="388" fill="#D7E6FF" font-size="20" font-weight="500">release blockers, and latest immutable</text>
     <text x="120" y="418" fill="#D7E6FF" font-size="20" font-weight="500">evidence stay linked.</text>
 
-    <rect x="512" y="220" width="376" height="214" rx="28" fill="url(#panel)" stroke="#0A84FF" stroke-opacity="0.26"/>
+    <rect x="512" y="220" width="376" height="226" rx="28" fill="url(#panel)" stroke="#0A84FF" stroke-opacity="0.26"/>
     <text x="540" y="266" fill="#9FC5FF" font-size="22" font-weight="700">Community health</text>
     <text x="540" y="312" fill="#FFFFFF" font-size="30" font-weight="800">Contribution quality</text>
     <text x="540" y="346" fill="#FFFFFF" font-size="30" font-weight="800">bar</text>
@@ -36,38 +36,38 @@
     <text x="540" y="412" fill="#D7E6FF" font-size="20" font-weight="500">security policy, and support routing are</text>
     <text x="540" y="442" fill="#D7E6FF" font-size="20" font-weight="500">explicit and strict.</text>
 
-    <rect x="932" y="220" width="376" height="214" rx="28" fill="url(#panel)" stroke="#FF9F0A" stroke-opacity="0.26"/>
+    <rect x="932" y="220" width="376" height="226" rx="28" fill="url(#panel)" stroke="#FF9F0A" stroke-opacity="0.26"/>
     <text x="960" y="266" fill="#FFD4A6" font-size="22" font-weight="700">Distribution</text>
     <text x="960" y="316" fill="#FFFFFF" font-size="34" font-weight="800">README as landing page</text>
     <text x="960" y="358" fill="#D7E6FF" font-size="20" font-weight="500">Hero art, flagship media, comparison pages,</text>
     <text x="960" y="388" fill="#D7E6FF" font-size="20" font-weight="500">release notes, and multilingual entry paths</text>
     <text x="960" y="418" fill="#D7E6FF" font-size="20" font-weight="500">reduce adoption friction.</text>
 
-    <rect x="92" y="470" width="1216" height="286" rx="28" fill="#0C1829" stroke="#F2F7FF" stroke-opacity="0.08"/>
-    <text x="124" y="522" fill="#FFFFFF" font-size="34" font-weight="800">Operational loop</text>
+    <rect x="92" y="486" width="1216" height="270" rx="28" fill="#0C1829" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <text x="124" y="536" fill="#FFFFFF" font-size="34" font-weight="800">Operational loop</text>
 
-    <rect x="124" y="558" width="236" height="138" rx="22" fill="#111F35" stroke="#F05138" stroke-opacity="0.22"/>
-    <text x="152" y="600" fill="#FFB3A8" font-size="20" font-weight="700">1. Build + validate</text>
-    <text x="152" y="638" fill="#D7E6FF" font-size="22" font-weight="500">swift build</text>
-    <text x="152" y="670" fill="#D7E6FF" font-size="22" font-weight="500">swift test</text>
+    <rect x="124" y="572" width="236" height="126" rx="22" fill="#111F35" stroke="#F05138" stroke-opacity="0.22"/>
+    <text x="152" y="610" fill="#FFB3A8" font-size="20" font-weight="700">1. Build + validate</text>
+    <text x="152" y="644" fill="#D7E6FF" font-size="22" font-weight="500">swift build</text>
+    <text x="152" y="674" fill="#D7E6FF" font-size="22" font-weight="500">swift test</text>
 
-    <rect x="420" y="558" width="236" height="138" rx="22" fill="#102239" stroke="#0A84FF" stroke-opacity="0.22"/>
-    <text x="448" y="600" fill="#9FC5FF" font-size="20" font-weight="700">2. Benchmark + proof</text>
-    <text x="448" y="638" fill="#D7E6FF" font-size="22" font-weight="500">prepare-release</text>
-    <text x="448" y="670" fill="#D7E6FF" font-size="22" font-weight="500">proof generation</text>
+    <rect x="420" y="572" width="236" height="126" rx="22" fill="#102239" stroke="#0A84FF" stroke-opacity="0.22"/>
+    <text x="448" y="610" fill="#9FC5FF" font-size="20" font-weight="700">2. Benchmark + proof</text>
+    <text x="448" y="644" fill="#D7E6FF" font-size="22" font-weight="500">prepare-release</text>
+    <text x="448" y="674" fill="#D7E6FF" font-size="22" font-weight="500">proof generation</text>
 
-    <rect x="716" y="558" width="236" height="138" rx="22" fill="#1B1B14" stroke="#FF9F0A" stroke-opacity="0.22"/>
-    <text x="744" y="600" fill="#FFD4A6" font-size="20" font-weight="700">3. Bundle + publish</text>
-    <text x="744" y="638" fill="#D7E6FF" font-size="22" font-weight="500">release assets</text>
-    <text x="744" y="670" fill="#D7E6FF" font-size="22" font-weight="500">flagship demo pack</text>
+    <rect x="716" y="572" width="236" height="126" rx="22" fill="#1B1B14" stroke="#FF9F0A" stroke-opacity="0.22"/>
+    <text x="744" y="610" fill="#FFD4A6" font-size="20" font-weight="700">3. Bundle + publish</text>
+    <text x="744" y="644" fill="#D7E6FF" font-size="22" font-weight="500">release assets</text>
+    <text x="744" y="674" fill="#D7E6FF" font-size="22" font-weight="500">flagship demo pack</text>
 
-    <rect x="1012" y="558" width="264" height="138" rx="22" fill="#171A30" stroke="#BF5AF2" stroke-opacity="0.22"/>
-    <text x="1040" y="600" fill="#E6C8FF" font-size="20" font-weight="700">4. Adopt + contribute</text>
-    <text x="1040" y="638" fill="#D7E6FF" font-size="22" font-weight="500">comparisons, issues, PRs,</text>
-    <text x="1040" y="670" fill="#D7E6FF" font-size="22" font-weight="500">and Copilot instructions</text>
+    <rect x="1012" y="572" width="264" height="126" rx="22" fill="#171A30" stroke="#BF5AF2" stroke-opacity="0.22"/>
+    <text x="1040" y="610" fill="#E6C8FF" font-size="20" font-weight="700">4. Adopt + contribute</text>
+    <text x="1040" y="644" fill="#D7E6FF" font-size="22" font-weight="500">comparisons, issues, PRs,</text>
+    <text x="1040" y="674" fill="#D7E6FF" font-size="22" font-weight="500">and Copilot instructions</text>
   </g>
 
-  <path d="M360 628H420" stroke="#F2F7FF" stroke-opacity="0.26" stroke-width="4"/>
-  <path d="M656 628H716" stroke="#F2F7FF" stroke-opacity="0.26" stroke-width="4"/>
-  <path d="M952 628H1012" stroke="#F2F7FF" stroke-opacity="0.26" stroke-width="4"/>
+  <path d="M360 634H420" stroke="#F2F7FF" stroke-opacity="0.26" stroke-width="4"/>
+  <path d="M656 634H716" stroke="#F2F7FF" stroke-opacity="0.26" stroke-width="4"/>
+  <path d="M952 634H1012" stroke="#F2F7FF" stroke-opacity="0.26" stroke-width="4"/>
 </svg>
