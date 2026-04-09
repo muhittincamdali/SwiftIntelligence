@@ -1,12 +1,13 @@
 import Foundation
-import SwiftIntelligenceBenchmarks
+@preconcurrency import SwiftIntelligenceBenchmarks
 
 #if os(macOS)
 @main
 struct BenchmarksCLI {
     static func main() async {
         do {
-            let options = try CLIOptions(arguments: Array(CommandLine.arguments.dropFirst()))
+            let arguments = Array(ProcessInfo.processInfo.arguments.dropFirst())
+            let options = try CLIOptions(arguments: arguments)
             let runner = AIBenchmarks()
 
             print("Running SwiftIntelligence benchmarks with profile '\(options.profile.rawValue)'...")

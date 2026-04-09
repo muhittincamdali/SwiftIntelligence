@@ -1,4 +1,5 @@
 import Foundation
+@preconcurrency import Darwin
 import SwiftIntelligenceCore
 
 #if canImport(OSLog)

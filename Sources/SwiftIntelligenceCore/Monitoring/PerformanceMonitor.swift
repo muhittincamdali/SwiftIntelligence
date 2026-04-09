@@ -1,4 +1,5 @@
 import Foundation
+@preconcurrency import Darwin
 import os.signpost
 
 /// Performance monitoring system for SwiftIntelligence

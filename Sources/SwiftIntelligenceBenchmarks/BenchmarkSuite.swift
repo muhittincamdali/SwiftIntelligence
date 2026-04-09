@@ -6,6 +6,7 @@
 //
 
 import Foundation
+@preconcurrency import Darwin
 import SwiftIntelligenceCore
 
 /// Comprehensive performance benchmark suite for SwiftIntelligence Framework
