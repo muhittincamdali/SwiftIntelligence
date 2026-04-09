@@ -1,210 +1,185 @@
 # SwiftIntelligence Positioning
 
-Last updated: 2026-04-07
-
-This document defines what `SwiftIntelligence` is competing against, what category it belongs to, and what it must do to become meaningfully category-leading.
+Last updated: 2026-04-10
 
 ## Category
 
-`SwiftIntelligence` is not trying to beat low-level inference engines at raw model portability.
+`SwiftIntelligence` belongs in this category:
 
-Its real category is:
-
-**modular Apple-platform AI developer toolkit**
+**Apple-native on-device AI workflow toolkit**
 
 That means:
 
 - native-framework-first
-- Apple-platform-focused
-- developer-experience-driven
-- on-device-friendly by default
-- multi-capability rather than single-model
+- Swift package integration
+- multi-capability composition
+- privacy-aware defaults
+- proof-backed public claims
 
-## What We Are Not
+It does **not** mean:
 
-`SwiftIntelligence` is not:
+- generic cross-platform inference runtime
+- Python-first training or conversion stack
+- one-model demo repo
+- vague umbrella framework with weak product boundaries
 
-- a Python model-conversion tool
-- a single-model demo repo
-- a cross-platform C/C++ inference runtime
-- a vague umbrella framework with every inactive experiment treated as supported
+## The Only Defensible Product Story
 
-If we compete on those terms, we lose immediately.
+The strongest honest sentence for this repository is:
 
-## Competitive Map
+> SwiftIntelligence is the cleanest way to assemble multiple Apple-native AI capabilities in one Swift package workflow, then validate what you ship with benchmark and release proof.
 
-### 1. Platform Primitives
+If that sentence is not obvious inside the first minute of the README, we lose.
 
-These are not optional references; they are the substrate:
+## What We Compete Against
+
+### Apple platform primitives
+
+These are the underlying foundations, not optional references:
 
 - [Core ML](https://developer.apple.com/documentation/coreml)
 - [Vision](https://developer.apple.com/documentation/vision)
 - [NaturalLanguage](https://developer.apple.com/documentation/naturallanguage)
 - [Speech](https://developer.apple.com/documentation/speech)
+- [Foundation Models](https://developer.apple.com/documentation/FoundationModels)
 
 Implication:
 
-`SwiftIntelligence` only wins if it makes these frameworks easier to adopt, combine, validate, and ship.
+We only win if we make these easier to combine, easier to prove, and easier to ship.
 
-### 2. Direct Apple/Swift Adjacent Repositories
+### Top 5 direct rivals
 
-GitHub snapshot from 2026-04-07:
+GitHub metadata snapshot taken on 2026-04-10:
 
-| Repository | Stars | Why It Matters |
+| Repository | Stars | Why it matters |
 | --- | ---: | --- |
-| [apple/ml-stable-diffusion](https://github.com/apple/ml-stable-diffusion) | 17,823 | flagship Apple ML repo with obvious public proof and visibility |
-| [apple/coremltools](https://github.com/apple/coremltools) | 5,217 | conversion and model tooling gravity around Core ML |
-| [apple/ml-ane-transformers](https://github.com/apple/ml-ane-transformers) | 2,702 | Apple-native inference optimization reference |
-| [huggingface/swift-coreml-transformers](https://github.com/huggingface/swift-coreml-transformers) | 1,684 | archived but historically important Swift/Core ML bridge |
-| [huggingface/swift-transformers](https://github.com/huggingface/swift-transformers) | 1,296 | active Swift transformer inference path |
-| [huggingface/AnyLanguageModel](https://github.com/huggingface/AnyLanguageModel) | 818 | high-signal Swift LLM package for Apple developers |
-| [soniqo/speech-swift](https://github.com/soniqo/speech-swift) | 557 | focused speech abstraction example |
-| [muhittincamdali/SwiftIntelligence](https://github.com/muhittincamdali/SwiftIntelligence) | 7 | current repo baseline |
+| [apple/coremltools](https://github.com/apple/coremltools) | 5,221 | Official Core ML tooling gravity. Default trust baseline. |
+| [ml-explore/mlx](https://github.com/ml-explore/mlx) | 25,255 | Apple silicon ML infrastructure gravity. |
+| [argmaxinc/WhisperKit](https://github.com/argmaxinc/WhisperKit) | 5,964 | Strongest current benchmark for Apple-native speech demo and distribution quality. |
+| [huggingface/swift-transformers](https://github.com/huggingface/swift-transformers) | 1,299 | Swift-native transformer story with clearer “why use this” messaging. |
+| [mattt/AnyLanguageModel](https://github.com/mattt/AnyLanguageModel) | 821 | Sharp Apple-native LLM abstraction alternative. |
 
-### 3. Adjacent Giants Developers Also Consider
+### Adjacent mindshare giants
 
-These are not category-pure Swift competitors, but they dominate mindshare:
+These are not category-pure rivals, but they steal attention:
 
-| Repository | Stars | Why It Pulls Users Away |
+| Repository | Stars | Why it matters |
 | --- | ---: | --- |
-| [ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp) | 102,299 | default local inference gravity well |
-| [ggml-org/whisper.cpp](https://github.com/ggml-org/whisper.cpp) | 48,364 | speech/on-device credibility magnet |
-| [google-ai-edge/mediapipe](https://github.com/google-ai-edge/mediapipe) | 34,585 | multi-modal mobile CV mindshare |
-| [pytorch/executorch](https://github.com/pytorch/executorch) | 4,477 | mobile deployment story for PyTorch users |
+| [ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp) | 102,791 | default local inference mindshare |
+| [google-ai-edge/mediapipe](https://github.com/google-ai-edge/mediapipe) | 34,631 | mobile CV gravity and recognizability |
+| [ggml-org/whisper.cpp](https://github.com/ggml-org/whisper.cpp) | 48,427 | speech credibility magnet |
+| [pytorch/executorch](https://github.com/pytorch/executorch) | 4,5k+ | PyTorch mobile deployment story |
 
 ## Brutal Current Assessment
 
-As of 2026-04-07, `SwiftIntelligence` is not winning on:
+As of 2026-04-10, SwiftIntelligence is strong on:
 
-- stars
-- ecosystem pull
-- benchmark mindshare
-- public comparison pages
-- obvious flagship demo proof
+- release discipline
+- proof honesty
+- multi-module Apple story
+- maintainability
+- benchmark and device evidence posture
 
-What it *can* win on:
+It is still weak on:
 
-- modular Apple-platform ergonomics
-- one-repo coverage across NLP, Vision, Speech, ML, Privacy, and infra helpers
-- honest maintainer surface
-- native-framework-first onboarding
-- reproducible examples + benchmark + release validation discipline
-- proof-backed `Mac` + physical `iPhone` release evidence baseline
+- first-minute clarity
+- README information hierarchy
+- direct rival comparison dominance
+- shareable showcase and adoption narrative
+- public social proof and ecosystem pull
 
-## The Only Defensible Position
+## Where We Can Actually Win
 
-The repo should position itself as:
+SwiftIntelligence can beat stronger incumbents only on these axes:
 
-**the cleanest way to assemble multiple Apple-native AI capabilities inside one Swift package workflow**
+1. **Multi-module workflow composition**
+   Example: `Vision -> NLP -> Privacy` in one maintained path.
 
-This is stronger than claiming:
+2. **Truth-first public proof**
+   README claims, release notes, benchmark readiness, and device evidence stay aligned.
 
-- best inference runtime
-- best LLM runtime
-- best raw benchmark engine
-- best cross-platform ML stack
+3. **Faster Apple-team onboarding**
+   Teams should reach a real app-facing success path faster than they can by hand-assembling raw Apple frameworks.
 
-Those are different categories with stronger incumbents.
+4. **Better packaging**
+   Product lanes, demo paths, comparison pages, and trust pages should remove decision friction.
+
+## Where We Should Not Fight
+
+We should not claim leadership in:
+
+- raw inference runtime performance across all platforms
+- Python training or model conversion workflows
+- generic LLM runtime infrastructure
+- “AI everything” umbrella marketing
+
+That is how we lose focus and credibility.
 
 ## Who Should Use This
 
-- Apple-platform teams shipping app features that span more than one native AI framework
-- teams that want a maintained path for `Vision`, `NaturalLanguage`, `Speech`, privacy, and proof surfaces in one repo
-- teams that value release discipline, validated examples, and honest public claim boundaries
+- Apple teams shipping app features that cross more than one native AI framework
+- teams that want stronger release-proof discipline than a loose demo repo
+- teams that want examples, comparisons, and benchmarks to agree with each other
 
 ## Who Should Not Use This
 
-- teams selecting an inference engine first and an Apple app second
-- teams whose main workflow lives in Python model tooling or cross-platform runtimes
-- teams that only need a single untouched Apple framework call and no higher-level composition story
+- teams choosing a low-level inference engine first
+- teams centered on Python pipelines or conversion tooling
+- teams that only need one untouched Apple framework call
 
 ## Win Conditions
 
-To become category-leading, `SwiftIntelligence` needs all of these:
+To become category-leading, SwiftIntelligence needs all of these:
 
-### 1. Clear First Success
+1. **First-minute clarity**
+   The README must answer:
+   - what this repo is
+   - why it exists
+   - why it beats the obvious alternatives
+   - what to try first
 
-A developer should be able to:
+2. **Five-minute success**
+   A developer must be able to install the strongest path, run a validated demo, and inspect proof without hunting.
 
-- install the package
-- import only needed modules
-- run a validated NLP, Vision, or Speech flow
-- understand the privacy/performance tradeoffs
+3. **Comparison dominance**
+   The repo must win explicit head-to-head comparison pages against direct rivals.
 
-in under 5 minutes.
+4. **Proof-to-adoption bridge**
+   Trust pages must help a buyer or evaluator decide, not only satisfy maintainers.
 
-### 2. Proof Over Promise
-
-Every public claim should map to one of:
-
-- a validated example
-- a benchmark artifact
-- a workflow gate
-- a maintained module in `Package.swift`
-
-That also means blocker visibility must be first-class. If release-grade multi-device evidence is still missing, the repo should say so clearly in generated status surfaces instead of hiding it in maintainer notes.
-
-### 3. Better Multi-Module Story
-
-Most competing repos are single-domain.
-
-`SwiftIntelligence` should beat them by making cross-capability workflows obvious:
-
-- OCR -> NLP -> Privacy
-- Speech -> NLP -> Reasoning
-- Vision -> Metrics -> Benchmark proof
-
-### 4. Stronger Public Packaging
-
-The repo needs:
-
-- comparison pages
-- module-level adoption guidance
-- showcase demos worth sharing
-- benchmark summaries that are readable without hype
-
-### 5. Ruthless Product Scope
-
-Inactive products should stay out until they can pass the same bar as the maintained graph.
-
-A bloated repo loses trust faster than it gains stars.
+5. **Productized examples**
+   The top 2 to 3 demo paths must look and feel like maintained product surfaces.
 
 ## Loss Conditions
 
-We lose if we do any of these:
+We lose if we:
 
-- reintroduce stale umbrella APIs as if they are healthy
-- ship docs that promise more than workflows prove
-- compete against `llama.cpp` or `MediaPipe` on the wrong axis
-- keep inactive modules around as portfolio decoration
-- publish performance claims without current artifact evidence
+- promise more than proof surfaces support
+- let README visuals outrun README clarity
+- expose too many modules without a strong best-first path
+- compete on the wrong axis against `MLX`, `llama.cpp`, or Python stacks
+- allow stale comparisons or stale design surfaces to linger
 
-## 90-Day Priority Order
+## Priority Order
 
-1. Finish trust-surface cleanup across remaining docs and repo metadata.
-2. Publish stronger per-module positioning and comparison pages.
-3. Build one flagship demo path that chains multiple modules cleanly.
-4. Turn benchmark output into digestible public proof.
-5. Turn the current `Mac` + `iPhone` release evidence into digestible public proof and comparisons.
-6. Expand to optional extra device classes only where the added evidence changes a real product claim.
-7. Decide which inactive products are worth restoring and which should die.
+1. lock positioning and rival matrix
+2. rebuild README as a decision surface
+3. rebuild docs IA by persona and intent
+4. productize more than one flagship demo path
+5. collapse trust/proof redundancy into clearer canonical entry points
+6. strengthen social proof, release sharing, and discoverability
 
 ## Source Snapshot
 
-The repository/star snapshot above was taken on 2026-04-07 from official GitHub repository metadata and official Apple framework docs:
+The competitive snapshot above is based on official repository metadata and official Apple docs checked on 2026-04-10:
 
 - [apple/coremltools](https://github.com/apple/coremltools)
-- [apple/ml-stable-diffusion](https://github.com/apple/ml-stable-diffusion)
-- [apple/ml-ane-transformers](https://github.com/apple/ml-ane-transformers)
+- [ml-explore/mlx](https://github.com/ml-explore/mlx)
+- [argmaxinc/WhisperKit](https://github.com/argmaxinc/WhisperKit)
 - [huggingface/swift-transformers](https://github.com/huggingface/swift-transformers)
-- [huggingface/swift-coreml-transformers](https://github.com/huggingface/swift-coreml-transformers)
-- [huggingface/AnyLanguageModel](https://github.com/huggingface/AnyLanguageModel)
-- [soniqo/speech-swift](https://github.com/soniqo/speech-swift)
-- [ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp)
-- [ggml-org/whisper.cpp](https://github.com/ggml-org/whisper.cpp)
-- [google-ai-edge/mediapipe](https://github.com/google-ai-edge/mediapipe)
-- [pytorch/executorch](https://github.com/pytorch/executorch)
+- [mattt/AnyLanguageModel](https://github.com/mattt/AnyLanguageModel)
 - [Core ML docs](https://developer.apple.com/documentation/coreml)
 - [Vision docs](https://developer.apple.com/documentation/vision)
 - [NaturalLanguage docs](https://developer.apple.com/documentation/naturallanguage)
 - [Speech docs](https://developer.apple.com/documentation/speech)
+- [Foundation Models docs](https://developer.apple.com/documentation/FoundationModels)

@@ -1,182 +1,153 @@
 # SwiftIntelligence Showcase
 
-Last updated: 2026-04-07
+Last updated: 2026-04-10
 
-This page exists to answer one question quickly:
+This page answers one evaluator question:
 
-**What can this repository prove today without hand-wavy claims?**
+**What can this repository prove today that is useful to a real Apple app team?**
 
-For the machine-derived snapshot built from the current benchmark artifacts, see [Generated/Proof-Snapshot.md](Generated/Proof-Snapshot.md).
-For the generated benchmark history, methodology, timeline, release matrix, release proof surfaces, and latest-vs-release diff, see [Generated/Benchmark-History.md](Generated/Benchmark-History.md), [Generated/Benchmark-Methodology.md](Generated/Benchmark-Methodology.md), [Generated/Benchmark-Timeline.md](Generated/Benchmark-Timeline.md), [Generated/Release-Benchmark-Matrix.md](Generated/Release-Benchmark-Matrix.md), [Generated/Release-Proof-Timeline.md](Generated/Release-Proof-Timeline.md), [Generated/Latest-Release-Proof.md](Generated/Latest-Release-Proof.md), and [Generated/Benchmark-Comparison.md](Generated/Benchmark-Comparison.md).
+## What this repo proves today
 
-## Current Proof Envelope
+- a maintained `Vision -> NLP -> Privacy` flagship workflow
+- secondary text-and-voice workflows that compile against the active package graph
+- benchmark and release evidence tied to public claim boundaries
+- release-grade trust posture at the current `Mac + iPhone` device floor
 
-- publish readiness: `ready`
-- distribution posture: `release-grade`
-- required release device classes covered: `Mac, iPhone`
-- pending device evidence queue: `0`
-- current public claim envelope: [Generated/Public-Proof-Status.md](Generated/Public-Proof-Status.md)
-- current release blocker surface: [Generated/Release-Blockers.md](Generated/Release-Blockers.md)
+If you want the machine-generated trust surfaces, start with:
 
-## Why Adopt Now
+- [Public Proof Status](Generated/Public-Proof-Status.md)
+- [Latest Release Proof](Generated/Latest-Release-Proof.md)
+- [Proof Snapshot](Generated/Proof-Snapshot.md)
 
-- the repo has a maintained flagship workflow instead of isolated wrapper demos
-- the strongest path is compile-validated independently through `bash Scripts/validate-flagship-demo.sh`
-- release messaging is backed by immutable proof, not only maintainer-local benchmark output
-- current release-grade floor is already covered at `Mac + iPhone`
+## Adopt now if...
 
-## Flagship Flows
+- your app needs more than one Apple-native AI capability
+- you care about public proof and release truth, not only local demos
+- you want a maintained best-first path instead of choosing from disconnected examples
 
-### 1. Intelligent Camera
+Do not adopt because of this page if you need:
+
+- a low-level inference runtime first
+- a speech-only specialist package first
+- category leadership proof that exceeds the current evidence envelope
+
+## Showcase ladder
+
+| Level | Example | What it proves | Current maturity |
+| --- | --- | --- | --- |
+| 1 | [IntelligentCamera](../Examples/DemoApps/IntelligentCamera/README.md) | repo's strongest multi-module product path | flagship |
+| 2 | `SmartTranslator` | text analysis, privacy preprocessing, speech output composition | maintained secondary |
+| 3 | `VoiceAssistant` | assistant-style response pipeline on Apple-native surfaces | maintained secondary |
+
+## 1. IntelligentCamera
 
 Flow:
 
 `Vision -> NLP -> Privacy`
 
-Proof surface:
+Why it matters:
 
-- example source: [Examples/DemoApps/IntelligentCamera/IntelligentCameraApp.swift](../Examples/DemoApps/IntelligentCamera/IntelligentCameraApp.swift)
-- demo guide: [Examples/DemoApps/IntelligentCamera/README.md](../Examples/DemoApps/IntelligentCamera/README.md)
-- shareable demo pack: [Generated/Flagship-Demo-Pack.md](Generated/Flagship-Demo-Pack.md)
-- canonical media location: [Assets/Flagship-Demo/README.md](Assets/Flagship-Demo/README.md)
-- flagship smoke-check: `bash Scripts/validate-flagship-demo.sh`
-- validated by: `bash Scripts/validate-examples.sh`
+- strongest maintained demo in the repo
+- current best proof that SwiftIntelligence is more than a thin wrapper set
+- the clearest path from README promise to real app-facing output
 
 What it proves:
 
 - image classification
 - object detection
-- document/OCR analysis
-- text summarization on recognized text
+- OCR and extracted text processing
+- summary generation
 - privacy tokenization on extracted content
 
-Why it matters:
+Where to verify:
 
-This is the strongest current proof that `SwiftIntelligence` is more useful as a multi-module Apple workflow than as a single isolated wrapper.
+- [demo guide](../Examples/DemoApps/IntelligentCamera/README.md)
+- [flagship demo pack](Generated/Flagship-Demo-Pack.md)
+- [flagship media policy](Assets/Flagship-Demo/README.md)
+- command: `bash Scripts/validate-flagship-demo.sh`
 
-### 2. Smart Translator
-
-Flow:
-
-`NLP -> Privacy -> Speech`
-
-Proof surface:
-
-- example source: [Examples/DemoApps/SmartTranslator/SmartTranslatorApp.swift](../Examples/DemoApps/SmartTranslator/SmartTranslatorApp.swift)
-- validated by: `bash Scripts/validate-examples.sh`
-
-What it proves:
-
-- language-aware text analysis
-- summary and keyword extraction
-- privacy-aware preprocessing
-- translation pipeline hook
-- speech synthesis on translated output
-
-Why it matters:
-
-It shows that the repo can connect language features to actual user-facing output rather than stopping at diagnostics.
-
-### 3. Voice Assistant
+## 2. SmartTranslator
 
 Flow:
 
 `NLP -> Privacy -> Speech`
 
-Proof surface:
+Why it matters:
 
-- example source: [Examples/DemoApps/VoiceAssistant/VoiceAssistantApp.swift](../Examples/DemoApps/VoiceAssistant/VoiceAssistantApp.swift)
-- validated by: `bash Scripts/validate-examples.sh`
+- shows the repo can drive user-visible output, not only analysis
+- proves a second, non-vision workflow exists in the maintained graph
 
-What it proves:
+Current limitation:
 
-- intent inference from text commands
-- summary and entity extraction
-- optional privacy redaction
-- synthesized spoken response
+- this is compile-validated and useful, but not yet productized at flagship level
+
+Where to verify:
+
+- source: [SmartTranslatorApp.swift](../Examples/DemoApps/SmartTranslator/SmartTranslatorApp.swift)
+- command: `bash Scripts/validate-examples.sh`
+
+## 3. VoiceAssistant
+
+Flow:
+
+`NLP -> Privacy -> Speech`
 
 Why it matters:
 
-It is the clearest "assistant-style" demo in the maintained graph, even if speech recognition and agentic logic are not yet the repo’s strongest differentiator.
+- shows intent-like command processing and spoken response
+- keeps the repo's assistant story grounded in real Apple-native modules
 
-## Benchmark Evidence
+Current limitation:
 
-Current working-pointer benchmark snapshot from the generated artifacts in `Benchmarks/Results/latest`:
+- not yet a flagship path
+- not proof of speech recognition leadership or agentic runtime leadership
 
-- generated at: `2026-04-02T02:43:10Z`
-- profile: `standard`
-- device class: `Mac`
-- total workloads: `25`
-- performance score: `55.28`
-- average execution time: `0.0791s`
+Where to verify:
 
-Latest immutable release proof:
+- source: [VoiceAssistantApp.swift](../Examples/DemoApps/VoiceAssistant/VoiceAssistantApp.swift)
+- command: `bash Scripts/validate-examples.sh`
 
-- release bundle: `iphone-baseline-2026-04-07`
-- device class: `iPhone`
-- device name: `iPhone 15 Pro Max`
-- provenance: `physical-device-test`
-- performance score: `38.59`
-- average execution time: `0.0793s`
+## Benchmark and release truth
 
-Top current signals:
+Current release/trust envelope:
 
-- fastest workload: `ML_Prediction_Small` at `0.0061s`
-- slowest workload: `ML_Model_Loading` at `0.3111s`
-- strongest repo-level integrated workload: `Integration_Multi_Modal`
+- publish readiness: `ready`
+- distribution posture: `release-grade`
+- required release device classes covered: `Mac, iPhone`
+- pending device evidence queue: `0`
 
-Proof surface:
+Current proof entry points:
 
-- [benchmark-summary.md](../Benchmarks/Results/latest/benchmark-summary.md)
-- [benchmark-report.json](../Benchmarks/Results/latest/benchmark-report.json)
-- [environment.json](../Benchmarks/Results/latest/environment.json)
-- [Generated/Latest-Release-Proof.md](Generated/Latest-Release-Proof.md)
-- [Generated/Benchmark-Readiness.md](Generated/Benchmark-Readiness.md)
-- [Generated/Public-Proof-Status.md](Generated/Public-Proof-Status.md)
+- [Public Proof Status](Generated/Public-Proof-Status.md)
+- [Benchmark Readiness](Generated/Benchmark-Readiness.md)
+- [Latest Release Proof](Generated/Latest-Release-Proof.md)
+- [Release Blockers](Generated/Release-Blockers.md)
 
-Interpretation rule:
+Interpretation rules:
 
-- `latest` is the working pointer and currently reflects the maintainer Mac environment
-- immutable release proof is the public trust surface for release messaging
-- cross-hardware deltas are directional, not definitive leaderboard claims
+- `Benchmarks/Results/latest` is the working pointer, not the canonical release marketing surface
+- immutable release bundles are the public release-truth surface
+- cross-device deltas are directional, not leaderboard claims
 
-## Maintainer Validation Path
+## Maintainer validation path
 
-These are the minimum proof commands behind the current showcase:
+These are the minimum commands behind the current showcase:
 
 ```bash
 swift build
 bash Scripts/validate-flagship-demo.sh
 bash Scripts/validate-examples.sh
 swift test
-bash Scripts/run-benchmarks.sh standard
 bash Scripts/prepare-release.sh
 ```
 
-## Shareable Demo Pack
+## What this page does not prove
 
-For release posts, screenshots, short recordings, or quick evaluator handoff, use:
+This page does not prove:
 
-- [Generated/Flagship-Demo-Pack.md](Generated/Flagship-Demo-Pack.md)
-- [Assets/Flagship-Demo/README.md](Assets/Flagship-Demo/README.md)
-- [Assets/Flagship-Demo/intelligent-camera-success.png](Assets/Flagship-Demo/intelligent-camera-success.png)
-- [Assets/Flagship-Demo/intelligent-camera-run.mp4](Assets/Flagship-Demo/intelligent-camera-run.mp4)
-- [Assets/Flagship-Demo/caption.txt](Assets/Flagship-Demo/caption.txt)
-- [Generated/Flagship-Media-Status.md](Generated/Flagship-Media-Status.md)
-- immutable bundle asset: `flagship-demo-share-pack.tar.gz`
-- [Examples/DemoApps/IntelligentCamera/README.md](../Examples/DemoApps/IntelligentCamera/README.md)
-- [Generated/Public-Proof-Status.md](Generated/Public-Proof-Status.md)
-- [Generated/Latest-Release-Proof.md](Generated/Latest-Release-Proof.md)
+- category leadership
+- best-in-class performance against every rival
+- speech-specific category dominance
+- complete production readiness for every source-level demo
 
-Current flagship media is now published under the canonical directory with a real screenshot, short recording, and caption for the maintained `IntelligentCamera` path.
-
-## What This Showcase Does Not Prove
-
-It does not prove:
-
-- category leadership yet
-- does not prove best-in-class benchmark performance against every competitor
-- strongest LLM runtime
-- complete production readiness for inactive products
-
-It proves that the active modular graph has a real, validated, multi-module story with release-grade proof at the current `Mac + iPhone` policy floor.
+It proves that the active maintained graph has a real product story, a real validation path, and a release-grade trust surface.
