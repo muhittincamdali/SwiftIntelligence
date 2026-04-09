@@ -16,6 +16,8 @@ This hub is organized by intent, not by maintainer file dump.
 - [SmartTranslator demo guide](../Examples/DemoApps/SmartTranslator/README.md)
 - [VoiceAssistant demo guide](../Examples/DemoApps/VoiceAssistant/README.md)
 - [Flagship media policy](Assets/Flagship-Demo/README.md)
+- [SmartTranslator media policy](Assets/SmartTranslator-Demo/README.md)
+- [VoiceAssistant media policy](Assets/VoiceAssistant-Demo/README.md)
 - [Flagship media status](Generated/Flagship-Media-Status.md)
 - [Flagship demo pack](Generated/Flagship-Demo-Pack.md)
 

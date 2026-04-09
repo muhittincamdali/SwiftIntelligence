@@ -32,6 +32,12 @@ jobs:
       - name: Validate Flagship Media Policy
         run: bash Scripts/validate-flagship-media-assets.sh
 
+      - name: Validate SmartTranslator Media Policy
+        run: bash Scripts/validate-flagship-media-assets.sh Documentation/smarttranslator-media-policy.json Documentation/Assets/SmartTranslator-Demo/README.md
+
+      - name: Validate VoiceAssistant Media Policy
+        run: bash Scripts/validate-flagship-media-assets.sh Documentation/voiceassistant-media-policy.json Documentation/Assets/VoiceAssistant-Demo/README.md
+
       - name: Validate README Localizations
         run: bash Scripts/validate-readme-localizations.sh
 

@@ -56,5 +56,6 @@ swift test
 
 - [Examples Hub](../../README.md)
 - [Showcase](../../../Documentation/Showcase.md)
+- [Media Policy](../../../Documentation/Assets/VoiceAssistant-Demo/README.md)
 - [Speech vs Apple Speech](../../../Documentation/Comparisons/Speech-vs-AppleSpeech.md)
 - [Positioning](../../../Documentation/Positioning.md)

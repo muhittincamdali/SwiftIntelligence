@@ -84,6 +84,7 @@ Current limitation:
 Where to verify:
 
 - guide: [SmartTranslator demo guide](../Examples/DemoApps/SmartTranslator/README.md)
+- media policy: [SmartTranslator demo media](Assets/SmartTranslator-Demo/README.md)
 - source: [SmartTranslatorApp.swift](../Examples/DemoApps/SmartTranslator/SmartTranslatorApp.swift)
 - command: `bash Scripts/validate-examples.sh`
 
@@ -106,6 +107,7 @@ Current limitation:
 Where to verify:
 
 - guide: [VoiceAssistant demo guide](../Examples/DemoApps/VoiceAssistant/README.md)
+- media policy: [VoiceAssistant demo media](Assets/VoiceAssistant-Demo/README.md)
 - source: [VoiceAssistantApp.swift](../Examples/DemoApps/VoiceAssistant/VoiceAssistantApp.swift)
 - command: `bash Scripts/validate-examples.sh`
 

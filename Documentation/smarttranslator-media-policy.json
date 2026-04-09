@@ -1,0 +1,12 @@
+{
+  "assetRoot": "Documentation/Assets/SmartTranslator-Demo",
+  "statusValues": [
+    "not-published",
+    "published"
+  ],
+  "requiredFilesWhenPublished": [
+    "smarttranslator-success.png",
+    "smarttranslator-run.mp4",
+    "caption.txt"
+  ]
+}

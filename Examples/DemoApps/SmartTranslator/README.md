@@ -55,5 +55,6 @@ swift test
 
 - [Examples Hub](../../README.md)
 - [Showcase](../../../Documentation/Showcase.md)
+- [Media Policy](../../../Documentation/Assets/SmartTranslator-Demo/README.md)
 - [Speech vs Apple Speech](../../../Documentation/Comparisons/Speech-vs-AppleSpeech.md)
 - [Privacy vs CryptoKit + Security](../../../Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md)
