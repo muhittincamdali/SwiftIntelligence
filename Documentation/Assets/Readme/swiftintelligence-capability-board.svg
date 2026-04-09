@@ -1,93 +1,77 @@
-<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="90" y1="70" x2="1318" y2="844" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#07111F"/>
-      <stop offset="0.52" stop-color="#111D31"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="920" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#06101D"/>
+      <stop offset="0.52" stop-color="#101C31"/>
       <stop offset="1" stop-color="#081624"/>
     </linearGradient>
-    <linearGradient id="line" x1="0" y1="0" x2="280" y2="170" gradientUnits="userSpaceOnUse">
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
       <stop stop-color="#FFFFFF" stop-opacity="0.18"/>
       <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.04"/>
     </linearGradient>
-    <filter id="shadow" x="0" y="0" width="1400" height="920" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feDropShadow dx="0" dy="24" stdDeviation="36" flood-color="#000814" flood-opacity="0.34"/>
-    </filter>
   </defs>
 
   <rect width="1400" height="920" rx="40" fill="url(#bg)"/>
   <rect x="60" y="58" width="1280" height="804" rx="34" fill="#0B1728" fill-opacity="0.72" stroke="#F2F7FF" stroke-opacity="0.08"/>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <text x="96" y="124" fill="#FFFFFF" font-size="52" font-weight="800">Product Surface</text>
-    <text x="96" y="166" fill="#AFC6E9" font-size="21" font-weight="500">The repo is designed as an Apple-native workflow stack,</text>
-    <text x="96" y="196" fill="#AFC6E9" font-size="21" font-weight="500">not a pile of disconnected wrappers.</text>
+    <text x="96" y="124" fill="#FFFFFF" font-size="50" font-weight="800">Product Surface</text>
+    <text x="96" y="166" fill="#AFC6E9" font-size="21" font-weight="500">An Apple-native workflow stack, not a pile of wrappers.</text>
+
+    <rect x="92" y="224" width="360" height="214" rx="28" fill="#111F35" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="116" y="248" width="110" height="38" rx="19" fill="#F05138"/>
+    <text x="147" y="274" fill="#FFFFFF" font-size="18" font-weight="800">Vision</text>
+    <text x="120" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Scene understanding</text>
+    <text x="120" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Classification, OCR, detection,</text>
+    <text x="120" y="394" fill="#D7E6FF" font-size="19" font-weight="500">segmentation, and enhancement.</text>
+    <text x="120" y="424" fill="#9FC5FF" font-size="18" font-weight="700">Best first path: IntelligentCamera</text>
+
+    <rect x="520" y="224" width="360" height="214" rx="28" fill="#102239" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="544" y="248" width="170" height="38" rx="19" fill="#0A84FF"/>
+    <text x="560" y="274" fill="#FFFFFF" font-size="17" font-weight="800">NaturalLanguage</text>
+    <text x="548" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Text intelligence</text>
+    <text x="548" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Summaries, entities, keywords, topics,</text>
+    <text x="548" y="394" fill="#D7E6FF" font-size="19" font-weight="500">and pipeline building on Apple APIs.</text>
+    <text x="548" y="424" fill="#9FC5FF" font-size="18" font-weight="700">Compare against raw NaturalLanguage APIs</text>
+
+    <rect x="948" y="224" width="360" height="214" rx="28" fill="#10281D" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="972" y="248" width="118" height="38" rx="19" fill="#34C759"/>
+    <text x="1001" y="274" fill="#FFFFFF" font-size="18" font-weight="800">Privacy</text>
+    <text x="976" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Guard rails</text>
+    <text x="976" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Tokenization, anonymization, and safer</text>
+    <text x="976" y="394" fill="#D7E6FF" font-size="19" font-weight="500">AI handling that stays privacy-first.</text>
+    <text x="976" y="424" fill="#B5F0C5" font-size="18" font-weight="700">Security-aware by default</text>
+
+    <rect x="92" y="470" width="360" height="214" rx="28" fill="#171A30" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="116" y="494" width="120" height="38" rx="19" fill="#BF5AF2"/>
+    <text x="145" y="520" fill="#FFFFFF" font-size="18" font-weight="800">Speech</text>
+    <text x="120" y="568" fill="#FFFFFF" font-size="32" font-weight="800">Voice output</text>
+    <text x="120" y="610" fill="#D7E6FF" font-size="19" font-weight="500">Speech synthesis, voice catalogs, and</text>
+    <text x="120" y="640" fill="#D7E6FF" font-size="19" font-weight="500">assistant-style demo companions.</text>
+    <text x="120" y="670" fill="#E6C8FF" font-size="18" font-weight="700">Strong demo companion, not fake hype</text>
+
+    <rect x="520" y="470" width="360" height="214" rx="28" fill="#262014" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="544" y="494" width="164" height="38" rx="19" fill="#FF9F0A"/>
+    <text x="572" y="520" fill="#FFFFFF" font-size="18" font-weight="800">Benchmarks</text>
+    <text x="548" y="568" fill="#FFFFFF" font-size="32" font-weight="800">Evidence discipline</text>
+    <text x="548" y="610" fill="#D7E6FF" font-size="19" font-weight="500">Versioned artifacts, threshold checks,</text>
+    <text x="548" y="640" fill="#D7E6FF" font-size="19" font-weight="500">provenance, and immutable bundles.</text>
+    <text x="548" y="670" fill="#FFD4A6" font-size="18" font-weight="700">Claims stay inside the proof envelope</text>
+
+    <rect x="948" y="470" width="360" height="214" rx="28" fill="#0E2037" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <rect x="972" y="494" width="176" height="38" rx="19" fill="#5AC8FA"/>
+    <text x="1000" y="520" fill="#FFFFFF" font-size="18" font-weight="800">Release Proof</text>
+    <text x="976" y="568" fill="#FFFFFF" font-size="32" font-weight="800">Public trust surface</text>
+    <text x="976" y="610" fill="#D7E6FF" font-size="19" font-weight="500">Generated proof pages, release proof,</text>
+    <text x="976" y="640" fill="#D7E6FF" font-size="19" font-weight="500">media pack, and device coverage policy.</text>
+    <text x="976" y="670" fill="#9FC5FF" font-size="18" font-weight="700">Mac + iPhone floor, release-grade posture</text>
   </g>
 
-  <g filter="url(#shadow)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <rect x="92" y="224" width="376" height="232" rx="28" fill="#111F35" stroke="#F2F7FF" stroke-opacity="0.08"/>
-    <rect x="112" y="248" width="108" height="38" rx="19" fill="#F05138"/>
-    <text x="142" y="274" fill="#FFFFFF" font-size="18" font-weight="800">Vision</text>
-    <text x="116" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Scene understanding</text>
-    <text x="116" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Classification, OCR, detection,</text>
-    <text x="116" y="394" fill="#D7E6FF" font-size="19" font-weight="500">segmentation, and image enhancement</text>
-    <text x="116" y="424" fill="#D7E6FF" font-size="19" font-weight="500">inside one maintained module.</text>
-    <text x="116" y="450" fill="#9FC5FF" font-size="18" font-weight="700">Best first path: IntelligentCamera</text>
-
-    <rect x="512" y="224" width="376" height="232" rx="28" fill="#102239" stroke="#F2F7FF" stroke-opacity="0.08"/>
-    <rect x="532" y="248" width="170" height="38" rx="19" fill="#0A84FF"/>
-    <text x="548" y="274" fill="#FFFFFF" font-size="17" font-weight="800">NaturalLanguage</text>
-    <text x="536" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Text intelligence</text>
-    <text x="536" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Summaries, entities, keywords, topics,</text>
-    <text x="536" y="394" fill="#D7E6FF" font-size="19" font-weight="500">and language-aware pipeline building</text>
-    <text x="536" y="424" fill="#D7E6FF" font-size="19" font-weight="500">on Apple frameworks.</text>
-    <text x="536" y="450" fill="#9FC5FF" font-size="18" font-weight="700">Compare against raw</text>
-    <text x="536" y="476" fill="#9FC5FF" font-size="18" font-weight="700">NaturalLanguage APIs</text>
-
-    <rect x="932" y="224" width="376" height="232" rx="28" fill="#10281D" stroke="#F2F7FF" stroke-opacity="0.08"/>
-    <rect x="952" y="248" width="116" height="38" rx="19" fill="#34C759"/>
-    <text x="980" y="274" fill="#FFFFFF" font-size="18" font-weight="800">Privacy</text>
-    <text x="956" y="322" fill="#FFFFFF" font-size="32" font-weight="800">Guard rails</text>
-    <text x="956" y="364" fill="#D7E6FF" font-size="19" font-weight="500">Tokenization, anonymization, and</text>
-    <text x="956" y="394" fill="#D7E6FF" font-size="19" font-weight="500">secure handling for AI flows that</text>
-    <text x="956" y="424" fill="#D7E6FF" font-size="19" font-weight="500">should stay privacy-first.</text>
-    <text x="956" y="450" fill="#B5F0C5" font-size="18" font-weight="700">Security-aware by default</text>
-
-    <rect x="92" y="490" width="376" height="220" rx="28" fill="#171A30" stroke="#F2F7FF" stroke-opacity="0.08"/>
-    <rect x="112" y="514" width="120" height="38" rx="19" fill="#BF5AF2"/>
-    <text x="140" y="540" fill="#FFFFFF" font-size="18" font-weight="800">Speech</text>
-    <text x="116" y="588" fill="#FFFFFF" font-size="32" font-weight="800">Voice output</text>
-    <text x="116" y="630" fill="#D7E6FF" font-size="19" font-weight="500">Speech synthesis, voice catalogs, and</text>
-    <text x="116" y="660" fill="#D7E6FF" font-size="19" font-weight="500">assistant-style demo paths built on</text>
-    <text x="116" y="690" fill="#D7E6FF" font-size="19" font-weight="500">Apple-native surfaces.</text>
-    <text x="116" y="716" fill="#E6C8FF" font-size="18" font-weight="700">Strong demo companion, not</text>
-    <text x="116" y="740" fill="#E6C8FF" font-size="18" font-weight="700">fake agent hype</text>
-
-    <rect x="512" y="490" width="376" height="220" rx="28" fill="#262014" stroke="#F2F7FF" stroke-opacity="0.08"/>
-    <rect x="532" y="514" width="164" height="38" rx="19" fill="#FF9F0A"/>
-    <text x="560" y="540" fill="#FFFFFF" font-size="18" font-weight="800">Benchmarks</text>
-    <text x="536" y="588" fill="#FFFFFF" font-size="32" font-weight="800">Evidence discipline</text>
-    <text x="536" y="630" fill="#D7E6FF" font-size="19" font-weight="500">Versioned benchmark artifacts, threshold</text>
-    <text x="536" y="660" fill="#D7E6FF" font-size="19" font-weight="500">validation, provenance checks, and</text>
-    <text x="536" y="690" fill="#D7E6FF" font-size="19" font-weight="500">immutable release bundles.</text>
-    <text x="536" y="716" fill="#FFD4A6" font-size="18" font-weight="700">Claims stay inside the</text>
-    <text x="536" y="740" fill="#FFD4A6" font-size="18" font-weight="700">proof envelope</text>
-
-    <rect x="932" y="490" width="376" height="220" rx="28" fill="#0E2037" stroke="#F2F7FF" stroke-opacity="0.08"/>
-    <rect x="952" y="514" width="176" height="38" rx="19" fill="#5AC8FA"/>
-    <text x="980" y="540" fill="#FFFFFF" font-size="18" font-weight="800">Release Proof</text>
-    <text x="956" y="588" fill="#FFFFFF" font-size="32" font-weight="800">Public trust surface</text>
-    <text x="956" y="630" fill="#D7E6FF" font-size="19" font-weight="500">Generated proof pages, latest release</text>
-    <text x="956" y="660" fill="#D7E6FF" font-size="19" font-weight="500">proof, media pack, and device policy</text>
-    <text x="956" y="690" fill="#D7E6FF" font-size="19" font-weight="500">aligned to the README story.</text>
-    <text x="956" y="716" fill="#9FC5FF" font-size="18" font-weight="700">Mac + iPhone floor,</text>
-    <text x="956" y="740" fill="#9FC5FF" font-size="18" font-weight="700">release-grade posture</text>
-  </g>
-
-  <rect x="92" y="780" width="1216" height="76" rx="24" fill="url(#line)" stroke="#FFFFFF" stroke-opacity="0.08"/>
+  <rect x="92" y="770" width="1216" height="74" rx="24" fill="url(#line)" stroke="#FFFFFF" stroke-opacity="0.08"/>
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <text x="126" y="812" fill="#FFFFFF" font-size="21" font-weight="800">Flagship flow</text>
-    <text x="126" y="838" fill="#D7E6FF" font-size="20" font-weight="600">Vision -> NLP -> Privacy -> release proof</text>
-    <text x="760" y="812" fill="#FFFFFF" font-size="21" font-weight="800">Current strongest demo</text>
-    <text x="760" y="838" fill="#9FC5FF" font-size="20" font-weight="700">IntelligentCamera</text>
+    <text x="126" y="802" fill="#FFFFFF" font-size="21" font-weight="800">Flagship flow</text>
+    <text x="126" y="830" fill="#D7E6FF" font-size="20" font-weight="600">Vision → NLP → Privacy → release proof</text>
+    <text x="760" y="802" fill="#FFFFFF" font-size="21" font-weight="800">Current strongest demo</text>
+    <text x="760" y="830" fill="#9FC5FF" font-size="20" font-weight="700">IntelligentCamera</text>
   </g>
 </svg>
