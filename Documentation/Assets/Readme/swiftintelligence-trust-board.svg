@@ -1,70 +1,64 @@
-<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="900" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#06101D"/>
-      <stop offset="0.5" stop-color="#101C31"/>
-      <stop offset="1" stop-color="#081624"/>
-    </linearGradient>
-    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#FFFFFF" stop-opacity="0.14"/>
-      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.04"/>
+    <linearGradient id="bg" x1="62" y1="46" x2="1342" y2="874" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081322"/>
+      <stop offset="0.52" stop-color="#101C33"/>
+      <stop offset="1" stop-color="#091523"/>
     </linearGradient>
   </defs>
 
-  <rect width="1400" height="900" rx="40" fill="url(#bg)"/>
-  <rect x="60" y="58" width="1280" height="784" rx="34" fill="#0B1728" fill-opacity="0.72" stroke="#F2F7FF" stroke-opacity="0.08"/>
+  <rect width="1400" height="920" rx="40" fill="#050B16"/>
+  <rect x="34" y="32" width="1332" height="856" rx="40" fill="url(#bg)"/>
+  <rect x="72" y="68" width="1256" height="784" rx="34" fill="#0B1728" fill-opacity="0.76" stroke="#F2F7FF" stroke-opacity="0.08"/>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <text x="96" y="122" fill="#FFFFFF" font-size="48" font-weight="800">Trust and Distribution Surface</text>
-    <text x="96" y="164" fill="#AFC6E9" font-size="21" font-weight="500">Public claims, release assets, community health,</text>
-    <text x="96" y="194" fill="#AFC6E9" font-size="21" font-weight="500">and maintainer guidance stay aligned.</text>
+    <text x="110" y="132" fill="#FFFFFF" font-size="50" font-weight="800">Trust and Distribution Surface</text>
+    <text x="110" y="174" fill="#AFC6E9" font-size="21" font-weight="500">Public claims, releases, docs, and maintainer guidance stay aligned.</text>
 
-    <rect x="92" y="220" width="360" height="206" rx="28" fill="url(#panel)" stroke="#34C759" stroke-opacity="0.24"/>
-    <text x="120" y="266" fill="#B5F0C5" font-size="22" font-weight="700">Proof</text>
-    <text x="120" y="314" fill="#FFFFFF" font-size="34" font-weight="800">Release-grade truth</text>
-    <text x="120" y="356" fill="#D7E6FF" font-size="20" font-weight="500">Generated readiness, public proof status,</text>
-    <text x="120" y="386" fill="#D7E6FF" font-size="20" font-weight="500">release blockers, and immutable evidence</text>
-    <text x="120" y="416" fill="#D7E6FF" font-size="20" font-weight="500">stay linked.</text>
+    <rect x="110" y="226" width="364" height="196" rx="28" fill="#111F35" stroke="#34C759" stroke-opacity="0.24"/>
+    <text x="142" y="270" fill="#B5F0C5" font-size="22" font-weight="700">Proof</text>
+    <text x="142" y="318" fill="#FFFFFF" font-size="36" font-weight="800">Release-grade truth</text>
+    <text x="142" y="362" fill="#D7E6FF" font-size="20" font-weight="500">Readiness, proof status, blockers,</text>
+    <text x="142" y="392" fill="#D7E6FF" font-size="20" font-weight="500">and immutable evidence stay linked.</text>
 
-    <rect x="520" y="220" width="360" height="206" rx="28" fill="url(#panel)" stroke="#0A84FF" stroke-opacity="0.24"/>
-    <text x="548" y="266" fill="#9FC5FF" font-size="22" font-weight="700">Community health</text>
-    <text x="548" y="314" fill="#FFFFFF" font-size="30" font-weight="800">Contribution quality</text>
-    <text x="548" y="348" fill="#FFFFFF" font-size="30" font-weight="800">bar</text>
-    <text x="548" y="384" fill="#D7E6FF" font-size="20" font-weight="500">Contributing, issue forms, code of conduct,</text>
-    <text x="548" y="414" fill="#D7E6FF" font-size="20" font-weight="500">security policy, and support routing.</text>
+    <rect x="518" y="226" width="364" height="196" rx="28" fill="#102239" stroke="#0A84FF" stroke-opacity="0.24"/>
+    <text x="550" y="270" fill="#9FC5FF" font-size="22" font-weight="700">Community health</text>
+    <text x="550" y="318" fill="#FFFFFF" font-size="36" font-weight="800">Contribution quality</text>
+    <text x="550" y="354" fill="#FFFFFF" font-size="36" font-weight="800">bar</text>
+    <text x="550" y="392" fill="#D7E6FF" font-size="20" font-weight="500">Contributing, issue forms, security,</text>
+    <text x="550" y="422" fill="#D7E6FF" font-size="20" font-weight="500">support, and maintainer guidance.</text>
 
-    <rect x="948" y="220" width="360" height="206" rx="28" fill="url(#panel)" stroke="#FF9F0A" stroke-opacity="0.24"/>
-    <text x="976" y="266" fill="#FFD4A6" font-size="22" font-weight="700">Distribution</text>
-    <text x="976" y="314" fill="#FFFFFF" font-size="34" font-weight="800">README as landing page</text>
-    <text x="976" y="356" fill="#D7E6FF" font-size="20" font-weight="500">Hero art, flagship media, comparison pages,</text>
-    <text x="976" y="386" fill="#D7E6FF" font-size="20" font-weight="500">release notes, and multilingual entry paths.</text>
-    <text x="976" y="416" fill="#D7E6FF" font-size="20" font-weight="500">Adoption friction stays lower.</text>
+    <rect x="926" y="226" width="364" height="196" rx="28" fill="#251F13" stroke="#FF9F0A" stroke-opacity="0.24"/>
+    <text x="958" y="270" fill="#FFD4A6" font-size="22" font-weight="700">Distribution</text>
+    <text x="958" y="318" fill="#FFFFFF" font-size="36" font-weight="800">README as product page</text>
+    <text x="958" y="362" fill="#D7E6FF" font-size="20" font-weight="500">Hero boards, media, comparisons,</text>
+    <text x="958" y="392" fill="#D7E6FF" font-size="20" font-weight="500">release notes, and shareable proof.</text>
 
-    <rect x="92" y="474" width="1216" height="268" rx="28" fill="#0C1829" stroke="#F2F7FF" stroke-opacity="0.08"/>
-    <text x="124" y="524" fill="#FFFFFF" font-size="34" font-weight="800">Operational loop</text>
+    <rect x="110" y="478" width="1180" height="284" rx="30" fill="#0C182A" stroke="#F2F7FF" stroke-opacity="0.08"/>
+    <text x="144" y="528" fill="#FFFFFF" font-size="34" font-weight="800">Operational loop</text>
 
-    <rect x="124" y="566" width="248" height="122" rx="22" fill="#111F35" stroke="#F05138" stroke-opacity="0.22"/>
-    <text x="152" y="604" fill="#FFB3A8" font-size="20" font-weight="700">1. Build + validate</text>
-    <text x="152" y="638" fill="#D7E6FF" font-size="22" font-weight="500">swift build</text>
-    <text x="152" y="668" fill="#D7E6FF" font-size="22" font-weight="500">swift test</text>
+    <rect x="144" y="572" width="246" height="126" rx="22" fill="#111F35" stroke="#F05138" stroke-opacity="0.22"/>
+    <text x="172" y="610" fill="#FFB3A8" font-size="20" font-weight="700">1. Build + validate</text>
+    <text x="172" y="646" fill="#D7E6FF" font-size="22" font-weight="500">swift build</text>
+    <text x="172" y="678" fill="#D7E6FF" font-size="22" font-weight="500">swift test</text>
 
-    <rect x="404" y="566" width="248" height="122" rx="22" fill="#102239" stroke="#0A84FF" stroke-opacity="0.22"/>
-    <text x="432" y="604" fill="#9FC5FF" font-size="20" font-weight="700">2. Benchmark + proof</text>
-    <text x="432" y="638" fill="#D7E6FF" font-size="22" font-weight="500">prepare-release</text>
-    <text x="432" y="668" fill="#D7E6FF" font-size="22" font-weight="500">proof generation</text>
+    <rect x="430" y="572" width="246" height="126" rx="22" fill="#102239" stroke="#0A84FF" stroke-opacity="0.22"/>
+    <text x="458" y="610" fill="#9FC5FF" font-size="20" font-weight="700">2. Benchmark + proof</text>
+    <text x="458" y="646" fill="#D7E6FF" font-size="22" font-weight="500">prepare-release</text>
+    <text x="458" y="678" fill="#D7E6FF" font-size="22" font-weight="500">proof generation</text>
 
-    <rect x="684" y="566" width="248" height="122" rx="22" fill="#1B1B14" stroke="#FF9F0A" stroke-opacity="0.22"/>
-    <text x="712" y="604" fill="#FFD4A6" font-size="20" font-weight="700">3. Bundle + publish</text>
-    <text x="712" y="638" fill="#D7E6FF" font-size="22" font-weight="500">release assets</text>
-    <text x="712" y="668" fill="#D7E6FF" font-size="22" font-weight="500">demo share pack</text>
+    <rect x="716" y="572" width="246" height="126" rx="22" fill="#1B1B14" stroke="#FF9F0A" stroke-opacity="0.22"/>
+    <text x="744" y="610" fill="#FFD4A6" font-size="20" font-weight="700">3. Bundle + publish</text>
+    <text x="744" y="646" fill="#D7E6FF" font-size="22" font-weight="500">release assets</text>
+    <text x="744" y="678" fill="#D7E6FF" font-size="22" font-weight="500">demo share pack</text>
 
-    <rect x="964" y="566" width="248" height="122" rx="22" fill="#171A30" stroke="#BF5AF2" stroke-opacity="0.22"/>
-    <text x="992" y="604" fill="#E6C8FF" font-size="20" font-weight="700">4. Adopt + contribute</text>
-    <text x="992" y="638" fill="#D7E6FF" font-size="22" font-weight="500">comparisons, issues, PRs,</text>
-    <text x="992" y="668" fill="#D7E6FF" font-size="22" font-weight="500">and Copilot instructions</text>
+    <rect x="1002" y="572" width="246" height="126" rx="22" fill="#171A30" stroke="#BF5AF2" stroke-opacity="0.22"/>
+    <text x="1030" y="610" fill="#E6CBFF" font-size="20" font-weight="700">4. Adopt + contribute</text>
+    <text x="1030" y="646" fill="#D7E6FF" font-size="22" font-weight="500">comparisons</text>
+    <text x="1030" y="678" fill="#D7E6FF" font-size="22" font-weight="500">issues, PRs, Copilot</text>
   </g>
 
-  <path d="M372 628H404" stroke="#F2F7FF" stroke-opacity="0.24" stroke-width="4"/>
-  <path d="M652 628H684" stroke="#F2F7FF" stroke-opacity="0.24" stroke-width="4"/>
-  <path d="M932 628H964" stroke="#F2F7FF" stroke-opacity="0.24" stroke-width="4"/>
+  <path d="M390 634H430" stroke="#F2F7FF" stroke-opacity="0.24" stroke-width="4"/>
+  <path d="M676 634H716" stroke="#F2F7FF" stroke-opacity="0.24" stroke-width="4"/>
+  <path d="M962 634H1002" stroke="#F2F7FF" stroke-opacity="0.24" stroke-width="4"/>
 </svg>
