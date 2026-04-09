@@ -13,12 +13,15 @@ This hub is organized by intent, not by maintainer file dump.
 ## 2. I need the strongest product path
 
 - [IntelligentCamera demo guide](../Examples/DemoApps/IntelligentCamera/README.md)
+- [SmartTranslator demo guide](../Examples/DemoApps/SmartTranslator/README.md)
+- [VoiceAssistant demo guide](../Examples/DemoApps/VoiceAssistant/README.md)
 - [Flagship media policy](Assets/Flagship-Demo/README.md)
 - [Flagship media status](Generated/Flagship-Media-Status.md)
 - [Flagship demo pack](Generated/Flagship-Demo-Pack.md)
 
 ## 3. I want trust, proof, and release reality
 
+- [Trust Start](Trust-Start.md)
 - [Public Proof Status](Generated/Public-Proof-Status.md)
 - [Latest Release Proof](Generated/Latest-Release-Proof.md)
 - [Benchmark Readiness](Generated/Benchmark-Readiness.md)

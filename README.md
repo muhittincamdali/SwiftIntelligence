@@ -33,7 +33,7 @@
   <a href="Documentation/README-Languages.md">README Languages</a> •
   <a href="Documentation/README.md">Documentation Hub</a> •
   <a href="Documentation/Comparisons/Competitive-Matrix.md">Competitive Matrix</a> •
-  <a href="Documentation/Generated/Public-Proof-Status.md">Public Proof Status</a> •
+  <a href="Documentation/Trust-Start.md">Trust Start</a> •
   <a href="Documentation/Generated/Latest-Release-Proof.md">Latest Release Proof</a> •
   <a href="Documentation/Showcase.md">Showcase</a>
 </p>
@@ -58,7 +58,7 @@
 | If you are evaluating for... | Start here | What you will see first |
 | --- | --- | --- |
 | Product value | [Five-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path) | `Vision -> NLP -> Privacy` with the strongest maintained demo |
-| Technical trust | [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) | readiness, release posture, device floor, media status, release proof |
+| Technical trust | [Trust Start](Documentation/Trust-Start.md) | readiness, release posture, device floor, media status, release proof |
 | Competitive fit | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) | where SwiftIntelligence wins, loses, and should not be chosen |
 
 > Use SwiftIntelligence when your app needs multiple Apple-native AI capabilities to ship together.
@@ -156,7 +156,7 @@ Current top comparison set:
 | Distribution posture | `release-grade` |
 | Required release device floor | `Mac + iPhone` |
 | Flagship media | `published` |
-| Canonical trust page | [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) |
+| Canonical trust start | [Trust Start](Documentation/Trust-Start.md) |
 | Latest immutable proof | [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md) |
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
@@ -168,7 +168,7 @@ Current top comparison set:
 | Evaluating the repo | [Documentation Hub](Documentation/README.md) |
 | Trying the strongest path | [Getting Started](Documentation/Getting-Started.md) |
 | Comparing options | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) |
-| Reviewing trust and release proof | [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) |
+| Reviewing trust and release proof | [Trust Start](Documentation/Trust-Start.md) |
 | Looking for product examples | [Examples](Examples/README.md) |
 | Contributing or maintaining | [Contributing](CONTRIBUTING.md) |
 
