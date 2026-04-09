@@ -4,24 +4,19 @@
 
 <div align="center">
 
-[![Swift](https://img.shields.io/badge/Swift-5.9+-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
-[![Apple Platforms](https://img.shields.io/badge/Apple-iOS%2017%2B%20%7C%20macOS%2014%2B%20%7C%20tvOS%2017%2B%20%7C%20watchOS%2010%2B%20%7C%20visionOS%201%2B-0A84FF?style=for-the-badge&logo=apple&logoColor=white)](https://developer.apple.com)
 [![Release](https://img.shields.io/github/v/release/muhittincamdali/SwiftIntelligence?display_name=tag&style=for-the-badge&logo=github)](https://github.com/muhittincamdali/SwiftIntelligence/releases)
-[![Stars](https://img.shields.io/github/stars/muhittincamdali/SwiftIntelligence?style=for-the-badge&logo=github)](https://github.com/muhittincamdali/SwiftIntelligence/stargazers)
-[![Contributors](https://img.shields.io/github/contributors/muhittincamdali/SwiftIntelligence?style=for-the-badge)](https://github.com/muhittincamdali/SwiftIntelligence/graphs/contributors)
-[![Last Commit](https://img.shields.io/github/last-commit/muhittincamdali/SwiftIntelligence?style=for-the-badge)](https://github.com/muhittincamdali/SwiftIntelligence/commits/main)
-[![Publish Readiness](https://img.shields.io/badge/Publish%20Readiness-ready-34C759?style=for-the-badge)](Documentation/Generated/Benchmark-Readiness.md)
-[![Proof Posture](https://img.shields.io/badge/Proof%20Posture-release--grade-FF9F0A?style=for-the-badge)](Documentation/Generated/Public-Proof-Status.md)
-[![Required Devices](https://img.shields.io/badge/Required%20Devices-Mac%20%2B%20iPhone-5AC8FA?style=for-the-badge)](Documentation/Generated/Release-Benchmark-Matrix.md)
-[![License](https://img.shields.io/badge/License-MIT-111827?style=for-the-badge)](LICENSE)
+[![Swift](https://img.shields.io/badge/Swift-5.9+-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
+[![Readiness](https://img.shields.io/badge/Publish%20Readiness-ready-34C759?style=for-the-badge)](Documentation/Generated/Benchmark-Readiness.md)
+[![Proof](https://img.shields.io/badge/Proof%20Posture-release--grade-FF9F0A?style=for-the-badge)](Documentation/Generated/Public-Proof-Status.md)
+[![Showcase](https://img.shields.io/badge/Flagship%20Media-published-BF5AF2?style=for-the-badge)](Documentation/Assets/Flagship-Demo/README.md)
 
 <br />
 
 [![Start Here](https://img.shields.io/badge/Start%20Here-5%20Minute%20Success%20Path-F05138?style=for-the-badge&labelColor=0D1117)](Documentation/Getting-Started.md#five-minute-success-path)
 [![Flagship Demo](https://img.shields.io/badge/Flagship%20Demo-IntelligentCamera-0A84FF?style=for-the-badge&labelColor=0D1117)](Examples/DemoApps/IntelligentCamera/README.md)
-[![Proof Surface](https://img.shields.io/badge/Proof%20Surface-Public%20Status-34C759?style=for-the-badge&labelColor=0D1117)](Documentation/Generated/Public-Proof-Status.md)
-[![Showcase Media](https://img.shields.io/badge/Showcase%20Media-published-BF5AF2?style=for-the-badge&labelColor=0D1117)](Documentation/Assets/Flagship-Demo/README.md)
+[![Required Devices](https://img.shields.io/badge/Required%20Devices-Mac%20%2B%20iPhone-5AC8FA?style=for-the-badge&labelColor=0D1117)](Documentation/Generated/Release-Benchmark-Matrix.md)
 [![README Languages](https://img.shields.io/badge/README%20Languages-18-111827?style=for-the-badge&labelColor=0D1117)](Documentation/README-Languages.md)
+[![License](https://img.shields.io/badge/License-MIT-1F2937?style=for-the-badge&labelColor=0D1117)](LICENSE)
 
 </div>
 
@@ -33,6 +28,15 @@
 <p align="center">
   It is not a generic cross-platform inference runtime. It is an Apple-native developer toolkit built to make on-device AI flows easier to compose,
   easier to validate, and harder to fake.
+</p>
+
+<p align="center">
+  <code>iOS 17+</code>
+  <code>macOS 14+</code>
+  <code>tvOS 17+</code>
+  <code>watchOS 10+</code>
+  <code>visionOS 1+</code>
+  <code>Mac + iPhone release floor</code>
 </p>
 
 <p align="center">
