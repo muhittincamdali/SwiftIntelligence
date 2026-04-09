@@ -14,9 +14,6 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   deploy:
     environment:
@@ -34,10 +31,18 @@ jobs:
         with:
           enablement: true
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+      - name: Package GitHub Pages Artifact
+        run: |
+          rm -f github-pages.tar github-pages.tar.gz
+          COPYFILE_DISABLE=1 tar --format=ustar -cf github-pages.tar -C ./docs .
+          gzip -f github-pages.tar
+
+      - name: Upload Pages artifact archive
+        uses: actions/upload-artifact@v7
         with:
-          path: ./docs
+          name: github-pages
+          path: ./github-pages.tar.gz
+          retention-days: 1
 
       - name: Deploy to GitHub Pages
         id: deployment
