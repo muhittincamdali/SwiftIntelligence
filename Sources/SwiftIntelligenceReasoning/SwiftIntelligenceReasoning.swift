@@ -69,7 +69,7 @@ public actor SwiftIntelligenceReasoning {
         logger.debug("Validating Reasoning frameworks", category: "Reasoning")
         
         // Validate knowledge base integrity
-        let knowledgeBaseValid = await knowledgeBase.validate()
+        let knowledgeBaseValid = knowledgeBase.validate()
         if knowledgeBaseValid {
             logger.info("Knowledge base validation successful", category: "Reasoning")
         } else {
@@ -89,15 +89,13 @@ public actor SwiftIntelligenceReasoning {
         logger.debug("Loading default knowledge base", category: "Reasoning")
         
         // Load basic facts and rules
-        var kb = knowledgeBase
-        await kb.addFact(Fact(id: "basic_logic", content: "All humans are mortal", confidence: 1.0))
-        await kb.addRule(Rule(
+        knowledgeBase.addFact(Fact(id: "basic_logic", content: "All humans are mortal", confidence: 1.0))
+        knowledgeBase.addRule(Rule(
             id: "modus_ponens",
             premise: "If P then Q, P is true",
             conclusion: "Q is true",
             confidence: 1.0
         ))
-        knowledgeBase = kb
         
         logger.debug("Default knowledge base loaded", category: "Reasoning")
     }
@@ -616,7 +614,7 @@ extension SwiftIntelligenceReasoning: IntelligenceProtocol {
             errors.append(ValidationError(code: "REASONING_NOT_READY", message: "Reasoning Engine not ready"))
         }
         
-        let knowledgeBaseValid = await knowledgeBase.validate()
+        let knowledgeBaseValid = knowledgeBase.validate()
         if !knowledgeBaseValid {
             warnings.append(ValidationWarning(code: "KNOWLEDGE_BASE_INVALID", message: "Knowledge base validation failed"))
         }

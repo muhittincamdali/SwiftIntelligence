@@ -3,7 +3,7 @@ import SwiftIntelligenceCore
 
 // MARK: - Reasoning Types
 
-public enum ReasoningType: String, CaseIterable, Codable {
+public enum ReasoningType: String, CaseIterable, Codable, Sendable {
     case deductive = "deductive"
     case inductive = "inductive"
     case abductive = "abductive"
@@ -12,7 +12,7 @@ public enum ReasoningType: String, CaseIterable, Codable {
     case probabilistic = "probabilistic"
 }
 
-public struct ReasoningResult: Codable {
+public struct ReasoningResult: Codable, Sendable {
     public let id: String
     public let timestamp: Date
     public let processingTime: TimeInterval
@@ -49,7 +49,7 @@ public struct ReasoningResult: Codable {
     }
 }
 
-public struct ReasoningStep: Codable {
+public struct ReasoningStep: Codable, Sendable {
     public let stepNumber: Int
     public let operation: ReasoningOperation
     public let input: String
@@ -74,7 +74,7 @@ public struct ReasoningStep: Codable {
     }
 }
 
-public enum ReasoningOperation: String, CaseIterable, Codable {
+public enum ReasoningOperation: String, CaseIterable, Codable, Sendable {
     case apply_rule = "apply_rule"
     case derive_conclusion = "derive_conclusion"
     case pattern_recognition = "pattern_recognition"
@@ -94,15 +94,15 @@ public struct KnowledgeBase: Sendable {
     
     public init() {}
     
-    public mutating func addFact(_ fact: Fact) async {
+    public mutating func addFact(_ fact: Fact) {
         facts.append(fact)
     }
     
-    public mutating func addRule(_ rule: Rule) async {
+    public mutating func addRule(_ rule: Rule) {
         rules.append(rule)
     }
     
-    public mutating func addConcept(_ concept: Concept) async {
+    public mutating func addConcept(_ concept: Concept) {
         concepts.append(concept)
     }
     
@@ -118,7 +118,7 @@ public struct KnowledgeBase: Sendable {
         return concepts
     }
     
-    public func validate() async -> Bool {
+    public func validate() -> Bool {
         return !facts.isEmpty || !rules.isEmpty
     }
     
