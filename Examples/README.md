@@ -56,6 +56,8 @@ Validation truth:
 
 - [Showcase](../Documentation/Showcase.md)
 - [Flagship media policy](../Documentation/Assets/Flagship-Demo/README.md)
+- [SmartTranslator media policy](../Documentation/Assets/SmartTranslator-Demo/README.md)
+- [VoiceAssistant media policy](../Documentation/Assets/VoiceAssistant-Demo/README.md)
 - [Flagship media status](../Documentation/Generated/Flagship-Media-Status.md)
 - [Flagship demo pack](../Documentation/Generated/Flagship-Demo-Pack.md)
 

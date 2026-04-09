@@ -1,0 +1,12 @@
+{
+  "assetRoot": "Documentation/Assets/VoiceAssistant-Demo",
+  "statusValues": [
+    "not-published",
+    "published"
+  ],
+  "requiredFilesWhenPublished": [
+    "voiceassistant-success.png",
+    "voiceassistant-run.mp4",
+    "caption.txt"
+  ]
+}
