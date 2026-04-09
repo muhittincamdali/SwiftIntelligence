@@ -195,7 +195,7 @@ public struct NLPResult: Codable, ConfidenceProvider {
         confidence = try container.decode(Float.self, forKey: .confidence)
         metadata = try container.decode([String: String].self, forKey: .metadata)
         originalText = try container.decode(String.self, forKey: .originalText)
-        detectedLanguage = try container.decode(NLLanguage.self, forKey: .detectedLanguage)
+        detectedLanguage = try container.decodeLanguage(forKey: .detectedLanguage)
         tokens = try container.decode([String].self, forKey: .tokens)
         sentences = try container.decode([String].self, forKey: .sentences)
         analysisResults = [:] // Cannot decode [String: Any] directly
@@ -210,7 +210,7 @@ public struct NLPResult: Codable, ConfidenceProvider {
         try container.encode(confidence, forKey: .confidence)
         try container.encode(metadata, forKey: .metadata)
         try container.encode(originalText, forKey: .originalText)
-        try container.encode(detectedLanguage, forKey: .detectedLanguage)
+        try container.encode(detectedLanguage.rawValue, forKey: .detectedLanguage)
         try container.encode(tokens, forKey: .tokens)
         try container.encode(sentences, forKey: .sentences)
     }
@@ -364,6 +364,10 @@ public struct Topic: Codable, Sendable {
 public struct LanguageConfidence: Codable, Sendable {
     public let language: NLLanguage
     public let confidence: Float
+
+    private enum CodingKeys: String, CodingKey {
+        case language, confidence
+    }
     
     public var languageName: String {
         return Locale.current.localizedString(forLanguageCode: language.rawValue) ?? language.rawValue
@@ -372,6 +376,20 @@ public struct LanguageConfidence: Codable, Sendable {
     public init(language: NLLanguage, confidence: Float) {
         self.language = language
         self.confidence = confidence
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        language = try container.decodeLanguage(forKey: .language)
+        confidence = try container.decode(Float.self, forKey: .confidence)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(language.rawValue, forKey: .language)
+        try container.encode(confidence, forKey: .confidence)
     }
 }
 
@@ -416,6 +434,10 @@ public struct TranslationResult: Codable, ConfidenceProvider {
     public let sourceLanguage: NLLanguage
     public let targetLanguage: NLLanguage
     public let confidence: Float
+
+    private enum CodingKeys: String, CodingKey {
+        case originalText, translatedText, sourceLanguage, targetLanguage, confidence
+    }
     
     public init(
         originalText: String,
@@ -429,6 +451,26 @@ public struct TranslationResult: Codable, ConfidenceProvider {
         self.sourceLanguage = sourceLanguage
         self.targetLanguage = targetLanguage
         self.confidence = confidence
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        originalText = try container.decode(String.self, forKey: .originalText)
+        translatedText = try container.decode(String.self, forKey: .translatedText)
+        sourceLanguage = try container.decodeLanguage(forKey: .sourceLanguage)
+        targetLanguage = try container.decodeLanguage(forKey: .targetLanguage)
+        confidence = try container.decode(Float.self, forKey: .confidence)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(originalText, forKey: .originalText)
+        try container.encode(translatedText, forKey: .translatedText)
+        try container.encode(sourceLanguage.rawValue, forKey: .sourceLanguage)
+        try container.encode(targetLanguage.rawValue, forKey: .targetLanguage)
+        try container.encode(confidence, forKey: .confidence)
     }
 }
 
@@ -579,19 +621,6 @@ public enum NLPError: LocalizedError {
 
 // MARK: - Extensions for NLLanguage
 
-extension NLLanguage: @retroactive Codable {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let rawValue = try container.decode(String.self)
-        self.init(rawValue: rawValue)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(self.rawValue)
-    }
-}
-
 extension NLLanguage {
     public var flag: String {
         switch self {
@@ -613,6 +642,13 @@ extension NLLanguage {
     
     public var localizedName: String {
         return Locale.current.localizedString(forLanguageCode: self.rawValue) ?? self.rawValue
+    }
+}
+
+private extension KeyedDecodingContainer {
+    func decodeLanguage(forKey key: Key) throws -> NLLanguage {
+        let rawValue = try decode(String.self, forKey: key)
+        return NLLanguage(rawValue: rawValue)
     }
 }
 
