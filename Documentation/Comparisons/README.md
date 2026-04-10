@@ -2,6 +2,10 @@
 
 This folder exists to close decisions, not to dump loose feature lists.
 
+<p align="center">
+  <img src="../Assets/Comparisons/swiftintelligence-comparisons-board.svg" width="100%" alt="SwiftIntelligence comparisons board" />
+</p>
+
 ## Fastest decision path
 
 | If you need to decide... | Start here | Why |

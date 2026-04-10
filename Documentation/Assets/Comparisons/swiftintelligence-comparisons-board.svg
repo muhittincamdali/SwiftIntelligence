@@ -1,0 +1,55 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cmp-bg" x1="56" y1="34" x2="1348" y2="858" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07111F"/>
+      <stop offset="0.55" stop-color="#0E1B32"/>
+      <stop offset="1" stop-color="#091322"/>
+    </linearGradient>
+    <radialGradient id="cmp-blue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1188 162) rotate(140) scale(340 260)">
+      <stop stop-color="#0A84FF" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#0A84FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1400" height="900" rx="42" fill="#040A14"/>
+  <rect x="34" y="32" width="1332" height="836" rx="40" fill="url(#cmp-bg)"/>
+  <rect x="34" y="32" width="1332" height="836" rx="40" fill="url(#cmp-blue)"/>
+  <rect x="72" y="68" width="1256" height="764" rx="34" fill="#0A1526" fill-opacity="0.82" stroke="#F3F7FF" stroke-opacity="0.08"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <text x="110" y="132" fill="#FFFFFF" font-size="52" font-weight="800">Comparison Signal</text>
+    <text x="110" y="174" fill="#AFC6E9" font-size="21" font-weight="500">Use this surface to close adoption decisions, not to inflate claims outside the proof envelope.</text>
+
+    <rect x="110" y="226" width="1180" height="104" rx="28" fill="#102239" stroke="#5AC8FA" stroke-opacity="0.22"/>
+    <text x="144" y="268" fill="#9FC5FF" font-size="21" font-weight="700">Top-level decision</text>
+    <text x="144" y="304" fill="#FFFFFF" font-size="28" font-weight="800">Choose SwiftIntelligence for multi-module Apple workflows, not low-level runtime battles.</text>
+
+    <rect x="110" y="390" width="344" height="222" rx="28" fill="#111F35" stroke="#F05138" stroke-opacity="0.24"/>
+    <text x="142" y="434" fill="#FFB3A8" font-size="21" font-weight="700">Repo-level rivals</text>
+    <text x="142" y="480" fill="#FFFFFF" font-size="35" font-weight="800">Competitive Matrix</text>
+    <text x="142" y="524" fill="#D7E6FF" font-size="20" font-weight="500">coremltools · MLX · WhisperKit</text>
+    <text x="142" y="554" fill="#D7E6FF" font-size="20" font-weight="500">swift-transformers · AnyLanguageModel</text>
+    <text x="142" y="596" fill="#D7E6FF" font-size="20" font-weight="500">best for: top-level adoption fit</text>
+    <text x="142" y="626" fill="#FFB3A8" font-size="18" font-weight="700">not for: benchmark bragging outside proof</text>
+
+    <rect x="528" y="390" width="344" height="222" rx="28" fill="#102239" stroke="#0A84FF" stroke-opacity="0.24"/>
+    <text x="560" y="434" fill="#9FC5FF" font-size="21" font-weight="700">Raw Apple API checks</text>
+    <text x="560" y="480" fill="#FFFFFF" font-size="35" font-weight="800">Vision · NLP · Speech</text>
+    <text x="560" y="524" fill="#D7E6FF" font-size="20" font-weight="500">module-level fit before package adoption</text>
+    <text x="560" y="566" fill="#D7E6FF" font-size="20" font-weight="500">best for: one-lane vs workflow decision</text>
+    <text x="560" y="596" fill="#D7E6FF" font-size="20" font-weight="500">pair with: IntelligentCamera or SmartTranslator</text>
+    <text x="560" y="626" fill="#9FC5FF" font-size="18" font-weight="700">start with the comparison, then open the demo</text>
+
+    <rect x="946" y="390" width="344" height="222" rx="28" fill="#251F13" stroke="#FF9F0A" stroke-opacity="0.24"/>
+    <text x="978" y="434" fill="#FFD4A6" font-size="21" font-weight="700">Truth discipline</text>
+    <text x="978" y="480" fill="#FFFFFF" font-size="35" font-weight="800">Stay inside the proof</text>
+    <text x="978" y="524" fill="#D7E6FF" font-size="20" font-weight="500">ready · release-grade · Mac + iPhone</text>
+    <text x="978" y="566" fill="#D7E6FF" font-size="20" font-weight="500">say where SwiftIntelligence loses</text>
+    <text x="978" y="596" fill="#D7E6FF" font-size="20" font-weight="500">do not claim leadership not yet earned</text>
+    <text x="978" y="626" fill="#FFD4A6" font-size="18" font-weight="700">trust page and immutable proof come next</text>
+
+    <rect x="110" y="678" width="1180" height="90" rx="24" fill="#171A30" stroke="#F3F7FF" stroke-opacity="0.08"/>
+    <text x="144" y="714" fill="#FFFFFF" font-size="22" font-weight="800">Best reading order</text>
+    <text x="144" y="748" fill="#D7E6FF" font-size="20" font-weight="600">Competitive Matrix → module comparison → matching demo → Trust Start</text>
+  </g>
+</svg>

@@ -47,6 +47,9 @@ jobs:
       - name: Validate Showcase Visual Assets
         run: bash Scripts/validate-showcase-visual-assets.sh
 
+      - name: Validate Comparison Visual Assets
+        run: bash Scripts/validate-comparison-visual-assets.sh
+
       - name: Validate Examples
         run: bash Scripts/validate-examples.sh
 
