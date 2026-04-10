@@ -53,6 +53,25 @@ Validation truth:
 - `SmartTranslator` and `VoiceAssistant` now also have real screenshots, recordings, and media policies
 - the secondary demos are still below flagship polish, but they are no longer source-only surfaces
 
+## Secondary Demo Previews
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="DemoApps/SmartTranslator/README.md">
+        <img src="../Documentation/Assets/SmartTranslator-Demo/smarttranslator-success.png" alt="SmartTranslator preview" />
+      </a>
+      <p><strong>SmartTranslator</strong><br />Language analysis, redacted preview, translated output, spoken result.</p>
+    </td>
+    <td width="50%" valign="top">
+      <a href="DemoApps/VoiceAssistant/README.md">
+        <img src="../Documentation/Assets/VoiceAssistant-Demo/voiceassistant-success.png" alt="VoiceAssistant preview" />
+      </a>
+      <p><strong>VoiceAssistant</strong><br />Intent-style command analysis, response generation, redacted preview, spoken output.</p>
+    </td>
+  </tr>
+</table>
+
 ## Media and proof
 
 - [Showcase](../Documentation/Showcase.md)

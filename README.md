@@ -98,10 +98,34 @@ bash Scripts/validate-flagship-demo.sh
 
 Two non-flagship demos now carry real showcase media as well:
 
-| Demo | Flow | Media surface |
-| --- | --- | --- |
-| [SmartTranslator](Examples/DemoApps/SmartTranslator/README.md) | `NLP -> Privacy -> Speech` | [Screenshot](Documentation/Assets/SmartTranslator-Demo/smarttranslator-success.png) • [Recording](Documentation/Assets/SmartTranslator-Demo/smarttranslator-run.mp4) • [Policy](Documentation/Assets/SmartTranslator-Demo/README.md) |
-| [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | `NLP -> Privacy -> Speech` | [Screenshot](Documentation/Assets/VoiceAssistant-Demo/voiceassistant-success.png) • [Recording](Documentation/Assets/VoiceAssistant-Demo/voiceassistant-run.mp4) • [Policy](Documentation/Assets/VoiceAssistant-Demo/README.md) |
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="Examples/DemoApps/SmartTranslator/README.md">
+        <img src="Documentation/Assets/SmartTranslator-Demo/smarttranslator-success.png" alt="SmartTranslator secondary demo screenshot" />
+      </a>
+      <p><strong>SmartTranslator</strong><br /><code>NLP -&gt; Privacy -&gt; Speech</code></p>
+      <p>Best secondary path for text analysis, tokenized preview, and translated output.</p>
+      <p>
+        <a href="Examples/DemoApps/SmartTranslator/README.md">Guide</a> •
+        <a href="Documentation/Assets/SmartTranslator-Demo/smarttranslator-run.mp4">Recording</a> •
+        <a href="Documentation/Assets/SmartTranslator-Demo/README.md">Media Policy</a>
+      </p>
+    </td>
+    <td width="50%" valign="top">
+      <a href="Examples/DemoApps/VoiceAssistant/README.md">
+        <img src="Documentation/Assets/VoiceAssistant-Demo/voiceassistant-success.png" alt="VoiceAssistant secondary demo screenshot" />
+      </a>
+      <p><strong>VoiceAssistant</strong><br /><code>NLP -&gt; Privacy -&gt; Speech</code></p>
+      <p>Best secondary path for assistant-style intent handling and privacy-aware response output.</p>
+      <p>
+        <a href="Examples/DemoApps/VoiceAssistant/README.md">Guide</a> •
+        <a href="Documentation/Assets/VoiceAssistant-Demo/voiceassistant-run.mp4">Recording</a> •
+        <a href="Documentation/Assets/VoiceAssistant-Demo/README.md">Media Policy</a>
+      </p>
+    </td>
+  </tr>
+</table>
 
 These are not flagship-quality proof surfaces, but they are no longer source-only demos.
 

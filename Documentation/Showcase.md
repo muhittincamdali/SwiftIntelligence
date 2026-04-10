@@ -72,6 +72,12 @@ Flow:
 
 `NLP -> Privacy -> Speech`
 
+<p align="center">
+  <a href="Assets/SmartTranslator-Demo/smarttranslator-success.png">
+    <img src="Assets/SmartTranslator-Demo/smarttranslator-success.png" width="100%" alt="SmartTranslator demo screenshot" />
+  </a>
+</p>
+
 Why it matters:
 
 - shows the repo can drive user-visible output, not only analysis
@@ -95,6 +101,12 @@ Where to verify:
 Flow:
 
 `NLP -> Privacy -> Speech`
+
+<p align="center">
+  <a href="Assets/VoiceAssistant-Demo/voiceassistant-success.png">
+    <img src="Assets/VoiceAssistant-Demo/voiceassistant-success.png" width="100%" alt="VoiceAssistant demo screenshot" />
+  </a>
+</p>
 
 Why it matters:
 
