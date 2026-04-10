@@ -53,6 +53,23 @@
 | Faster first success | The maintained flagship path gets a new evaluator from install to visible value in under five minutes. |
 | Honest scope | The repo does not pretend to be a Python-first training stack, a cross-platform inference runtime, or a generic AI umbrella. |
 
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>Choose SwiftIntelligence if...</strong><br /><br />
+      your app crosses <code>Vision</code>, <code>NaturalLanguage</code>, <code>Speech</code>, or privacy boundaries<br />
+      you want product-facing demos, not only raw framework assembly<br />
+      you care about release proof, benchmark policy, and public trust surfaces
+    </td>
+    <td width="50%" valign="top">
+      <strong>Do not choose SwiftIntelligence if...</strong><br /><br />
+      you want a low-level runtime first<br />
+      one raw Apple API already solves the whole problem cleanly<br />
+      you need a speech-only or LLM-only specialist package with no broader workflow story
+    </td>
+  </tr>
+</table>
+
 ## Start In One Of These Three Paths
 
 | If you are evaluating for... | Start here | What you will see first |
