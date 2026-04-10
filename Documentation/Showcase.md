@@ -79,14 +79,16 @@ Why it matters:
 
 Current limitation:
 
-- this is compile-validated and useful, but not yet productized at flagship level
+- this now has real media and a maintained guide, but it is still not productized at flagship level
 
 Where to verify:
 
 - guide: [SmartTranslator demo guide](../Examples/DemoApps/SmartTranslator/README.md)
 - media policy: [SmartTranslator demo media](Assets/SmartTranslator-Demo/README.md)
+- screenshot: [smarttranslator-success.png](Assets/SmartTranslator-Demo/smarttranslator-success.png)
+- recording: [smarttranslator-run.mp4](Assets/SmartTranslator-Demo/smarttranslator-run.mp4)
 - source: [SmartTranslatorApp.swift](../Examples/DemoApps/SmartTranslator/SmartTranslatorApp.swift)
-- command: `bash Scripts/validate-examples.sh`
+- command: `bash Scripts/capture-smarttranslator-media.sh`
 
 ## 3. VoiceAssistant
 
@@ -108,8 +110,10 @@ Where to verify:
 
 - guide: [VoiceAssistant demo guide](../Examples/DemoApps/VoiceAssistant/README.md)
 - media policy: [VoiceAssistant demo media](Assets/VoiceAssistant-Demo/README.md)
+- screenshot: [voiceassistant-success.png](Assets/VoiceAssistant-Demo/voiceassistant-success.png)
+- recording: [voiceassistant-run.mp4](Assets/VoiceAssistant-Demo/voiceassistant-run.mp4)
 - source: [VoiceAssistantApp.swift](../Examples/DemoApps/VoiceAssistant/VoiceAssistantApp.swift)
-- command: `bash Scripts/validate-examples.sh`
+- command: `bash Scripts/capture-voiceassistant-media.sh`
 
 ## Benchmark and release truth
 

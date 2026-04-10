@@ -42,11 +42,12 @@ This is the strongest text-first secondary demo in SwiftIntelligence.
 ## Current Limitations
 
 - the translation path is a real module call, but the demo clearly marks placeholder-level confidence when the underlying translation capability is still limited
-- this demo is compile-validated and user-facing, but it is not yet a flagship media path
+- this demo now has real media, but it is still not a flagship proof path
 
 ## Local Verification
 
 ```bash
+bash Scripts/capture-smarttranslator-media.sh
 bash Scripts/validate-examples.sh
 swift test
 ```
@@ -56,5 +57,7 @@ swift test
 - [Examples Hub](../../README.md)
 - [Showcase](../../../Documentation/Showcase.md)
 - [Media Policy](../../../Documentation/Assets/SmartTranslator-Demo/README.md)
+- [Screenshot](../../../Documentation/Assets/SmartTranslator-Demo/smarttranslator-success.png)
+- [Recording](../../../Documentation/Assets/SmartTranslator-Demo/smarttranslator-run.mp4)
 - [Speech vs Apple Speech](../../../Documentation/Comparisons/Speech-vs-AppleSpeech.md)
 - [Privacy vs CryptoKit + Security](../../../Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md)

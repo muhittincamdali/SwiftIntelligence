@@ -41,6 +41,7 @@ This is the assistant-style secondary demo in SwiftIntelligence.
 
 ## Current Limitations
 
+- this demo now has real media, but it is still not a flagship proof path
 - this is not proof of speech recognition leadership
 - this is not proof of agent orchestration or autonomous tool use
 - this demo proves assistant-style composition on Apple-native modules, not a full conversational agent stack
@@ -48,6 +49,7 @@ This is the assistant-style secondary demo in SwiftIntelligence.
 ## Local Verification
 
 ```bash
+bash Scripts/capture-voiceassistant-media.sh
 bash Scripts/validate-examples.sh
 swift test
 ```
@@ -57,5 +59,7 @@ swift test
 - [Examples Hub](../../README.md)
 - [Showcase](../../../Documentation/Showcase.md)
 - [Media Policy](../../../Documentation/Assets/VoiceAssistant-Demo/README.md)
+- [Screenshot](../../../Documentation/Assets/VoiceAssistant-Demo/voiceassistant-success.png)
+- [Recording](../../../Documentation/Assets/VoiceAssistant-Demo/voiceassistant-run.mp4)
 - [Speech vs Apple Speech](../../../Documentation/Comparisons/Speech-vs-AppleSpeech.md)
 - [Positioning](../../../Documentation/Positioning.md)
