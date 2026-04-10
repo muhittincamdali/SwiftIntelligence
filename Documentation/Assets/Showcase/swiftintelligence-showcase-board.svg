@@ -1,0 +1,55 @@
+<svg width="1400" height="880" viewBox="0 0 1400 880" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="show-bg" x1="58" y1="34" x2="1346" y2="844" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07111F"/>
+      <stop offset="0.55" stop-color="#0E1B32"/>
+      <stop offset="1" stop-color="#091322"/>
+    </linearGradient>
+    <radialGradient id="show-blue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1180 176) rotate(140) scale(360 280)">
+      <stop stop-color="#0A84FF" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#0A84FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1400" height="880" rx="42" fill="#040A14"/>
+  <rect x="34" y="32" width="1332" height="816" rx="40" fill="url(#show-bg)"/>
+  <rect x="34" y="32" width="1332" height="816" rx="40" fill="url(#show-blue)"/>
+  <rect x="72" y="68" width="1256" height="744" rx="34" fill="#0A1526" fill-opacity="0.82" stroke="#F3F7FF" stroke-opacity="0.08"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <text x="110" y="132" fill="#FFFFFF" font-size="52" font-weight="800">Showcase Signal</text>
+    <text x="110" y="174" fill="#AFC6E9" font-size="21" font-weight="500">What the repo can honestly prove today for a real Apple app team.</text>
+
+    <rect x="110" y="226" width="1180" height="104" rx="28" fill="#102239" stroke="#5AC8FA" stroke-opacity="0.22"/>
+    <text x="144" y="268" fill="#9FC5FF" font-size="21" font-weight="700">Current proof envelope</text>
+    <text x="144" y="304" fill="#FFFFFF" font-size="28" font-weight="800">release-grade posture · Mac + iPhone floor · flagship + secondary media published</text>
+
+    <rect x="110" y="390" width="344" height="224" rx="28" fill="#111F35" stroke="#F05138" stroke-opacity="0.24"/>
+    <text x="142" y="434" fill="#FFB3A8" font-size="21" font-weight="700">Flagship path</text>
+    <text x="142" y="480" fill="#FFFFFF" font-size="35" font-weight="800">IntelligentCamera</text>
+    <text x="142" y="522" fill="#D7E6FF" font-size="21" font-weight="500">Vision → NLP → Privacy</text>
+    <text x="142" y="566" fill="#D7E6FF" font-size="20" font-weight="500">strongest repo story</text>
+    <text x="142" y="596" fill="#D7E6FF" font-size="20" font-weight="500">best first proof path</text>
+    <text x="142" y="626" fill="#9FC5FF" font-size="18" font-weight="700">Compare first: raw Apple Vision</text>
+
+    <rect x="528" y="390" width="344" height="224" rx="28" fill="#102239" stroke="#0A84FF" stroke-opacity="0.24"/>
+    <text x="560" y="434" fill="#9FC5FF" font-size="21" font-weight="700">Secondary text path</text>
+    <text x="560" y="480" fill="#FFFFFF" font-size="35" font-weight="800">SmartTranslator</text>
+    <text x="560" y="522" fill="#D7E6FF" font-size="21" font-weight="500">NLP → Privacy → Speech</text>
+    <text x="560" y="566" fill="#D7E6FF" font-size="20" font-weight="500">text-heavy user-visible output</text>
+    <text x="560" y="596" fill="#D7E6FF" font-size="20" font-weight="500">not a flagship proof claim</text>
+    <text x="560" y="626" fill="#9FC5FF" font-size="18" font-weight="700">Compare first: NaturalLanguage</text>
+
+    <rect x="946" y="390" width="344" height="224" rx="28" fill="#171A30" stroke="#BF5AF2" stroke-opacity="0.24"/>
+    <text x="978" y="434" fill="#E6CBFF" font-size="21" font-weight="700">Secondary assistant path</text>
+    <text x="978" y="480" fill="#FFFFFF" font-size="35" font-weight="800">VoiceAssistant</text>
+    <text x="978" y="522" fill="#D7E6FF" font-size="21" font-weight="500">NLP → Privacy → Speech</text>
+    <text x="978" y="566" fill="#D7E6FF" font-size="20" font-weight="500">assistant-style response UX</text>
+    <text x="978" y="596" fill="#D7E6FF" font-size="20" font-weight="500">not an agent-runtime claim</text>
+    <text x="978" y="626" fill="#E6CBFF" font-size="18" font-weight="700">Compare first: Apple Speech</text>
+
+    <rect x="110" y="680" width="1180" height="90" rx="24" fill="#0E2037" stroke="#F3F7FF" stroke-opacity="0.08"/>
+    <text x="144" y="716" fill="#FFFFFF" font-size="22" font-weight="800">What this page should close</text>
+    <text x="144" y="750" fill="#D7E6FF" font-size="20" font-weight="600">Which demo proves what, what it does not prove, and where trust reality starts.</text>
+  </g>
+</svg>

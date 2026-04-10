@@ -44,6 +44,9 @@ jobs:
       - name: Validate README Visual Assets
         run: bash Scripts/validate-readme-visual-assets.sh
 
+      - name: Validate Showcase Visual Assets
+        run: bash Scripts/validate-showcase-visual-assets.sh
+
       - name: Validate Examples
         run: bash Scripts/validate-examples.sh
 
