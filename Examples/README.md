@@ -50,7 +50,8 @@ Why:
 Validation truth:
 
 - `IntelligentCamera` is the only example with full flagship media, proof narrative, and strongest onboarding
-- the other demos are real and compile-validated, but they are not yet presented with the same product polish
+- `SmartTranslator` and `VoiceAssistant` now also have real screenshots, recordings, and media policies
+- the secondary demos are still below flagship polish, but they are no longer source-only surfaces
 
 ## Media and proof
 

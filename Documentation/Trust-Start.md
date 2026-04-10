@@ -4,7 +4,7 @@ This page is the human-friendly entry point to the repo's trust surface.
 
 If you need one answer first, it is this:
 
-**SwiftIntelligence currently publishes a release-grade proof story with `Mac + iPhone` coverage and published flagship media.**
+**SwiftIntelligence currently publishes a release-grade proof story with `Mac + iPhone` coverage, published flagship media, and published secondary demo media for `SmartTranslator` and `VoiceAssistant`.**
 
 ## Read in this order
 
@@ -21,6 +21,7 @@ If you need one answer first, it is this:
 
 - the active modular graph builds and tests cleanly
 - the strongest demo path has a dedicated guide and smoke-check
+- two secondary demos now carry real screenshot and recording assets
 - benchmark artifacts, manifests, checksums, provenance, and regression thresholds exist
 - release messaging is tied to immutable evidence
 - the current required release floor is `Mac + iPhone`

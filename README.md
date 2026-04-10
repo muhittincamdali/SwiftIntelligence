@@ -94,6 +94,19 @@ bash Scripts/validate-flagship-demo.sh
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
+## Secondary Demo Media
+
+Two non-flagship demos now carry real showcase media as well:
+
+| Demo | Flow | Media surface |
+| --- | --- | --- |
+| [SmartTranslator](Examples/DemoApps/SmartTranslator/README.md) | `NLP -> Privacy -> Speech` | [Screenshot](Documentation/Assets/SmartTranslator-Demo/smarttranslator-success.png) • [Recording](Documentation/Assets/SmartTranslator-Demo/smarttranslator-run.mp4) • [Policy](Documentation/Assets/SmartTranslator-Demo/README.md) |
+| [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | `NLP -> Privacy -> Speech` | [Screenshot](Documentation/Assets/VoiceAssistant-Demo/voiceassistant-success.png) • [Recording](Documentation/Assets/VoiceAssistant-Demo/voiceassistant-run.mp4) • [Policy](Documentation/Assets/VoiceAssistant-Demo/README.md) |
+
+These are not flagship-quality proof surfaces, but they are no longer source-only demos.
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
 ## Product Surface
 
 <p align="center">
@@ -156,6 +169,7 @@ Current top comparison set:
 | Distribution posture | `release-grade` |
 | Required release device floor | `Mac + iPhone` |
 | Flagship media | `published` |
+| Secondary demo media | `SmartTranslator, VoiceAssistant published` |
 | Canonical trust start | [Trust Start](Documentation/Trust-Start.md) |
 | Latest immutable proof | [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md) |
 

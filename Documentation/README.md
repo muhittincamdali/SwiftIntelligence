@@ -18,6 +18,8 @@ This hub is organized by intent, not by maintainer file dump.
 - [Flagship media policy](Assets/Flagship-Demo/README.md)
 - [SmartTranslator media policy](Assets/SmartTranslator-Demo/README.md)
 - [VoiceAssistant media policy](Assets/VoiceAssistant-Demo/README.md)
+- [SmartTranslator screenshot](Assets/SmartTranslator-Demo/smarttranslator-success.png)
+- [VoiceAssistant screenshot](Assets/VoiceAssistant-Demo/voiceassistant-success.png)
 - [Flagship media status](Generated/Flagship-Media-Status.md)
 - [Flagship demo pack](Generated/Flagship-Demo-Pack.md)
 
