@@ -129,6 +129,12 @@ Two non-flagship demos now carry real showcase media as well:
 
 These are not flagship-quality proof surfaces, but they are no longer source-only demos.
 
+| If you want to evaluate... | Choose | Why |
+| --- | --- | --- |
+| text-first workflow value | [SmartTranslator](Examples/DemoApps/SmartTranslator/README.md) | best secondary path for summaries, keywords, tokenized preview, and translated output |
+| assistant-style response UX | [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | best secondary path for intent-like command handling and response generation |
+| raw framework tradeoffs first | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) | decide whether a secondary demo is even the right entry point |
+
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
 ## Product Surface

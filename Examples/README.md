@@ -39,6 +39,7 @@ Why:
 | inspect assistant-style UX | [VoiceAssistant](DemoApps/VoiceAssistant/README.md) |
 | inspect the smallest code sample | [BasicUsage.swift](BasicUsage.swift) |
 | review the public narrative behind these demos | [Documentation/Showcase.md](../Documentation/Showcase.md) |
+| decide whether demos are even the right evaluation path | [Competitive Matrix](../Documentation/Comparisons/Competitive-Matrix.md) |
 
 ## What is actually validated
 
@@ -90,3 +91,9 @@ Do not market a demo as flagship-quality unless it has:
 - current media
 - validation coverage
 - a clear role in the repo's public positioning
+
+For secondary demos, always answer three questions clearly:
+
+- best for what?
+- not for what?
+- compare against which raw Apple or rival surface first?

@@ -39,6 +39,18 @@ This is the strongest text-first secondary demo in SwiftIntelligence.
 - `Cikti` contains translated text
 - `Speech` ends with a synthesized output status
 
+## Best For
+
+- teams evaluating text-heavy user-visible flows before moving to the flagship camera path
+- apps that need summarization, keyword extraction, tokenized preview, and translated output together
+- evaluators who want a smaller maintained path than `IntelligentCamera`
+
+## Not For
+
+- teams looking for the strongest repo-wide proof story first
+- teams expecting specialist translation leadership
+- teams deciding between low-level runtimes such as `MLX` or `coremltools`
+
 ## Current Limitations
 
 - the translation path is a real module call, but the demo clearly marks placeholder-level confidence when the underlying translation capability is still limited
@@ -56,6 +68,7 @@ swift test
 
 - [Examples Hub](../../README.md)
 - [Showcase](../../../Documentation/Showcase.md)
+- [Competitive Matrix](../../../Documentation/Comparisons/Competitive-Matrix.md)
 - [Media Policy](../../../Documentation/Assets/SmartTranslator-Demo/README.md)
 - [Screenshot](../../../Documentation/Assets/SmartTranslator-Demo/smarttranslator-success.png)
 - [Recording](../../../Documentation/Assets/SmartTranslator-Demo/smarttranslator-run.mp4)
