@@ -2,6 +2,40 @@
 
 This hub is organized by intent, not by maintainer file dump.
 
+## Start here in 30 seconds
+
+| If your question is... | Start here | Why |
+| --- | --- | --- |
+| should I evaluate this repo at all? | [Positioning](Positioning.md) | category fit, win/loss boundaries, who should use it |
+| what is the strongest proof path? | [Five-Minute Success Path](Getting-Started.md#five-minute-success-path) | fastest visible value with the flagship demo |
+| can I trust the public claims? | [Trust Start](Trust-Start.md) | readiness, release posture, proof envelope, immutable evidence |
+| is this better than the obvious alternatives? | [Competitive Matrix](Comparisons/Competitive-Matrix.md) | direct rival matrix and decision flow |
+
+## Decision cards
+
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <strong>Evaluator</strong><br /><br />
+      decide if the repo fits your product<br />
+      compare against rivals<br />
+      inspect the strongest maintained demo
+    </td>
+    <td width="33%" valign="top">
+      <strong>Integrator</strong><br /><br />
+      install the package<br />
+      choose the right module lane<br />
+      validate examples against the active graph
+    </td>
+    <td width="33%" valign="top">
+      <strong>Maintainer</strong><br /><br />
+      keep public claims truthful<br />
+      preserve release discipline<br />
+      work inside the proof envelope
+    </td>
+  </tr>
+</table>
+
 ## 1. I am evaluating the repo
 
 - [Five-Minute Success Path](Getting-Started.md#five-minute-success-path)
@@ -88,3 +122,5 @@ Use these when you need machine-generated truth, not narrative pages.
 - Public performance language must stay inside the current proof envelope.
 - Public install snippets must match the latest numbered release in `CHANGELOG.md`.
 - The docs hub should send evaluators to outcomes first, then to maintainer detail.
+
+This page should stay short, decision-first, and hostile to link sprawl.
