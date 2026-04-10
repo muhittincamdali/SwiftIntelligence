@@ -39,6 +39,18 @@ This is the assistant-style secondary demo in SwiftIntelligence.
 - `Assistant Response` contains a synthesized response block
 - history accumulates previous commands and responses
 
+## Best For
+
+- teams evaluating assistant-style UI without claiming full agent-runtime scope
+- apps that need command interpretation, redaction, response generation, and spoken output in one screen
+- evaluators comparing a lighter secondary path against the flagship demo
+
+## Not For
+
+- teams expecting speech-recognition category leadership proof
+- teams expecting autonomous tool use or agent orchestration proof
+- teams deciding between raw framework assembly and the repo at category level without first reading comparisons
+
 ## Current Limitations
 
 - this demo now has real media, but it is still not a flagship proof path
@@ -58,6 +70,7 @@ swift test
 
 - [Examples Hub](../../README.md)
 - [Showcase](../../../Documentation/Showcase.md)
+- [Competitive Matrix](../../../Documentation/Comparisons/Competitive-Matrix.md)
 - [Media Policy](../../../Documentation/Assets/VoiceAssistant-Demo/README.md)
 - [Screenshot](../../../Documentation/Assets/VoiceAssistant-Demo/voiceassistant-success.png)
 - [Recording](../../../Documentation/Assets/VoiceAssistant-Demo/voiceassistant-run.mp4)

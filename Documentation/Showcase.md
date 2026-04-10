@@ -36,8 +36,8 @@ Do not adopt because of this page if you need:
 | Level | Example | What it proves | Current maturity |
 | --- | --- | --- | --- |
 | 1 | [IntelligentCamera](../Examples/DemoApps/IntelligentCamera/README.md) | repo's strongest multi-module product path | flagship |
-| 2 | `SmartTranslator` | text analysis, privacy preprocessing, speech output composition | maintained secondary |
-| 3 | `VoiceAssistant` | assistant-style response pipeline on Apple-native surfaces | maintained secondary |
+| 2 | [SmartTranslator](../Examples/DemoApps/SmartTranslator/README.md) | text analysis, privacy preprocessing, speech output composition | maintained secondary |
+| 3 | [VoiceAssistant](../Examples/DemoApps/VoiceAssistant/README.md) | assistant-style response pipeline on Apple-native surfaces | maintained secondary |
 
 ## 1. IntelligentCamera
 
@@ -87,6 +87,16 @@ Current limitation:
 
 - this now has real media and a maintained guide, but it is still not productized at flagship level
 
+Best for:
+
+- evaluating text-heavy app flows before touching the flagship vision path
+- checking how `NLP`, `Privacy`, and `Speech` compose in one user-visible screen
+
+Do not start here if:
+
+- you need the strongest repo-wide proof story first
+- you are deciding between raw Apple APIs and the package at category level
+
 Where to verify:
 
 - guide: [SmartTranslator demo guide](../Examples/DemoApps/SmartTranslator/README.md)
@@ -117,6 +127,16 @@ Current limitation:
 
 - not yet a flagship path
 - not proof of speech recognition leadership or agentic runtime leadership
+
+Best for:
+
+- evaluating assistant-style UX without claiming agent-runtime orchestration
+- checking command analysis, response generation, and redacted preview in one place
+
+Do not start here if:
+
+- you need flagship proof first
+- you need speech-recognition category leadership proof first
 
 Where to verify:
 
