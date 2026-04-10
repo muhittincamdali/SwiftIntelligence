@@ -39,6 +39,34 @@ Do not adopt because of this page if you need:
 | 2 | [SmartTranslator](../Examples/DemoApps/SmartTranslator/README.md) | text analysis, privacy preprocessing, speech output composition | maintained secondary |
 | 3 | [VoiceAssistant](../Examples/DemoApps/VoiceAssistant/README.md) | assistant-style response pipeline on Apple-native surfaces | maintained secondary |
 
+## Pick your first proof path
+
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <strong><a href="../Examples/DemoApps/IntelligentCamera/README.md">IntelligentCamera</a></strong><br />
+      <code>Vision -&gt; NLP -&gt; Privacy</code><br /><br />
+      strongest current repo story<br />
+      best first proof path<br />
+      compare first: <a href="Comparisons/Vision-vs-AppleVision.md">Vision vs Apple Vision</a>
+    </td>
+    <td width="33%" valign="top">
+      <strong><a href="../Examples/DemoApps/SmartTranslator/README.md">SmartTranslator</a></strong><br />
+      <code>NLP -&gt; Privacy -&gt; Speech</code><br /><br />
+      best secondary text path<br />
+      not a flagship proof claim<br />
+      compare first: <a href="Comparisons/NLP-vs-NaturalLanguage.md">NLP vs NaturalLanguage</a>
+    </td>
+    <td width="33%" valign="top">
+      <strong><a href="../Examples/DemoApps/VoiceAssistant/README.md">VoiceAssistant</a></strong><br />
+      <code>NLP -&gt; Privacy -&gt; Speech</code><br /><br />
+      best secondary assistant-style path<br />
+      not agent-runtime proof<br />
+      compare first: <a href="Comparisons/Speech-vs-AppleSpeech.md">Speech vs Apple Speech</a>
+    </td>
+  </tr>
+</table>
+
 ## 1. IntelligentCamera
 
 Flow:
