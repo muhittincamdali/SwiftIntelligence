@@ -5,19 +5,36 @@
 <div align="center">
 
 [![Release](https://img.shields.io/github/v/release/muhittincamdali/SwiftIntelligence?display_name=tag&style=for-the-badge&logo=github)](https://github.com/muhittincamdali/SwiftIntelligence/releases)
-[![Swift](https://img.shields.io/badge/Swift-5.9+-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
-[![Publish Readiness](https://img.shields.io/badge/Publish%20Readiness-ready-34C759?style=for-the-badge)](Documentation/Generated/Benchmark-Readiness.md)
-[![Proof Posture](https://img.shields.io/badge/Proof%20Posture-release--grade-FF9F0A?style=for-the-badge)](Documentation/Generated/Public-Proof-Status.md)
-[![Flagship Media](https://img.shields.io/badge/Flagship%20Media-published-BF5AF2?style=for-the-badge)](Documentation/Assets/Flagship-Demo/README.md)
-
-<br />
-
 [![Start Here](https://img.shields.io/badge/Start%20Here-5%20Minute%20Success%20Path-F05138?style=for-the-badge&labelColor=0D1117)](Documentation/Getting-Started.md#five-minute-success-path)
 [![Flagship Demo](https://img.shields.io/badge/Flagship%20Demo-IntelligentCamera-0A84FF?style=for-the-badge&labelColor=0D1117)](Examples/DemoApps/IntelligentCamera/README.md)
 [![Competitive Matrix](https://img.shields.io/badge/Compare-Top%205%20Rivals-111827?style=for-the-badge&labelColor=0D1117)](Documentation/Comparisons/Competitive-Matrix.md)
-[![README Languages](https://img.shields.io/badge/README%20Languages-18-1F2937?style=for-the-badge&labelColor=0D1117)](Documentation/README-Languages.md)
 
 </div>
+
+<table>
+  <tr>
+    <td width="25%" align="center" valign="top">
+      <strong>Release</strong><br />
+      <code>v1.2.0</code><br />
+      release-grade public surface
+    </td>
+    <td width="25%" align="center" valign="top">
+      <strong>Proof</strong><br />
+      <code>ready</code> · <code>release-grade</code><br />
+      Mac + iPhone floor
+    </td>
+    <td width="25%" align="center" valign="top">
+      <strong>Flagship</strong><br />
+      <code>IntelligentCamera</code><br />
+      published media + proof path
+    </td>
+    <td width="25%" align="center" valign="top">
+      <strong>Languages</strong><br />
+      <code>18 README surfaces</code><br />
+      English default
+    </td>
+  </tr>
+</table>
 
 <p align="center">
   <strong>SwiftIntelligence</strong> is a privacy-first, Apple-native AI toolkit for teams that need
