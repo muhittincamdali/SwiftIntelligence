@@ -16,6 +16,8 @@ bash Scripts/validate-readme-localizations.sh
 bash Scripts/validate-flagship-media-assets.sh
 bash Scripts/validate-flagship-media-assets.sh "$ROOT_DIR/Documentation/smarttranslator-media-policy.json" "$ROOT_DIR/Documentation/Assets/SmartTranslator-Demo/README.md"
 bash Scripts/validate-flagship-media-assets.sh "$ROOT_DIR/Documentation/voiceassistant-media-policy.json" "$ROOT_DIR/Documentation/Assets/VoiceAssistant-Demo/README.md"
+bash Scripts/validate-readme-visual-assets.sh
+bash Scripts/validate-showcase-visual-assets.sh
 bash Scripts/generate-flagship-media-status.sh "$ROOT_DIR/Documentation/flagship-media-policy.json" "$ROOT_DIR/Documentation/Assets/Flagship-Demo/README.md" "$ROOT_DIR/Documentation/Generated/Flagship-Media-Status.md" "$ROOT_DIR/Documentation/Generated/flagship-media-status.json"
 bash Scripts/generate-proof-snapshot.sh "$ROOT_DIR/Benchmarks/Results/latest" "$ROOT_DIR/Documentation/Generated/Proof-Snapshot.md"
 bash Scripts/generate-benchmark-history.sh "$ROOT_DIR/Benchmarks/Results" "$ROOT_DIR/Documentation/Generated/Benchmark-History.md" "$ROOT_DIR/Documentation/Generated/Benchmark-Comparison.md" "$ROOT_DIR/Documentation/Generated/Benchmark-Methodology.md" "$ROOT_DIR/Documentation/Generated/Benchmark-Timeline.md" "$ROOT_DIR/Documentation/Generated/Release-Benchmark-Matrix.md" "$ROOT_DIR/Documentation/Generated/Release-Proof-Timeline.md" "$ROOT_DIR/Documentation/Generated/Latest-Release-Proof.md"

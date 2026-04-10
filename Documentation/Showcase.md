@@ -6,6 +6,10 @@ This page answers one evaluator question:
 
 **What can this repository prove today that is useful to a real Apple app team?**
 
+<p align="center">
+  <img src="Assets/Showcase/swiftintelligence-showcase-board.svg" width="100%" alt="SwiftIntelligence showcase board" />
+</p>
+
 ## What this repo proves today
 
 - a maintained `Vision -> NLP -> Privacy` flagship workflow
