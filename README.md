@@ -135,10 +135,46 @@ These are not flagship-quality proof surfaces, but they are no longer source-onl
 | assistant-style response UX | [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | best secondary path for intent-like command handling and response generation |
 | raw framework tradeoffs first | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) | decide whether a secondary demo is even the right entry point |
 
-| Demo | Best for | Not for | Compare first |
-| --- | --- | --- | --- |
-| [SmartTranslator](Examples/DemoApps/SmartTranslator/README.md) | text-heavy output flows | repo-wide flagship proof | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
-| [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | assistant-style response UX | agent-runtime or speech-recognition leadership claims | [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <strong><a href="Examples/DemoApps/IntelligentCamera/README.md">IntelligentCamera</a></strong><br />
+      <code>Vision -&gt; NLP -&gt; Privacy</code><br /><br />
+      <strong>Best for</strong><br />
+      strongest repo-wide proof path<br />
+      visual product-value evaluation<br /><br />
+      <strong>Not for</strong><br />
+      text-only workflows<br />
+      smallest integration path<br /><br />
+      <strong>Compare first</strong><br />
+      <a href="Documentation/Comparisons/Vision-vs-AppleVision.md">Vision vs Apple Vision</a>
+    </td>
+    <td width="33%" valign="top">
+      <strong><a href="Examples/DemoApps/SmartTranslator/README.md">SmartTranslator</a></strong><br />
+      <code>NLP -&gt; Privacy -&gt; Speech</code><br /><br />
+      <strong>Best for</strong><br />
+      text-heavy output flows<br />
+      summaries, keywords, translated output<br /><br />
+      <strong>Not for</strong><br />
+      flagship proof claims<br />
+      runtime-level evaluation<br /><br />
+      <strong>Compare first</strong><br />
+      <a href="Documentation/Comparisons/NLP-vs-NaturalLanguage.md">NLP vs NaturalLanguage</a>
+    </td>
+    <td width="33%" valign="top">
+      <strong><a href="Examples/DemoApps/VoiceAssistant/README.md">VoiceAssistant</a></strong><br />
+      <code>NLP -&gt; Privacy -&gt; Speech</code><br /><br />
+      <strong>Best for</strong><br />
+      assistant-style response UX<br />
+      redacted voice output flows<br /><br />
+      <strong>Not for</strong><br />
+      agent-runtime claims<br />
+      speech-recognition leadership claims<br /><br />
+      <strong>Compare first</strong><br />
+      <a href="Documentation/Comparisons/Speech-vs-AppleSpeech.md">Speech vs Apple Speech</a>
+    </td>
+  </tr>
+</table>
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
