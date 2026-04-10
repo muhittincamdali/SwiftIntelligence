@@ -5,6 +5,7 @@ import SwiftIntelligenceNLP
 import SwiftIntelligencePrivacy
 import SwiftIntelligenceSpeech
 
+#if !SMARTTRANSLATOR_MEDIA_RENDERER
 @main
 struct SmartTranslatorApp: App {
     var body: some Scene {
@@ -13,6 +14,7 @@ struct SmartTranslatorApp: App {
         }
     }
 }
+#endif
 
 struct TranslatorScreen: View {
     @StateObject private var model = SmartTranslatorModel()

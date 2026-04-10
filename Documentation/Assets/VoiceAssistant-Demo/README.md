@@ -1,6 +1,6 @@
 # VoiceAssistant Demo Media
 
-Current status: `not-published`
+Current status: `published`
 
 This directory is the canonical home for real showcase media for the `VoiceAssistant` path.
 

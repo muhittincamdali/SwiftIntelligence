@@ -4,6 +4,7 @@ import SwiftIntelligenceNLP
 import SwiftIntelligencePrivacy
 import SwiftIntelligenceSpeech
 
+#if !VOICEASSISTANT_MEDIA_RENDERER
 @main
 struct VoiceAssistantApp: App {
     var body: some Scene {
@@ -12,6 +13,7 @@ struct VoiceAssistantApp: App {
         }
     }
 }
+#endif
 
 struct VoiceAssistantScreen: View {
     @StateObject private var model = VoiceAssistantModel()
