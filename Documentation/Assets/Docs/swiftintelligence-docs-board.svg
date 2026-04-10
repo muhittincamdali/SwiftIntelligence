@@ -1,0 +1,55 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="docs-bg" x1="56" y1="32" x2="1346" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07111F"/>
+      <stop offset="0.56" stop-color="#0E1B32"/>
+      <stop offset="1" stop-color="#091322"/>
+    </linearGradient>
+    <radialGradient id="docs-blue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1184 170) rotate(138) scale(340 250)">
+      <stop stop-color="#0A84FF" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#0A84FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1400" height="900" rx="42" fill="#040A14"/>
+  <rect x="34" y="32" width="1332" height="836" rx="40" fill="url(#docs-bg)"/>
+  <rect x="34" y="32" width="1332" height="836" rx="40" fill="url(#docs-blue)"/>
+  <rect x="72" y="68" width="1256" height="764" rx="34" fill="#0A1526" fill-opacity="0.82" stroke="#F3F7FF" stroke-opacity="0.08"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <text x="110" y="132" fill="#FFFFFF" font-size="52" font-weight="800">Documentation Signal</text>
+    <text x="110" y="174" fill="#AFC6E9" font-size="21" font-weight="500">Use the docs to answer one question at a time: fit, proof, integration, or maintenance.</text>
+
+    <rect x="110" y="226" width="1180" height="104" rx="28" fill="#102239" stroke="#5AC8FA" stroke-opacity="0.22"/>
+    <text x="144" y="268" fill="#9FC5FF" font-size="21" font-weight="700">Fastest route</text>
+    <text x="144" y="304" fill="#FFFFFF" font-size="28" font-weight="800">Positioning → Five-Minute Success Path → Trust Start → Competitive Matrix</text>
+
+    <rect x="110" y="390" width="344" height="224" rx="28" fill="#111F35" stroke="#F05138" stroke-opacity="0.24"/>
+    <text x="142" y="434" fill="#FFB3A8" font-size="21" font-weight="700">Evaluator</text>
+    <text x="142" y="480" fill="#FFFFFF" font-size="35" font-weight="800">Should I use this repo?</text>
+    <text x="142" y="524" fill="#D7E6FF" font-size="20" font-weight="500">positioning</text>
+    <text x="142" y="554" fill="#D7E6FF" font-size="20" font-weight="500">showcase</text>
+    <text x="142" y="584" fill="#D7E6FF" font-size="20" font-weight="500">competitive matrix</text>
+    <text x="142" y="626" fill="#FFB3A8" font-size="18" font-weight="700">start with the strongest proof path</text>
+
+    <rect x="528" y="390" width="344" height="224" rx="28" fill="#102239" stroke="#0A84FF" stroke-opacity="0.24"/>
+    <text x="560" y="434" fill="#9FC5FF" font-size="21" font-weight="700">Integrator</text>
+    <text x="560" y="480" fill="#FFFFFF" font-size="35" font-weight="800">How do I ship with it?</text>
+    <text x="560" y="524" fill="#D7E6FF" font-size="20" font-weight="500">getting started</text>
+    <text x="560" y="554" fill="#D7E6FF" font-size="20" font-weight="500">API and architecture</text>
+    <text x="560" y="584" fill="#D7E6FF" font-size="20" font-weight="500">examples and demos</text>
+    <text x="560" y="626" fill="#9FC5FF" font-size="18" font-weight="700">pick one lane, then one demo</text>
+
+    <rect x="946" y="390" width="344" height="224" rx="28" fill="#251F13" stroke="#FF9F0A" stroke-opacity="0.24"/>
+    <text x="978" y="434" fill="#FFD4A6" font-size="21" font-weight="700">Maintainer</text>
+    <text x="978" y="480" fill="#FFFFFF" font-size="35" font-weight="800">How do we stay truthful?</text>
+    <text x="978" y="524" fill="#D7E6FF" font-size="20" font-weight="500">proof surfaces</text>
+    <text x="978" y="554" fill="#D7E6FF" font-size="20" font-weight="500">release process</text>
+    <text x="978" y="584" fill="#D7E6FF" font-size="20" font-weight="500">public claim boundaries</text>
+    <text x="978" y="626" fill="#FFD4A6" font-size="18" font-weight="700">never let docs outrun evidence</text>
+
+    <rect x="110" y="678" width="1180" height="90" rx="24" fill="#171A30" stroke="#F3F7FF" stroke-opacity="0.08"/>
+    <text x="144" y="714" fill="#FFFFFF" font-size="22" font-weight="800">Hub rule</text>
+    <text x="144" y="748" fill="#D7E6FF" font-size="20" font-weight="600">Decision first, narrative second, generated proof last.</text>
+  </g>
+</svg>

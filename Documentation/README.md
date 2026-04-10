@@ -2,6 +2,10 @@
 
 This hub is organized by intent, not by maintainer file dump.
 
+<p align="center">
+  <img src="Assets/Docs/swiftintelligence-docs-board.svg" width="100%" alt="SwiftIntelligence documentation board" />
+</p>
+
 ## Start here in 30 seconds
 
 | If your question is... | Start here | Why |
