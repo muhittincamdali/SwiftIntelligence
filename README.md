@@ -135,6 +135,11 @@ These are not flagship-quality proof surfaces, but they are no longer source-onl
 | assistant-style response UX | [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | best secondary path for intent-like command handling and response generation |
 | raw framework tradeoffs first | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) | decide whether a secondary demo is even the right entry point |
 
+| Demo | Best for | Not for | Compare first |
+| --- | --- | --- | --- |
+| [SmartTranslator](Examples/DemoApps/SmartTranslator/README.md) | text-heavy output flows | repo-wide flagship proof | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
+| [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | assistant-style response UX | agent-runtime or speech-recognition leadership claims | [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
+
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
 ## Product Surface

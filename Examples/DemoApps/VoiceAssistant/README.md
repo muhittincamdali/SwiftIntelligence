@@ -51,6 +51,12 @@ This is the assistant-style secondary demo in SwiftIntelligence.
 - teams expecting autonomous tool use or agent orchestration proof
 - teams deciding between raw framework assembly and the repo at category level without first reading comparisons
 
+## Compare First
+
+- [Speech vs Apple Speech](../../../Documentation/Comparisons/Speech-vs-AppleSpeech.md)
+- [Privacy vs CryptoKit + Security](../../../Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md)
+- [SwiftIntelligence vs Top Rivals](../../../Documentation/Comparisons/Competitive-Matrix.md)
+
 ## Current Limitations
 
 - this demo now has real media, but it is still not a flagship proof path

@@ -51,6 +51,12 @@ This is the strongest text-first secondary demo in SwiftIntelligence.
 - teams expecting specialist translation leadership
 - teams deciding between low-level runtimes such as `MLX` or `coremltools`
 
+## Compare First
+
+- [NLP vs Apple NaturalLanguage](../../../Documentation/Comparisons/NLP-vs-NaturalLanguage.md)
+- [Privacy vs CryptoKit + Security](../../../Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md)
+- [SwiftIntelligence vs Top Rivals](../../../Documentation/Comparisons/Competitive-Matrix.md)
+
 ## Current Limitations
 
 - the translation path is a real module call, but the demo clearly marks placeholder-level confidence when the underlying translation capability is still limited

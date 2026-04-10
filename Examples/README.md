@@ -73,6 +73,13 @@ Validation truth:
   </tr>
 </table>
 
+## Secondary Demo Decision Cards
+
+| Demo | Best for | Not for | Compare first |
+| --- | --- | --- | --- |
+| [SmartTranslator](DemoApps/SmartTranslator/README.md) | text-heavy user-visible flows with summaries, keywords, and translated output | flagship proof, specialist translation leadership, runtime-level evaluation | [NLP vs Apple NaturalLanguage](../Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
+| [VoiceAssistant](DemoApps/VoiceAssistant/README.md) | assistant-style response UI with redaction and spoken output | speech-recognition leadership, agent orchestration claims, runtime selection | [Speech vs Apple Speech](../Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
+
 ## Media and proof
 
 - [Showcase](../Documentation/Showcase.md)
