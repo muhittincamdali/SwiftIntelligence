@@ -92,6 +92,11 @@ Best for:
 - evaluating text-heavy app flows before touching the flagship vision path
 - checking how `NLP`, `Privacy`, and `Speech` compose in one user-visible screen
 
+Compare first:
+
+- [NLP vs Apple NaturalLanguage](Comparisons/NLP-vs-NaturalLanguage.md)
+- [Privacy vs CryptoKit + Security](Comparisons/Privacy-vs-CryptoKit-Security.md)
+
 Do not start here if:
 
 - you need the strongest repo-wide proof story first
@@ -132,6 +137,11 @@ Best for:
 
 - evaluating assistant-style UX without claiming agent-runtime orchestration
 - checking command analysis, response generation, and redacted preview in one place
+
+Compare first:
+
+- [Speech vs Apple Speech](Comparisons/Speech-vs-AppleSpeech.md)
+- [SwiftIntelligence vs Top Rivals](Comparisons/Competitive-Matrix.md)
 
 Do not start here if:
 

@@ -59,6 +59,20 @@ It only has a defensible path to category leadership if it becomes the best answ
 3. If you need module-level fit, use the pages in [Comparisons Hub](README.md).
 4. If you need trust validation, read [Public Proof Status](../Generated/Public-Proof-Status.md).
 
+## Which demo helps answer which rival question
+
+| If your question is... | Best demo | Compare first |
+| --- | --- | --- |
+| can this package drive a strong multi-module product path? | [IntelligentCamera](../../Examples/DemoApps/IntelligentCamera/README.md) | [Vision vs Apple Vision](Vision-vs-AppleVision.md) |
+| can this package ship text-heavy user-visible output cleanly? | [SmartTranslator](../../Examples/DemoApps/SmartTranslator/README.md) | [NLP vs Apple NaturalLanguage](NLP-vs-NaturalLanguage.md) |
+| can this package support assistant-style response UX without pretending to be an agent runtime? | [VoiceAssistant](../../Examples/DemoApps/VoiceAssistant/README.md) | [Speech vs Apple Speech](Speech-vs-AppleSpeech.md) |
+
+Do not use any demo to answer these questions:
+
+- whether SwiftIntelligence beats `MLX` as a low-level runtime
+- whether SwiftIntelligence beats `coremltools` for conversion and tooling depth
+- whether SwiftIntelligence beats `WhisperKit` on speech specialization
+
 ## Sources
 
 The matrix above is based on official repository pages and official Apple docs checked on 2026-04-10:
