@@ -8,7 +8,14 @@ This repository now ships `18` README language surfaces to reduce adoption frict
 
 - `README.md` is the canonical and most complete README surface.
 - Localized README files are concise translated summaries and may lag behind the English landing page.
+- Localized README files are intentionally kept inside a small summary budget instead of mirroring the full English landing page.
 - When exact public-claim wording matters, use the English README together with generated proof surfaces.
+
+## Summary Budget
+
+- Non-English README files should stay short enough to scan in under a minute.
+- The maintainer-side validation gate currently enforces a `100-line` maximum for each non-English README surface.
+- If a localized README needs more detail, add that detail to the English README or the documentation hub first, then link to it.
 
 ## Truthfulness Note
 
