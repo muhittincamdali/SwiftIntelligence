@@ -37,13 +37,8 @@ This hub is organized by intent, not by maintainer file dump.
 - [IntelligentCamera demo guide](../Examples/DemoApps/IntelligentCamera/README.md)
 - [SmartTranslator demo guide](../Examples/DemoApps/SmartTranslator/README.md)
 - [VoiceAssistant demo guide](../Examples/DemoApps/VoiceAssistant/README.md)
-- [Flagship media policy](Assets/Flagship-Demo/README.md)
-- [SmartTranslator media policy](Assets/SmartTranslator-Demo/README.md)
-- [VoiceAssistant media policy](Assets/VoiceAssistant-Demo/README.md)
-- [SmartTranslator screenshot](Assets/SmartTranslator-Demo/smarttranslator-success.png)
-- [VoiceAssistant screenshot](Assets/VoiceAssistant-Demo/voiceassistant-success.png)
-- [Flagship media status](Generated/Flagship-Media-Status.md)
 - [Flagship demo pack](Generated/Flagship-Demo-Pack.md)
+- [Flagship media status](Generated/Flagship-Media-Status.md)
 
 Use [Examples Hub](../Examples/README.md) as the canonical demo chooser. This section exists only to expose the maintained proof path and media surfaces.
 
@@ -70,40 +65,29 @@ Use [Examples Hub](../Examples/README.md) as the canonical demo chooser. This se
 
 - [Getting Started](Getting-Started.md)
 - [API Overview](API.md)
-- [API Reference](API-Reference.md)
 - [Architecture](Architecture.md)
 - [Performance Guide](Performance.md)
-- [visionOS Guide](visionOS-Guide.md)
+- [API Reference](API-Reference.md)
 
 ## 6. I am contributing or maintaining
 
 - [Contributing](../CONTRIBUTING.md)
-- [GitHub Copilot Instructions](../.github/copilot-instructions.md)
-- [GitHub Distribution](GitHub-Distribution.md)
 - [Security Policy](../SECURITY.md)
 - [Support Guide](../SUPPORT.md)
-- [Documentation Status](DOCUMENTATION_STATUS.md)
-- [Swift Test Blockers](SWIFT_TEST_BLOCKERS.md)
+- [GitHub Distribution](GitHub-Distribution.md)
+- [GitHub Copilot Instructions](../.github/copilot-instructions.md)
 
 ## 7. Generated proof surfaces
 
 Use these when you need machine-generated truth, not narrative pages.
 
-- [Proof Snapshot](Generated/Proof-Snapshot.md)
-- [Benchmark History](Generated/Benchmark-History.md)
-- [Benchmark Comparison](Generated/Benchmark-Comparison.md)
-- [Benchmark Methodology](Generated/Benchmark-Methodology.md)
-- [Benchmark Timeline](Generated/Benchmark-Timeline.md)
-- [Release Proof Timeline](Generated/Release-Proof-Timeline.md)
-- [Release Candidate Plan](Generated/Release-Candidate-Plan.md)
-- [Device Evidence Plan](Generated/Device-Evidence-Plan.md)
-- [Device Coverage Matrix](Generated/Device-Coverage-Matrix.md)
-- [Device Capture Packets](Generated/Device-Capture-Packets.md)
-- [Device Evidence Runbook](Generated/Device-Evidence-Runbook.md)
-- [Device Evidence Intake](Generated/Device-Evidence-Intake.md)
-- [Device Evidence Queue](Generated/Device-Evidence-Queue.md)
-- [Device Evidence Handoff](Generated/Device-Evidence-Handoff.md)
-- [Evidence Provenance](Generated/Evidence-Provenance.md)
+| Need | Start here |
+| --- | --- |
+| current proof envelope | [Proof Snapshot](Generated/Proof-Snapshot.md) |
+| benchmark trend and methodology | [Benchmark History](Generated/Benchmark-History.md) |
+| release-evidence timeline | [Release Proof Timeline](Generated/Release-Proof-Timeline.md) |
+| device capture and handoff flow | [Device Evidence Plan](Generated/Device-Evidence-Plan.md) |
+| provenance and archive truth | [Evidence Provenance](Generated/Evidence-Provenance.md) |
 
 ## Documentation rules
 
