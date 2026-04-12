@@ -1,6 +1,6 @@
 # SwiftIntelligence Completion Notes
 
-Last updated: 2026-04-02
+Last updated: 2026-04-12
 
 This repository previously contained "100% complete" style completion claims. Those claims no longer represent the maintained reality of the project and should not be used as release proof, architecture proof, or investor-style status evidence.
 
@@ -24,7 +24,7 @@ Use these as the real completion signals:
 - `Scripts/prepare-release.sh` for release readiness
 - `.github/workflows` for CI, security, and release automation
 - `Documentation/Generated/Benchmark-Readiness.md` for publication readiness truth
-- `Documentation/Generated/Release-Candidate-Plan.md` for the next execution waves required before broad performance claims
+- `Documentation/Generated/Release-Candidate-Plan.md` for the current release operating plan
 - `Documentation/Generated/Release-Blockers.md` for the current blocker summary
 - `Documentation/Generated/Public-Proof-Status.md` for the currently allowed public claim envelope
 
@@ -41,5 +41,5 @@ Do not rely on historical claims such as:
 
 If a claim is not backed by current code, tests, scripts, artifacts, or workflows, treat it as stale.
 
-That also applies to benchmark ambition: if the generated readiness surface says `not ready`, the repo is not ready for broad public performance positioning yet.
-If `Release-Blockers.md` still says the blocker is missing `iPhone` or `iPad` evidence, the repo is also not allowed to market itself as having broad release-grade benchmark coverage.
+That also applies to benchmark ambition: the repo is only allowed to market itself inside the current generated claim envelope.
+As of 2026-04-12, the maintained release policy is backed by archived `Mac` + physical `iPhone` evidence, publish readiness is `ready`, and `iPad` is optional expansion rather than a release gate.

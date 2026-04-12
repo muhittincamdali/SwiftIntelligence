@@ -28,7 +28,7 @@
 
 ## Operational Note
 
-If GitHub-hosted runners are externally blocked, local maintainer validation remains the authoritative path for triage:
+GitHub-hosted workflows should stay green on `main`. For local triage and maintainer validation, use this canonical gate set:
 
 ```bash
 swift build
