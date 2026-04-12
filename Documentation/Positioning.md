@@ -4,6 +4,9 @@ Last updated: 2026-04-12
 
 ## Category
 
+Use this page for category fit.
+Use [Competitive Matrix](Comparisons/Competitive-Matrix.md) only when you are already comparing against named rivals.
+
 `SwiftIntelligence` belongs in this category:
 
 **Apple-native on-device AI workflow toolkit**
@@ -32,6 +35,9 @@ The strongest honest sentence for this repository is:
 If that sentence is not obvious inside the first minute of the README, we lose.
 
 ## What We Compete Against
+
+This section defines the field.
+It is not the full rival decision page.
 
 ### Apple platform primitives
 
@@ -115,17 +121,19 @@ We should not claim leadership in:
 
 That is how we lose focus and credibility.
 
-## Who Should Use This
+## Best-fit teams
 
 - Apple teams shipping app features that cross more than one native AI framework
 - teams that want stronger release-proof discipline than a loose demo repo
 - teams that want examples, comparisons, and benchmarks to agree with each other
 
-## Who Should Not Use This
+## Clear misfit teams
 
 - teams choosing a low-level inference engine first
 - teams centered on Python pipelines or conversion tooling
 - teams that only need one untouched Apple framework call
+
+If you are already deciding between named repositories, leave this page and use [Competitive Matrix](Comparisons/Competitive-Matrix.md).
 
 ## Win Conditions
 
