@@ -43,14 +43,8 @@ Do not adopt because of this page if you need:
 | 2 | [SmartTranslator](../Examples/DemoApps/SmartTranslator/README.md) | text analysis, privacy preprocessing, speech output composition | maintained secondary |
 | 3 | [VoiceAssistant](../Examples/DemoApps/VoiceAssistant/README.md) | assistant-style response pipeline on Apple-native surfaces | maintained secondary |
 
-## Pick your first proof path
-
-| If you want to prove... | Start here | Why |
-| --- | --- | --- |
-| strongest repo story | [IntelligentCamera](../Examples/DemoApps/IntelligentCamera/README.md) | best first proof path |
-| secondary text workflow value | [SmartTranslator](../Examples/DemoApps/SmartTranslator/README.md) | best maintained non-vision path |
-| assistant-style response UX | [VoiceAssistant](../Examples/DemoApps/VoiceAssistant/README.md) | best maintained assistant-style path |
-| all demo tradeoffs in one place | [Examples Hub](../Examples/README.md) | canonical demo chooser |
+Use [Examples Hub](../Examples/README.md) when you need to choose a demo.
+This page exists to explain what the current maintained demos can honestly prove, not to replace the canonical demo chooser.
 
 ## 1. IntelligentCamera
 
