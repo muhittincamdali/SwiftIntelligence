@@ -17,28 +17,11 @@ This hub is organized by intent, not by maintainer file dump.
 
 ## Decision cards
 
-<table>
-  <tr>
-    <td width="33%" valign="top">
-      <strong>Evaluator</strong><br /><br />
-      decide if the repo fits your product<br />
-      compare against rivals<br />
-      inspect the strongest maintained demo
-    </td>
-    <td width="33%" valign="top">
-      <strong>Integrator</strong><br /><br />
-      install the package<br />
-      choose the right module lane<br />
-      validate examples against the active graph
-    </td>
-    <td width="33%" valign="top">
-      <strong>Maintainer</strong><br /><br />
-      keep public claims truthful<br />
-      preserve release discipline<br />
-      work inside the proof envelope
-    </td>
-  </tr>
-</table>
+| Persona | First move | Outcome |
+| --- | --- | --- |
+| Evaluator | [Positioning](Positioning.md) | decide whether the repo category fits at all |
+| Integrator | [Getting Started](Getting-Started.md) | install and choose the right module lane |
+| Maintainer | [Trust Start](Trust-Start.md) | stay inside the proof and release envelope |
 
 ## 1. I am evaluating the repo
 

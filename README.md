@@ -63,29 +63,14 @@
 
 ## Why Teams Pick SwiftIntelligence
 
-| Reason | Why it matters |
+| If your team needs... | SwiftIntelligence fit |
 | --- | --- |
-| Multi-module Apple workflow | Real product paths often cross `Vision`, `NaturalLanguage`, `Speech`, and privacy. This repo is designed for that composition story, not just one wrapper around one framework. |
-| Proof-backed adoption | Public claims are tied to generated proof pages, immutable release evidence, benchmark policy, and CI validation. |
-| Faster first success | The maintained flagship path gets a new evaluator from install to visible value in under five minutes. |
-| Honest scope | The repo does not pretend to be a Python-first training stack, a cross-platform inference runtime, or a generic AI umbrella. |
-
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <strong>Choose SwiftIntelligence if...</strong><br /><br />
-      your app crosses <code>Vision</code>, <code>NaturalLanguage</code>, <code>Speech</code>, or privacy boundaries<br />
-      you want product-facing demos, not only raw framework assembly<br />
-      you care about release proof, benchmark policy, and public trust surfaces
-    </td>
-    <td width="50%" valign="top">
-      <strong>Do not choose SwiftIntelligence if...</strong><br /><br />
-      you want a low-level runtime first<br />
-      one raw Apple API already solves the whole problem cleanly<br />
-      you need a speech-only or LLM-only specialist package with no broader workflow story
-    </td>
-  </tr>
-</table>
+| `Vision + NLP + Privacy` or other multi-module Apple-native workflows | strong fit |
+| proof-backed release claims, benchmark policy, and immutable evidence | strong fit |
+| product-facing demos instead of raw framework assembly | strong fit |
+| a low-level runtime first | poor fit |
+| one untouched Apple API call with no broader workflow story | poor fit |
+| a speech-only or LLM-only specialist package | poor fit |
 
 ## Start In One Of These Three Paths
 
@@ -95,8 +80,8 @@
 | Technical trust | [Trust Start](Documentation/Trust-Start.md) | human-friendly trust router to generated claim, release, and benchmark surfaces |
 | Competitive fit | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) | where SwiftIntelligence wins, loses, and should not be chosen |
 
-> Use SwiftIntelligence when your app needs multiple Apple-native AI capabilities to ship together.
-> Stay on raw Apple APIs or a narrower library when one framework already solves the whole problem cleanly.
+> Use SwiftIntelligence when multiple Apple-native AI capabilities need to ship together with proof discipline.
+> Stay on raw Apple APIs or a narrower library when one framework already solves the product path cleanly.
 
 Use [Trust Start](Documentation/Trust-Start.md) for the human summary.
 Use [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) when exact current claim boundaries matter.
