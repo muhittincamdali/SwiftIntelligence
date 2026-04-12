@@ -2,6 +2,8 @@
 
 > Tieng Viet | [English](README.md) | [Language Hub](Documentation/README-Languages.md)
 
+> Localized summary. The English README is the canonical and most complete version.
+
 Bo cong cu AI on-device theo kieu modular cho nen tang Apple. No ket hop `Vision`, `NaturalLanguage`, `Speech` va `Privacy` trong mot luong san pham thuc te.
 
 ## Trang thai hien tai

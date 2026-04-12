@@ -47,6 +47,13 @@ for file in "${expected_files[@]}"; do
     echo "Missing English README link in $file" >&2
     exit 1
   }
+
+  if [[ "$file" != "README.md" ]]; then
+    grep -q "canonical and most complete" "$path" || {
+      echo "Missing canonical-English note in $file" >&2
+      exit 1
+    }
+  fi
 done
 
 actual_count="$(printf '%s\n' "${expected_files[@]}" | wc -l | tr -d ' ')"
@@ -58,6 +65,11 @@ grep -q "README Languages" "$ROOT_DIR/README.md" || {
 
 grep -q "README Languages" "$ROOT_DIR/README_TR.md" || {
   echo "README_TR.md must expose README language surfaces." >&2
+  exit 1
+}
+
+grep -q "canonical and most complete" "$language_hub" || {
+  echo "README language hub must document English as the canonical README surface." >&2
   exit 1
 }
 

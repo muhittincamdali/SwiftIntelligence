@@ -2,6 +2,8 @@
 
 > العربية | [English](README.md) | [Language Hub](Documentation/README-Languages.md)
 
+> Localized summary. The English README is the canonical and most complete version.
+
 مجموعة أدوات ذكاء اصطناعي معيارية لمنصات Apple، مبنية لمسارات عمل حقيقية بين `Vision` و `NaturalLanguage` و `Speech` و `Privacy`.
 
 ## الحالة الحالية

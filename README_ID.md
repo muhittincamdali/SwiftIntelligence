@@ -2,6 +2,8 @@
 
 > Bahasa Indonesia | [English](README.md) | [Language Hub](Documentation/README-Languages.md)
 
+> Localized summary. The English README is the canonical and most complete version.
+
 Toolkit AI modular on-device untuk platform Apple. Dirancang untuk menggabungkan `Vision`, `NaturalLanguage`, `Speech`, dan `Privacy` dalam satu alur kerja yang nyata.
 
 ## Status saat ini

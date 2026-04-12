@@ -4,6 +4,12 @@ English is the default README surface for SwiftIntelligence.
 
 This repository now ships `18` README language surfaces to reduce adoption friction for the largest and fastest-growing GitHub developer communities.
 
+## Localization Policy
+
+- `README.md` is the canonical and most complete README surface.
+- Localized README files are concise translated summaries and may lag behind the English landing page.
+- When exact public-claim wording matters, use the English README together with generated proof surfaces.
+
 ## Truthfulness Note
 
 GitHub does not publish a direct official ranking of human languages used by all GitHub users.
