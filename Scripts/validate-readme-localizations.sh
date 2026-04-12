@@ -25,6 +25,7 @@ expected_files=(
 )
 
 language_hub="$ROOT_DIR/Documentation/README-Languages.md"
+summary_line_limit=100
 
 [[ -f "$language_hub" ]] || {
   echo "Missing README language hub: $language_hub" >&2
@@ -51,6 +52,12 @@ for file in "${expected_files[@]}"; do
   if [[ "$file" != "README.md" ]]; then
     grep -q "canonical and most complete" "$path" || {
       echo "Missing canonical-English note in $file" >&2
+      exit 1
+    }
+
+    line_count="$(wc -l < "$path" | tr -d ' ')"
+    [[ "$line_count" -le "$summary_line_limit" ]] || {
+      echo "$file exceeds localized summary budget of $summary_line_limit lines ($line_count)." >&2
       exit 1
     }
   fi
