@@ -1,37 +1,35 @@
 # Trust Start
 
-This page is the human-friendly entry point to the repo's trust surface.
+This page is the human-friendly router for the repo's trust surface.
 
 If you need one answer first, it is this:
 
 **SwiftIntelligence currently publishes a release-grade proof story with `Mac + iPhone` coverage, published flagship media, and published secondary demo media for `SmartTranslator` and `VoiceAssistant`.**
 
-## Read in this order
+Use this page to choose the right proof document.
+Do not treat it as the canonical source of record when exact claim wording matters.
 
-1. [Public Proof Status](Generated/Public-Proof-Status.md)
-   Use this for the current public claim envelope.
-2. [Latest Release Proof](Generated/Latest-Release-Proof.md)
-   Use this for the latest immutable device-backed release evidence.
-3. [Benchmark Readiness](Generated/Benchmark-Readiness.md)
-   Use this for the benchmark/readiness gate.
-4. [Release Blockers](Generated/Release-Blockers.md)
-   Use this only if you are validating why something cannot be claimed.
+## Start with the question you need answered
 
-## What this trust surface currently proves
+| If you need to verify... | Start here | Why |
+| --- | --- | --- |
+| exact current public claim envelope | [Public Proof Status](Generated/Public-Proof-Status.md) | canonical generated status for readiness, posture, device floor, and allowed claims |
+| latest immutable release evidence | [Latest Release Proof](Generated/Latest-Release-Proof.md) | release-bundle-backed proof surface |
+| benchmark/readiness gate | [Benchmark Readiness](Generated/Benchmark-Readiness.md) | benchmark threshold and readiness posture |
+| why a claim would be blocked | [Release Blockers](Generated/Release-Blockers.md) | blocker-specific validation path |
 
-- the active modular graph builds and tests cleanly
-- the strongest demo path has a dedicated guide and smoke-check
-- two secondary demos now carry real screenshot and recording assets
-- benchmark artifacts, manifests, checksums, provenance, and regression thresholds exist
-- release messaging is tied to immutable evidence
-- the current required release floor is `Mac + iPhone`
+## What this page is for
 
-## What it does not prove
+- orienting an evaluator before they open generated proof pages
+- separating human summary from machine-generated source-of-truth pages
+- routing people to the right proof surface without making them scan the whole generated index
 
-- category leadership
-- best-in-class performance against all rivals
-- specialist leadership in every module lane
-- full product maturity for every source-level example
+## What this page does not do
+
+- replace [Public Proof Status](Generated/Public-Proof-Status.md)
+- replace [Latest Release Proof](Generated/Latest-Release-Proof.md)
+- answer category-fit questions better than [Positioning](Positioning.md)
+- answer demo-choice questions better than [Examples Hub](../Examples/README.md)
 
 ## Best companion pages
 

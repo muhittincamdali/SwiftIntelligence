@@ -92,11 +92,14 @@
 | If you are evaluating for... | Start here | What you will see first |
 | --- | --- | --- |
 | Product value | [Five-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path) | `Vision -> NLP -> Privacy` with the strongest maintained demo |
-| Technical trust | [Trust Start](Documentation/Trust-Start.md) | readiness, release posture, device floor, media status, release proof |
+| Technical trust | [Trust Start](Documentation/Trust-Start.md) | human-friendly trust router to generated claim, release, and benchmark surfaces |
 | Competitive fit | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) | where SwiftIntelligence wins, loses, and should not be chosen |
 
 > Use SwiftIntelligence when your app needs multiple Apple-native AI capabilities to ship together.
 > Stay on raw Apple APIs or a narrower library when one framework already solves the whole problem cleanly.
+
+Use [Trust Start](Documentation/Trust-Start.md) for the human summary.
+Use [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) when exact current claim boundaries matter.
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
