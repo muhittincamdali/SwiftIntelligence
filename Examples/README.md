@@ -30,18 +30,8 @@ Why:
 | [AdvancedFeatures.swift](AdvancedFeatures.swift) | broader feature sample | compile-validated | inspect more APIs quickly |
 | `ServerIntegration/AIServiceClient.swift` | network-adjacent support | compile-validated | inspect integration helper surface |
 
-## Choose by goal
-
-| Your goal | Start here |
-| --- | --- |
-| see the strongest product-quality path | [IntelligentCamera](DemoApps/IntelligentCamera/README.md) |
-| inspect text-heavy workflow composition | [SmartTranslator](DemoApps/SmartTranslator/README.md) |
-| inspect assistant-style UX | [VoiceAssistant](DemoApps/VoiceAssistant/README.md) |
-| inspect the smallest code sample | [BasicUsage.swift](BasicUsage.swift) |
-| review the public narrative behind these demos | [Documentation/Showcase.md](../Documentation/Showcase.md) |
-| decide whether demos are even the right evaluation path | [Competitive Matrix](../Documentation/Comparisons/Competitive-Matrix.md) |
-
 This page is the canonical demo decision surface. README and Showcase should point back here instead of duplicating large decision tables.
+Start with `IntelligentCamera` unless you are specifically evaluating a text-first flow, assistant-style UX, or the smallest compile-only sample.
 
 ## What is actually validated
 
@@ -86,9 +76,6 @@ Validation truth:
 ## Media and proof
 
 - [Showcase](../Documentation/Showcase.md)
-- [Flagship media policy](../Documentation/Assets/Flagship-Demo/README.md)
-- [SmartTranslator media policy](../Documentation/Assets/SmartTranslator-Demo/README.md)
-- [VoiceAssistant media policy](../Documentation/Assets/VoiceAssistant-Demo/README.md)
 - [Flagship media status](../Documentation/Generated/Flagship-Media-Status.md)
 - [Flagship demo pack](../Documentation/Generated/Flagship-Demo-Pack.md)
 
