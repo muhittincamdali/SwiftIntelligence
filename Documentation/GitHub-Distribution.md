@@ -1,12 +1,12 @@
 # GitHub Distribution
 
-Last updated: 2026-04-08
+Last updated: 2026-04-12
 
 This page defines the public GitHub-facing metadata for SwiftIntelligence.
 
 ## Current About Box
 
-Source of truth checked against the GitHub repository API on 2026-04-08.
+Source of truth checked against the GitHub repository API on 2026-04-12.
 
 - description: `Privacy-first modular AI toolkit for Apple developers with Vision, NaturalLanguage, Speech, benchmarks, and release proof.`
 - homepage: `none`
@@ -42,18 +42,19 @@ Source of truth checked against the GitHub repository API on 2026-04-08.
 - README, About box, and positioning docs must tell the same category story
 - public proof links must point to generated status and immutable release proof, not ad-hoc claims
 - issue forms and PR template must ask for public-claim impact and evidence truthfulness when relevant
-- GitHub-hosted workflows should not be presented as green if an external account-level blocker prevents runner start
+- GitHub-hosted workflows should stay enabled and truthful; do not present repo health as green if hosted checks are actually failing or externally blocked
 
 ## Current Operational Note
 
-As of 2026-04-08, GitHub-hosted workflow execution is affected by an account-level billing lock that prevents macOS runners from starting.
+As of 2026-04-12, GitHub-hosted workflows are active again and current live checks are expected to stay green on `main`.
 
-Operational policy while that blocker exists:
+Operational policy now:
 
-- keep workflow definitions versioned in the repo
+- keep workflow definitions versioned and active
 - do not fake green CI state
-- use repo-local validation as the authoritative release gate
-- pause failing GitHub-hosted workflows rather than continuously emitting false-negative red checks
+- treat GitHub-hosted results as the public live signal
+- keep `bash Scripts/prepare-release.sh` as the canonical repo-side validation floor
+- only disable hosted workflows if there is a real external blocker and that blocker is documented truthfully
 
 ## First Links For New Visitors
 
