@@ -294,7 +294,7 @@ Bu repoda README dili, release dili ve proof dili birbirinden kopmamasi icin tas
 
 ### Otomasyon Notu
 
-GitHub-hosted runner'lar su an external account-level billing lock nedeniyle bloklu. Bu nedenle repo icin authoritative quality floor su local gate setidir:
+GitHub-hosted workflow'lar yeniden aktif ve `main` branch'inde yesil kalmasi bekleniyor. Repo icin maintainer-side authoritative quality floor su local gate setidir:
 
 ```bash
 swift build

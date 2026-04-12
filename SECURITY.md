@@ -44,7 +44,7 @@ Treat the following as current guidance:
 - do not expose secrets in examples, tests, or benchmark artifacts
 - do not assume inactive products are maintained
 - review privacy-sensitive flows before enabling network transport
-- keep CodeQL, dependency review, and OpenSSF Scorecard definitions maintained; if GitHub-hosted runners are externally blocked, use repo-local validation until the account-level blocker is cleared
+- keep CodeQL, dependency review, and OpenSSF Scorecard definitions maintained and active; use repo-local validation as the maintainer-side floor, not as a substitute for broken public CI
 - treat benchmark, example, and release artifacts as part of the trusted supply-chain surface
 
 ## Security Operations Matrix
@@ -55,7 +55,7 @@ Treat the following as current guidance:
 | Public issues | Do not use for vulnerabilities |
 | Sensitive examples | Never commit secrets, tokens, or production credentials |
 | Privacy-sensitive benchmark output | Treat as trusted release surface, not disposable scratch data |
-| GitHub-hosted security workflows | Keep definitions current; re-enable active execution when external account billing lock is resolved |
+| GitHub-hosted security workflows | Keep definitions current and active; live GitHub results should stay truthful and green on `main` |
 | Local maintainer gate | `bash Scripts/prepare-release.sh` remains the canonical repo-side validation floor |
 
 ## Response Expectations
