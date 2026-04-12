@@ -48,16 +48,16 @@
 <p align="center">
   <a href="Documentation/Getting-Started.md">Getting Started</a> •
   <a href="Documentation/README.md">Documentation Hub</a> •
-  <a href="Documentation/Comparisons/Competitive-Matrix.md">Competitive Matrix</a> •
   <a href="Documentation/Trust-Start.md">Trust Start</a> •
+  <a href="Documentation/Comparisons/Competitive-Matrix.md">Competitive Matrix</a> •
   <a href="Examples/README.md">Examples Hub</a>
 </p>
 
 <p align="center">
-  Proof entry: <a href="Documentation/Generated/Public-Proof-Status.md">Public Proof Status</a> •
-  Narrative showcase: <a href="Documentation/Showcase.md">Showcase</a> •
-  Language hub: <a href="Documentation/README-Languages.md">README Languages</a> •
-  Turkish quick link: <a href="README_TR.md">README_TR.md</a>
+  <a href="Documentation/Generated/Public-Proof-Status.md">Public Proof Status</a> •
+  <a href="Documentation/Showcase.md">Showcase</a> •
+  <a href="Documentation/README-Languages.md">README Languages</a> •
+  <a href="README_TR.md">README_TR.md</a>
 </p>
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
