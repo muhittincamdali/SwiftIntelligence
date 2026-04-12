@@ -6,7 +6,9 @@ This page answers one question:
 
 **When should an Apple team choose SwiftIntelligence instead of the obvious alternatives?**
 
-## Short answer
+If you are still deciding whether this repo category fits at all, read [Positioning](../Positioning.md) first.
+
+## Short rival answer
 
 Choose SwiftIntelligence when you need:
 
@@ -30,19 +32,16 @@ Do not choose SwiftIntelligence when you need:
 | [huggingface/swift-transformers](https://github.com/huggingface/swift-transformers) | Swift-native transformer and model API story | broader app workflow value beyond model execution, stronger proof and release envelope | transformer-centric focus, model ecosystem familiarity |
 | [mattt/AnyLanguageModel](https://github.com/mattt/AnyLanguageModel) | Apple-native LLM abstraction clarity | broader non-LLM coverage, privacy lane, benchmark and release discipline | narrower and clearer scope, easier LLM-only mental model |
 
-## Choose SwiftIntelligence if...
+## What this page is for
 
-- your app path crosses `Vision`, `NaturalLanguage`, `Speech`, or privacy boundaries
-- you want product-facing demos, not only low-level primitives
-- you need benchmark and release truth to stay aligned with public docs
-- you want a single Swift package story with maintained best-first adoption paths
+Use this page when:
 
-## Do not choose SwiftIntelligence if...
+- you are comparing against `coremltools`, `MLX`, `WhisperKit`, `swift-transformers`, or `AnyLanguageModel`
+- you need a direct win/loss framing, not a category definition
+- you want to know which demo or module lane helps answer a rival question
 
-- you are selecting a runtime, not a workflow toolkit
-- your team lives primarily in Python training and conversion stacks
-- one raw Apple API call solves your whole problem already
-- you want a speech-only or LLM-only specialist package and nothing else
+Do not use this page as the first repo introduction.
+That job belongs to [README](../../README.md) and [Positioning](../Positioning.md).
 
 ## Category truth
 
