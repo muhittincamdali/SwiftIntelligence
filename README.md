@@ -4,34 +4,35 @@
 
 <div align="center">
 
-[![Release](https://img.shields.io/github/v/release/muhittincamdali/SwiftIntelligence?display_name=tag&style=for-the-badge&logo=github)](https://github.com/muhittincamdali/SwiftIntelligence/releases)
 [![Start Here](https://img.shields.io/badge/Start%20Here-5%20Minute%20Success%20Path-F05138?style=for-the-badge&labelColor=0D1117)](Documentation/Getting-Started.md#five-minute-success-path)
-[![Flagship Demo](https://img.shields.io/badge/Flagship%20Demo-IntelligentCamera-0A84FF?style=for-the-badge&labelColor=0D1117)](Examples/DemoApps/IntelligentCamera/README.md)
-[![Competitive Matrix](https://img.shields.io/badge/Compare-Top%205%20Rivals-111827?style=for-the-badge&labelColor=0D1117)](Documentation/Comparisons/Competitive-Matrix.md)
+[![Release Proof](https://img.shields.io/badge/Release%20Proof-v1.2.0-0A84FF?style=for-the-badge&labelColor=0D1117)](Documentation/Generated/Latest-Release-Proof.md)
+[![Examples Hub](https://img.shields.io/badge/Examples-Flagship%20and%20Secondary-111827?style=for-the-badge&labelColor=0D1117)](Examples/README.md)
 
 </div>
 
 <table>
   <tr>
-    <td width="25%" align="center" valign="top">
-      <strong>Release</strong><br />
-      <code>v1.2.0</code><br />
-      release-grade public surface
+    <td width="50%" align="left" valign="top">
+      <strong>Release Surface</strong><br />
+      <code>v1.2.0</code> · <code>release-grade</code><br />
+      latest numbered release and immutable proof surface
     </td>
-    <td width="25%" align="center" valign="top">
-      <strong>Proof</strong><br />
-      <code>ready</code> · <code>release-grade</code><br />
-      Mac + iPhone floor
+    <td width="50%" align="left" valign="top">
+      <strong>Proof Envelope</strong><br />
+      <code>ready</code> · <code>Mac + iPhone</code><br />
+      generated claim boundary and required device floor
     </td>
-    <td width="25%" align="center" valign="top">
-      <strong>Flagship</strong><br />
+  </tr>
+  <tr>
+    <td width="50%" align="left" valign="top">
+      <strong>Best First Demo</strong><br />
       <code>IntelligentCamera</code><br />
-      published media + proof path
+      flagship media, smoke-check, and strongest product path
     </td>
-    <td width="25%" align="center" valign="top">
-      <strong>Languages</strong><br />
-      <code>18 README surfaces</code><br />
-      English default
+    <td width="50%" align="left" valign="top">
+      <strong>README Coverage</strong><br />
+      <code>18 surfaces</code> · English default<br />
+      concise localized summaries around one canonical landing page
     </td>
   </tr>
 </table>
@@ -42,7 +43,7 @@
 </p>
 
 <p align="center">
-  It is not a generic inference runtime. It is a developer workflow stack for shipping on-device AI features on Apple platforms with fewer hand-rolled integrations and stricter public-proof discipline.
+  It is not a generic inference runtime. It is a workflow stack for shipping on-device AI features on Apple platforms with fewer hand-rolled integrations and stricter public-proof discipline.
 </p>
 
 <p align="center">
