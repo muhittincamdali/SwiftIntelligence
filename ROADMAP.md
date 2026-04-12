@@ -1,6 +1,6 @@
 # SwiftIntelligence Roadmap
 
-Last updated: 2026-04-02
+Last updated: 2026-04-12
 
 ## North Star
 
@@ -13,17 +13,18 @@ Make `SwiftIntelligence` the most trustworthy modular AI package for Apple-platf
 - examples are compile-validated
 - release preparation is script-gated
 - benchmark claims are expected to come from generated artifacts
-- benchmark publication readiness is now tracked through generated readiness and release-candidate plan surfaces
-- missing-device capture work is now tracked through a generated device-evidence plan
+- benchmark publication readiness is tracked through generated readiness and release-candidate plan surfaces
+- optional future device-class expansion is tracked through generated device-evidence surfaces
 - security and supply-chain workflows are in place, but repo polish is still in progress
 
 ## Current Benchmark Evidence Reality
 
 As of the latest generated readiness surface:
 
-- publish readiness is still `not ready`
-- the current benchmark pointer is valid and the first immutable archived release baseline now exists
-- device coverage is still Mac-only
+- publish readiness is `ready`
+- the current benchmark pointer is valid and immutable archived release baselines exist
+- required device coverage is `Mac` + `iPhone`
+- `iPad` is optional future expansion, not a current release gate
 
 The operational source of truth for closing that gap is now:
 
@@ -38,7 +39,7 @@ The operational source of truth for closing that gap is now:
 
 ## Wave 0: Trust Surface
 
-Status: in progress
+Status: complete
 
 - keep docs aligned with the active package graph
 - remove stale umbrella and inactive-product claims
@@ -47,22 +48,19 @@ Status: in progress
 
 ## Wave 1: Adoption Surface
 
-Status: next
+Status: in progress
 
 - improve README onboarding for first successful integration in under 5 minutes
 - add clearer per-module usage paths and comparison tables
 - make benchmark summaries easier to consume without marketing inflation
 - strengthen example discoverability and validated demo coverage
-- complete Wave 1 benchmark evidence tasks:
-  - keep the archived baseline trustworthy and reproducible
-  - execute the generated iPhone and iPad capture waves
-  - use the generated packet + intake surfaces instead of ad-hoc maintainer notes
-  - move from Mac-only proof to at least 3 device classes
-  - make `Benchmark-Readiness.md` report `ready`
+- keep the archived release baseline trustworthy and reproducible
+- keep README, Showcase, Comparisons, and Documentation hubs visually strong and low-drift
+- productize secondary demos so adoption does not depend on the flagship path alone
 
 ## Wave 2: Engineering Hardening
 
-Status: planned
+Status: in progress
 
 - continue Swift 6 concurrency cleanup in active modules
 - reduce warning backlog in Vision, NLP, Privacy, and infrastructure layers
@@ -94,7 +92,7 @@ Status: planned
 - the maintained modules stay green under build, test, example, benchmark, and security gates
 - adoption path is obvious for new users
 - public claims are backed by reproducible artifacts
-- benchmark readiness is `ready`, not `not ready`
+- benchmark readiness stays `ready`
 - at least one immutable release evidence bundle exists
 - public performance claims are not based on Mac-only evidence
 - restored modules meet the same bar as the active graph
