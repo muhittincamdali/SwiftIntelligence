@@ -41,6 +41,8 @@ Why:
 | review the public narrative behind these demos | [Documentation/Showcase.md](../Documentation/Showcase.md) |
 | decide whether demos are even the right evaluation path | [Competitive Matrix](../Documentation/Comparisons/Competitive-Matrix.md) |
 
+This page is the canonical demo decision surface. README and Showcase should point back here instead of duplicating large decision tables.
+
 ## What is actually validated
 
 - `bash Scripts/validate-flagship-demo.sh`
@@ -73,42 +75,13 @@ Validation truth:
   </tr>
 </table>
 
-## Secondary Demo Decision Cards
+## Demo decision matrix
 
-<table>
-  <tr>
-    <td width="33%" valign="top">
-      <strong><a href="DemoApps/IntelligentCamera/README.md">IntelligentCamera</a></strong><br />
-      <code>Vision -&gt; NLP -&gt; Privacy</code><br /><br />
-      <strong>Best for</strong><br />
-      strongest evaluator path<br />
-      repo-wide story first<br /><br />
-      <strong>Not for</strong><br />
-      smallest example path<br />
-      text-only evaluation<br />
-    </td>
-    <td width="33%" valign="top">
-      <strong><a href="DemoApps/SmartTranslator/README.md">SmartTranslator</a></strong><br />
-      <code>NLP -&gt; Privacy -&gt; Speech</code><br /><br />
-      <strong>Best for</strong><br />
-      text-heavy user-visible flows<br />
-      summaries, keywords, translated output<br /><br />
-      <strong>Not for</strong><br />
-      flagship proof<br />
-      runtime-level evaluation<br />
-    </td>
-    <td width="33%" valign="top">
-      <strong><a href="DemoApps/VoiceAssistant/README.md">VoiceAssistant</a></strong><br />
-      <code>NLP -&gt; Privacy -&gt; Speech</code><br /><br />
-      <strong>Best for</strong><br />
-      assistant-style response UI<br />
-      redacted spoken output<br /><br />
-      <strong>Not for</strong><br />
-      speech-recognition leadership<br />
-      agent orchestration claims<br />
-    </td>
-  </tr>
-</table>
+| Demo | Best for | Not for | Compare first |
+| --- | --- | --- | --- |
+| [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | strongest evaluator path and repo-wide story | smallest example path or text-only evaluation | [Vision vs Apple Vision](../Documentation/Comparisons/Vision-vs-AppleVision.md) |
+| [SmartTranslator](DemoApps/SmartTranslator/README.md) | text-heavy user-visible flows | flagship proof or runtime-level evaluation | [NLP vs Apple NaturalLanguage](../Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
+| [VoiceAssistant](DemoApps/VoiceAssistant/README.md) | assistant-style response UI | speech-recognition leadership or agent claims | [Speech vs Apple Speech](../Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
 
 ## Media and proof
 

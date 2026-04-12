@@ -50,6 +50,7 @@ This hub is organized by intent, not by maintainer file dump.
 
 ## 2. I need the strongest product path
 
+- [Examples Hub](../Examples/README.md)
 - [IntelligentCamera demo guide](../Examples/DemoApps/IntelligentCamera/README.md)
 - [SmartTranslator demo guide](../Examples/DemoApps/SmartTranslator/README.md)
 - [VoiceAssistant demo guide](../Examples/DemoApps/VoiceAssistant/README.md)
@@ -60,6 +61,8 @@ This hub is organized by intent, not by maintainer file dump.
 - [VoiceAssistant screenshot](Assets/VoiceAssistant-Demo/voiceassistant-success.png)
 - [Flagship media status](Generated/Flagship-Media-Status.md)
 - [Flagship demo pack](Generated/Flagship-Demo-Pack.md)
+
+Use [Examples Hub](../Examples/README.md) as the canonical demo chooser. This section exists only to expose the maintained proof path and media surfaces.
 
 ## 3. I want trust, proof, and release reality
 
