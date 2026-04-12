@@ -6,10 +6,8 @@ This page exists to answer one practical question:
 
 ## Best first path
 
-If you only evaluate one example first, use:
-
-- [IntelligentCamera demo guide](DemoApps/IntelligentCamera/README.md)
-- validation command: `bash Scripts/validate-flagship-demo.sh`
+If you only evaluate one example first, use [IntelligentCamera](DemoApps/IntelligentCamera/README.md).
+Validation command: `bash Scripts/validate-flagship-demo.sh`
 
 Why:
 
@@ -73,24 +71,10 @@ Validation truth:
 | [SmartTranslator](DemoApps/SmartTranslator/README.md) | text-heavy user-visible flows | flagship proof or runtime-level evaluation | [NLP vs Apple NaturalLanguage](../Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
 | [VoiceAssistant](DemoApps/VoiceAssistant/README.md) | assistant-style response UI | speech-recognition leadership or agent claims | [Speech vs Apple Speech](../Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
 
-## Media and proof
+## Narrative and proof
 
 - [Showcase](../Documentation/Showcase.md)
-- [Flagship media status](../Documentation/Generated/Flagship-Media-Status.md)
 - [Flagship demo pack](../Documentation/Generated/Flagship-Demo-Pack.md)
 
-## Maintainer rule
-
-Do not market a demo as flagship-quality unless it has:
-
-- a dedicated guide
-- a repeatable run path
-- current media
-- validation coverage
-- a clear role in the repo's public positioning
-
-For secondary demos, always answer three questions clearly:
-
-- best for what?
-- not for what?
-- compare against which raw Apple or rival surface first?
+Use the demo guides for media details.
+Use `Showcase` for narrative proof and `Flagship demo pack` for the strongest maintained release-facing demo surface.
