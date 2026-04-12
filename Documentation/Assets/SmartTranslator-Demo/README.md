@@ -22,6 +22,6 @@ Only switch status to `published` after all allowed asset files exist and show r
 
 ## Truthfulness Rules
 
-- do not market this as flagship media while status is `not-published`
+- do not market this as flagship media; this remains a published secondary-demo surface, not the repo's flagship proof path
 - do not crop out placeholder or limitation states that materially change evaluator understanding
 - media can support distribution, but it cannot replace benchmark or release proof
