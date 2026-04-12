@@ -2,6 +2,8 @@
 
 > Italiano | [English](README.md) | [Language Hub](Documentation/README-Languages.md)
 
+> Localized summary. The English README is the canonical and most complete version.
+
 Toolkit AI modulare on-device per piattaforme Apple. Collega `Vision`, `NaturalLanguage`, `Speech` e `Privacy` in un percorso di prodotto reale.
 
 ## Stato attuale

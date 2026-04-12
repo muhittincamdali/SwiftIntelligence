@@ -2,6 +2,8 @@
 
 > हिन्दी | [English](README.md) | [Language Hub](Documentation/README-Languages.md)
 
+> Localized summary. The English README is the canonical and most complete version.
+
 Apple platforms ke liye modular on-device AI toolkit. Yeh `Vision`, `NaturalLanguage`, `Speech` aur `Privacy` ko ek practical product flow me jodta hai.
 
 ## Current status

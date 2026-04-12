@@ -2,6 +2,8 @@
 
 > 简体中文 | [English](README.md) | [Language Hub](Documentation/README-Languages.md)
 
+> Localized summary. The English README is the canonical and most complete version.
+
 面向 Apple 平台的模块化 on-device AI toolkit。它把 `Vision`、`NaturalLanguage`、`Speech` 和 `Privacy` 组合成一条真实的产品路径。
 
 ## 当前状态

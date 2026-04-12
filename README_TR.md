@@ -21,6 +21,8 @@
 
 </div>
 
+> Localization note: `README.md` remains the canonical and most complete README surface.
+
 <p align="center">
   <strong>SwiftIntelligence</strong>, Apple gelistiricileri icin
   <code>Vision</code>, <code>NaturalLanguage</code>, <code>Speech</code>, privacy controls,
