@@ -74,6 +74,7 @@ Use the generated pages for exact claim wording and release evidence details.
 - [Support Guide](../SUPPORT.md)
 - [GitHub Distribution](GitHub-Distribution.md)
 - [GitHub Presentation Backlog](GitHub-Presentation-Backlog.md)
+- [Visual System Standards](Visual-System-Standards.md)
 - [GitHub Copilot Instructions](../.github/copilot-instructions.md)
 
 ## 7. Generated proof surfaces

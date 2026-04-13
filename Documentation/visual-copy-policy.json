@@ -1,0 +1,53 @@
+{
+  "surfaces": [
+    {
+      "asset": "Documentation/Assets/Readme/swiftintelligence-hero.svg",
+      "label": "README hero",
+      "max_text_nodes": 24,
+      "max_chars_per_node": 68,
+      "max_total_chars": 700
+    },
+    {
+      "asset": "Documentation/Assets/Readme/swiftintelligence-capability-board.svg",
+      "label": "README capability board",
+      "max_text_nodes": 32,
+      "max_chars_per_node": 74,
+      "max_total_chars": 760
+    },
+    {
+      "asset": "Documentation/Assets/Readme/swiftintelligence-architecture-board.svg",
+      "label": "README architecture board",
+      "max_text_nodes": 25,
+      "max_chars_per_node": 80,
+      "max_total_chars": 520
+    },
+    {
+      "asset": "Documentation/Assets/Readme/swiftintelligence-trust-board.svg",
+      "label": "README trust board",
+      "max_text_nodes": 29,
+      "max_chars_per_node": 80,
+      "max_total_chars": 640
+    },
+    {
+      "asset": "Documentation/Assets/Showcase/swiftintelligence-showcase-board.svg",
+      "label": "Showcase board",
+      "max_text_nodes": 26,
+      "max_chars_per_node": 84,
+      "max_total_chars": 740
+    },
+    {
+      "asset": "Documentation/Assets/Comparisons/swiftintelligence-comparisons-board.svg",
+      "label": "Comparisons board",
+      "max_text_nodes": 26,
+      "max_chars_per_node": 100,
+      "max_total_chars": 920
+    },
+    {
+      "asset": "Documentation/Assets/Docs/swiftintelligence-docs-board.svg",
+      "label": "Docs board",
+      "max_text_nodes": 26,
+      "max_chars_per_node": 90,
+      "max_total_chars": 630
+    }
+  ]
+}
