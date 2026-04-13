@@ -53,6 +53,9 @@ jobs:
       - name: Validate Documentation Visual Assets
         run: bash Scripts/validate-docs-visual-assets.sh
 
+      - name: Validate Visual Copy Density
+        run: bash Scripts/validate-visual-copy-density.sh
+
       - name: Validate Examples
         run: bash Scripts/validate-examples.sh
 

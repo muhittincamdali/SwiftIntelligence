@@ -116,13 +116,14 @@ Goal: prevent future drift after redesign.
 Tasks:
 
 - keep SVG structural validators
-- add browser screenshot regression for the hero and support boards
+- keep committed visual snapshot regression for the hero and public boards
 - add documented review criteria for visual-copy density and GitHub rendering safety
+- enforce text-density budgets in CI and release validation
 
 Definition of done:
 
 - visual breakage is caught before merge
-- new board edits cannot silently reintroduce overflow or layout drift
+- new board edits cannot silently reintroduce overflow, layout drift, or copy bloat
 
 ## Priority order
 
