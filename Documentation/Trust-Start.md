@@ -18,18 +18,11 @@ Do not treat it as the canonical source of record when exact claim wording matte
 | benchmark/readiness gate | [Benchmark Readiness](Generated/Benchmark-Readiness.md) | benchmark threshold and readiness posture |
 | why a claim would be blocked | [Release Blockers](Generated/Release-Blockers.md) | blocker-specific validation path |
 
-## What this page is for
+## Scope
 
-- orienting an evaluator before they open generated proof pages
-- separating human summary from machine-generated source-of-truth pages
-- routing people to the right proof surface without making them scan the whole generated index
-
-## What this page does not do
-
-- replace [Public Proof Status](Generated/Public-Proof-Status.md)
-- replace [Latest Release Proof](Generated/Latest-Release-Proof.md)
-- answer category-fit questions better than [Positioning](Positioning.md)
-- answer demo-choice questions better than [Examples Hub](../Examples/README.md)
+- human routing page before generated proof pages
+- not the canonical source of record
+- not the best page for category fit or demo choice
 
 ## Best companion pages
 
