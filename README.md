@@ -116,12 +116,7 @@ Two non-flagship demos now carry real showcase media as well:
 
 These are not flagship-quality proof surfaces, but they are no longer source-only demos.
 
-| If you want to evaluate... | Start here | Why |
-| --- | --- | --- |
-| strongest repo-wide proof path | [IntelligentCamera](Examples/DemoApps/IntelligentCamera/README.md) | best first evaluator route and strongest maintained story |
-| text-first workflow value | [SmartTranslator](Examples/DemoApps/SmartTranslator/README.md) | best secondary path for summaries, tokenized preview, and translated output |
-| assistant-style response UX | [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | best secondary path for privacy-aware command and response flows |
-| all demo tradeoffs in one place | [Examples Hub](Examples/README.md) | canonical demo chooser with maturity and decision guidance |
+Use [Examples Hub](Examples/README.md) when you need the canonical demo chooser.
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
@@ -131,14 +126,14 @@ These are not flagship-quality proof surfaces, but they are no longer source-onl
   <img src="Documentation/Assets/Readme/swiftintelligence-capability-board.svg" width="100%" alt="SwiftIntelligence capability board" />
 </p>
 
-| Product lane | Best use | Best first page |
-| --- | --- | --- |
-| Vision | image understanding, OCR, detection, segmentation, enhancement | [Vision vs Apple Vision](Documentation/Comparisons/Vision-vs-AppleVision.md) |
-| NaturalLanguage | summaries, entities, keywords, topics | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
-| Speech | voice output, assistant-style flows | [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
-| Privacy | tokenization, anonymization, safer AI boundaries | [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) |
-| Benchmarks | threshold policy, manifests, comparison history | [Benchmark Baselines](Documentation/Benchmark-Baselines.md) |
-| Release Proof | readiness, blockers, immutable bundles, media pack | [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md) |
+| Product lane | Start with demo | Compare first | Why this lane matters |
+| --- | --- | --- | --- |
+| Vision | [IntelligentCamera](Examples/DemoApps/IntelligentCamera/README.md) | [Vision vs Apple Vision](Documentation/Comparisons/Vision-vs-AppleVision.md) | strongest maintained product path and flagship evaluator route |
+| NaturalLanguage | [SmartTranslator](Examples/DemoApps/SmartTranslator/README.md) | [NLP vs NaturalLanguage](Documentation/Comparisons/NLP-vs-NaturalLanguage.md) | clearest text-first path for summaries, entities, and transformed output |
+| Speech | [VoiceAssistant](Examples/DemoApps/VoiceAssistant/README.md) | [Speech vs Apple Speech](Documentation/Comparisons/Speech-vs-AppleSpeech.md) | assistant-style response flows without pretending to be a speech-recognition leader |
+| Privacy | [IntelligentCamera](Examples/DemoApps/IntelligentCamera/README.md) | [Privacy vs CryptoKit + Security](Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) | makes tokenization and safer handling visible in app-facing workflows |
+| Benchmarks | [Examples Hub](Examples/README.md) | [Benchmark Baselines](Documentation/Benchmark-Baselines.md) | keeps claims inside thresholds, manifests, and immutable bundles |
+| Release Proof | [Trust Start](Documentation/Trust-Start.md) | [Latest Release Proof](Documentation/Generated/Latest-Release-Proof.md) | closes trust and release questions with generated evidence |
 
 ## Competitive Reality
 

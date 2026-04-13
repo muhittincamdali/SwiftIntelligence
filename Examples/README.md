@@ -25,6 +25,15 @@ Why: strongest multi-module story, best current media/proof support, and the cle
 
 This page is the canonical demo decision surface. README and Showcase should point back here instead of duplicating large decision tables. Start with `IntelligentCamera` unless you are specifically evaluating a text-first flow, assistant-style UX, or the smallest compile-only sample.
 
+## Choose by product lane
+
+| If your question starts with... | Open this demo first | Compare first |
+| --- | --- | --- |
+| `Can the vision lane close a real product path?` | [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | [Vision vs Apple Vision](../Documentation/Comparisons/Vision-vs-AppleVision.md) |
+| `Can the NLP lane produce user-visible value?` | [SmartTranslator](DemoApps/SmartTranslator/README.md) | [NLP vs Apple NaturalLanguage](../Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
+| `Can the speech lane drive assistant-style output?` | [VoiceAssistant](DemoApps/VoiceAssistant/README.md) | [Speech vs Apple Speech](../Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
+| `Can the privacy lane show up in a real workflow?` | [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | [Privacy vs CryptoKit + Security](../Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) |
+
 ## What is actually validated
 
 - `bash Scripts/validate-flagship-demo.sh`
@@ -69,5 +78,6 @@ Validation truth:
 
 - [Showcase](../Documentation/Showcase.md)
 - [Flagship demo pack](../Documentation/Generated/Flagship-Demo-Pack.md)
+- [Competitive Matrix](../Documentation/Comparisons/Competitive-Matrix.md)
 
 Use the demo guides for media details. Use `Showcase` for narrative proof and `Flagship demo pack` for the strongest maintained release-facing demo surface.

@@ -1,6 +1,6 @@
 # SwiftIntelligence Showcase
 
-Last updated: 2026-04-12
+Last updated: 2026-04-13
 
 This page answers one evaluator question:
 
@@ -45,6 +45,15 @@ Do not adopt because of this page if you need:
 
 Use [Examples Hub](../Examples/README.md) when you need to choose a demo.
 This page exists to explain what the current maintained demos can honestly prove, not to replace the canonical demo chooser.
+
+## Product-lane proof map
+
+| Product lane | Best proof demo | Compare first | Current proof strength |
+| --- | --- | --- | --- |
+| Vision | [IntelligentCamera](../Examples/DemoApps/IntelligentCamera/README.md) | [Vision vs Apple Vision](Comparisons/Vision-vs-AppleVision.md) | flagship |
+| NaturalLanguage | [SmartTranslator](../Examples/DemoApps/SmartTranslator/README.md) | [NLP vs Apple NaturalLanguage](Comparisons/NLP-vs-NaturalLanguage.md) | maintained secondary |
+| Speech | [VoiceAssistant](../Examples/DemoApps/VoiceAssistant/README.md) | [Speech vs Apple Speech](Comparisons/Speech-vs-AppleSpeech.md) | maintained secondary |
+| Privacy | [IntelligentCamera](../Examples/DemoApps/IntelligentCamera/README.md) | [Privacy vs CryptoKit + Security](Comparisons/Privacy-vs-CryptoKit-Security.md) | visible inside flagship flow |
 
 ## 1. IntelligentCamera
 
