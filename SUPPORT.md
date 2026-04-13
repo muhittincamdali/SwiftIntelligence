@@ -20,6 +20,7 @@
 | security issue | use [SECURITY.md](SECURITY.md), not public issues |
 | contribution expectations | read [CONTRIBUTING.md](CONTRIBUTING.md) first |
 | exact public proof envelope | read [Documentation/Generated/Public-Proof-Status.md](Documentation/Generated/Public-Proof-Status.md) |
+| sponsorship / maintenance support | use [GitHub Sponsors](https://github.com/sponsors/muhittincamdali) |
 
 ## What Makes Support Faster
 
