@@ -8,20 +8,19 @@ This page defines the public GitHub-facing metadata for SwiftIntelligence.
 
 Source of truth checked against the GitHub repository API on 2026-04-13.
 
-- description: `Privacy-first modular AI toolkit for Apple developers with Vision, NaturalLanguage, Speech, benchmarks, and release proof.`
+- description: `Apple-native on-device AI workflow stack for Vision, NaturalLanguage, Speech, privacy, benchmarks, and release proof.`
 - homepage: `none`
 - primary repo URL: `https://github.com/muhittincamdali/SwiftIntelligence`
 
 ## Current Topics
 
-- `ai-toolkit`
 - `apple`
 - `benchmarking`
 - `coreml`
 - `ios`
 - `macos`
 - `natural-language`
-- `on-device-ml`
+- `on-device-ai`
 - `privacy`
 - `privacy-first`
 - `speech`
@@ -66,6 +65,7 @@ Operational policy now:
 - [Public Proof Status](Generated/Public-Proof-Status.md)
 - [Latest Release Proof](Generated/Latest-Release-Proof.md)
 - [Positioning](Positioning.md)
+- [GitHub Sponsors](https://github.com/sponsors/muhittincamdali)
 
 ## Drift Checklist
 
