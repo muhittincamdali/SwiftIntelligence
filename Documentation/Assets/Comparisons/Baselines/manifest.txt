@@ -1,0 +1,2 @@
+renderer_major=26
+swiftintelligence-comparisons-board.svg 60638df230a83326cb8f27eebdc0450e4b04ae7adbed1c1dfb20d1ba8b9114f2
