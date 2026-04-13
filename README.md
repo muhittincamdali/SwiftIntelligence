@@ -2,41 +2,6 @@
   <img src="Documentation/Assets/Readme/swiftintelligence-hero.svg" width="100%" alt="SwiftIntelligence hero banner" />
 </div>
 
-<div align="center">
-
-[![Start Here](https://img.shields.io/badge/Start%20Here-5%20Minute%20Success%20Path-F05138?style=for-the-badge&labelColor=0D1117)](Documentation/Getting-Started.md#five-minute-success-path)
-[![Release Proof](https://img.shields.io/badge/Release%20Proof-v1.2.0-0A84FF?style=for-the-badge&labelColor=0D1117)](Documentation/Generated/Latest-Release-Proof.md)
-[![Examples Hub](https://img.shields.io/badge/Examples-Flagship%20and%20Secondary-111827?style=for-the-badge&labelColor=0D1117)](Examples/README.md)
-
-</div>
-
-<table>
-  <tr>
-    <td width="50%" align="left" valign="top">
-      <strong>Release Surface</strong><br />
-      <code>v1.2.0</code> · <code>release-grade</code><br />
-      latest numbered release and immutable proof surface
-    </td>
-    <td width="50%" align="left" valign="top">
-      <strong>Proof Envelope</strong><br />
-      <code>ready</code> · <code>Mac + iPhone</code><br />
-      generated claim boundary and required device floor
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="left" valign="top">
-      <strong>Best First Demo</strong><br />
-      <code>IntelligentCamera</code><br />
-      flagship media, smoke-check, and strongest product path
-    </td>
-    <td width="50%" align="left" valign="top">
-      <strong>README Coverage</strong><br />
-      <code>18 surfaces</code> · English default<br />
-      concise localized summaries around one canonical landing page
-    </td>
-  </tr>
-</table>
-
 <p align="center">
   <strong>SwiftIntelligence</strong> is a privacy-first, Apple-native AI toolkit for teams that need
   <code>Vision</code>, <code>NaturalLanguage</code>, <code>Speech</code>, privacy controls, benchmarks, and release proof to work as one product path.
@@ -47,18 +12,16 @@
 </p>
 
 <p align="center">
-  <a href="Documentation/Getting-Started.md">Getting Started</a> •
-  <a href="Documentation/README.md">Documentation Hub</a> •
-  <a href="Documentation/Trust-Start.md">Trust Start</a> •
-  <a href="Documentation/Comparisons/Competitive-Matrix.md">Competitive Matrix</a> •
-  <a href="Examples/README.md">Examples Hub</a>
+  <a href="Documentation/Getting-Started.md#five-minute-success-path"><strong>Start Here</strong></a> •
+  <a href="Documentation/Trust-Start.md"><strong>Trust Start</strong></a> •
+  <a href="Documentation/Comparisons/Competitive-Matrix.md"><strong>Competitive Matrix</strong></a>
 </p>
 
 <p align="center">
+  <a href="Examples/README.md">Examples Hub</a> •
   <a href="Documentation/Generated/Public-Proof-Status.md">Public Proof Status</a> •
   <a href="Documentation/Showcase.md">Showcase</a> •
-  <a href="Documentation/README-Languages.md">README Languages</a> •
-  <a href="README_TR.md">README_TR.md</a>
+  <a href="Documentation/README-Languages.md">README Languages</a>
 </p>
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
