@@ -29,7 +29,6 @@ This hub is organized by intent, not by maintainer file dump.
 - [Five-Minute Success Path](Getting-Started.md#five-minute-success-path)
 - [Competitive Matrix](Comparisons/Competitive-Matrix.md)
 - [Showcase](Showcase.md)
-- [Examples Hub](../Examples/README.md)
 
 ## 2. I need the strongest product path
 
@@ -40,7 +39,7 @@ This hub is organized by intent, not by maintainer file dump.
 - [Flagship demo pack](Generated/Flagship-Demo-Pack.md)
 - [Flagship media status](Generated/Flagship-Media-Status.md)
 
-Use [Examples Hub](../Examples/README.md) as the canonical demo chooser. This section exists only to expose the maintained proof path and media surfaces.
+Use [Examples Hub](../Examples/README.md) as the canonical demo chooser.
 
 ## 3. I want trust, proof, and release reality
 
