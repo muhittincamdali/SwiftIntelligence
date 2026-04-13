@@ -1,6 +1,6 @@
 # SwiftIntelligence Project Status
 
-Last updated: 2026-04-12
+Last updated: 2026-04-13
 
 ## Repository Status
 
@@ -77,7 +77,8 @@ Current state from those generated surfaces:
 - stronger GitHub discoverability and adoption surfaces
 - tighter module-level documentation and guarantees
 - selective restoration or permanent retirement of stale products
+- premium GitHub presentation redesign tracked in [Documentation/GitHub-Presentation-Backlog.md](Documentation/GitHub-Presentation-Backlog.md)
 
 ## Status Summary
 
-The repo is in a stronger state than its historical docs suggested, but it is still a managed recovery and leadership sprint, not a finished framework. The release-proof floor is now backed by archived `Mac` and physical `iPhone` evidence, so the next concrete milestone is no longer fake readiness closure; it is stronger positioning, comparisons, and optional device-breadth expansion on top of a truthful release baseline.
+The repo is in a stronger state than its historical docs suggested, but it is still a managed recovery and leadership sprint, not a finished framework. The release-proof floor is now backed by archived `Mac` and physical `iPhone` evidence, so the next concrete milestone is no longer fake readiness closure; it is stronger positioning, comparisons, premium GitHub presentation, and optional device-breadth expansion on top of a truthful release baseline.
