@@ -25,8 +25,8 @@ This hub is organized by intent, not by maintainer file dump.
 
 ## 1. I am evaluating the repo
 
-- [Five-Minute Success Path](Getting-Started.md#five-minute-success-path)
 - [Positioning](Positioning.md)
+- [Five-Minute Success Path](Getting-Started.md#five-minute-success-path)
 - [Competitive Matrix](Comparisons/Competitive-Matrix.md)
 - [Showcase](Showcase.md)
 - [Examples Hub](../Examples/README.md)
@@ -49,8 +49,8 @@ Use [Examples Hub](../Examples/README.md) as the canonical demo chooser. This se
 - [Latest Release Proof](Generated/Latest-Release-Proof.md)
 - [Benchmark Readiness](Generated/Benchmark-Readiness.md)
 
-Use `Trust Start` when you need the human routing page.
-Use the generated pages when exact claim wording, blockers, or release evidence details matter.
+Start with `Trust Start` for routing.
+Use the generated pages for exact claim wording and release evidence details.
 
 ## 4. I want module-level comparisons
 
