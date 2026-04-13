@@ -48,10 +48,9 @@ Use [Examples Hub](../Examples/README.md) as the canonical demo chooser. This se
 - [Public Proof Status](Generated/Public-Proof-Status.md)
 - [Latest Release Proof](Generated/Latest-Release-Proof.md)
 - [Benchmark Readiness](Generated/Benchmark-Readiness.md)
-- [Release Blockers](Generated/Release-Blockers.md)
-- [Release Benchmark Matrix](Generated/Release-Benchmark-Matrix.md)
-- [Release Process](Release-Process.md)
-- [Benchmark Baselines](Benchmark-Baselines.md)
+
+Use `Trust Start` when you need the human routing page.
+Use the generated pages when exact claim wording, blockers, or release evidence details matter.
 
 ## 4. I want module-level comparisons
 
