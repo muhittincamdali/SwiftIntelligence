@@ -44,7 +44,7 @@ Use [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) when e
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
-## Flagship Experience
+## Demo Gallery
 
 <p align="center">
   <a href="Examples/DemoApps/IntelligentCamera/README.md">
@@ -52,29 +52,18 @@ Use [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) when e
   </a>
 </p>
 
-<p align="center">
-  Maintained flagship media:
-  <a href="Documentation/Assets/Flagship-Demo/intelligent-camera-run.mp4">Recording</a> •
-  <a href="Documentation/Assets/Flagship-Demo/caption.txt">Caption</a> •
-  <a href="Documentation/Assets/Flagship-Demo/README.md">Media Policy</a>
-</p>
-
 `IntelligentCamera` is the fastest honest proof of value in this repository.
+It closes the strongest maintained path: `Vision -> NLP -> Privacy`.
 
-- `SwiftIntelligenceVision` handles classification, OCR, and detection
-- `SwiftIntelligenceNLP` turns extracted content into summaries
-- `SwiftIntelligencePrivacy` shows tokenized privacy-safe output
-- the demo path is wired into the same proof and release system used by the repo itself
+Flagship media:
+- [Guide](Examples/DemoApps/IntelligentCamera/README.md)
+- [Recording](Documentation/Assets/Flagship-Demo/intelligent-camera-run.mp4)
+- [Caption](Documentation/Assets/Flagship-Demo/caption.txt)
+- [Media Policy](Documentation/Assets/Flagship-Demo/README.md)
 
 ```bash
 bash Scripts/validate-flagship-demo.sh
 ```
-
-<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
-
-## Secondary Demo Media
-
-Two non-flagship demos now carry real showcase media as well:
 
 <table>
   <tr>
@@ -105,7 +94,8 @@ Two non-flagship demos now carry real showcase media as well:
   </tr>
 </table>
 
-These are not flagship-quality proof surfaces, but they are no longer source-only demos.
+`SmartTranslator` and `VoiceAssistant` carry real media and maintained guides.
+They are not flagship proof surfaces, but they are no longer source-only demos.
 
 Use [Examples Hub](Examples/README.md) when you need the canonical demo chooser.
 
