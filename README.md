@@ -25,24 +25,16 @@
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
-## Why Teams Pick SwiftIntelligence
+## Decision Surface
 
-| If your team needs... | SwiftIntelligence fit |
-| --- | --- |
-| `Vision + NLP + Privacy` or other multi-module Apple-native workflows | strong fit |
-| proof-backed release claims, benchmark policy, and immutable evidence | strong fit |
-| product-facing demos instead of raw framework assembly | strong fit |
-| a low-level runtime first | poor fit |
-| one untouched Apple API call with no broader workflow story | poor fit |
-| a speech-only or LLM-only specialist package | poor fit |
-
-## Start In One Of These Three Paths
-
-| If you are evaluating for... | Start here | What you will see first |
+| If you need... | Fit | Start here |
 | --- | --- | --- |
-| Product value | [Five-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path) | `Vision -> NLP -> Privacy` with the strongest maintained demo |
-| Technical trust | [Trust Start](Documentation/Trust-Start.md) | human-friendly trust router to generated claim, release, and benchmark surfaces |
-| Competitive fit | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) | where SwiftIntelligence wins, loses, and should not be chosen |
+| `Vision + NLP + Privacy` or another multi-module Apple workflow | strong fit | [Five-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path) |
+| proof-backed release claims, benchmark policy, and immutable evidence | strong fit | [Trust Start](Documentation/Trust-Start.md) |
+| direct rival fit against obvious alternatives | strong fit | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) |
+| a low-level runtime first | poor fit | stay on raw Apple APIs or a narrower package |
+| one untouched Apple API call with no workflow story | poor fit | compare against the raw Apple API first |
+| a speech-only or LLM-only specialist package | poor fit | choose a narrower specialist package |
 
 > Use SwiftIntelligence when multiple Apple-native AI capabilities need to ship together with proof discipline.
 > Stay on raw Apple APIs or a narrower library when one framework already solves the product path cleanly.
