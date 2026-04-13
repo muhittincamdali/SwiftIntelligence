@@ -8,12 +8,7 @@ This page exists to answer one practical question:
 
 If you only evaluate one example first, use [IntelligentCamera](DemoApps/IntelligentCamera/README.md).
 Validation command: `bash Scripts/validate-flagship-demo.sh`
-
-Why:
-
-- strongest multi-module story
-- best current media and proof support
-- aligned with the repo's public positioning
+Why: strongest multi-module story, best current media/proof support, and the clearest repo-wide evaluator path.
 
 ## Example maturity map
 
@@ -28,8 +23,7 @@ Why:
 | [AdvancedFeatures.swift](AdvancedFeatures.swift) | broader feature sample | compile-validated | inspect more APIs quickly |
 | `ServerIntegration/AIServiceClient.swift` | network-adjacent support | compile-validated | inspect integration helper surface |
 
-This page is the canonical demo decision surface. README and Showcase should point back here instead of duplicating large decision tables.
-Start with `IntelligentCamera` unless you are specifically evaluating a text-first flow, assistant-style UX, or the smallest compile-only sample.
+This page is the canonical demo decision surface. README and Showcase should point back here instead of duplicating large decision tables. Start with `IntelligentCamera` unless you are specifically evaluating a text-first flow, assistant-style UX, or the smallest compile-only sample.
 
 ## What is actually validated
 
@@ -76,5 +70,4 @@ Validation truth:
 - [Showcase](../Documentation/Showcase.md)
 - [Flagship demo pack](../Documentation/Generated/Flagship-Demo-Pack.md)
 
-Use the demo guides for media details.
-Use `Showcase` for narrative proof and `Flagship demo pack` for the strongest maintained release-facing demo surface.
+Use the demo guides for media details. Use `Showcase` for narrative proof and `Flagship demo pack` for the strongest maintained release-facing demo surface.
