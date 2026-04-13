@@ -54,22 +54,22 @@
     <text x="150" y="670" fill="#DCE8FF" font-size="19" font-weight="700">Current release signal</text>
     <text x="150" y="708" fill="#FFFFFF" font-size="28" font-weight="800">ready  ·  release-grade  ·  Mac + iPhone</text>
 
-    <text x="878" y="182" fill="#FFFFFF" font-size="36" font-weight="800">Choose your entry</text>
-    <text x="878" y="216" fill="#B9CCE8" font-size="20" font-weight="500">One route for product value, one for trust, one for category fit.</text>
+    <text x="878" y="182" fill="#FFFFFF" font-size="36" font-weight="800">Start in one place</text>
+    <text x="878" y="216" fill="#B9CCE8" font-size="20" font-weight="500">Start with the strongest path, the demo chooser, or proof.</text>
 
     <rect x="878" y="258" width="408" height="118" rx="24" fill="#0D1F36" stroke="#5AC8FA" stroke-opacity="0.22"/>
-    <text x="910" y="298" fill="#9FC5FF" font-size="21" font-weight="700">Product value</text>
+    <text x="910" y="298" fill="#9FC5FF" font-size="21" font-weight="700">Start Here</text>
     <text x="910" y="334" fill="#FFFFFF" font-size="34" font-weight="800">Five-Minute Success Path</text>
-    <text x="910" y="362" fill="#C7D7EE" font-size="18" font-weight="500">See the strongest maintained workflow first.</text>
+    <text x="910" y="362" fill="#C7D7EE" font-size="18" font-weight="500">Open the strongest maintained workflow first.</text>
 
     <rect x="878" y="396" width="408" height="118" rx="24" fill="#1A1325" stroke="#BF5AF2" stroke-opacity="0.22"/>
-    <text x="910" y="436" fill="#E6CBFF" font-size="21" font-weight="700">Technical trust</text>
-    <text x="910" y="472" fill="#FFFFFF" font-size="34" font-weight="800">Trust Start</text>
-    <text x="910" y="500" fill="#D8CCE8" font-size="18" font-weight="500">Route into generated proof and release truth.</text>
+    <text x="910" y="436" fill="#E6CBFF" font-size="21" font-weight="700">Examples Hub</text>
+    <text x="910" y="472" fill="#FFFFFF" font-size="34" font-weight="800">Choose the right demo</text>
+    <text x="910" y="500" fill="#D8CCE8" font-size="18" font-weight="500">Pick the flagship or a secondary product path.</text>
 
     <rect x="878" y="534" width="408" height="118" rx="24" fill="#1B160B" stroke="#FF9F0A" stroke-opacity="0.22"/>
-    <text x="910" y="574" fill="#FFD6AA" font-size="21" font-weight="700">Competitive fit</text>
-    <text x="910" y="610" fill="#FFFFFF" font-size="34" font-weight="800">Competitive Matrix</text>
-    <text x="910" y="638" fill="#E4D1B5" font-size="18" font-weight="500">Decide where SwiftIntelligence wins and loses.</text>
+    <text x="910" y="574" fill="#FFD6AA" font-size="21" font-weight="700">Release Proof</text>
+    <text x="910" y="610" fill="#FFFFFF" font-size="34" font-weight="800">Public Proof Status</text>
+    <text x="910" y="638" fill="#E4D1B5" font-size="18" font-weight="500">See the current claim boundary and release posture.</text>
   </g>
 </svg>

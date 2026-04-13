@@ -13,15 +13,14 @@
 
 <p align="center">
   <a href="Documentation/Getting-Started.md#five-minute-success-path"><strong>Start Here</strong></a> •
-  <a href="Documentation/Trust-Start.md"><strong>Trust Start</strong></a> •
-  <a href="Documentation/Comparisons/Competitive-Matrix.md"><strong>Competitive Matrix</strong></a>
+  <a href="Examples/README.md"><strong>Examples Hub</strong></a> •
+  <a href="Documentation/Generated/Public-Proof-Status.md"><strong>Release Proof</strong></a>
 </p>
 
 <p align="center">
-  <a href="Examples/README.md">Examples Hub</a> •
-  <a href="Documentation/Generated/Public-Proof-Status.md">Public Proof Status</a> •
-  <a href="Documentation/Showcase.md">Showcase</a> •
-  <a href="Documentation/README-Languages.md">README Languages</a>
+  Need rival-fit first? See <a href="Documentation/Comparisons/Competitive-Matrix.md">Competitive Matrix</a>.
+  Need the human trust router? See <a href="Documentation/Trust-Start.md">Trust Start</a>.
+  Need the repo story in another language? See <a href="Documentation/README-Languages.md">README Languages</a>.
 </p>
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
