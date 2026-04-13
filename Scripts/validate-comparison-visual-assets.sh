@@ -4,85 +4,24 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ASSET="$ROOT_DIR/Documentation/Assets/Comparisons/swiftintelligence-comparisons-board.svg"
 BASELINE_ASSET="$ROOT_DIR/Documentation/Assets/Comparisons/Baselines/swiftintelligence-comparisons-board.png"
+MANIFEST_ASSET="$ROOT_DIR/Documentation/Assets/Comparisons/Baselines/manifest.txt"
 PAGE="$ROOT_DIR/Documentation/Comparisons/README.md"
 TMP_DIR="$(mktemp -d)"
+
+source "$ROOT_DIR/Scripts/visual-asset-validation-lib.sh"
 
 cleanup() {
   rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
-
-render_svg_snapshot() {
-  local source_asset="$1"
-  local raster_width="$2"
-  local output_asset="$3"
-  local temp_snapshot
-
-  rm -f "$output_asset"
-  qlmanage -t -s "$raster_width" -o "$TMP_DIR" "$source_asset" >/dev/null
-  temp_snapshot="$TMP_DIR/$(basename "$source_asset").png"
-
-  [[ -f "$temp_snapshot" ]] || {
-    echo "Quick Look rasterization failed for $source_asset" >&2
-    exit 1
-  }
-
-  mv "$temp_snapshot" "$output_asset"
-}
-
-[[ -f "$ASSET" ]] || {
-  echo "Missing comparison visual asset: $ASSET" >&2
-  exit 1
-}
-
-[[ -f "$BASELINE_ASSET" ]] || {
-  echo "Missing comparison visual baseline: $BASELINE_ASSET" >&2
-  exit 1
-}
-
-xmllint --noout "$ASSET"
-
-grep -q 'viewBox="' "$ASSET" || {
-  echo "Missing viewBox in comparison visual asset." >&2
-  exit 1
-}
-
-grep -q 'preserveAspectRatio="xMidYMid meet"' "$ASSET" || {
-  echo "Missing preserveAspectRatio contract in comparison visual asset." >&2
-  exit 1
-}
-
-grep -q 'font-family=' "$ASSET" || {
-  echo "Missing font-family declaration in comparison visual asset." >&2
-  exit 1
-}
+require_svg_contract "$ASSET" "comparison"
+require_visual_baseline "$BASELINE_ASSET" "$MANIFEST_ASSET" "comparison"
+validate_svg_source_checksum "$ASSET" "$MANIFEST_ASSET" "Comparison"
 
 RASTERIZED_ASSET="$TMP_DIR/comparisons-board.png"
-render_svg_snapshot "$ASSET" "1400" "$RASTERIZED_ASSET"
-
-actual_width="$(sips -g pixelWidth "$RASTERIZED_ASSET" | awk '/pixelWidth/ {print $2}')"
-actual_height="$(sips -g pixelHeight "$RASTERIZED_ASSET" | awk '/pixelHeight/ {print $2}')"
-baseline_width="$(sips -g pixelWidth "$BASELINE_ASSET" | awk '/pixelWidth/ {print $2}')"
-baseline_height="$(sips -g pixelHeight "$BASELINE_ASSET" | awk '/pixelHeight/ {print $2}')"
-
-[[ "$actual_width" == "$baseline_width" ]] || {
-  echo "Unexpected comparison board width: $actual_width" >&2
-  exit 1
-}
-
-[[ "$actual_height" == "$baseline_height" ]] || {
-  echo "Unexpected comparison board height: $actual_height" >&2
-  exit 1
-}
-
-current_checksum="$(shasum -a 256 "$RASTERIZED_ASSET" | awk '{print $1}')"
-baseline_checksum="$(shasum -a 256 "$BASELINE_ASSET" | awk '{print $1}')"
-
-[[ "$current_checksum" == "$baseline_checksum" ]] || {
-  echo "Comparison visual regression detected." >&2
-  echo "Refresh baseline only if the redesign is intentional: bash Scripts/refresh-public-visual-baselines.sh" >&2
-  exit 1
-}
+render_svg_snapshot "$ASSET" "1400" "$RASTERIZED_ASSET" "$TMP_DIR"
+validate_snapshot_dimensions "$RASTERIZED_ASSET" "$BASELINE_ASSET" "comparison"
+validate_snapshot_checksum_if_renderer_matches "$RASTERIZED_ASSET" "$BASELINE_ASSET" "$MANIFEST_ASSET" "Comparison" "$(basename "$ASSET")"
 
 grep -q 'swiftintelligence-comparisons-board.svg' "$PAGE" || {
   echo "Documentation/Comparisons/README.md must reference swiftintelligence-comparisons-board.svg." >&2
