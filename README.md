@@ -248,14 +248,16 @@ swift test
 
 </details>
 
-## Community and Trust Files
+## Community and Maintenance Surface
 
-- [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Contributing](CONTRIBUTING.md)
-- [Security Policy](SECURITY.md)
-- [Support](SUPPORT.md)
-- [GitHub Distribution](Documentation/GitHub-Distribution.md)
-- [Release Process](Documentation/Release-Process.md)
+| If you need to verify... | Start here | Why |
+| --- | --- | --- |
+| how contributions are judged | [Contributing](CONTRIBUTING.md) | the quality bar for code, proof, examples, and public claims |
+| how vulnerabilities should be reported | [Security Policy](SECURITY.md) | private intake path and current security operations matrix |
+| how to get help or route an issue | [Support](SUPPORT.md) | support channels, repro expectations, and maintainer gate set |
+| how GitHub-facing metadata stays aligned | [GitHub Distribution](Documentation/GitHub-Distribution.md) | About box, topics, README story, and public proof routing |
+| how releases are prepared and validated | [Release Process](Documentation/Release-Process.md) | release asset, proof, and publication discipline |
+| how collaboration stays safe | [Code of Conduct](CODE_OF_CONDUCT.md) | conduct expectations across public interactions |
 
 ## License
 
