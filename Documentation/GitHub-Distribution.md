@@ -1,6 +1,6 @@
 # GitHub Distribution
 
-Last updated: 2026-04-12
+Last updated: 2026-04-13
 
 This page defines the public GitHub-facing metadata for SwiftIntelligence.
 
@@ -79,4 +79,15 @@ Check these when category, module scope, or proof posture changes:
 - `.github/ISSUE_TEMPLATE/device_evidence.yml`
 - [Positioning](Positioning.md)
 - [Showcase](Showcase.md)
+- [GitHub Presentation Backlog](GitHub-Presentation-Backlog.md)
 - [Public Proof Status](Generated/Public-Proof-Status.md)
+
+## Presentation Rule
+
+The GitHub surface should be treated as a maintained product surface, not a decorative README project.
+
+That means:
+
+- hero, docs routing, examples routing, trust routing, and About box must stay aligned
+- visual redesign work must close evaluator decisions faster, not just add style
+- remaining visual-system work is tracked in [GitHub Presentation Backlog](GitHub-Presentation-Backlog.md)

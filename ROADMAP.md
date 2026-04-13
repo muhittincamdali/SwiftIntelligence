@@ -1,6 +1,6 @@
 # SwiftIntelligence Roadmap
 
-Last updated: 2026-04-12
+Last updated: 2026-04-13
 
 ## North Star
 
@@ -51,12 +51,14 @@ Status: complete
 Status: in progress
 
 - improve README onboarding for first successful integration in under 5 minutes
+- raise the README and docs first-screen presentation to benchmark-repo quality
 - add clearer per-module usage paths and comparison tables
 - make benchmark summaries easier to consume without marketing inflation
 - strengthen example discoverability and validated demo coverage
 - keep the archived release baseline trustworthy and reproducible
 - keep README, Showcase, Comparisons, and Documentation hubs visually strong and low-drift
 - productize secondary demos so adoption does not depend on the flagship path alone
+- track presentation redesign work through [GitHub Presentation Backlog](Documentation/GitHub-Presentation-Backlog.md)
 
 ## Wave 2: Engineering Hardening
 
@@ -75,6 +77,7 @@ Status: planned
 - publish stronger comparative positioning against top Apple-native and OSS alternatives
 - add showcase-quality demos that prove real developer value
 - turn benchmarks, examples, and docs into obvious public proof rather than internal notes
+- make the GitHub surface category-dominant, not only technically honest
 - restore only the modules/products that can meet current quality and maintenance standards
 
 ## Explicit Non-Goals
