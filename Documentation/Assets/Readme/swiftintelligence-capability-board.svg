@@ -1,72 +1,71 @@
 <svg width="1400" height="940" viewBox="0 0 1400 940" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="cap-bg" x1="62" y1="44" x2="1340" y2="900" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#07111F"/>
-      <stop offset="0.56" stop-color="#0E1C33"/>
-      <stop offset="1" stop-color="#091322"/>
+    <linearGradient id="cap-bg" x1="36" y1="24" x2="1358" y2="908" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071120"/>
+      <stop offset="0.56" stop-color="#0D1C34"/>
+      <stop offset="1" stop-color="#081321"/>
     </linearGradient>
+    <radialGradient id="cap-blue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1160 142) rotate(140) scale(320 280)">
+      <stop stop-color="#0A84FF" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#0A84FF" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
   <rect width="1400" height="940" rx="42" fill="#040A14"/>
   <rect x="34" y="32" width="1332" height="876" rx="40" fill="url(#cap-bg)"/>
-  <rect x="72" y="68" width="1256" height="804" rx="34" fill="#0A1526" fill-opacity="0.82" stroke="#F3F7FF" stroke-opacity="0.08"/>
+  <rect x="34" y="32" width="1332" height="876" rx="40" fill="url(#cap-blue)"/>
+  <rect x="72" y="68" width="1256" height="804" rx="34" fill="#0A1526" fill-opacity="0.84" stroke="#F3F7FF" stroke-opacity="0.08"/>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
     <text x="110" y="132" fill="#FFFFFF" font-size="52" font-weight="800">Product Surface</text>
-    <text x="110" y="174" fill="#AFC6E9" font-size="21" font-weight="500">A workflow-first package graph with one flagship path and five clear product lanes.</text>
+    <text x="110" y="174" fill="#AFC6E9" font-size="21" font-weight="500">Five maintained lanes, one flagship path, and one release-proof story.</text>
 
-    <rect x="110" y="226" width="362" height="214" rx="28" fill="#111F35" stroke="#F05138" stroke-opacity="0.24"/>
-    <rect x="138" y="252" width="110" height="36" rx="18" fill="#F05138"/>
-    <text x="169" y="276" fill="#FFFFFF" font-size="18" font-weight="800">Vision</text>
-    <text x="138" y="326" fill="#FFFFFF" font-size="34" font-weight="800">Scene understanding</text>
-    <text x="138" y="372" fill="#D7E6FF" font-size="19" font-weight="500">Classification, OCR, detection,</text>
-    <text x="138" y="402" fill="#D7E6FF" font-size="19" font-weight="500">segmentation, and enhancement.</text>
-    <text x="138" y="432" fill="#9FC5FF" font-size="18" font-weight="700">Best first path: IntelligentCamera</text>
+    <rect x="110" y="226" width="370" height="206" rx="28" fill="#111F35" stroke="#F05138" stroke-opacity="0.24"/>
+    <rect x="138" y="252" width="104" height="34" rx="17" fill="#F05138"/>
+    <text x="167" y="275" fill="#FFFFFF" font-size="18" font-weight="800">Vision</text>
+    <text x="138" y="324" fill="#FFFFFF" font-size="34" font-weight="800">Scene understanding</text>
+    <text x="138" y="370" fill="#D7E6FF" font-size="19" font-weight="500">Classification, OCR, detection,</text>
+    <text x="138" y="400" fill="#D7E6FF" font-size="19" font-weight="500">segmentation, and enhancement.</text>
 
-    <rect x="518" y="226" width="362" height="214" rx="28" fill="#102239" stroke="#0A84FF" stroke-opacity="0.24"/>
-    <rect x="546" y="252" width="168" height="36" rx="18" fill="#0A84FF"/>
-    <text x="564" y="276" fill="#FFFFFF" font-size="17" font-weight="800">NaturalLanguage</text>
-    <text x="546" y="326" fill="#FFFFFF" font-size="34" font-weight="800">Text intelligence</text>
-    <text x="546" y="372" fill="#D7E6FF" font-size="19" font-weight="500">Summaries, entities, keywords,</text>
-    <text x="546" y="402" fill="#D7E6FF" font-size="19" font-weight="500">topics, and language-aware analysis.</text>
-    <text x="546" y="432" fill="#9FC5FF" font-size="18" font-weight="700">Compare first: raw NaturalLanguage APIs</text>
+    <rect x="516" y="226" width="370" height="206" rx="28" fill="#102239" stroke="#0A84FF" stroke-opacity="0.24"/>
+    <rect x="544" y="252" width="166" height="34" rx="17" fill="#0A84FF"/>
+    <text x="563" y="275" fill="#FFFFFF" font-size="17" font-weight="800">NaturalLanguage</text>
+    <text x="544" y="324" fill="#FFFFFF" font-size="34" font-weight="800">Text intelligence</text>
+    <text x="544" y="370" fill="#D7E6FF" font-size="19" font-weight="500">Summaries, entities, keywords,</text>
+    <text x="544" y="400" fill="#D7E6FF" font-size="19" font-weight="500">topics, and analysis helpers.</text>
 
-    <rect x="926" y="226" width="362" height="214" rx="28" fill="#10281D" stroke="#34C759" stroke-opacity="0.24"/>
-    <rect x="954" y="252" width="118" height="36" rx="18" fill="#34C759"/>
-    <text x="983" y="276" fill="#FFFFFF" font-size="18" font-weight="800">Privacy</text>
-    <text x="954" y="326" fill="#FFFFFF" font-size="34" font-weight="800">Guard rails</text>
-    <text x="954" y="372" fill="#D7E6FF" font-size="19" font-weight="500">Tokenization, anonymization, and</text>
-    <text x="954" y="402" fill="#D7E6FF" font-size="19" font-weight="500">safer handling around AI features.</text>
-    <text x="954" y="432" fill="#B5F0C5" font-size="18" font-weight="700">Privacy-aware by default</text>
+    <rect x="922" y="226" width="370" height="206" rx="28" fill="#10281D" stroke="#34C759" stroke-opacity="0.24"/>
+    <rect x="950" y="252" width="116" height="34" rx="17" fill="#34C759"/>
+    <text x="978" y="275" fill="#FFFFFF" font-size="18" font-weight="800">Privacy</text>
+    <text x="950" y="324" fill="#FFFFFF" font-size="34" font-weight="800">Guard rails</text>
+    <text x="950" y="370" fill="#D7E6FF" font-size="19" font-weight="500">Tokenization, anonymization,</text>
+    <text x="950" y="400" fill="#D7E6FF" font-size="19" font-weight="500">and safer AI handling boundaries.</text>
 
-    <rect x="110" y="474" width="362" height="214" rx="28" fill="#171A30" stroke="#BF5AF2" stroke-opacity="0.24"/>
-    <rect x="138" y="500" width="120" height="36" rx="18" fill="#BF5AF2"/>
-    <text x="168" y="524" fill="#FFFFFF" font-size="18" font-weight="800">Speech</text>
-    <text x="138" y="574" fill="#FFFFFF" font-size="34" font-weight="800">Voice output</text>
-    <text x="138" y="620" fill="#D7E6FF" font-size="19" font-weight="500">Speech synthesis, voice catalogs,</text>
-    <text x="138" y="650" fill="#D7E6FF" font-size="19" font-weight="500">and assistant-style response flows.</text>
-    <text x="138" y="680" fill="#E6CBFF" font-size="18" font-weight="700">Maintained secondary demo path</text>
+    <rect x="110" y="468" width="370" height="206" rx="28" fill="#171A30" stroke="#BF5AF2" stroke-opacity="0.24"/>
+    <rect x="138" y="494" width="112" height="34" rx="17" fill="#BF5AF2"/>
+    <text x="165" y="517" fill="#FFFFFF" font-size="18" font-weight="800">Speech</text>
+    <text x="138" y="566" fill="#FFFFFF" font-size="34" font-weight="800">Voice output</text>
+    <text x="138" y="612" fill="#D7E6FF" font-size="19" font-weight="500">Synthesis, voice catalogs, and</text>
+    <text x="138" y="642" fill="#D7E6FF" font-size="19" font-weight="500">assistant-style response delivery.</text>
 
-    <rect x="518" y="474" width="362" height="214" rx="28" fill="#251F13" stroke="#FF9F0A" stroke-opacity="0.24"/>
-    <rect x="546" y="500" width="162" height="36" rx="18" fill="#FF9F0A"/>
-    <text x="574" y="524" fill="#FFFFFF" font-size="18" font-weight="800">Benchmarks</text>
-    <text x="546" y="574" fill="#FFFFFF" font-size="34" font-weight="800">Evidence discipline</text>
-    <text x="546" y="620" fill="#D7E6FF" font-size="19" font-weight="500">Versioned artifacts, thresholds,</text>
-    <text x="546" y="650" fill="#D7E6FF" font-size="19" font-weight="500">provenance, and immutable bundles.</text>
-    <text x="546" y="680" fill="#FFD4A6" font-size="18" font-weight="700">Claims stay inside the proof envelope</text>
+    <rect x="516" y="468" width="370" height="206" rx="28" fill="#251F13" stroke="#FF9F0A" stroke-opacity="0.24"/>
+    <rect x="544" y="494" width="154" height="34" rx="17" fill="#FF9F0A"/>
+    <text x="570" y="517" fill="#FFFFFF" font-size="18" font-weight="800">Benchmarks</text>
+    <text x="544" y="566" fill="#FFFFFF" font-size="34" font-weight="800">Proof discipline</text>
+    <text x="544" y="612" fill="#D7E6FF" font-size="19" font-weight="500">Thresholds, manifests, checksums,</text>
+    <text x="544" y="642" fill="#D7E6FF" font-size="19" font-weight="500">provenance, and immutable bundles.</text>
 
-    <rect x="926" y="474" width="362" height="214" rx="28" fill="#0E2037" stroke="#5AC8FA" stroke-opacity="0.24"/>
-    <rect x="954" y="500" width="170" height="36" rx="18" fill="#5AC8FA"/>
-    <text x="980" y="524" fill="#FFFFFF" font-size="18" font-weight="800">Release Proof</text>
-    <text x="954" y="574" fill="#FFFFFF" font-size="34" font-weight="800">Public trust surface</text>
-    <text x="954" y="620" fill="#D7E6FF" font-size="19" font-weight="500">Readiness, release proof, media,</text>
-    <text x="954" y="650" fill="#D7E6FF" font-size="19" font-weight="500">and the current required device floor.</text>
-    <text x="954" y="680" fill="#A7CBFF" font-size="18" font-weight="700">Mac + iPhone, release-grade posture</text>
+    <rect x="922" y="468" width="370" height="206" rx="28" fill="#0E2037" stroke="#5AC8FA" stroke-opacity="0.24"/>
+    <rect x="950" y="494" width="156" height="34" rx="17" fill="#5AC8FA"/>
+    <text x="975" y="517" fill="#FFFFFF" font-size="18" font-weight="800">Release Proof</text>
+    <text x="950" y="566" fill="#FFFFFF" font-size="34" font-weight="800">Trust surface</text>
+    <text x="950" y="612" fill="#D7E6FF" font-size="19" font-weight="500">Readiness, release proof, media,</text>
+    <text x="950" y="642" fill="#D7E6FF" font-size="19" font-weight="500">and the current device floor.</text>
 
-    <rect x="110" y="742" width="1178" height="90" rx="24" fill="#101C2D" stroke="#F3F7FF" stroke-opacity="0.08"/>
-    <text x="144" y="778" fill="#FFFFFF" font-size="22" font-weight="800">Current strongest story</text>
-    <text x="144" y="812" fill="#D7E6FF" font-size="21" font-weight="600">IntelligentCamera proves the repo at flagship level.</text>
-    <text x="826" y="778" fill="#FFFFFF" font-size="22" font-weight="800">Next strongest paths</text>
-    <text x="826" y="812" fill="#A7CBFF" font-size="21" font-weight="700">SmartTranslator and VoiceAssistant</text>
+    <rect x="110" y="726" width="1182" height="96" rx="24" fill="#101C2D" stroke="#F3F7FF" stroke-opacity="0.08"/>
+    <text x="144" y="764" fill="#9FC5FF" font-size="20" font-weight="700">Flagship story</text>
+    <text x="144" y="800" fill="#FFFFFF" font-size="26" font-weight="800">IntelligentCamera closes the strongest maintained route.</text>
+    <text x="832" y="764" fill="#FFD6AA" font-size="20" font-weight="700">Next routes</text>
+    <text x="832" y="800" fill="#FFFFFF" font-size="24" font-weight="800">SmartTranslator and VoiceAssistant</text>
   </g>
 </svg>
