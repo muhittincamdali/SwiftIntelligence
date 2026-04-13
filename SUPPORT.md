@@ -3,6 +3,7 @@
 ## Start Here
 
 - Read [README.md](README.md)
+- Read [Documentation/Trust-Start.md](Documentation/Trust-Start.md)
 - Read [Documentation/README.md](Documentation/README.md)
 - Check [Examples/README.md](Examples/README.md)
 - For the fastest real demo proof, run [Examples/DemoApps/IntelligentCamera/README.md](Examples/DemoApps/IntelligentCamera/README.md)
@@ -17,6 +18,8 @@
 | performance / benchmark drift | open a performance issue and include validation commands |
 | device evidence intake | use the device evidence issue form |
 | security issue | use [SECURITY.md](SECURITY.md), not public issues |
+| contribution expectations | read [CONTRIBUTING.md](CONTRIBUTING.md) first |
+| exact public proof envelope | read [Documentation/Generated/Public-Proof-Status.md](Documentation/Generated/Public-Proof-Status.md) |
 
 ## What Makes Support Faster
 
@@ -41,6 +44,8 @@ bash Scripts/prepare-release.sh
 ## Scope Note
 
 Support is focused on the active modular package graph. Historical umbrella APIs and inactive products may remain in repository history or docs context, but they are not primary support targets.
+
+This page routes help requests. Use `Trust Start` and the generated proof pages when your question is really about current public claims, release truth, or benchmark posture.
 
 ## Conduct
 

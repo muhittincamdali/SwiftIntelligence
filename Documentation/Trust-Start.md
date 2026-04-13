@@ -30,3 +30,12 @@ Do not treat it as the canonical source of record when exact claim wording matte
 - [Competitive Matrix](Comparisons/Competitive-Matrix.md)
 - [Showcase](Showcase.md)
 - [Examples Hub](../Examples/README.md)
+
+## Maintenance quality signals
+
+Use these when you need to verify that the repo is maintained like a product surface, not just a code dump:
+
+- [Contributing](../CONTRIBUTING.md)
+- [Security Policy](../SECURITY.md)
+- [Support](../SUPPORT.md)
+- [GitHub Distribution](GitHub-Distribution.md)

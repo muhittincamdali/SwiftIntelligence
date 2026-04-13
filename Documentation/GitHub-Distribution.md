@@ -6,7 +6,7 @@ This page defines the public GitHub-facing metadata for SwiftIntelligence.
 
 ## Current About Box
 
-Source of truth checked against the GitHub repository API on 2026-04-12.
+Source of truth checked against the GitHub repository API on 2026-04-13.
 
 - description: `Privacy-first modular AI toolkit for Apple developers with Vision, NaturalLanguage, Speech, benchmarks, and release proof.`
 - homepage: `none`
@@ -46,7 +46,7 @@ Source of truth checked against the GitHub repository API on 2026-04-12.
 
 ## Current Operational Note
 
-As of 2026-04-12, GitHub-hosted workflows are active again and current live checks are expected to stay green on `main`.
+As of 2026-04-13, GitHub-hosted workflows are active again and current live checks are expected to stay green on `main`.
 
 Operational policy now:
 
@@ -62,6 +62,7 @@ Operational policy now:
 - [Getting Started](Getting-Started.md#five-minute-success-path)
 - [IntelligentCamera demo guide](../Examples/DemoApps/IntelligentCamera/README.md)
 - [Showcase](Showcase.md)
+- [Trust Start](Trust-Start.md)
 - [Public Proof Status](Generated/Public-Proof-Status.md)
 - [Latest Release Proof](Generated/Latest-Release-Proof.md)
 - [Positioning](Positioning.md)
