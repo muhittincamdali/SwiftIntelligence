@@ -1,21 +1,25 @@
 <svg width="1400" height="860" viewBox="0 0 1400 860" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="64" y1="48" x2="1332" y2="820" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#081322"/>
-      <stop offset="0.52" stop-color="#0E1B31"/>
-      <stop offset="1" stop-color="#091423"/>
+    <linearGradient id="bg" x1="42" y1="28" x2="1338" y2="832" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071120"/>
+      <stop offset="0.55" stop-color="#0D1C34"/>
+      <stop offset="1" stop-color="#081321"/>
     </linearGradient>
-    <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1148 164) rotate(135) scale(360 330)">
-      <stop stop-color="#0A84FF" stop-opacity="0.48"/>
+    <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1156 152) rotate(142) scale(350 320)">
+      <stop stop-color="#0A84FF" stop-opacity="0.46"/>
       <stop offset="1" stop-color="#0A84FF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="amberGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(248 808) rotate(-21) scale(380 250)">
-      <stop stop-color="#FF8A00" stop-opacity="0.28"/>
+    <radialGradient id="amberGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(234 820) rotate(-19) scale(360 240)">
+      <stop stop-color="#FF8A00" stop-opacity="0.22"/>
       <stop offset="1" stop-color="#FF8A00" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="panel" x1="860" y1="136" x2="1260" y2="676" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#162641" stop-opacity="0.96"/>
-      <stop offset="1" stop-color="#0E192B" stop-opacity="0.94"/>
+    <linearGradient id="leftPanel" x1="74" y1="86" x2="784" y2="732" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1628" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#0A1425" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="rightPanel" x1="852" y1="120" x2="1312" y2="694" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#162641" stop-opacity="0.97"/>
+      <stop offset="1" stop-color="#0F1A2D" stop-opacity="0.95"/>
     </linearGradient>
   </defs>
 
@@ -24,49 +28,48 @@
   <rect x="36" y="34" width="1328" height="792" rx="38" fill="url(#blueGlow)"/>
   <rect x="36" y="34" width="1328" height="792" rx="38" fill="url(#amberGlow)"/>
 
-  <rect x="86" y="84" width="700" height="622" rx="32" fill="#0A1526" fill-opacity="0.76" stroke="#F3F7FF" stroke-opacity="0.08"/>
-  <rect x="846" y="140" width="452" height="510" rx="30" fill="url(#panel)" stroke="#F3F7FF" stroke-opacity="0.08"/>
+  <rect x="76" y="84" width="720" height="672" rx="34" fill="url(#leftPanel)" stroke="#F3F7FF" stroke-opacity="0.08"/>
+  <rect x="840" y="118" width="484" height="624" rx="32" fill="url(#rightPanel)" stroke="#F3F7FF" stroke-opacity="0.08"/>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-    <rect x="126" y="124" width="188" height="40" rx="20" fill="#132238" stroke="#EEF4FF" stroke-opacity="0.10"/>
-    <text x="154" y="150" fill="#DBE8FF" font-size="20" font-weight="700">APPLE-NATIVE AI</text>
+    <rect x="118" y="124" width="196" height="40" rx="20" fill="#132238" stroke="#EEF4FF" stroke-opacity="0.10"/>
+    <text x="150" y="150" fill="#DBE8FF" font-size="20" font-weight="700">APPLE-NATIVE AI</text>
 
-    <text x="126" y="248" fill="#FFFFFF" font-size="80" font-weight="800">SwiftIntelligence</text>
-    <text x="126" y="306" fill="#9FC5FF" font-size="30" font-weight="700">Apple-native AI workflow stack for shipping teams</text>
+    <text x="118" y="240" fill="#FFFFFF" font-size="78" font-weight="800">SwiftIntelligence</text>
+    <text x="118" y="296" fill="#9FC5FF" font-size="31" font-weight="700">On-device AI workflow stack for Apple shipping teams</text>
 
-    <text x="126" y="388" fill="#E7F0FF" font-size="24" font-weight="500">Compose Vision, NaturalLanguage, Speech, privacy,</text>
-    <text x="126" y="424" fill="#E7F0FF" font-size="24" font-weight="500">benchmarks, and release proof as one maintained</text>
-    <text x="126" y="460" fill="#E7F0FF" font-size="24" font-weight="500">product path instead of disconnected wrappers.</text>
+    <text x="118" y="380" fill="#E7F0FF" font-size="24" font-weight="500">Build Vision, NaturalLanguage, Speech, privacy,</text>
+    <text x="118" y="416" fill="#E7F0FF" font-size="24" font-weight="500">benchmarks, and release proof as one maintained</text>
+    <text x="118" y="452" fill="#E7F0FF" font-size="24" font-weight="500">product path instead of disconnected wrappers.</text>
 
-    <text x="126" y="510" fill="#8FA9CC" font-size="18" font-weight="700">Core lanes</text>
+    <rect x="118" y="506" width="302" height="58" rx="20" fill="#111F33" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <text x="150" y="540" fill="#9FC5FF" font-size="19" font-weight="700">Best first path</text>
+    <text x="150" y="602" fill="#FFFFFF" font-size="34" font-weight="800">IntelligentCamera</text>
 
-    <rect x="126" y="530" width="166" height="50" rx="18" fill="#F05138"/>
-    <text x="169" y="556" fill="#FFFFFF" font-size="22" font-weight="800">Vision</text>
-    <rect x="310" y="530" width="228" height="50" rx="18" fill="#0A84FF"/>
-    <text x="351" y="562" fill="#FFFFFF" font-size="22" font-weight="800">NaturalLanguage</text>
-    <rect x="556" y="530" width="132" height="50" rx="18" fill="#5E5CE6"/>
-    <text x="592" y="562" fill="#FFFFFF" font-size="22" font-weight="800">Speech</text>
+    <rect x="442" y="506" width="304" height="58" rx="20" fill="#111F33" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <text x="474" y="540" fill="#FFD6AA" font-size="19" font-weight="700">Why teams adopt</text>
+    <text x="474" y="602" fill="#FFFFFF" font-size="31" font-weight="800">Workflow + proof</text>
 
-    <rect x="126" y="610" width="650" height="74" rx="22" fill="#F7FAFF" fill-opacity="0.06" stroke="#FFFFFF" stroke-opacity="0.08"/>
-    <text x="160" y="642" fill="#DCE8FF" font-size="19" font-weight="700">Fastest proof path</text>
-    <text x="160" y="673" fill="#FFFFFF" font-size="29" font-weight="800">IntelligentCamera  →  Vision  →  NLP  →  Privacy</text>
+    <rect x="118" y="634" width="628" height="84" rx="24" fill="#F7FAFF" fill-opacity="0.06" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <text x="150" y="670" fill="#DCE8FF" font-size="19" font-weight="700">Current release signal</text>
+    <text x="150" y="708" fill="#FFFFFF" font-size="28" font-weight="800">ready  ·  release-grade  ·  Mac + iPhone</text>
 
-    <text x="888" y="212" fill="#FFFFFF" font-size="34" font-weight="800">Release-grade signal</text>
+    <text x="878" y="182" fill="#FFFFFF" font-size="36" font-weight="800">Choose your entry</text>
+    <text x="878" y="216" fill="#B9CCE8" font-size="20" font-weight="500">One route for product value, one for trust, one for category fit.</text>
 
-    <rect x="888" y="246" width="368" height="78" rx="22" fill="#0D1F36" stroke="#5AC8FA" stroke-opacity="0.22"/>
-    <text x="918" y="280" fill="#9FC5FF" font-size="21" font-weight="700">Publish readiness</text>
-    <text x="918" y="309" fill="#FFFFFF" font-size="32" font-weight="800">ready</text>
+    <rect x="878" y="258" width="408" height="118" rx="24" fill="#0D1F36" stroke="#5AC8FA" stroke-opacity="0.22"/>
+    <text x="910" y="298" fill="#9FC5FF" font-size="21" font-weight="700">Product value</text>
+    <text x="910" y="334" fill="#FFFFFF" font-size="34" font-weight="800">Five-Minute Success Path</text>
+    <text x="910" y="362" fill="#C7D7EE" font-size="18" font-weight="500">See the strongest maintained workflow first.</text>
 
-    <rect x="888" y="342" width="368" height="78" rx="22" fill="#1B160B" stroke="#FF9F0A" stroke-opacity="0.22"/>
-    <text x="918" y="376" fill="#FFD6AA" font-size="21" font-weight="700">Proof posture</text>
-    <text x="918" y="405" fill="#FFFFFF" font-size="32" font-weight="800">release-grade</text>
+    <rect x="878" y="396" width="408" height="118" rx="24" fill="#1A1325" stroke="#BF5AF2" stroke-opacity="0.22"/>
+    <text x="910" y="436" fill="#E6CBFF" font-size="21" font-weight="700">Technical trust</text>
+    <text x="910" y="472" fill="#FFFFFF" font-size="34" font-weight="800">Trust Start</text>
+    <text x="910" y="500" fill="#D8CCE8" font-size="18" font-weight="500">Route into generated proof and release truth.</text>
 
-    <rect x="888" y="438" width="368" height="78" rx="22" fill="#0C2118" stroke="#34C759" stroke-opacity="0.22"/>
-    <text x="918" y="472" fill="#B8F2C7" font-size="21" font-weight="700">Device floor</text>
-    <text x="918" y="501" fill="#FFFFFF" font-size="32" font-weight="800">Mac + iPhone</text>
-
-    <rect x="888" y="534" width="368" height="78" rx="22" fill="#1A1325" stroke="#BF5AF2" stroke-opacity="0.22"/>
-    <text x="918" y="568" fill="#E6CBFF" font-size="21" font-weight="700">Flagship media</text>
-    <text x="918" y="597" fill="#FFFFFF" font-size="32" font-weight="800">published</text>
+    <rect x="878" y="534" width="408" height="118" rx="24" fill="#1B160B" stroke="#FF9F0A" stroke-opacity="0.22"/>
+    <text x="910" y="574" fill="#FFD6AA" font-size="21" font-weight="700">Competitive fit</text>
+    <text x="910" y="610" fill="#FFFFFF" font-size="34" font-weight="800">Competitive Matrix</text>
+    <text x="910" y="638" fill="#E4D1B5" font-size="18" font-weight="500">Decide where SwiftIntelligence wins and loses.</text>
   </g>
 </svg>
