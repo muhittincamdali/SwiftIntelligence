@@ -3,12 +3,13 @@
 </div>
 
 <p align="center">
-  <strong>SwiftIntelligence</strong> is a privacy-first, Apple-native AI toolkit for teams that need
-  <code>Vision</code>, <code>NaturalLanguage</code>, <code>Speech</code>, privacy controls, benchmarks, and release proof to work as one product path.
+  <strong>SwiftIntelligence</strong> is an Apple-native AI workflow stack for teams that need
+  <code>Vision</code>, <code>NaturalLanguage</code>, <code>Speech</code>, privacy controls, benchmarks, and release proof to ship as one product path.
 </p>
 
 <p align="center">
-  It is not a generic inference runtime. It is a workflow stack for shipping on-device AI features on Apple platforms with fewer hand-rolled integrations and stricter public-proof discipline.
+  Use it when multiple Apple AI capabilities must ship together with proof discipline.
+  Skip it when raw Apple APIs or a narrower package already close the product path cleanly.
 </p>
 
 <p align="center">
@@ -25,22 +26,16 @@
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
-## Decision Surface
+## First Decision
 
-| If you need... | Fit | Start here |
-| --- | --- | --- |
-| `Vision + NLP + Privacy` or another multi-module Apple workflow | strong fit | [Five-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path) |
-| proof-backed release claims, benchmark policy, and immutable evidence | strong fit | [Trust Start](Documentation/Trust-Start.md) |
-| direct rival fit against obvious alternatives | strong fit | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) |
-| a low-level runtime first | poor fit | stay on raw Apple APIs or a narrower package |
-| one untouched Apple API call with no workflow story | poor fit | compare against the raw Apple API first |
-| a speech-only or LLM-only specialist package | poor fit | choose a narrower specialist package |
+| Need | Best next move |
+| --- | --- |
+| one maintained Apple workflow that spans modules and release proof | [Five-Minute Success Path](Documentation/Getting-Started.md#five-minute-success-path) |
+| exact trust, readiness, and release-claim boundaries | [Trust Start](Documentation/Trust-Start.md) |
+| named-rival fit before adoption | [Competitive Matrix](Documentation/Comparisons/Competitive-Matrix.md) |
+| only one low-level framework call or a specialist package | stay on raw Apple APIs or choose the narrower package first |
 
-> Use SwiftIntelligence when multiple Apple-native AI capabilities need to ship together with proof discipline.
-> Stay on raw Apple APIs or a narrower library when one framework already solves the product path cleanly.
-
-Use [Trust Start](Documentation/Trust-Start.md) for the human summary.
-Use [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) when exact current claim boundaries matter.
+Use [Public Proof Status](Documentation/Generated/Public-Proof-Status.md) only when exact claim wording matters.
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
