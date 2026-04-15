@@ -6,7 +6,7 @@ Generated from the current benchmark readiness report.
 
 - Publish readiness: `ready`
 - Device classes seen: `Mac, iPhone`
-- Immutable release bundles: `3`
+- Immutable release bundles: `4`
 - Immutable release baseline: `present`
 - Coverage rule: `At least 2 device classes covered`
 

@@ -336,7 +336,7 @@ extension ModelInfo {
     public static let imageClassification = ModelInfo(
         id: "mobilenet_v3_large",
         name: "MobileNet V3 Large",
-        version: "1.2.1",
+        version: "1.2.2",
         taskType: .imageClassification,
         description: "Efficient image classification model optimized for mobile devices",
         size: 21 * 1024 * 1024, // 21MB
@@ -357,7 +357,7 @@ extension ModelInfo {
     public static let objectDetection = ModelInfo(
         id: "yolo_v8_nano",
         name: "YOLO v8 Nano",
-        version: "1.2.1",
+        version: "1.2.2",
         taskType: .objectDetection,
         description: "Fast and accurate object detection model",
         size: 6 * 1024 * 1024, // 6MB
@@ -376,7 +376,7 @@ extension ModelInfo {
     public static let faceRecognition = ModelInfo(
         id: "face_net_mobile",
         name: "FaceNet Mobile",
-        version: "1.2.1",
+        version: "1.2.2",
         taskType: .faceRecognition,
         description: "Lightweight face recognition and verification model",
         size: 12 * 1024 * 1024, // 12MB
@@ -390,7 +390,7 @@ extension ModelInfo {
     public static let textRecognition = ModelInfo(
         id: "craft_text_detector",
         name: "CRAFT Text Detector",
-        version: "1.2.1",
+        version: "1.2.2",
         taskType: .textRecognition,
         description: "Scene text detection and recognition",
         size: 18 * 1024 * 1024, // 18MB
@@ -404,7 +404,7 @@ extension ModelInfo {
     public static let imageGeneration = ModelInfo(
         id: "stable_diffusion_mobile",
         name: "Stable Diffusion Mobile",
-        version: "1.2.1",
+        version: "1.2.2",
         taskType: .imageGeneration,
         description: "Text-to-image generation optimized for mobile",
         size: 156 * 1024 * 1024, // 156MB
@@ -424,7 +424,7 @@ extension ModelInfo {
     public static let textSentiment = ModelInfo(
         id: "bert_sentiment_mobile",
         name: "BERT Sentiment Mobile",
-        version: "1.2.1",
+        version: "1.2.2",
         taskType: .sentimentAnalysis,
         description: "Efficient sentiment analysis for mobile devices",
         size: 24 * 1024 * 1024, // 24MB
@@ -438,7 +438,7 @@ extension ModelInfo {
     public static let turkishNLP = ModelInfo(
         id: "turkish_bert_base",
         name: "Turkish BERT Base",
-        version: "1.2.1",
+        version: "1.2.2",
         taskType: .textClassification,
         description: "Turkish language understanding model - World's first mobile Turkish BERT",
         size: 42 * 1024 * 1024, // 42MB
@@ -456,7 +456,7 @@ extension ModelInfo {
     public static let speechRecognition = ModelInfo(
         id: "whisper_tiny_en",
         name: "Whisper Tiny English",
-        version: "1.2.1",
+        version: "1.2.2",
         taskType: .speechRecognition,
         description: "Fast and accurate speech recognition",
         size: 39 * 1024 * 1024, // 39MB

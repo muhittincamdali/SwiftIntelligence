@@ -5,7 +5,7 @@ import XCTest
 final class SwiftUILabTests: XCTestCase {
     
     func testSwiftUILabVersion() {
-        XCTAssertEqual(SwiftUILab.version, "1.2.1")
+        XCTAssertEqual(SwiftUILab.version, "1.2.2")
     }
     
     func testComponentCount() {

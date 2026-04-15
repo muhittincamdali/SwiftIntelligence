@@ -15,8 +15,24 @@ permissions:
   security-events: write
 
 jobs:
-  analyze:
+  analyze_push_guard:
     name: Analyze (Swift)
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Record CodeQL push policy
+        run: |
+          test -f .github/workflows/codeql.yml
+          echo "Push and pull_request runs keep a fast success gate."
+          echo "Full Swift CodeQL analysis runs on schedule and workflow_dispatch."
+
+  analyze_full:
+    name: Analyze (Swift)
+    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
     runs-on: macos-14
     timeout-minutes: 30
     strategy:

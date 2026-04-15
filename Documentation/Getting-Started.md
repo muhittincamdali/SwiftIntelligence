@@ -24,7 +24,7 @@ Step 1. Add the smallest flagship dependency set:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
+    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.2")
 ],
 targets: [
     .target(

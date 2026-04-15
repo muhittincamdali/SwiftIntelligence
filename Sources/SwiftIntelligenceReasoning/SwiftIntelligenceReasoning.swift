@@ -7,7 +7,7 @@ public actor SwiftIntelligenceReasoning {
     // MARK: - Properties
     
     public let moduleID = "Reasoning"
-    public let version = "1.2.1"
+    public let version = "1.2.2"
     public private(set) var status: ModuleStatus = .uninitialized
     
     // MARK: - Reasoning Components

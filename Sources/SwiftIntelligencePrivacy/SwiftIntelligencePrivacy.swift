@@ -17,7 +17,7 @@ public actor SwiftIntelligencePrivacy {
     // MARK: - Properties
     
     public let moduleID = "Privacy"
-    public let version = "1.2.1"
+    public let version = "1.2.2"
     public private(set) var status: ModuleStatus = .uninitialized
     
     // MARK: - Privacy Components

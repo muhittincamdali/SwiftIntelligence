@@ -36,6 +36,9 @@ This gate currently requires:
 The tagged GitHub release workflow does **not** regenerate `standard` benchmarks on the hosted runner.
 It packages the already-validated `Benchmarks/Results/latest` artifact set from the tagged commit, so release assets stay tied to maintainer-verified evidence instead of ephemeral CI hardware.
 
+Push-facing GitHub checks stay fast and deterministic.
+Full Swift CodeQL analysis is preserved on `schedule` and `workflow_dispatch`, because hosted manual Swift CodeQL builds can wedge for long periods on push without producing a trustworthy earlier signal.
+
 Required benchmark artifacts:
 
 - `Benchmarks/Results/latest/benchmark-report.json`

@@ -24,7 +24,7 @@ Toolkit AI modulare on-device per piattaforme Apple. Collega `Vision`, `NaturalL
 ## Installazione
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.2")
 ```
 
 Percorso consigliato:

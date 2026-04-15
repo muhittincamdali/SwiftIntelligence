@@ -6,7 +6,7 @@ final class CoreTests: XCTestCase {
     func testSwiftIntelligenceInitialization() {
         let intelligence = SwiftIntelligence()
         XCTAssertNotNil(intelligence)
-        XCTAssertEqual(intelligence.version, "1.2.1")
+        XCTAssertEqual(intelligence.version, "1.2.2")
     }
     
     func testIntelligenceProtocol() {

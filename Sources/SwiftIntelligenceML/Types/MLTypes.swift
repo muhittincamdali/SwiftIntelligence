@@ -157,7 +157,7 @@ public final class MLModelWrapper: @unchecked Sendable {
     public let createdAt: Date
     public let version: String
     
-    public init(model: any MLModelProtocol, type: MLModelType, version: String = "1.2.1") {
+    public init(model: any MLModelProtocol, type: MLModelType, version: String = "1.2.2") {
         self.model = model
         self.type = type
         self.version = version

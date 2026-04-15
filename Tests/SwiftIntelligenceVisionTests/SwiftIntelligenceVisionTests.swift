@@ -19,7 +19,7 @@ final class SwiftIntelligenceVisionTests: XCTestCase {
         let status = await visionModule.status
         
         XCTAssertEqual(moduleID, "Vision")
-        XCTAssertEqual(version, "1.2.1")
+        XCTAssertEqual(version, "1.2.2")
         XCTAssertEqual(status, .ready)
     }
     
