@@ -1,6 +1,6 @@
 # SwiftIntelligence Project Status
 
-Last updated: 2026-04-13
+Last updated: 2026-04-15
 
 ## Repository Status
 
@@ -30,7 +30,8 @@ The active modular graph is currently the maintained surface:
 - benchmark artifacts also have manifest/checksum integrity and regression-threshold gates
 - the first immutable benchmark evidence bundle has been archived
 - CodeQL, dependency review, and Scorecard workflows exist for repo hardening
-- GitHub-hosted workflow execution is active on the maintained branch; repo-local release gates remain the canonical maintainer-side validation floor
+- GitHub-hosted workflow execution is active on the maintained branch; push-facing checks stay fast, while full Swift CodeQL analysis runs on schedule/manual triggers
+- repo-local release gates remain the canonical maintainer-side validation floor
 
 ## What Is Not True
 

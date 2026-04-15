@@ -1,18 +1,18 @@
 # SwiftIntelligence Benchmark Summary
 
-- Generated at: 2026-04-15T13:00:40Z
+- Generated at: 2026-04-15T13:26:36Z
 - Profile: `standard`
-- Framework version: `1.2.1`
+- Framework version: `1.2.2`
 - Total workloads: `25`
-- Performance score: `55.55`
-- Average execution time: `0.0785s`
+- Performance score: `55.51`
+- Average execution time: `0.0786s`
 
 ## Top Insights
 
-- Slowest operation: ML_Model_Loading (0.3084s)
+- Slowest operation: ML_Model_Loading (0.3076s)
 - Fastest operation: ML_Prediction_Small (0.0061s)
 - Most memory intensive: Integration_Concurrent_Processing (10,1 MB)
-- Performance distribution: 1 excellent, 17 good, 7 average, 0 slow
+- Performance distribution: 1 excellent, 15 good, 9 average, 0 slow
 
 ## Recommendations
 
@@ -23,20 +23,20 @@
 | Workload | Avg (s) | Peak Memory |
 | --- | ---: | ---: |
 | ML_Prediction_Small | 0.0061 | 9,9 MB |
-| Privacy_Encryption | 0.0117 | 9,9 MB |
-| Network_Local_Request | 0.0120 | 10 MB |
-| NLP_Text_Analysis_Small | 0.0122 | 9,5 MB |
-| Privacy_Data_Anonymization | 0.0172 | 9,9 MB |
+| Privacy_Encryption | 0.0118 | 10 MB |
+| NLP_Text_Analysis_Small | 0.0119 | 9,6 MB |
+| Network_Local_Request | 0.0120 | 10,1 MB |
+| Privacy_Data_Anonymization | 0.0178 | 10 MB |
 
 ## Slowest Workloads
 
 | Workload | Avg (s) | Peak Memory |
 | --- | ---: | ---: |
-| ML_Model_Loading | 0.3084 | 9,9 MB |
-| Integration_Multi_Modal | 0.2355 | 10 MB |
-| Speech_Synthesis_Long | 0.2068 | 9,9 MB |
-| Vision_Object_Detection | 0.1554 | 9,8 MB |
-| Speech_Recognition_Test | 0.1049 | 9,9 MB |
+| ML_Model_Loading | 0.3076 | 9,9 MB |
+| Integration_Multi_Modal | 0.2358 | 10,1 MB |
+| Speech_Synthesis_Long | 0.2047 | 9,9 MB |
+| Vision_Object_Detection | 0.1547 | 9,8 MB |
+| ML_Training_Micro | 0.1047 | 10 MB |
 
 ## Artifact Contract
 

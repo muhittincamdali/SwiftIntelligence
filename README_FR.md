@@ -24,7 +24,7 @@ Boite a outils IA modulaire on-device pour les plateformes Apple. Elle relie `Vi
 ## Installation
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.2")
 ```
 
 Point d'entree recommande:

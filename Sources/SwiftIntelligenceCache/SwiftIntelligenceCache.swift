@@ -11,7 +11,7 @@ public actor SwiftIntelligenceCache {
     // MARK: - Properties
     
     public let moduleID = "Cache"
-    public let version = "1.2.1"
+    public let version = "1.2.2"
     public private(set) var status: ModuleStatus = .uninitialized
     
     // MARK: - Cache Components

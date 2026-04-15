@@ -8,7 +8,7 @@ Shareable maintainer pack for the strongest current SwiftIntelligence demo path.
 - distribution posture: `release-grade`
 - device classes covered: `Mac, iPhone`
 - missing required device classes: `none`
-- latest immutable release proof: `v1.2.1`
+- latest immutable release proof: `v1.2.2`
 - repo-native flagship media: `published`
 
 ## What To Show First

@@ -1,6 +1,6 @@
 # GitHub Distribution
 
-Last updated: 2026-04-13
+Last updated: 2026-04-15
 
 This page defines the public GitHub-facing metadata for SwiftIntelligence.
 
@@ -45,7 +45,10 @@ Source of truth checked against the GitHub repository API on 2026-04-13.
 
 ## Current Operational Note
 
-As of 2026-04-13, GitHub-hosted workflows are active again and current live checks are expected to stay green on `main`.
+As of 2026-04-15, GitHub-hosted workflows are active and split into:
+
+- fast push-facing integrity checks on `main`
+- full Swift CodeQL analysis on `schedule` and `workflow_dispatch`
 
 Operational policy now:
 
@@ -53,6 +56,7 @@ Operational policy now:
 - do not fake green CI state
 - treat GitHub-hosted results as the public live signal
 - keep `bash Scripts/prepare-release.sh` as the canonical repo-side validation floor
+- do not let a stuck hosted Swift CodeQL build hold the whole push surface open when the same full scan can run on schedule/manual truthfully
 - only disable hosted workflows if there is a real external blocker and that blocker is documented truthfully
 
 ## First Links For New Visitors

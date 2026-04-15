@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
   # Metadata
   spec.name         = "SwiftIntelligence"
-  spec.version      = "1.2.1"
+  spec.version      = "1.2.2"
   spec.summary      = "Advanced AI/ML Framework for Apple Platforms"
   spec.description  = <<-DESC
     SwiftIntelligence is a comprehensive AI/ML framework designed specifically for Apple platforms.

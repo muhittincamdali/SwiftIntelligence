@@ -12,7 +12,7 @@ final class SwiftIntelligenceNLPTests: XCTestCase {
         let status = await nlpModule.status
         
         XCTAssertEqual(moduleID, "NLP")
-        XCTAssertEqual(version, "1.2.1")
+        XCTAssertEqual(version, "1.2.2")
         XCTAssertEqual(status, .ready)
     }
     

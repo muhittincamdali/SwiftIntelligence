@@ -24,7 +24,7 @@
 ## Встановлення
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.2")
 ```
 
 Рекомендований стартовий набір:

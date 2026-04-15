@@ -6,7 +6,7 @@ Generated release-readiness and benchmark-publication checklist for the current 
 
 - Publish readiness: `ready`
 - Current pointer: `Benchmarks/Results/latest`
-- Immutable release bundles: `3`
+- Immutable release bundles: `4`
 - Device classes seen: `Mac, iPhone`
 - Device matrix policy: `Benchmarks/device-matrix-policy.json`
 
@@ -30,6 +30,7 @@ Generated release-readiness and benchmark-publication checklist for the current 
 | `20260402T052611Z-initial-baseline` | release | Mac | `Muhittin MacBook Pro (2)` | `arm64` | `macOS` | `Version 26.4 (Build 25E246)` | `standard` | 25 |
 | `iphone-baseline-2026-04-07` | release | iPhone | `iPhone 15 Pro Max` | `iPhone16,2` | `iOS` | `Version 26.3.1 (a) (Build 23D771330a)` | `standard` | 25 |
 | `v1.2.1` | release | Mac | `muhittin-macbook-pro-2.local` | `arm64` | `macOS` | `Version 26.4.1 (Build 25E253)` | `standard` | 25 |
+| `v1.2.2` | release | Mac | `muhittin-macbook-pro-2.local` | `arm64` | `macOS` | `Version 26.4.1 (Build 25E253)` | `standard` | 25 |
 
 ## Threshold Policy
 

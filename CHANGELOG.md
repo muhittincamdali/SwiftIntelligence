@@ -2,7 +2,13 @@
 
 ## Unreleased
 
-- post-1.2.1 changes will be tracked here
+- post-1.2.2 changes will be tracked here
+
+## 1.2.2 - 2026-04-15
+
+- moved push-facing Swift analysis to a fast deterministic guard and kept full CodeQL scans on schedule/manual triggers
+- documented the new GitHub workflow policy so hosted push health and full security scanning stay truthful
+- refreshed the patch release evidence chain and GitHub release surfaces after the workflow hardening change
 
 ## 1.2.1 - 2026-04-15
 
