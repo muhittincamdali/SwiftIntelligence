@@ -27,7 +27,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         
         // Then
         XCTAssertTrue(framework.isInitialized)
-        XCTAssertEqual(SwiftIntelligence.version, "1.2.0")
+        XCTAssertEqual(SwiftIntelligence.version, "1.2.1")
         XCTAssertEqual(SwiftIntelligence.build, "2026.04.08")
     }
     
@@ -108,7 +108,7 @@ final class SwiftIntelligenceTests: XCTestCase {
         let healthReport = await swiftIntelligence.healthCheck()
         
         // Then
-        XCTAssertEqual(healthReport.frameworkVersion, "1.2.0")
+        XCTAssertEqual(healthReport.frameworkVersion, "1.2.1")
         XCTAssertTrue(healthReport.isInitialized)
         XCTAssertEqual(healthReport.activeModules.count, 2)
         XCTAssertTrue(healthReport.activeModules.contains("MachineLearning"))
@@ -339,7 +339,7 @@ extension SwiftIntelligenceTests {
         }
         
         XCTAssertEqual(await mlEngine.moduleID, "ML")
-        XCTAssertEqual(await mlEngine.version, "1.2.0")
+        XCTAssertEqual(await mlEngine.version, "1.2.1")
         XCTAssertEqual(await mlEngine.status, .ready)
         
         let healthStatus = await mlEngine.healthCheck()
@@ -359,7 +359,7 @@ extension SwiftIntelligenceTests {
         }
         
         XCTAssertEqual(await nlpEngine.moduleID, "NLP")
-        XCTAssertEqual(await nlpEngine.version, "1.2.0")
+        XCTAssertEqual(await nlpEngine.version, "1.2.1")
         XCTAssertEqual(await nlpEngine.status, .ready)
         
         let healthStatus = await nlpEngine.healthCheck()
@@ -379,7 +379,7 @@ extension SwiftIntelligenceTests {
         }
         
         XCTAssertEqual(await visionEngine.moduleID, "Vision")
-        XCTAssertEqual(await visionEngine.version, "1.2.0")
+        XCTAssertEqual(await visionEngine.version, "1.2.1")
         XCTAssertEqual(await visionEngine.status, .ready)
         
         let healthStatus = await visionEngine.healthCheck()

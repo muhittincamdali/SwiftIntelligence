@@ -34,7 +34,7 @@ final class IntegrationTests: XCTestCase {
         // Test that all modules can be initialized together
         let core = SwiftIntelligenceCore.shared
         XCTAssertNotNil(core)
-        XCTAssertEqual(SwiftIntelligenceCore.version, "1.2.0")
+        XCTAssertEqual(SwiftIntelligenceCore.version, "1.2.1")
         
         let nlpEngine = NLPEngine.shared
         let visionEngine = VisionEngine.shared

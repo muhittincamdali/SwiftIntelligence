@@ -1,15 +1,15 @@
 # Latest Release Proof
 
-- Release: `iphone-baseline-2026-04-07`
-- Archived at: `2026-04-07T15:02:30Z`
-- Generated at: `2026-04-07T15:01:01Z`
-- Device class: `iPhone`
-- Device name: `iPhone 15 Pro Max`
-- Device model: `iPhone16,2`
-- Provenance: `physical-device-test`
-- Provenance source: `com.muhittincamdali.swiftintelligence.benchmarkhost.iphone-q66w5bz37f@00008130-001464181110001C`
-- Performance score: `38.59`
-- Average execution time: `0.0793s`
+- Release: `v1.2.1`
+- Archived at: `2026-04-15T13:01:36Z`
+- Generated at: `2026-04-15T13:00:40Z`
+- Device class: `Mac`
+- Device name: `muhittin-macbook-pro-2.local`
+- Device model: `arm64`
+- Provenance: `local-directory`
+- Provenance source: `Benchmarks/Results/latest`
+- Performance score: `55.55`
+- Average execution time: `0.0785s`
 - Workloads: `25`
 
 ## Adoption Snapshot
@@ -20,12 +20,12 @@
 
 ## Proof Links
 
-- Summary: [benchmark-summary.md](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/benchmark-summary.md)
-- Environment: [environment.json](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/environment.json)
-- Device metadata: [device-metadata.json](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/device-metadata.json)
-- Metadata: [metadata.json](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/metadata.json)
-- Release proof: [release-proof.md](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/release-proof.md)
-- Release notes proof: [release-notes-proof.md](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/release-notes-proof.md)
-- Benchmark delta: [benchmark-delta.md](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/benchmark-delta.md)
+- Summary: [benchmark-summary.md](../../Benchmarks/Results/releases/v1.2.1/benchmark-summary.md)
+- Environment: [environment.json](../../Benchmarks/Results/releases/v1.2.1/environment.json)
+- Device metadata: [device-metadata.json](../../Benchmarks/Results/releases/v1.2.1/device-metadata.json)
+- Metadata: [metadata.json](../../Benchmarks/Results/releases/v1.2.1/metadata.json)
+- Release proof: [release-proof.md](../../Benchmarks/Results/releases/v1.2.1/release-proof.md)
+- Release notes proof: [release-notes-proof.md](../../Benchmarks/Results/releases/v1.2.1/release-notes-proof.md)
+- Benchmark delta: [benchmark-delta.md](../../Benchmarks/Results/releases/v1.2.1/benchmark-delta.md)
 
 Use this page as the first public proof link for the most recent immutable release evidence.

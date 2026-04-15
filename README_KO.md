@@ -24,7 +24,7 @@ Apple 플랫폼을 위한 modular on-device AI toolkit입니다. `Vision`, `Natu
 ## 설치
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.0")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
 ```
 
 권장 시작 구성:

@@ -24,7 +24,7 @@ Een modulaire on-device AI toolkit voor Apple-platformen. Verbindt `Vision`, `Na
 ## Installatie
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.0")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
 ```
 
 Aanbevolen startpad:

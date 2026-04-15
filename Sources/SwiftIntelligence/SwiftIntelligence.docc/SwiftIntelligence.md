@@ -132,7 +132,7 @@ Or add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence", from: "1.2.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence", from: "1.2.1")
 ]
 ```
 

@@ -1,0 +1,28 @@
+{
+  "publishReadiness": "ready",
+  "distributionPosture": "release-grade",
+  "queueSize": 0,
+  "deviceClasses": [
+
+  ],
+  "exportCommand": "bash Scripts/export-device-evidence-handoff.sh /absolute/path/to/device-evidence-handoff.tar.gz",
+  "completionCommand": "",
+  "artifacts": [
+    "Documentation/Generated/Device-Evidence-Handoff.md",
+    "Documentation/Generated/device-evidence-handoff.json",
+    "Documentation/Generated/Device-Evidence-Queue.md",
+    "Documentation/Generated/device-evidence-queue.json",
+    "Documentation/Generated/Device-Evidence-Intake.md",
+    "Documentation/Generated/Device-Evidence-Runbook.md",
+    "Documentation/Generated/Device-Capture-Packets.md",
+    "Documentation/Generated/Device-Evidence-Plan.md",
+    "Documentation/Generated/Device-Coverage-Matrix.md",
+    "Documentation/Generated/Release-Blockers.md",
+    "Documentation/Generated/Public-Proof-Status.md",
+    "Documentation/Generated/public-proof-status.json",
+    ".github/ISSUE_TEMPLATE/device_evidence.yml"
+  ],
+  "entries": [
+
+  ]
+}

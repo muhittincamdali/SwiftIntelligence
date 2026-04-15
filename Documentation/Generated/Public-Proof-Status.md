@@ -6,7 +6,7 @@ Generated claim envelope for distribution, README language, release messaging, a
 
 - Publish readiness: `ready`
 - Distribution posture: `release-grade`
-- Immutable release bundles: `2`
+- Immutable release bundles: `3`
 - Device classes seen: `Mac, iPhone`
 - Missing required device classes: `none`
 - Flagship media status: `published`

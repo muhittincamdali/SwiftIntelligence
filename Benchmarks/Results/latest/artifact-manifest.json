@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-04-08T18:03:48Z",
+  "generatedAt": "2026-04-15T13:01:36Z",
   "artifactDirectory": "Benchmarks/Results/latest",
   "fileCount": 4,
   "files": [
     {
       "name": "benchmark-report.json",
       "relativePath": "Benchmarks/Results/latest/benchmark-report.json",
-      "size": 619258,
-      "sha256": "d6821d4949ce63e5cb8fa33475a186f0f826c72fbf9dd2457eb8f2223e47450b"
+      "size": 619486,
+      "sha256": "86668a4c8fb2fef4206056bb53e32d18697244130586247621e984505cc9c2b0"
     },
     {
       "name": "benchmark-summary.md",
       "relativePath": "Benchmarks/Results/latest/benchmark-summary.md",
-      "size": 1467,
-      "sha256": "7bde757a9ed9f9391f4eaafe62c15b25bfce7ae65e153c7f1e93c13abef78218"
+      "size": 1474,
+      "sha256": "4c9256f4cf5be3b6b5d6055a36a22fefcdfa5da6ec84409cdf411d458d1b1d43"
     },
     {
       "name": "device-metadata.json",
       "relativePath": "Benchmarks/Results/latest/device-metadata.json",
-      "size": 529,
-      "sha256": "1f20606b72c900532bc04ff6c102465d4cebbb2a379a1c6c7f126b635e8040dc"
+      "size": 531,
+      "sha256": "7f85938d41f1c25c765ec243bf267e6ee445810a4e3a26b409d1a7e841f41150"
     },
     {
       "name": "environment.json",
       "relativePath": "Benchmarks/Results/latest/environment.json",
-      "size": 194,
-      "sha256": "59c3673c583df09581e806dc305d049dc25b2caeb225eb4876e3e60a080d766b"
+      "size": 196,
+      "sha256": "4a44ac03b40b5d66fddf084132b930f3f53304501dd12d03d7dbdbabaece6737"
     }
   ]
 }

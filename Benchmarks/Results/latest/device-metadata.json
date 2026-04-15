@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-08T18:03:48Z",
+  "generatedAt": "2026-04-15T13:01:36Z",
   "benchmarkProfile": "standard",
   "platformFamily": "macOS",
   "deviceName": "muhittin-macbook-pro-2.local",
   "deviceModel": "arm64",
   "deviceClass": "Mac",
-  "operatingSystemVersion": "Version 26.4 (Build 25E246)",
+  "operatingSystemVersion": "Version 26.4.1 (Build 25E253)",
   "processorCount": 18,
   "physicalMemory": 51539607552,
   "broadClaimEligible": true,

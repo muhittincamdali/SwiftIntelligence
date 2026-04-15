@@ -45,7 +45,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/muhittincamdali/SwiftIntelligence",
-            from: "1.2.0"
+            from: "1.2.1"
         )
     ],
     targets: [

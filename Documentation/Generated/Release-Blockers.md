@@ -5,7 +5,7 @@ Generated summary of the blockers that still prevent release-grade public benchm
 ## Headline
 
 - Publish readiness: `ready`
-- Immutable release bundles: `2`
+- Immutable release bundles: `3`
 - Device classes seen: `Mac, iPhone`
 - Missing required release device classes: `none`
 

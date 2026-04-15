@@ -410,7 +410,7 @@ public final class AIBenchmarks {
             results: results,
             analysis: analysis,
             generatedAt: Date(),
-            frameworkVersion: "1.2.0",
+            frameworkVersion: "1.2.1",
             profile: profile.rawValue
         )
         

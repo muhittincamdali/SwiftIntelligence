@@ -24,7 +24,7 @@ Toolkit AI modular on-device untuk platform Apple. Dirancang untuk menggabungkan
 ## Instalasi
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.0")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
 ```
 
 Jalur awal yang disarankan:

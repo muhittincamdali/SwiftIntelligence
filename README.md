@@ -179,7 +179,7 @@ Current top comparison set:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.0")
+    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
 ],
 targets: [
     .target(

@@ -1,0 +1,32 @@
+{
+  "archivedAt": "2026-04-15T13:01:36Z",
+  "snapshotName": "v1.2.1",
+  "gitRef": "v1.2.1",
+  "gitCommit": "699df19bf2197077aada46ea355d929a6f7691b5",
+  "sourceArtifactsDirectory": "Benchmarks/Results/latest",
+  "archivedArtifactsDirectory": "Benchmarks/Results/releases/v1.2.1",
+  "provenance": {
+    "sourceKind": "local-directory",
+    "sourcePath": "Benchmarks/Results/latest"
+  },
+  "profile": "standard",
+  "generatedAt": "2026-04-15T13:00:40Z",
+  "deviceMetadata": {
+    "generatedAt": "2026-04-15T13:01:36Z",
+    "benchmarkProfile": "standard",
+    "platformFamily": "macOS",
+    "deviceName": "muhittin-macbook-pro-2.local",
+    "deviceModel": "arm64",
+    "deviceClass": "Mac",
+    "operatingSystemVersion": "Version 26.4.1 (Build 25E253)",
+    "processorCount": 18,
+    "physicalMemory": 51539607552,
+    "broadClaimEligible": true,
+    "sources": {
+      "platformFamily": "benchmark-report.json",
+      "deviceName": "environment.json",
+      "deviceModel": "benchmark-report.json",
+      "deviceClass": "derived"
+    }
+  }
+}

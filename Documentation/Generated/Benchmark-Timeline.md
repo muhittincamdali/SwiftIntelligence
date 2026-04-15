@@ -6,7 +6,8 @@ Chronological benchmark evidence for the active pointer and immutable release bu
 | ---: | --- | --- | --- | --- | ---: | ---: | --- |
 | 1 | `20260402T052611Z-initial-baseline` | release | `2026-04-02T01:14:14Z` | `2026-04-02T02:30:23Z` | 56.47 | 0.0767 | `20260402T052611Z-initial-baseline` |
 | 2 | `iphone-baseline-2026-04-07` | release | `2026-04-07T15:01:01Z` | `2026-04-07T15:02:30Z` | 38.59 | 0.0793 | `iphone-baseline-2026-04-07` |
-| 3 | `latest` | latest | `2026-04-08T18:03:48Z` | `n/a` | 56.50 | 0.0766 | `latest` |
+| 3 | `latest` | latest | `2026-04-15T13:00:40Z` | `n/a` | 55.55 | 0.0785 | `latest` |
+| 4 | `v1.2.1` | release | `2026-04-15T13:00:40Z` | `2026-04-15T13:01:36Z` | 55.55 | 0.0785 | `v1.2.1` |
 
 ## Reading Rule
 

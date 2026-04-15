@@ -9,7 +9,7 @@ public actor SwiftIntelligenceML {
     // MARK: - Properties
     
     public let moduleID = "ML"
-    public let version = "1.2.0"
+    public let version = "1.2.1"
     public private(set) var status: ModuleStatus = .uninitialized
     
     // MARK: - ML Components

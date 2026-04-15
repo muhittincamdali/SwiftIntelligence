@@ -4,12 +4,12 @@ Generated from the current benchmark artifacts and benchmark runner config.
 
 ## Current Run
 
-- Generated at: `2026-04-08T18:03:48Z`
+- Generated at: `2026-04-15T13:00:40Z`
 - Profile: `standard`
-- Framework version: `1.2.0`
+- Framework version: `1.2.1`
 - Total workloads: `25`
-- Average execution time: `0.0766s`
-- Aggregate measured memory: `248.7 MB`
+- Average execution time: `0.0785s`
+- Aggregate measured memory: `246.9 MB`
 
 ## Environment
 
@@ -17,7 +17,7 @@ Generated from the current benchmark artifacts and benchmark runner config.
 - Device name: `muhittin-macbook-pro-2.local`
 - Device model: `arm64`
 - Platform: `macOS`
-- Operating system: `Version 26.4 (Build 25E246)`
+- Operating system: `Version 26.4.1 (Build 25E253)`
 - Processor count: `18`
 - Physical memory: `48.0 GB`
 
@@ -32,31 +32,31 @@ Generated from the current benchmark artifacts and benchmark runner config.
 
 | Workload | Preset | Avg (s) | Peak Memory (MB) |
 | --- | --- | ---: | ---: |
-| `Cache_Eviction_Test` | `default` | 0.0322 | 10.1 |
-| `Cache_Read_Performance` | `default` | 0.0906 | 10.0 |
-| `Cache_Write_Performance` | `default` | 0.0944 | 10.0 |
-| `Integration_Concurrent_Processing` | `default` | 0.0620 | 10.1 |
-| `Integration_Multi_Modal` | `default` | 0.2315 | 10.1 |
-| `ML_Model_Loading` | `default` | 0.3051 | 10.0 |
-| `ML_Prediction_Large` | `default` | 0.0522 | 10.0 |
-| `ML_Prediction_Small` | `default` | 0.0059 | 10.0 |
-| `ML_Training_Micro` | `default` | 0.1026 | 10.0 |
-| `NLP_Entity_Recognition` | `default` | 0.0218 | 9.8 |
-| `NLP_Sentiment_Analysis` | `quick` | 0.0298 | 9.8 |
-| `NLP_Text_Analysis_Large` | `default` | 0.1020 | 9.8 |
-| `NLP_Text_Analysis_Small` | `default` | 0.0114 | 9.6 |
-| `Network_Batch_Processing` | `default` | 0.0590 | 10.1 |
-| `Network_Local_Request` | `default` | 0.0113 | 10.1 |
-| `Privacy_Data_Anonymization` | `default` | 0.0166 | 10.0 |
-| `Privacy_Encryption` | `quick` | 0.0119 | 10.0 |
-| `Privacy_Tokenization` | `default` | 0.0221 | 10.0 |
-| `Speech_Recognition_Test` | `default` | 0.1019 | 9.9 |
-| `Speech_Synthesis_Long` | `default` | 0.2026 | 9.9 |
-| `Speech_Synthesis_Short` | `quick` | 0.0267 | 9.9 |
-| `Vision_Face_Detection` | `quick` | 0.0331 | 9.9 |
-| `Vision_Image_Classification` | `default` | 0.0531 | 9.8 |
-| `Vision_Object_Detection` | `default` | 0.1525 | 9.9 |
-| `Vision_Text_Recognition` | `default` | 0.0819 | 9.9 |
+| `Cache_Eviction_Test` | `default` | 0.0333 | 10.0 |
+| `Cache_Read_Performance` | `default` | 0.0956 | 10.0 |
+| `Cache_Write_Performance` | `default` | 0.0996 | 10.0 |
+| `Integration_Concurrent_Processing` | `default` | 0.0628 | 10.1 |
+| `Integration_Multi_Modal` | `default` | 0.2355 | 10.0 |
+| `ML_Model_Loading` | `default` | 0.3084 | 9.9 |
+| `ML_Prediction_Large` | `default` | 0.0537 | 9.9 |
+| `ML_Prediction_Small` | `default` | 0.0061 | 9.9 |
+| `ML_Training_Micro` | `default` | 0.1040 | 9.9 |
+| `NLP_Entity_Recognition` | `default` | 0.0237 | 9.7 |
+| `NLP_Sentiment_Analysis` | `quick` | 0.0315 | 9.7 |
+| `NLP_Text_Analysis_Large` | `default` | 0.1047 | 9.6 |
+| `NLP_Text_Analysis_Small` | `default` | 0.0122 | 9.5 |
+| `Network_Batch_Processing` | `default` | 0.0612 | 10.0 |
+| `Network_Local_Request` | `default` | 0.0120 | 10.0 |
+| `Privacy_Data_Anonymization` | `default` | 0.0172 | 9.9 |
+| `Privacy_Encryption` | `quick` | 0.0117 | 9.9 |
+| `Privacy_Tokenization` | `default` | 0.0231 | 10.0 |
+| `Speech_Recognition_Test` | `default` | 0.1049 | 9.9 |
+| `Speech_Synthesis_Long` | `default` | 0.2068 | 9.9 |
+| `Speech_Synthesis_Short` | `quick` | 0.0289 | 9.9 |
+| `Vision_Face_Detection` | `quick` | 0.0337 | 9.8 |
+| `Vision_Image_Classification` | `default` | 0.0536 | 9.7 |
+| `Vision_Object_Detection` | `default` | 0.1554 | 9.8 |
+| `Vision_Text_Recognition` | `default` | 0.0837 | 9.8 |
 
 ## Methodology Rules
 

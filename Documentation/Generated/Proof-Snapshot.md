@@ -2,13 +2,13 @@
 
 Generated from the current benchmark artifacts and maintained showcase flows.
 
-- Generated at: 2026-04-08T18:03:48Z
+- Generated at: 2026-04-15T13:00:40Z
 - Benchmark profile: `standard`
-- Framework version: `1.2.0`
+- Framework version: `1.2.1`
 - Total workloads: `25`
-- Performance score: `56.50`
-- Average execution time: `0.0766s`
-- Operating system: `Version 26.4 (Build 25E246)`
+- Performance score: `55.55`
+- Average execution time: `0.0785s`
+- Operating system: `Version 26.4.1 (Build 25E253)`
 - Processor count: `18`
 - Physical memory: `48.0 GB`
 
@@ -28,17 +28,17 @@ Generated from the current benchmark artifacts and maintained showcase flows.
 
 | Workload | Avg (s) | Peak Memory (MB) |
 | --- | ---: | ---: |
-| ML_Prediction_Small | 0.0059 | 10.0 |
-| Network_Local_Request | 0.0113 | 10.1 |
-| NLP_Text_Analysis_Small | 0.0114 | 9.6 |
+| ML_Prediction_Small | 0.0061 | 9.9 |
+| Privacy_Encryption | 0.0117 | 9.9 |
+| Network_Local_Request | 0.0120 | 10.0 |
 
 ## Slowest Workloads
 
 | Workload | Avg (s) | Peak Memory (MB) |
 | --- | ---: | ---: |
-| ML_Model_Loading | 0.3051 | 10.0 |
-| Integration_Multi_Modal | 0.2315 | 10.1 |
-| Speech_Synthesis_Long | 0.2026 | 9.9 |
+| ML_Model_Loading | 0.3084 | 9.9 |
+| Integration_Multi_Modal | 0.2355 | 10.0 |
+| Speech_Synthesis_Long | 0.2068 | 9.9 |
 
 ## Recommendations
 
