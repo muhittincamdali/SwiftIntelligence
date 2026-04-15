@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-04-15T13:02:44Z",
+  "artifactDirectory": "Benchmarks/Results/releases/v1.2.1",
+  "fileCount": 19,
+  "files": [
+    {
+      "name": "benchmark-delta.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/benchmark-delta.md",
+      "size": 1785,
+      "sha256": "f78026364bf70bb8d3baec0f5b088e9cb744fc61d5788f15eff5f5c311146163"
+    },
+    {
+      "name": "benchmark-report.json",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/benchmark-report.json",
+      "size": 619486,
+      "sha256": "86668a4c8fb2fef4206056bb53e32d18697244130586247621e984505cc9c2b0"
+    },
+    {
+      "name": "benchmark-summary.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/benchmark-summary.md",
+      "size": 1474,
+      "sha256": "4c9256f4cf5be3b6b5d6055a36a22fefcdfa5da6ec84409cdf411d458d1b1d43"
+    },
+    {
+      "name": "caption.txt",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/caption.txt",
+      "size": 68,
+      "sha256": "fa2b3dac44ac56ad47f655dfad3449583439e3d378d6e5c69a65565454674906"
+    },
+    {
+      "name": "device-evidence-handoff.json",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/device-evidence-handoff.json",
+      "size": 1035,
+      "sha256": "29cc73a52c6a1d1c5be366ada9db3029cbd13f0abe6443761472324cd3c72c54"
+    },
+    {
+      "name": "device-evidence-handoff.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/device-evidence-handoff.md",
+      "size": 969,
+      "sha256": "a9fdf1ce2a48d1cdaf444a4ee280f42a7e7a4b75a50e42dadbcb62de8b519707"
+    },
+    {
+      "name": "device-metadata.json",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/device-metadata.json",
+      "size": 531,
+      "sha256": "7f85938d41f1c25c765ec243bf267e6ee445810a4e3a26b409d1a7e841f41150"
+    },
+    {
+      "name": "environment.json",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/environment.json",
+      "size": 196,
+      "sha256": "4a44ac03b40b5d66fddf084132b930f3f53304501dd12d03d7dbdbabaece6737"
+    },
+    {
+      "name": "flagship-demo-pack.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/flagship-demo-pack.md",
+      "size": 2548,
+      "sha256": "1e7ef3225dcc4633699ba41448a1d8bda27f7a749d335ae91a695c265573258d"
+    },
+    {
+      "name": "flagship-demo-share-pack.tar.gz",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/flagship-demo-share-pack.tar.gz",
+      "size": 5737887,
+      "sha256": "44bff2faa9d4e238a85308106c7264336fb0fae2d24923cb1ee718cc0090578a"
+    },
+    {
+      "name": "intelligent-camera-run.mp4",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/intelligent-camera-run.mp4",
+      "size": 60085,
+      "sha256": "229b7462b7eb1b1fc20dc9a6125ca399d2bdb0605d2916122fcd02a5cc21b1c6"
+    },
+    {
+      "name": "intelligent-camera-success.png",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/intelligent-camera-success.png",
+      "size": 5788538,
+      "sha256": "ae96a2f723276ef9a685a6eaeb84ac0eefe2d9088431941cf52966ec6c783bc7"
+    },
+    {
+      "name": "metadata.json",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/metadata.json",
+      "size": 1039,
+      "sha256": "201c84170630188807d69c7a93364778ca2af50037e58a47abca39e6cde4ae0e"
+    },
+    {
+      "name": "public-proof-status.json",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/public-proof-status.json",
+      "size": 666,
+      "sha256": "125d080b80eccf374aa9c310311f9773efea9afd8119152158445991fd639042"
+    },
+    {
+      "name": "public-proof-status.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/public-proof-status.md",
+      "size": 1187,
+      "sha256": "830f7e0a38698211fabbe8a568e3b616ba4dd0a496c665f03ecf7643e5bdcfad"
+    },
+    {
+      "name": "release-blockers.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/release-blockers.md",
+      "size": 1204,
+      "sha256": "7b5d21ff4dc5ef16f51ff3ae4dc38e434aa99a3c16673885b51e301fa82134f0"
+    },
+    {
+      "name": "release-body.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/release-body.md",
+      "size": 9089,
+      "sha256": "863e38e4ba39c279d594158346adcffad97e024cc4f9f63fc8d73fd2a043bbae"
+    },
+    {
+      "name": "release-notes-proof.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/release-notes-proof.md",
+      "size": 7387,
+      "sha256": "97bf88ec2431758fcd31d79e47de771c43f7d48586cb565954e2c382fbcc96d2"
+    },
+    {
+      "name": "release-proof.md",
+      "relativePath": "Benchmarks/Results/releases/v1.2.1/release-proof.md",
+      "size": 876,
+      "sha256": "df43f11960bbea0c0703d1dcbab26d04973204c2493b21e4cc7757a68441a843"
+    }
+  ]
+}

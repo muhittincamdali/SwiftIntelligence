@@ -27,7 +27,7 @@ final class SwiftIntelligenceCoreTests: XCTestCase {
     @MainActor
     func testCoreInitialization() {
         XCTAssertNotNil(core)
-        XCTAssertEqual(SwiftIntelligenceCore.version, "1.2.0")
+        XCTAssertEqual(SwiftIntelligenceCore.version, "1.2.1")
         XCTAssertEqual(SwiftIntelligenceCore.buildNumber, "120")
     }
     

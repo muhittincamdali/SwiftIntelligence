@@ -1,7 +1,7 @@
 {
   "publishReadiness": "ready",
   "distributionPosture": "release-grade",
-  "immutableReleaseBundles": 2,
+  "immutableReleaseBundles": 3,
   "deviceClassesSeen": [
     "Mac",
     "iPhone"

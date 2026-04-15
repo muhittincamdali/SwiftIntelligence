@@ -2,7 +2,15 @@
 
 ## Unreleased
 
-- post-1.2.0 changes will be tracked here
+- post-1.2.1 changes will be tracked here
+
+## 1.2.1 - 2026-04-15
+
+- tightened the README first-screen repo-fit narrative and reduced top-level decision repetition
+- unified flagship and secondary demo media into one canonical README demo gallery
+- strengthened GitHub presentation quality with visual snapshot and copy-density anti-regression gates
+- tightened docs, trust, showcase, and comparison routing so public narrative stays shorter and more consistent
+- refreshed the patch release evidence chain and GitHub release surfaces to match the current live repository state
 
 ## 1.2.0 - 2026-04-08
 

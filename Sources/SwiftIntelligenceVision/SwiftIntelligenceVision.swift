@@ -17,7 +17,7 @@ public actor SwiftIntelligenceVision {
     // MARK: - Properties
     
     public let moduleID = "Vision"
-    public let version = "1.2.0"
+    public let version = "1.2.1"
     public private(set) var status: ModuleStatus = .uninitialized
     
     // MARK: - Vision Components

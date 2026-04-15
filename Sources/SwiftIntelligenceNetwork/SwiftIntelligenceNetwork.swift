@@ -15,7 +15,7 @@ public actor SwiftIntelligenceNetwork {
     // MARK: - Properties
     
     public let moduleID = "Network"
-    public let version = "1.2.0"
+    public let version = "1.2.1"
     public private(set) var status: ModuleStatus = .uninitialized
     
     // MARK: - Network Components

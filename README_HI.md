@@ -24,7 +24,7 @@ Apple platforms ke liye modular on-device AI toolkit. Yeh `Vision`, `NaturalLang
 ## Installation
 
 ```swift
-.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.0")
+.package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "1.2.1")
 ```
 
 Recommended entry path:
