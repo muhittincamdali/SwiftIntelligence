@@ -358,6 +358,7 @@ public struct Pattern: Sendable {
         case causal = "causal"
         case spatial = "spatial"
         case temporal = "temporal"
+        case neural = "neural"
     }
     
     public init(id: String, description: String, strength: Float, type: PatternType, occurrences: Int = 1) {
@@ -384,6 +385,7 @@ public struct PatternAnalysisResult: Sendable {
 public struct Observation: Codable, Sendable {
     public let id: String
     public let description: String
+    public let value: Double
     public let timestamp: Date
     public let context: [String: String]
     public let reliability: Float
@@ -391,12 +393,14 @@ public struct Observation: Codable, Sendable {
     public init(
         id: String = UUID().uuidString,
         description: String,
+        value: Double = 0.0,
         timestamp: Date = Date(),
         context: [String: String] = [:],
         reliability: Float = 1.0
     ) {
         self.id = id
         self.description = description
+        self.value = value
         self.timestamp = timestamp
         self.context = context
         self.reliability = reliability

@@ -13,7 +13,7 @@ private class CacheWrapper {
 }
 
 /// Advanced named entity recognition and extraction processor
-public final class EntityExtractionProcessor: @unchecked Sendable {
+public actor EntityExtractionProcessor {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "EntityExtraction")

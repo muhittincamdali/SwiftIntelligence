@@ -12,8 +12,7 @@ import CoreImage
 import os.log
 
 /// Advanced image generation processor aligned to the canonical Vision types.
-@MainActor
-public final class ImageGenerationProcessor: @unchecked Sendable {
+public actor ImageGenerationProcessor {
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "ImageGeneration")
     private let ciContext = CIContext(options: [.useSoftwareRenderer: false])
 

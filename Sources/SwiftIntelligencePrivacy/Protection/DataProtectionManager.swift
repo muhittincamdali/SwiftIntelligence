@@ -3,7 +3,7 @@ import CryptoKit
 import os.log
 
 /// Advanced data protection manager providing integrity checks, secure deletion, and data classification
-public final class DataProtectionManager: @unchecked Sendable {
+public actor DataProtectionManager {
     
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "DataProtection")
     private var configuration: DataProtectionConfiguration = .default
@@ -30,7 +30,7 @@ public final class DataProtectionManager: @unchecked Sendable {
     /// Protect sensitive data with classification-based security measures
     public func protect(_ data: Data, classification: DataClassification) async throws -> ProtectedData {
         return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
+            Task {
                 do {
                     let result = try self.applyProtectionMeasures(data, classification: classification)
                     continuation.resume(returning: result)
@@ -73,7 +73,7 @@ public final class DataProtectionManager: @unchecked Sendable {
     /// Validate data integrity using checksums
     public func validateIntegrity(_ protectedData: ProtectedData) async throws -> Bool {
         return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
+            Task {
                 let currentChecksum = self.generateIntegrityChecksum(protectedData.data)
                 let isValid = currentChecksum == protectedData.checksum
 
@@ -275,7 +275,7 @@ public final class DataProtectionManager: @unchecked Sendable {
     /// Automatically classify data based on content analysis
     public func classifyData(_ data: Data) async -> DataClassification {
         return await withCheckedContinuation { continuation in
-            processingQueue.async {
+            Task {
                 let classification = self.performDataClassification(data)
                 continuation.resume(returning: classification)
             }

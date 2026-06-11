@@ -613,13 +613,18 @@ public struct Configuration: Sendable {
 
 // MARK: - Configuration Manager
 
-final class ConfigurationManager: @unchecked Sendable {
+final class ConfigurationManager: Sendable {
     static let shared = ConfigurationManager()
-    private var configuration = Configuration()
+    private let _configuration = Locked<Configuration>(Configuration())
     
     func apply(_ config: Configuration) {
-        self.configuration = config
+        _configuration.withLock { $0 = config }
     }
+    
+    var current: Configuration {
+        _configuration.withLock { $0 }
+    }
+}
     
     var current: Configuration { configuration }
 }

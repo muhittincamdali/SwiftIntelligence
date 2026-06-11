@@ -4,7 +4,7 @@ import CoreML
 import os.log
 
 /// Advanced sentiment analysis processor with multilingual support
-public final class SentimentProcessor: @unchecked Sendable {
+public actor SentimentProcessor {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "SentimentAnalysis")

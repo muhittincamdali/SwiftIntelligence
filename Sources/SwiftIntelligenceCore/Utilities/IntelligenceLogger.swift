@@ -2,26 +2,46 @@ import Foundation
 import os.log
 
 /// Unified logging system for SwiftIntelligence
-public final class IntelligenceLogger: @unchecked Sendable {
+public final class IntelligenceLogger: Sendable {
     
     // MARK: - Properties
     
     private let subsystem = "com.swiftintelligence"
-    private var loggers: [String: Logger] = [:]
+    private let _loggers = Locked<[String: Logger]>([:])
     private let dateFormatter: DateFormatter
     private let queue = DispatchQueue(label: "com.swiftintelligence.logger", qos: .utility)
     
+    // Protected properties
+    private let _logLevel = Locked<LogLevel>(.info)
+    private let _consoleOutputEnabled = Locked<Bool>(true)
+    private let _fileLoggingEnabled = Locked<Bool>(false)
+    private let _logFileURL = Locked<URL?>(nil)
+    
     /// Current log level
-    public var logLevel: LogLevel = .info
+    public var logLevel: LogLevel {
+        get { _logLevel.withLock { $0 } }
+        set { _logLevel.withLock { $0 = newValue } }
+    }
     
     /// Enable console output
-    public var consoleOutputEnabled: Bool = true
+    public var consoleOutputEnabled: Bool {
+        get { _consoleOutputEnabled.withLock { $0 } }
+        set { _consoleOutputEnabled.withLock { $0 = newValue } }
+    }
     
     /// Enable file logging
-    public var fileLoggingEnabled: Bool = false
+    public var fileLoggingEnabled: Bool {
+        get { _fileLoggingEnabled.withLock { $0 } }
+        set { 
+            _fileLoggingEnabled.withLock { $0 = newValue }
+            setupFileLogging()
+        }
+    }
     
     /// Log file URL
-    public private(set) var logFileURL: URL?
+    public var logFileURL: URL? {
+        _logFileURL.withLock { $0 }
+    }
     
     // MARK: - Initialization
     
@@ -34,133 +54,89 @@ public final class IntelligenceLogger: @unchecked Sendable {
     
     // MARK: - Logging Methods
     
-    /// Log a message
-    /// - Parameters:
-    ///   - message: Message to log
-    ///   - level: Log level
-    ///   - category: Category for grouping logs
-    ///   - file: Source file
-    ///   - function: Source function
-    ///   - line: Source line
     public func log(
         _ message: String,
         level: LogLevel = .info,
         category: String = "General",
         file: String = #file,
-        function: String = #function,
-        line: Int = #line
+        line: Int = #line,
+        function: String = #function
     ) {
-        guard level >= logLevel else { return }
+        guard level.priority >= logLevel.priority else { return }
         
-        queue.async { [weak self] in
-            guard let self = self else { return }
-            
-            let logger = self.getLogger(for: category)
-            let formattedMessage = self.formatMessage(
-                message,
-                level: level,
-                file: file,
-                function: function,
-                line: line
-            )
-            
-            // Log to os.log
-            switch level {
-            case .verbose:
-                logger.debug("\(formattedMessage)")
-            case .debug:
-                logger.debug("\(formattedMessage)")
-            case .info:
-                logger.info("\(formattedMessage)")
-            case .warning:
-                logger.warning("\(formattedMessage)")
-            case .error:
-                logger.error("\(formattedMessage)")
-            case .critical:
-                logger.critical("\(formattedMessage)")
-            }
-            
-            // Log to console if enabled
+        queue.async {
             if self.consoleOutputEnabled {
-                print("[\(category)] \(formattedMessage)")
+                let logger = self.getLogger(for: category)
+                let formattedMessage = self.formatMessage(
+                    message,
+                    level: level,
+                    file: file,
+                    line: line,
+                    function: function
+                )
+                
+                switch level {
+                case .verbose, .debug:
+                    logger.debug("\(formattedMessage)")
+                case .info:
+                    logger.info("\(formattedMessage)")
+                case .warning:
+                    logger.warning("\(formattedMessage)")
+                case .error, .critical:
+                    logger.error("\(formattedMessage)")
+                }
             }
             
-            // Log to file if enabled
             if self.fileLoggingEnabled {
-                self.logToFile(formattedMessage, level: level, category: category)
+                self.logToFile(message, level: level, category: category)
             }
         }
     }
     
-    /// Log verbose message
-    public func verbose(_ message: String, category: String = "General") {
-        log(message, level: .verbose, category: category)
+    public func verbose(_ message: String, category: String = "General", file: String = #file, line: Int = #line, function: String = #function) {
+        log(message, level: .verbose, category: category, file: file, line: line, function: function)
     }
     
-    /// Log debug message
-    public func debug(_ message: String, category: String = "General") {
-        log(message, level: .debug, category: category)
+    public func debug(_ message: String, category: String = "General", file: String = #file, line: Int = #line, function: String = #function) {
+        log(message, level: .debug, category: category, file: file, line: line, function: function)
     }
     
-    /// Log info message
-    public func info(_ message: String, category: String = "General") {
-        log(message, level: .info, category: category)
+    public func info(_ message: String, category: String = "General", file: String = #file, line: Int = #line, function: String = #function) {
+        log(message, level: .info, category: category, file: file, line: line, function: function)
     }
     
-    /// Log warning message
-    public func warning(_ message: String, category: String = "General") {
-        log(message, level: .warning, category: category)
+    public func warning(_ message: String, category: String = "General", file: String = #file, line: Int = #line, function: String = #function) {
+        log(message, level: .warning, category: category, file: file, line: line, function: function)
     }
     
-    /// Log error message
-    public func error(_ message: String, category: String = "General") {
-        log(message, level: .error, category: category)
+    public func error(_ message: String, category: String = "General", file: String = #file, line: Int = #line, function: String = #function) {
+        log(message, level: .error, category: category, file: file, line: line, function: function)
     }
     
-    /// Log critical message
-    public func critical(_ message: String, category: String = "General") {
-        log(message, level: .critical, category: category)
-    }
-    
-    /// Log error with details
-    public func logError(
-        _ error: Error,
-        message: String? = nil,
-        category: String = "Error"
-    ) {
-        let errorMessage = message ?? "Error occurred"
-        let fullMessage = "\(errorMessage): \(error.localizedDescription)"
-        log(fullMessage, level: .error, category: category)
-    }
-    
-    /// Log performance metrics
-    public func logPerformance(
-        operation: String,
-        duration: TimeInterval,
-        category: String = "Performance"
-    ) {
-        let message = String(format: "%@ completed in %.3f seconds", operation, duration)
-        log(message, level: .debug, category: category)
+    public func critical(_ message: String, category: String = "General", file: String = #file, line: Int = #line, function: String = #function) {
+        log(message, level: .critical, category: category, file: file, line: line, function: function)
     }
     
     // MARK: - Private Methods
     
     private func getLogger(for category: String) -> Logger {
-        if let logger = loggers[category] {
+        _loggers.withLock { dict in
+            if let logger = dict[category] {
+                return logger
+            }
+            
+            let logger = Logger(subsystem: subsystem, category: category)
+            dict[category] = logger
             return logger
         }
-        
-        let logger = Logger(subsystem: subsystem, category: category)
-        loggers[category] = logger
-        return logger
     }
     
     private func formatMessage(
         _ message: String,
         level: LogLevel,
         file: String,
-        function: String,
-        line: Int
+        line: Int,
+        function: String
     ) -> String {
         let fileName = URL(fileURLWithPath: file).lastPathComponent
         let timestamp = dateFormatter.string(from: Date())
@@ -180,14 +156,13 @@ public final class IntelligenceLogger: @unchecked Sendable {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let fileName = "swiftintelligence-\(dateFormatter.string(from: Date())).log"
         
-        logFileURL = logsDirectory.appendingPathComponent(fileName)
+        _logFileURL.withLock { $0 = logsDirectory.appendingPathComponent(fileName) }
     }
     
     private func logToFile(_ message: String, level: LogLevel, category: String) {
         guard let logFileURL = logFileURL else { return }
         
         let logEntry = "[\(category)] \(message)\n"
-        
         if let data = logEntry.data(using: .utf8) {
             if FileManager.default.fileExists(atPath: logFileURL.path) {
                 if let fileHandle = try? FileHandle(forWritingTo: logFileURL) {
@@ -204,8 +179,7 @@ public final class IntelligenceLogger: @unchecked Sendable {
 
 // MARK: - Supporting Types
 
-/// Log level enumeration
-public enum LogLevel: String, Comparable, Sendable {
+public enum LogLevel: String, Sendable {
     case verbose
     case debug
     case info
@@ -213,11 +187,7 @@ public enum LogLevel: String, Comparable, Sendable {
     case error
     case critical
     
-    public static func < (lhs: LogLevel, rhs: LogLevel) -> Bool {
-        return lhs.severity < rhs.severity
-    }
-    
-    private var severity: Int {
+    var priority: Int {
         switch self {
         case .verbose: return 0
         case .debug: return 1

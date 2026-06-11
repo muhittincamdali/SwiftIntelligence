@@ -10,8 +10,7 @@ import CryptoKit
 import os.log
 
 /// Advanced face recognition processor with enrollment and biometric capabilities
-@MainActor
-public final class FaceRecognitionProcessor: @unchecked Sendable {
+public actor FaceRecognitionProcessor {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "FaceRecognition")

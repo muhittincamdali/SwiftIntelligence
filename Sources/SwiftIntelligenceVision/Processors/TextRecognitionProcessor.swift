@@ -11,8 +11,7 @@ import NaturalLanguage
 import os.log
 
 /// Advanced text recognition processor with multi-language support and document analysis
-@MainActor
-public final class TextRecognitionProcessor: @unchecked Sendable {
+public actor TextRecognitionProcessor {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "TextRecognition")

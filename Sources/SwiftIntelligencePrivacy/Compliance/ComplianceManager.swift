@@ -1,39 +1,45 @@
 import Foundation
 import os.log
+import SwiftIntelligenceCore
 
 /// Lightweight compliance manager aligned to the canonical privacy types.
-public final class ComplianceManager: @unchecked Sendable {
+public final class ComplianceManager: Sendable {
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "Compliance")
-    private var configuration: PrivacyConfiguration = .default
-    private var complianceStatus = ComplianceStatus(isCompliant: true, score: 1.0)
+    private let _configuration = Locked<PrivacyConfiguration>(.default)
+    private let _complianceStatus = Locked<ComplianceStatus>(ComplianceStatus(isCompliant: true, score: 1.0))
 
     public init() {
         logger.info("ComplianceManager initialized")
     }
 
     public func initialize(with config: PrivacyConfiguration) async {
-        configuration = config
-        complianceStatus = evaluateCompliance()
+        _configuration.withLock { $0 = config }
+        let status = evaluateCompliance()
+        _complianceStatus.withLock { $0 = status }
     }
 
     public func updateConfiguration(_ config: PrivacyConfiguration) async {
-        configuration = config
-        complianceStatus = evaluateCompliance()
+        _configuration.withLock { $0 = config }
+        let status = evaluateCompliance()
+        _complianceStatus.withLock { $0 = status }
     }
 
     public func checkGDPRCompliance() async -> ComplianceStatus {
-        complianceStatus = evaluateCompliance(regulation: "gdpr")
-        return complianceStatus
+        let status = evaluateCompliance(regulation: "gdpr")
+        _complianceStatus.withLock { $0 = status }
+        return status
     }
 
     public func checkCCPACompliance() async -> ComplianceStatus {
-        complianceStatus = evaluateCompliance(regulation: "ccpa")
-        return complianceStatus
+        let status = evaluateCompliance(regulation: "ccpa")
+        _complianceStatus.withLock { $0 = status }
+        return status
     }
 
     public func checkHIPAACompliance() async -> ComplianceStatus {
-        complianceStatus = evaluateCompliance(regulation: "hipaa")
-        return complianceStatus
+        let status = evaluateCompliance(regulation: "hipaa")
+        _complianceStatus.withLock { $0 = status }
+        return status
     }
 
     public func updateRetentionPolicy(_ policy: DataRetentionPolicy) async {
@@ -50,17 +56,18 @@ public final class ComplianceManager: @unchecked Sendable {
     }
 
     public func getComplianceStatus() async -> ComplianceStatus {
-        complianceStatus
+        _complianceStatus.withLock { $0 }
     }
 
     public func generateComplianceReport() async -> ComplianceReport {
         let status = evaluateCompliance()
+        let config = _configuration.withLock { $0 }
         return ComplianceReport(
             generatedAt: Date(),
             regulations: ComplianceRegulations(
-                gdpr: configuration.complianceMode != .permissive,
-                ccpa: configuration.complianceMode != .permissive,
-                hipaa: configuration.complianceMode == .enterprise
+                gdpr: config.complianceMode != .permissive,
+                ccpa: config.complianceMode != .permissive,
+                hipaa: config.complianceMode == .enterprise
             ),
             status: status,
             recommendations: status.recommendations
@@ -69,19 +76,20 @@ public final class ComplianceManager: @unchecked Sendable {
 
     private func evaluateCompliance(regulation: String? = nil) -> ComplianceStatus {
         var violations: [ComplianceViolation] = []
+        let config = _configuration.withLock { $0 }
 
-        if !configuration.enableAuditLogging {
+        if !config.enableAuditLogging {
             violations.append(
                 ComplianceViolation(
                     type: .accessControlViolation,
                     description: "Audit logging is disabled.",
-                    severity: configuration.complianceMode == .enterprise ? .high : .medium,
+                    severity: config.complianceMode == .enterprise ? .high : .medium,
                     suggestedResolution: "Enable audit logging for traceability."
                 )
             )
         }
 
-        if configuration.defaultEncryptionLevel == .low {
+        if config.defaultEncryptionLevel == .low {
             violations.append(
                 ComplianceViolation(
                     type: .encryptionRequired,
@@ -92,7 +100,7 @@ public final class ComplianceManager: @unchecked Sendable {
             )
         }
 
-        if configuration.dataRetentionPeriod > 365 * 24 * 60 * 60 && configuration.complianceMode == .enterprise {
+        if config.dataRetentionPeriod > 365 * 24 * 60 * 60 && config.complianceMode == .enterprise {
             violations.append(
                 ComplianceViolation(
                     type: .dataRetentionExceeded,
@@ -103,7 +111,7 @@ public final class ComplianceManager: @unchecked Sendable {
             )
         }
 
-        if regulation == "hipaa" && !configuration.enableSensitiveDataScanning {
+        if regulation == "hipaa" && !config.enableSensitiveDataScanning {
             violations.append(
                 ComplianceViolation(
                     type: .unauthorizedDataType,

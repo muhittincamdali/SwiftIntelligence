@@ -518,7 +518,7 @@ extension SwiftIntelligenceSpeech: IntelligenceProtocol {
 
 // MARK: - Speech Synthesizer Delegate
 
-private final class SpeechSynthesizerDelegate: NSObject, @unchecked Sendable, AVSpeechSynthesizerDelegate {
+private final class SpeechSynthesizerDelegate: NSObject, Sendable, AVSpeechSynthesizerDelegate {
     private let onFinish: () -> Void
     private let onError: (Error) -> Void
     

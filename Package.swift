@@ -69,7 +69,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        // Using only Apple's native frameworks, no external dependencies
+        .package(path: "../SwiftAI")
     ],
     targets: [
         // MARK: - Core Module
@@ -84,7 +84,7 @@ let package = Package(
         // MARK: - AI/ML Modules
         .target(
             name: "SwiftIntelligenceML",
-            dependencies: ["SwiftIntelligenceCore"],
+            dependencies: ["SwiftIntelligenceCore", "SwiftAI"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
@@ -92,7 +92,7 @@ let package = Package(
         
         .target(
             name: "SwiftIntelligenceNLP",
-            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceML"],
+            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceML", "SwiftAI"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
@@ -100,7 +100,7 @@ let package = Package(
         
         .target(
             name: "SwiftIntelligenceVision",
-            dependencies: ["CSwiftIntelligenceSupport", "SwiftIntelligenceCore", "SwiftIntelligenceML"],
+            dependencies: ["CSwiftIntelligenceSupport", "SwiftIntelligenceCore", "SwiftIntelligenceML", "SwiftAI"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]
@@ -116,7 +116,7 @@ let package = Package(
 
         .target(
             name: "SwiftIntelligenceReasoning",
-            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceML"],
+            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceML", "SwiftAI"],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
             ]

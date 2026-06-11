@@ -11,8 +11,7 @@ import CoreImage
 import os.log
 
 /// Advanced style transfer processor for artistic image transformation
-@MainActor
-public final class StyleTransferProcessor: @unchecked Sendable {
+public actor StyleTransferProcessor {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "StyleTransfer")

@@ -667,7 +667,7 @@ extension SpeechEngine: AVSpeechSynthesizerDelegate {
 
 // MARK: - Temporary Synthesis Delegate
 
-private final class TemporarySynthesisDelegate: NSObject, @unchecked Sendable, AVSpeechSynthesizerDelegate {
+private final class TemporarySynthesisDelegate: NSObject, Sendable, AVSpeechSynthesizerDelegate {
     private let completion: (SpeechSynthesisResult?, Error?) -> Void
     
     init(completion: @escaping (SpeechSynthesisResult?, Error?) -> Void) {

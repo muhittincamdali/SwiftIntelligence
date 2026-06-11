@@ -10,8 +10,7 @@ import AVFoundation
 import os.log
 
 /// Advanced object detection processor with real-time capabilities
-@MainActor
-public final class ObjectDetectionProcessor: @unchecked Sendable {
+public actor ObjectDetectionProcessor {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "ObjectDetection")
@@ -131,8 +130,7 @@ public final class ObjectDetectionProcessor: @unchecked Sendable {
     }
     
     /// Real-time object detection from camera feed
-    @MainActor
-    public func detectRealtime(
+        public func detectRealtime(
         from sampleBuffer: CMSampleBuffer,
         options: DetectionOptions
     ) async throws -> ObjectDetectionResult {

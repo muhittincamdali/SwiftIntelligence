@@ -4,7 +4,7 @@ import os.log
 
 /// Privacy-preserving tokenization system for sensitive data
 /// Provides secure, reversible tokenization of PII and sensitive information
-public class PrivacyTokenizer: @unchecked Sendable {
+public actor PrivacyTokenizer {
     
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "PrivacyTokenizer")
     private let processingQueue = DispatchQueue(label: "privacy.tokenization", qos: .userInitiated)
@@ -68,7 +68,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
         await ensureTokenizerReady()
         
         return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
+            Task {
                 do {
                     let result = try self.performTokenization(data, context: context)
                     continuation.resume(returning: result)
@@ -135,7 +135,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
         await ensureTokenizerReady()
 
         return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
+            Task {
                 do {
                     let result = try self.performDetokenization(tokenizedData)
                     continuation.resume(returning: result)
@@ -250,7 +250,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
     /// Tokenize data while preserving format (e.g., credit card format)
     public func formatPreservingTokenize(_ data: String, context: TokenizationContext) async throws -> String {
         return try await withCheckedThrowingContinuation { continuation in
-            processingQueue.async {
+            Task {
                 do {
                     let result = try self.performFormatPreservingTokenization(data, context: context)
                     continuation.resume(returning: result)
@@ -345,7 +345,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
     /// Check if a token exists and is valid
     public func isValidToken(_ token: String) async -> Bool {
         return await withCheckedContinuation { continuation in
-            processingQueue.async {
+            Task {
                 guard let vaultEntry = self.tokenVault[token] else {
                     continuation.resume(returning: false)
                     return
@@ -366,7 +366,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
     /// Revoke a token
     public func revokeToken(_ token: String) async -> Bool {
         return await withCheckedContinuation { continuation in
-            processingQueue.async {
+            Task {
                 let existed = self.tokenVault.removeValue(forKey: token) != nil
                 
                 if existed {
@@ -384,7 +384,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
     /// Get token metadata
     public func getTokenMetadata(_ token: String) async -> TokenMetadata? {
         return await withCheckedContinuation { continuation in
-            processingQueue.async {
+            Task {
                 guard let vaultEntry = self.tokenVault[token] else {
                     continuation.resume(returning: nil)
                     return
@@ -407,7 +407,7 @@ public class PrivacyTokenizer: @unchecked Sendable {
     /// Clean up expired tokens
     public func cleanupExpiredTokens() async -> Int {
         return await withCheckedContinuation { continuation in
-            processingQueue.async {
+            Task {
                 let now = Date()
                 let initialCount = self.tokenVault.count
                 

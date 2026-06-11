@@ -6,7 +6,7 @@ import os.log
 
 /// Secure keychain manager for SwiftIntelligence Privacy Layer
 /// Provides encrypted storage and retrieval of cryptographic keys and sensitive data
-public final class SecureKeychain: @unchecked Sendable {
+public final class SecureKeychain: Sendable {
     
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "SecureKeychain")
     private let serviceIdentifier = "com.swiftintelligence.privacy"

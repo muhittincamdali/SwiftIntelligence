@@ -151,7 +151,7 @@ public struct MLEvaluationResult: Sendable {
 // MARK: - Model Management
 
 /// Wrapper for ML models
-public final class MLModelWrapper: @unchecked Sendable {
+public actor MLModelWrapper {
     private var model: any MLModelProtocol
     public let type: MLModelType
     public let createdAt: Date

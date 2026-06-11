@@ -3,7 +3,7 @@ import NaturalLanguage
 import os.log
 
 /// Data anonymizer aligned to the canonical privacy contracts.
-public final class DataAnonymizer: @unchecked Sendable {
+public actor DataAnonymizer {
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "DataAnonymizer")
     private let recognizer = NLLanguageRecognizer()
 

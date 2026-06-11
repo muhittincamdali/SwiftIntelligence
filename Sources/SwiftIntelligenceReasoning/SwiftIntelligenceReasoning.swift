@@ -14,6 +14,7 @@ public actor SwiftIntelligenceReasoning {
     
     private var knowledgeBase: KnowledgeBase = KnowledgeBase()
     private var inferenceEngine: InferenceEngine = InferenceEngine()
+    private var neuralEngine: NeuralInferenceEngine?
     private var decisionTrees: [String: DecisionTree] = [:]
     private var reasoningCache: [String: ReasoningResult] = [:]
     private let maxCacheSize = 500
@@ -58,6 +59,13 @@ public actor SwiftIntelligenceReasoning {
         
         // Setup inference engine
         inferenceEngine = InferenceEngine(maxDepth: maxInferenceDepth)
+        
+        // Initialize Neural Engine with high-performance SwiftAI core
+        neuralEngine = NeuralInferenceEngine(
+            inputSize: 10,
+            hiddenLayers: [32, 16],
+            outputSize: 5
+        )
         
         // Initialize performance metrics
         performanceMetrics = ReasoningPerformanceMetrics()
@@ -415,22 +423,38 @@ public actor SwiftIntelligenceReasoning {
     }
     
     private func analyzePatterns(in observations: [Observation]) async -> PatternAnalysisResult {
-        // Simplified pattern analysis - would use more sophisticated algorithms in production
-        var patterns: [Pattern] = []
-        
-        // Look for frequency patterns
-        let frequencyPattern = Pattern(
-            id: "frequency",
-            description: "Frequency-based pattern",
-            strength: Float.random(in: 0.5...0.9),
-            type: .frequency
-        )
-        patterns.append(frequencyPattern)
-        
-        return PatternAnalysisResult(
-            patterns: patterns.sorted { $0.strength > $1.strength },
-            confidence: patterns.first?.strength ?? 0.0
-        )
+        logger.info("Performing neural pattern analysis on \(observations.count) observations", category: "Reasoning")
+
+        guard let engine = neuralEngine else {
+            logger.warning("Neural engine not available, falling back to basic analysis", category: "Reasoning")
+            return PatternAnalysisResult(patterns: [], confidence: 0)
+        }
+
+        // Convert observations to feature vector for the neural network
+        // In a real scenario, this would be a sophisticated embedding/vectorization
+        let features = observations.map { Float($0.value) }.prefix(10)
+        let paddedFeatures = Array(features) + Array(repeating: Float(0), count: max(0, 10 - features.count))
+
+        do {
+            let prediction = try await engine.infer(data: paddedFeatures)
+            let topPatternIndex = prediction.enumerated().max(by: { $0.element < $1.element })?.offset ?? 0
+            let confidence = prediction[topPatternIndex]
+
+            let neuralPattern = Pattern(
+                id: "neural_pattern_\(topPatternIndex)",
+                description: "Deep-learned pattern from observation sequence",
+                strength: confidence,
+                type: .neural
+            )
+
+            return PatternAnalysisResult(
+                patterns: [neuralPattern],
+                confidence: confidence
+            )
+        } catch {
+            logger.error("Neural pattern analysis failed: \(error.localizedDescription)", category: "Reasoning")
+            return PatternAnalysisResult(patterns: [], confidence: 0)
+        }
     }
     
     private func generateHypothesis(from pattern: Pattern, observations: [Observation]) -> String {

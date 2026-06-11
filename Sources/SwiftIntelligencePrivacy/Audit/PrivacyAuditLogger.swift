@@ -3,7 +3,7 @@ import CryptoKit
 import os.log
 
 /// Simplified audit logger aligned with the canonical privacy type contracts.
-public final class PrivacyAuditLogger: @unchecked Sendable {
+public final class PrivacyAuditLogger: Sendable {
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "AuditLogger")
     private var configuration: AuditLoggingConfiguration = .default
     private let processingQueue = DispatchQueue(label: "audit.logging", qos: .utility)

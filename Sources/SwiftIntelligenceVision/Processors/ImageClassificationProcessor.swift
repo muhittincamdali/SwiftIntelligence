@@ -10,8 +10,7 @@ import AppKit
 import os.log
 
 /// Advanced image classification processor with multiple model support
-@MainActor
-public class ImageClassificationProcessor: @unchecked Sendable {
+public actor ImageClassificationProcessor {
     
     // MARK: - Properties
     private let logger = Logger(subsystem: "SwiftIntelligence", category: "ImageClassification")
