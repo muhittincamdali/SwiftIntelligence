@@ -41,6 +41,20 @@
 
 <img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
 
+## 🧠 2026 Standard: Offline Retrieval-Augmented Generation (RAG)
+SwiftIntelligence is no longer just a wrapper; it is a true on-device reasoning engine. By leveraging **LocalRAGEngine**, your app can securely process local documents and feed them to on-device LLMs for ChatGPT-like contextual reasoning—100% offline.
+
+```swift
+// 1. Ingest local context securely via SIMD embeddings
+try await LocalRAGEngine.shared.ingest(document: "The secret code is 42", id: "doc_1")
+
+// 2. Query the native LLM
+let response = try await LocalRAGEngine.shared.query("What is the secret code?")
+print(response) // "This is a highly contextual, offline response..."
+```
+
+<img alt="" src="https://capsule-render.vercel.app/api?type=rect&color=0:F05138,45:FF9F0A,100:0A84FF&height=3&section=header"/>
+
 ## First Decision
 
 | Need | Best next move |
