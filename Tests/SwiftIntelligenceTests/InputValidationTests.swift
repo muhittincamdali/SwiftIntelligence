@@ -33,6 +33,27 @@ struct InputValidationTests {
         #expect(VectorMath.normalized([.greatestFiniteMagnitude, .greatestFiniteMagnitude]).allSatisfy { abs($0 - 0.70710677) < 1e-6 })
     }
 
+    @Test("normalizes vectors whose largest value is subnormal instead of returning NaN", arguments: [
+        [Float.leastNormalMagnitude / 12, 0, 0, 0],   // about 1e-39
+        [Float.leastNonzeroMagnitude, -Float.leastNonzeroMagnitude, 0, 0],
+        [Float.leastNormalMagnitude / 4, Float.leastNormalMagnitude / 3, 0, 0],
+    ])
+    func subnormalValues(vector: [Float]) {
+        let normalized = VectorMath.normalized(vector)
+        #expect(VectorMath.isFinite(normalized))
+        #expect(abs(VectorMath.dot(normalized, normalized) - 1) < 1e-5)
+        #expect(VectorMath.cosineSimilarity(normalized, vector.map { $0 * 0x1p100 }) > 0.9999)
+    }
+
+    @Test("KnowledgeBase saves and loads a document whose embedding is subnormal")
+    func knowledgeBaseSubnormal() async throws {
+        let knowledge = KnowledgeBase(embedder: SubnormalEmbedder())
+        try await knowledge.add("tiny vector", id: "a")
+        let restored = try KnowledgeBase(data: try await knowledge.dataRepresentation(), embedder: SubnormalEmbedder())
+        #expect(await restored.documentIDs == ["a"])
+        #expect(try await restored.search("tiny", mode: .semantic).map(\.documentID) == ["a"])
+    }
+
     @Test("rejects saved vector data with a crafted dimension or values", arguments: [
         #"{"dimension":0,"ids":[],"vectors":""}"#,
         #"{"dimension":-1,"ids":["a"],"vectors":"AAAAAA=="}"#,
@@ -131,4 +152,10 @@ private struct ShortEmbedder: TextEmbedder {
     let identifier = "short"
     let dimension = 8
     func embed(_ text: String) async throws -> [Float] { [1, 2, 3] }
+}
+
+private struct SubnormalEmbedder: TextEmbedder {
+    let identifier = "subnormal"
+    let dimension = 4
+    func embed(_ text: String) async throws -> [Float] { [.leastNormalMagnitude / 12, 0, 0, 0] }
 }

@@ -14,9 +14,16 @@ enum VectorMath {
     static func normalized(_ vector: [Float]) -> [Float] {
         let largest = vDSP.maximumMagnitude(vector)
         guard largest > 0, largest.isFinite else { return vector }
-        let scaled = vDSP.divide(vector, largest)
+        // Accelerate flushes subnormal numbers to zero, so dividing by a subnormal largest
+        // magnitude gives infinity and NaN. Scaling by a power of two first, outside
+        // Accelerate, makes every non-zero element normal and keeps the direction exact.
+        let input = largest < Float.leastNormalMagnitude ? vector.map { $0 * subnormalScale } : vector
+        let scaled = vDSP.divide(input, vDSP.maximumMagnitude(input))
         return vDSP.divide(scaled, sqrt(vDSP.sumOfSquares(scaled)))
     }
+
+    /// 2^64: lifts the smallest subnormal Float (about 1.4e-45) to about 2.6e-26.
+    private static let subnormalScale: Float = 0x1p64
 
     /// Whether every element is a finite number (no NaN, no infinity).
     static func isFinite(_ vector: [Float]) -> Bool {
