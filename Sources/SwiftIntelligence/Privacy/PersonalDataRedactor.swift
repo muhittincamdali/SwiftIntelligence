@@ -15,8 +15,8 @@ import NaturalLanguage
 ///   their NFKC form.
 /// - Invisible format characters inside a value (zero-width space, soft hyphen, direction
 ///   marks) are ignored, and the replacement covers them.
-/// - Card numbers may be grouped with spaces, hyphens, typographic dashes, dots, slashes or
-///   underscores, or broken over two lines; IBANs with spaces, hyphens or dots, in any case.
+/// - Card numbers and IBANs may be grouped with spaces, tabs, hyphens, typographic dashes,
+///   dots, slashes or underscores, or broken over two lines; IBANs may be in any case.
 /// - Overlapping matches are merged, so no part of any of them stays in the text.
 ///
 /// It does not find data that is spelled out ("jane at example dot com", "four one one one")

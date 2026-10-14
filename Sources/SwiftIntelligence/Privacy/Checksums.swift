@@ -23,18 +23,39 @@ enum Checksums {
     /// The first four characters move to the end, letters become numbers (A = 10 … Z = 35),
     /// and the result must leave a remainder of 1 when divided by 97.
     static func passesIBAN(_ iban: String) -> Bool {
-        let characters = Array(iban.uppercased())
-        guard (15...34).contains(characters.count),
+        let characters = Array(iban)
+        return (15...34).contains(characters.count) && passingIBANLengths(characters).last == characters.count
+    }
+
+    /// The lengths from 15 to 34 at which the start of `characters` passes ``passesIBAN(_:)``,
+    /// in one pass instead of one full check per length.
+    ///
+    /// The remainder of "rest + first four" is the remainder of "rest", shifted left by the
+    /// decimal length of the first four characters, plus the remainder of the first four.
+    static func passingIBANLengths(_ characters: [Character]) -> [Int] {
+        guard characters.count >= 4,
               characters.prefix(2).allSatisfy({ $0.isASCII && $0.isLetter }),
               characters.dropFirst(2).prefix(2).allSatisfy({ $0.isASCII && $0.isNumber }) else {
-            return false
+            return []
         }
+        var headRemainder = 0
+        var headShift = 1
+        for character in characters.prefix(4) {
+            guard let value = ibanValue(character) else { return [] }
+            let shift = value >= 10 ? 100 : 10
+            headRemainder = (headRemainder * shift + value) % 97
+            headShift = headShift * shift % 97
+        }
+        var lengths: [Int] = []
         var remainder = 0
-        for character in characters.dropFirst(4) + characters.prefix(4) {
-            guard character.isASCII, let value = character.hexDigitValue ?? letterValue(character) else { return false }
+        for (offset, character) in characters.enumerated().dropFirst(4).prefix(30) {
+            guard let value = ibanValue(character) else { break }
             remainder = (remainder * (value >= 10 ? 100 : 10) + value) % 97
+            if offset + 1 >= 15, (remainder * headShift + headRemainder) % 97 == 1 {
+                lengths.append(offset + 1)
+            }
         }
-        return remainder == 1
+        return lengths
     }
 
     /// The IBAN length of each country in the ISO 13616 registry.
@@ -51,9 +72,14 @@ enum Checksums {
         "TL": 23, "TN": 24, "TR": 26, "UA": 29, "VA": 22, "VG": 24, "XK": 20, "YE": 30,
     ]
 
-    /// A = 10 … Z = 35. `hexDigitValue` already covers A–F.
-    private static func letterValue(_ character: Character) -> Int? {
-        guard let ascii = character.asciiValue, (UInt8(ascii: "A")...UInt8(ascii: "Z")).contains(ascii) else { return nil }
-        return Int(ascii - UInt8(ascii: "A")) + 10
+    /// 0–9 for digits and A = 10 … Z = 35 for ASCII letters in either case.
+    private static func ibanValue(_ character: Character) -> Int? {
+        guard let ascii = character.asciiValue else { return nil }
+        switch ascii {
+        case UInt8(ascii: "0")...UInt8(ascii: "9"): return Int(ascii - UInt8(ascii: "0"))
+        case UInt8(ascii: "A")...UInt8(ascii: "Z"): return Int(ascii - UInt8(ascii: "A")) + 10
+        case UInt8(ascii: "a")...UInt8(ascii: "z"): return Int(ascii - UInt8(ascii: "a")) + 10
+        default: return nil
+        }
     }
 }

@@ -79,9 +79,28 @@ struct RedactionBypassTests {
         "DE89.3704.0044.0532.0130.00",
         "ＤＥ８９ ３７０４ ００４４ ０５３２ ０１３０ ００",
         "DE89\u{200B}370400440532013000",
+        "DE89 3704 0044\n0532 0130 00",
+        "DE89 3704\r\n  0044 0532 0130 00",
+        "DE89\t3704\t0044\t0532\t0130\t00",
+        "DE89  3704  0044  0532  0130  00",
+        "DE89_3704_0044_0532_0130_00",
+        "DE89/3704/0044/0532/0130/00",
+        "DE89 – 3704 – 0044 – 0532 – 0130 – 00",
+        "DE89\u{00A0}3704\u{2009}0044\u{202F}0532\u{2007}0130 00",
     ])
     func ibanVariants(iban: String) {
         #expect(redacted("IBAN: \(iban).", kinds: [.iban]) == "IBAN: [IBAN].")
+    }
+
+    @Test("finds IBANs that follow each other, whatever separates them", arguments: [" ", "\n", " / ", "\t", "  "])
+    func consecutiveIBANs(separator: String) {
+        let text = "DE89 3704 0044 0532 0130 00" + separator + "GB82 WEST 1234 5698 7654 32"
+        #expect(redacted(text, kinds: [.iban]) == "[IBAN]" + separator + "[IBAN]")
+    }
+
+    @Test("finds an IBAN after a code that looks like the start of one")
+    func ibanAfterLookAlike() {
+        #expect(redacted("Ref AB12 DE89 3704 0044 0532 0130 00", kinds: [.iban]) == "Ref AB12 [IBAN]")
     }
 
     @Test("stops an IBAN at the check digits when a code follows without a space")
@@ -176,6 +195,8 @@ struct RedactionBypassTests {
             String(repeating: "1 ", count: 100_000),
             String(repeating: "a.", count: 100_000) + "@",
             String(repeating: "DE89 ", count: 40_000),
+            String(repeating: "DE89\n", count: 40_000),
+            String(repeating: "AB12 / ", count: 30_000),
             String(repeating: "1:", count: 100_000),
         ]
         let redactor = PersonalDataRedactor(kinds: [.emailAddress, .paymentCardNumber, .iban, .ipAddress])

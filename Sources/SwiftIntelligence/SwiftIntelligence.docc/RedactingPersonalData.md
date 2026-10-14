@@ -63,9 +63,10 @@ Matching looks at a folded copy of the text and reports the original values and 
   their plain forms.
 - Invisible format characters inside a value (zero-width space, soft hyphen, direction marks)
   are ignored, and the replacement covers them.
-- Card numbers may be grouped with spaces, dashes, dots, slashes or underscores, or broken over
-  two lines, and may follow other digit groups such as an order number. IBANs may use spaces,
-  hyphens or dots, in upper or lower case.
+- Card numbers and IBANs may be grouped with spaces, tabs, dashes, dots, slashes or
+  underscores, or broken over two lines. Card numbers may follow other digit groups such as an
+  order number; IBANs may be in upper or lower case and follow each other or a code that looks
+  like one.
 - Overlapping matches are merged, so no part of either stays visible.
 
 It does not find data that is spelled out ("jane at example dot com", "four one one one"),

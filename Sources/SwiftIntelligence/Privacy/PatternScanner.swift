@@ -11,12 +11,15 @@ enum PatternScanner {
     /// RFC 5321 allows 64 characters before the "@".
     private static let maximumLocalPartLength = 64
     private static let localPartCharacters = CharacterSet.letters.union(.decimalDigits).union(CharacterSet(charactersIn: "._%+-"))
-    /// Digit groups joined by up to three spaces, hyphens, dots, slashes or underscores, or by
-    /// one line break. Card numbers are looked for inside each run.
-    private static let digitRun = pattern(#"(?<!\d)\d{1,19}(?:(?:[ \t\-./_]{1,3}|[ \t]{0,3}\R[ \t]{0,3})\d{1,19}){0,18}(?!\d)"#)
+    /// Up to three spaces, tabs, hyphens, dots, slashes or underscores, or one line break with
+    /// up to three spaces or tabs on each side. Shared by card numbers and IBANs, so a value
+    /// cannot hide behind a separator that only one of the two patterns knows.
+    private static let groupSeparator = #"(?:[ \t\-./_]{1,3}|[ \t]{0,3}\R[ \t]{0,3})"#
+    /// Digit groups joined by a group separator. Card numbers are looked for inside each run.
+    private static let digitRun = pattern(#"(?<!\d)\d{1,19}(?:"# + groupSeparator + #"\d{1,19}){0,18}(?!\d)"#)
     private static let digitGroup = pattern(#"\d+"#)
     /// A country code, two check digits and up to 30 letters or digits, optionally in groups.
-    private static let iban = pattern(#"\b[A-Z]{2}[0-9]{2}(?:[ \-.]?[A-Z0-9]){11,30}"#)
+    private static let iban = pattern(#"\b[A-Z]{2}[0-9]{2}(?:"# + groupSeparator + #"?[A-Z0-9]){11,30}"#)
     private static let ipv4 = pattern(#"(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?!\d|\.\d)"#)
     private static let ipv6 = pattern(#"(?<![0-9A-F:])(?:[0-9A-F]{0,4}:){2,7}[0-9A-F]{0,4}(?![0-9A-F:])"#)
 
@@ -31,7 +34,7 @@ enum PatternScanner {
             found += cardNumbers(in: folded.text).map { (.paymentCardNumber, $0) }
         }
         if kinds.contains(.iban) {
-            found += candidates(iban, in: folded.text).compactMap { validIBAN(in: $0, of: folded.text) }.map { (.iban, $0) }
+            found += ibans(in: folded.text).map { (.iban, $0) }
         }
         if kinds.contains(.ipAddress) {
             let addresses = candidates(ipv4, in: folded.text).filter { isAddress($0, in: folded.text, family: AF_INET) }
@@ -95,10 +98,31 @@ enum PatternScanner {
         return ranges
     }
 
+    /// A candidate can run past its IBAN into the next one ("DE89 … 00 / GB82 …"), so the
+    /// search continues after the valid part of each candidate, or one character after the
+    /// start of an invalid one, instead of after the whole candidate.
+    static func ibans(in text: String) -> [NSRange] {
+        // Bridged once: passing a native String to every firstMatch call would copy it each time.
+        let string = NSString(string: text)
+        let bridged = string as String
+        var ranges: [NSRange] = []
+        var searchStart = 0
+        while searchStart < string.length,
+              let candidate = iban.firstMatch(in: bridged, range: NSRange(location: searchStart, length: string.length - searchStart))?.range {
+            if let valid = validIBAN(in: candidate, of: bridged) {
+                ranges.append(valid)
+                searchStart = valid.location + valid.length
+            } else {
+                searchStart = candidate.location + 1
+            }
+        }
+        return ranges
+    }
+
     /// The pattern can run past the end of an IBAN into a following code or word ("… 3000 IS
     /// DUE", "…3000REF"), so the candidate is cut to the IBAN length of its country. For a
-    /// country missing from the table it is shortened one character at a time until the check
-    /// digits match: at most 30 tries, each a short mod-97 loop.
+    /// country missing from the table it is cut to the longest length whose check digits match,
+    /// found in one mod-97 pass over the candidate.
     private static func validIBAN(in range: NSRange, of text: String) -> NSRange? {
         let candidate = (text as NSString).substring(with: range)
         // UTF-16 end offset after each letter or digit.
@@ -113,13 +137,14 @@ enum PatternScanner {
             }
         }
         let country = String(characters.prefix(2)).uppercased()
-        let lengths = Checksums.ibanLengths[country].map { [$0] } ?? Array((15...34).reversed())
-        for length in lengths where length <= characters.count {
-            if Checksums.passesIBAN(String(characters.prefix(length))) {
-                return NSRange(location: range.location, length: ends[length - 1])
-            }
+        let passing = Checksums.passingIBANLengths(characters)
+        let length: Int?
+        if let expected = Checksums.ibanLengths[country] {
+            length = passing.contains(expected) ? expected : nil
+        } else {
+            length = passing.last
         }
-        return nil
+        return length.map { NSRange(location: range.location, length: ends[$0 - 1]) }
     }
 
     private static func candidates(_ expression: NSRegularExpression, in text: String) -> [NSRange] {
