@@ -59,10 +59,27 @@ public actor KnowledgeBase {
     ///   - redactor: Replaces personal data in documents before they are stored. The original
     ///     values are not kept.
     public init(embedder: any TextEmbedder = HashingEmbedder(), chunker: TextChunker = TextChunker(), redactor: PersonalDataRedactor? = nil) {
+        self.init(embedder: embedder, chunker: chunker, redactor: redactor, contents: nil)
+    }
+
+    /// The indexed state, as restored from saved data.
+    struct Contents {
+        let documents: [String: StoredDocument]
+        let order: [String]
+        let vectors: VectorIndex
+        let keywords: KeywordIndex
+    }
+
+    init(embedder: any TextEmbedder, chunker: TextChunker, redactor: PersonalDataRedactor?, contents: Contents?) {
         self.embedder = embedder
         self.chunker = chunker
         self.redactor = redactor
-        self.vectors = VectorIndex(dimension: embedder.dimension)
+        self.vectors = contents?.vectors ?? VectorIndex(dimension: embedder.dimension)
+        if let contents {
+            documents = contents.documents
+            documentOrder = contents.order
+            keywords = contents.keywords
+        }
     }
 
     /// The number of documents.
