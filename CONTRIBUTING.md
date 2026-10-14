@@ -1,112 +1,61 @@
-# Contributing to SwiftIntelligence
+# Contributing
 
-SwiftIntelligence is currently optimized around a modular Swift package graph and Swift 6 migration work. Contributions are welcome, but they need to preserve package stability first.
+Thanks for taking the time to improve SwiftIntelligence.
 
-## Before You Start
+## Reporting bugs
 
-- Read [README.md](README.md), [Documentation/README.md](Documentation/README.md), and [Examples/README.md](Examples/README.md).
-- Search existing issues and pull requests before opening a new one.
-- Keep changes scoped. Large mixed refactors are hard to review and easy to break.
+Open an issue with:
 
-## What We Accept
+- the type and method you called, and a short text that shows the problem (replace real
+  personal data with made-up values),
+- what you expected and what happened,
+- platform and OS version (iOS simulator, device or macOS), Xcode version, and whether Apple
+  Intelligence is on when the issue is about `answer(_:)`.
 
-- Bug fixes in active modules
-- Swift 6 concurrency hardening
-- Test improvements
-- Example and documentation fixes aligned with the active modular graph
-- Performance work backed by benchmark output
+A redaction bypass (personal data that stays visible) is a security issue: report it privately
+as described in [SECURITY.md](SECURITY.md).
 
-## What We Usually Reject
+## Pull requests
 
-- New abstraction layers without a concrete need
-- Changes that revive inactive umbrella APIs without an explicit restore plan
-- Marketing claims without measurable proof
-- Massive multi-area rewrites without a staged rollout
+1. Fork the repository and branch from `main`.
+2. Keep each pull request focused on one change.
+3. Run the tests on both platforms:
 
-## Local Workflow
+    ```sh
+    swift test
+    xcodebuild test -scheme SwiftIntelligence \
+      -destination 'platform=iOS Simulator,name=iPhone 17'
+    ```
 
-```bash
-swift build
-bash Scripts/validate-flagship-demo.sh
-bash Scripts/validate-examples.sh
-swift test
-```
+    Tests that need a NaturalLanguage model the simulator lacks, or the on-device language
+    model, are skipped there with the reason; on macOS the NaturalLanguage models are required.
+4. Add or update a test in `Tests/SwiftIntelligenceTests` for every change in behavior. For the
+   redactor, add both the value that must be found and a look-alike that must stay readable.
+5. Public entry points must not trap on input: check NaN and infinite numbers, sizes read from
+   saved data (with overflow-checked arithmetic) and limits, and keep every regular expression
+   quantifier bounded.
+6. If you change a README code sample, change the copy in
+   `Examples/KnowledgeDemo/KnowledgeDemo/ReadmeSamples.swift` as well. That file is what gets
+   compiled: by the example app, and by `swift test` through the symlink
+   `Tests/SwiftIntelligenceTests/ReadmeSamples.swift`. Build the app with:
 
-If your change affects benchmark-sensitive code, also run:
+    ```sh
+    cd Examples/KnowledgeDemo
+    xcodebuild build -scheme KnowledgeDemo -destination 'generic/platform=iOS Simulator'
+    ```
 
-```bash
-bash Scripts/run-benchmarks.sh standard
-```
+7. If a change affects the screenshots, capture them again with
+   `scripts/capture-example-screens.sh`.
 
-If your change affects public benchmark claims or device evidence, also run:
+## Code style
 
-```bash
-bash Scripts/validate-device-evidence.sh
-bash Scripts/validate-transfer-chain.sh
-bash Scripts/validate-release-provenance.sh
-bash Scripts/validate-public-claims.sh
-```
-
-If your change adds or updates non-Mac release evidence, also record the exact capture or import command path:
-
-```bash
-bash Scripts/run-benchmarks-for-device.sh ...
-# or
-bash Scripts/import-benchmark-evidence.sh ...
-```
-
-## Pull Request Rules
-
-- One pull request should solve one problem.
-- Describe the user-visible or maintainer-visible impact.
-- Describe the first-user path impact if README, onboarding, examples, or comparisons changed.
-- List the modules touched.
-- Include validation commands you ran.
-- Update docs/examples if the public API changed.
-- State whether any public claim, proof wording, or readiness wording changed.
-- If benchmark evidence moved, mention which device classes were added, changed, or still missing.
-- If you added imported or captured device evidence, include the snapshot name and normalized device metadata in the PR description.
-
-Use the PR template completely. Empty sections for product impact or public-claim impact usually mean the change was not described well enough.
-
-## Device Evidence Intake
-
-Use the `Device Evidence Submission` issue form for:
-
-- missing iPhone/iPad release coverage
-- imported external benchmark bundles that need maintainer review
-- invalid archived device metadata or broken coverage matrix state
-
-Before opening that issue, check:
-
-- [Documentation/Generated/Device-Evidence-Plan.md](Documentation/Generated/Device-Evidence-Plan.md)
-- [Documentation/Generated/Device-Coverage-Matrix.md](Documentation/Generated/Device-Coverage-Matrix.md)
-- [Documentation/Generated/Device-Evidence-Runbook.md](Documentation/Generated/Device-Evidence-Runbook.md)
-
-Do not submit simulator output, guessed metadata, or rewritten Mac artifacts as mobile evidence.
-
-## Code Expectations
-
-- Prefer straightforward code over clever code.
-- Match the existing module boundaries.
-- Keep public APIs documented.
-- Treat Swift 6 actor isolation and Sendable correctness as release-quality concerns, not optional cleanup.
-
-## Example Changes
-
-If you touch anything under `Examples/`, the new validation gate must still pass:
-
-```bash
-bash Scripts/validate-flagship-demo.sh
-bash Scripts/validate-examples.sh
-```
-
-Do not add examples that depend on inactive products or stale umbrella entry points.
-
-## Security
-
-Do not open public issues for vulnerabilities. Use [SECURITY.md](SECURITY.md).
+- Follow the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/).
+- The package builds in the Swift 6 language mode; new code should not add warnings.
+- Document public API with DocC comments (`///`); `xcodebuild docbuild` should stay free of
+  warnings.
+- Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
+  (`feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `ci:`, `chore:`).
 
 ## License
 
-By contributing, you agree that your contributions are licensed under the [MIT License](LICENSE).
+By contributing you agree that your contributions are licensed under the MIT License.
