@@ -47,7 +47,7 @@ dependencies, and nothing leaves the device unless your app sends it.
   plug in a Core ML or server model.
 - **Saved between launches** — `save(to:)` writes one file with the redacted passages and their
   vectors, and loading checks that the embedder and the data match.
-- **Tested** — 149 Swift Testing tests run on macOS and an iPhone simulator, including
+- **Tested** — 149 Swift Testing tests on macOS and 148 on an iPhone simulator, covering
   redaction bypass attempts, crafted saved files, NaN and overflowing inputs, every README
   sample, and an answer from the on-device model where it is available.
 
