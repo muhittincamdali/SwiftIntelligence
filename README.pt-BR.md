@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@c3973900c06dd9a898716cff73ecfa521ffe82e0 status=reviewed -->
+<!-- i18n-source: README.md@50fc709493ca5754515c2d9210c58c89358c76d5 status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-pt-BR-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-pt-BR-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-pt-BR-light.svg" alt="SwiftIntelligence: Busca, respostas e anonimização no dispositivo para os textos do seu app, com os frameworks da Apple."></picture></p>
