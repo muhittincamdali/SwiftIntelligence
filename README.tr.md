@@ -34,7 +34,7 @@ Uygulamanızdaki iOS veya macOS metinlerini cihaz üzerinde aranabilir ve yanıt
 - **Geri alınabilir maskeleme** — sekiz tür kişisel veri, bir modelin hâlâ atıfta bulunabileceği `[EMAIL_1]` gibi yer tutuculara dönüşür; `restoringOriginals(in:)` gerçek değerleri modelin yanıtına geri koyar. Kart numaraları ve IBAN'lar kontrol basamaklarını geçmek zorundadır; tam genişlikli rakamlar, sıfır genişlikli karakterler ve alışılmadık ayırıcılar bir değeri gizleyemez.
 - **Üç embedder ya da kendinizinki** — model gerektirmeden her yerde çalışan bir hashing embedder, Apple'ın cümle embedding'i ve Apple'ın bağlamsal embedding'i; bir Core ML ya da sunucu modeli takmak için `TextEmbedder` protokolünü uygulayın.
 - **Açılışlar arasında saklanır** — `save(to:)` maskelenmiş pasajları ve vektörlerini tek bir dosyaya yazar; yükleme sırasında embedder ile verinin birbiriyle eşleştiği denetlenir.
-- **Test edilmiş** — macOS'ta 149, iPhone simülatöründe 148 Swift Testing testi; maskeleme atlatma girişimlerini, hazırlanmış kayıt dosyalarını, NaN ve taşan girdileri, README'deki her örneği ve kullanılabildiği yerde cihaz üzerindeki modelden alınan bir yanıtı kapsar.
+- **Test edilmiş** — macOS'ta 156, iPhone simülatöründe 155 Swift Testing testi; maskeleme atlatma girişimlerini, hazırlanmış kayıt dosyalarını, NaN ve taşan girdileri, README'deki her örneği ve kullanılabildiği yerde cihaz üzerindeki modelden alınan bir yanıtı kapsar.
 
 ## Hızlı başlangıç
 

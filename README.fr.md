@@ -34,7 +34,7 @@ Un paquet Swift qui rend le texte de votre app iOS ou macOS consultable et inter
 - **Masquage réversible** — huit types de données personnelles deviennent des marqueurs tels que `[EMAIL_1]`, auxquels un modèle peut encore se référer, et `restoringOriginals(in:)` remet les valeurs dans sa réponse. Les numéros de carte et les IBAN doivent passer leurs chiffres de contrôle, et les chiffres pleine chasse, les caractères de largeur nulle et les séparateurs inhabituels ne cachent pas une valeur.
 - **Trois embedders, ou le vôtre** — un embedder par hachage qui fonctionne partout sans modèle, l’embedding de phrases d’Apple et l’embedding contextuel d’Apple ; adoptez `TextEmbedder` pour brancher un modèle Core ML ou un modèle de serveur.
 - **Conservé d’un lancement à l’autre** — `save(to:)` écrit un seul fichier contenant les passages masqués et leurs vecteurs, et le chargement vérifie que l’embedder et les données correspondent.
-- **Testé** — 149 tests Swift Testing sur macOS et 148 sur un simulateur d’iPhone, qui couvrent des tentatives de contournement du masquage, des fichiers sauvegardés falsifiés, des entrées NaN ou en dépassement, chaque exemple du README et une réponse du modèle embarqué lorsqu’il est disponible.
+- **Testé** — 156 tests Swift Testing sur macOS et 155 sur un simulateur d’iPhone, qui couvrent des tentatives de contournement du masquage, des fichiers sauvegardés falsifiés, des entrées NaN ou en dépassement, chaque exemple du README et une réponse du modèle embarqué lorsqu’il est disponible.
 
 ## Démarrage rapide
 

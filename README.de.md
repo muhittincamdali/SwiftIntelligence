@@ -34,7 +34,7 @@ Ein Swift-Paket, das die Texte in deiner iOS- oder macOS-App auf dem Gerät durc
 - **Umkehrbare Schwärzung** — Acht Arten personenbezogener Daten werden zu Platzhaltern wie `[EMAIL_1]`, auf die sich ein Modell weiterhin beziehen kann, und `restoringOriginals(in:)` setzt die Werte wieder in seine Antwort ein. Kartennummern und IBANs müssen ihre Prüfziffern bestehen, und Ziffern in Vollbreite, Zeichen ohne Breite und ungewöhnliche Trennzeichen verbergen einen Wert nicht.
 - **Drei Embedder oder dein eigener** — ein Hashing-Embedder, der überall ohne Modell funktioniert, Apples Satz-Embedding und Apples kontextuelles Embedding; mit `TextEmbedder` bindest du ein Core-ML- oder Servermodell an.
 - **Zwischen den Starts gespeichert** — `save(to:)` schreibt die geschwärzten Passagen und ihre Vektoren in eine Datei, und beim Laden wird geprüft, ob Embedder und Daten zusammenpassen.
-- **Getestet** — 149 Swift-Testing-Tests auf macOS und 148 auf einem iPhone-Simulator, die Versuche, die Schwärzung zu umgehen, präparierte Speicherdateien, NaN und überlaufende Eingaben, jedes README-Beispiel und, wo verfügbar, eine Antwort des Modells auf dem Gerät abdecken.
+- **Getestet** — 156 Swift-Testing-Tests auf macOS und 155 auf einem iPhone-Simulator, die Versuche, die Schwärzung zu umgehen, präparierte Speicherdateien, NaN und überlaufende Eingaben, jedes README-Beispiel und, wo verfügbar, eine Antwort des Modells auf dem Gerät abdecken.
 
 ## Schnellstart
 

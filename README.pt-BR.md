@@ -34,7 +34,7 @@ Um pacote Swift que torna o texto do seu app de iOS ou macOS pesquisável e capa
 - **Anonimização reversível** — oito tipos de dados pessoais viram marcadores como `[EMAIL_1]`, aos quais um modelo ainda consegue se referir, e `restoringOriginals(in:)` devolve os valores à resposta dele. Números de cartão e IBANs precisam passar nos dígitos verificadores, e dígitos de largura total, caracteres de largura zero e separadores incomuns não escondem um valor.
 - **Três embedders, ou o seu próprio** — um embedder de hashing que funciona em qualquer lugar, sem modelo, o embedding de frases da Apple e o embedding contextual da Apple; adote `TextEmbedder` para conectar um modelo Core ML ou de servidor.
 - **Salvo entre execuções** — `save(to:)` grava um único arquivo com os trechos anonimizados e seus vetores, e o carregamento verifica se o embedder e os dados correspondem.
-- **Testado** — 149 testes do Swift Testing no macOS e 148 em um simulador de iPhone, cobrindo tentativas de burlar a anonimização, arquivos salvos adulterados, entradas com NaN e com estouro, todos os exemplos do README e uma resposta do modelo no dispositivo onde ele estiver disponível.
+- **Testado** — 156 testes do Swift Testing no macOS e 155 em um simulador de iPhone, cobrindo tentativas de burlar a anonimização, arquivos salvos adulterados, entradas com NaN e com estouro, todos os exemplos do README e uma resposta do modelo no dispositivo onde ele estiver disponível.
 
 ## Início rápido
 
