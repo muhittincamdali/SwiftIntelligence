@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@50fc709493ca5754515c2d9210c58c89358c76d5 status=reviewed -->
+<!-- i18n-source: README.md@44ff211be1e0a00ecd38c72c7a00a2edff6bbf8a status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-ja-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-ja-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-ja-light.svg" alt="SwiftIntelligence: Apple のフレームワークで、アプリのテキストをデバイス上で検索・回答・マスキング。"></picture></p>
@@ -31,7 +31,7 @@ iOS や macOS アプリ内のテキストを、デバイス上で検索でき、
 
 - **ハイブリッド検索** — すべてのパッセージは、単語（BM25）とベクトルの 2 通りで索引付けされます。2 つの順位は reciprocal rank fusion で統合されるため、"E-4012" のような正確なコードも、別の言葉で書かれたパッセージも見つかります。
 - **出典付きの回答** — iOS 26 と macOS 26 では、`answer(_:)` が Apple のオンデバイスモデルに、最も関連するパッセージだけを根拠に答え、出典を示すよう依頼します。`groundedPrompt(for:)` は他のモデル向けに同じプロンプトを作り、`KnowledgeSearchTool` を使うと Foundation Models のセッションが自分で検索できます。
-- **元に戻せるマスキング** — 8 種類の個人データが `[EMAIL_1]` のようなプレースホルダーに置き換わります。モデルはそれを参照でき、`restoringOriginals(in:)` が元の値を回答に戻します。カード番号と IBAN はチェックディジットに通らなければならず、全角数字、ゼロ幅文字、珍しい区切り文字を使っても値は隠せません。
+- **元に戻せるマスキング** — 8 種類の個人データが `[EMAIL_1]` のようなプレースホルダーに置き換わります。モデルはそれを参照でき、`restoringOriginals(in:)` が元の値を回答に戻します。カード番号と IBAN はチェックディジットに通らなければならず、全角数字、ゼロ幅文字、またはスペース、タブ、ダッシュ、ピリオド、スラッシュ、アンダースコア、1 つの改行で区切られたグループを使っても値は隠せません。
 - **3 つの embedder、または独自のもの** — モデルなしでどこでも動く hashing embedder、Apple の文埋め込み、Apple のコンテキスト埋め込み。`TextEmbedder` に準拠すれば、Core ML やサーバー上のモデルも組み込めます。
 - **起動をまたいで保存** — `save(to:)` はマスキング済みのパッセージとそのベクトルを 1 つのファイルに書き出し、読み込み時には embedder とデータが一致するか確認します。
 - **テスト済み** — macOS で 156 個、iPhone シミュレーターで 155 個の Swift Testing テストがあり、マスキングの回避の試み、細工された保存ファイル、NaN やオーバーフローする入力、README のすべてのサンプル、そして利用できる環境ではオンデバイスモデルによる回答を対象にしています。

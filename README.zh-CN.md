@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@50fc709493ca5754515c2d9210c58c89358c76d5 status=reviewed -->
+<!-- i18n-source: README.md@44ff211be1e0a00ecd38c72c7a00a2edff6bbf8a status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-zh-CN-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-zh-CN-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-zh-CN-light.svg" alt="SwiftIntelligence: 基于 Apple 框架，为应用中的文本提供设备端搜索、问答和脱敏。"></picture></p>
@@ -31,7 +31,7 @@
 
 - **混合搜索**：每个段落会被索引两次，一次按字词（BM25），一次作为向量，再用 reciprocal rank fusion 合并两种排序，因此搜索既能找到 "E-4012" 这样的精确编号，也能找到用其他词语表达同一意思的段落。
 - **带来源的回答**：在 iOS 26 和 macOS 26 上，`answer(_:)` 会让 Apple 的设备端模型只根据最相关的段落作答并标注引用；`groundedPrompt(for:)` 可为任何其他模型生成同样的提示词，`KnowledgeSearchTool` 则让 Foundation Models 会话自行搜索。
-- **可还原的脱敏**：八类个人数据会变成 `[EMAIL_1]` 这样的占位符，模型仍然可以引用它们，而 `restoringOriginals(in:)` 会把原始值放回模型的回答中。银行卡号和 IBAN 必须通过校验位检查，全角数字、零宽字符和不常见的分隔符也无法掩盖一个值。
+- **可还原的脱敏**：八类个人数据会变成 `[EMAIL_1]` 这样的占位符，模型仍然可以引用它们，而 `restoringOriginals(in:)` 会把原始值放回模型的回答中。银行卡号和 IBAN 必须通过校验位检查，全角数字、零宽字符，以及用空格、制表符、连字符、点、斜杠、下划线或一个换行分隔的数字组，也无法掩盖一个值。
 - **三种 embedder，也可以用自己的**：无需模型、随处可用的 hashing embedder，Apple 的句子 embedding，以及 Apple 的上下文 embedding；遵循 `TextEmbedder` 协议即可接入 Core ML 模型或服务器端模型。
 - **跨启动保存**：`save(to:)` 会把脱敏后的段落及其向量写入同一个文件，加载时会检查 embedder 与数据是否匹配。
 - **经过测试**：macOS 上有 156 个、iPhone 模拟器上有 155 个 Swift Testing 测试，覆盖脱敏绕过尝试、构造的存档文件、NaN 和溢出的输入、README 中的每个示例，以及在可用时来自设备端模型的回答。

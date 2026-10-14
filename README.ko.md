@@ -1,4 +1,4 @@
-<!-- i18n-source: README.md@50fc709493ca5754515c2d9210c58c89358c76d5 status=reviewed -->
+<!-- i18n-source: README.md@44ff211be1e0a00ecd38c72c7a00a2edff6bbf8a status=reviewed -->
 <!-- brand:start -->
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-ko-dark.svg"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-ko-light.svg"><img src="https://raw.githubusercontent.com/muhittincamdali/SwiftIntelligence/main/.github/brand/banner-ko-light.svg" alt="SwiftIntelligence: Apple 프레임워크로 앱의 텍스트를 기기에서 검색하고, 답하고, 가립니다."></picture></p>
@@ -31,7 +31,7 @@ iOS 또는 macOS 앱의 텍스트를 기기에서 검색하고 질문에 답할 
 
 - **하이브리드 검색** — 모든 구절은 단어(BM25)와 벡터, 두 가지 방식으로 색인됩니다. 두 순위는 reciprocal rank fusion으로 합쳐지므로, 검색은 "E-4012" 같은 정확한 코드와 다른 단어로 쓰인 구절을 모두 찾아냅니다.
 - **출처가 있는 답변** — iOS 26과 macOS 26에서 `answer(_:)`는 Apple의 온디바이스 모델에게 가장 알맞은 구절만 근거로 답하고 출처를 밝히도록 요청합니다. `groundedPrompt(for:)`는 다른 모델을 위해 같은 프롬프트를 만들어 주고, `KnowledgeSearchTool`을 쓰면 Foundation Models 세션이 스스로 검색할 수 있습니다.
-- **되돌릴 수 있는 마스킹** — 여덟 가지 개인 정보가 `[EMAIL_1]` 같은 자리 표시자로 바뀌며 모델은 이를 계속 가리킬 수 있고, `restoringOriginals(in:)`가 원래 값을 답변에 되돌려 넣습니다. 카드 번호와 IBAN은 체크 숫자 검증을 통과해야 하며, 전각 숫자, 폭이 0인 문자, 흔치 않은 구분자로도 값을 숨길 수 없습니다.
+- **되돌릴 수 있는 마스킹** — 여덟 가지 개인 정보가 `[EMAIL_1]` 같은 자리 표시자로 바뀌며 모델은 이를 계속 가리킬 수 있고, `restoringOriginals(in:)`가 원래 값을 답변에 되돌려 넣습니다. 카드 번호와 IBAN은 체크 숫자 검증을 통과해야 하며, 전각 숫자, 폭이 0인 문자, 그리고 공백, 탭, 대시, 마침표, 슬래시, 밑줄 또는 줄바꿈 하나로 나뉜 숫자 묶음으로도 값을 숨길 수 없습니다.
 - **세 가지 embedder, 또는 직접 만든 것** — 모델 없이 어디서나 동작하는 hashing embedder, Apple의 문장 임베딩, Apple의 문맥 임베딩이 있습니다. `TextEmbedder`를 채택하면 Core ML 또는 서버 모델을 연결할 수 있습니다.
 - **실행 사이에 저장** — `save(to:)`는 마스킹된 구절과 그 벡터를 파일 하나에 기록하고, 불러올 때 embedder와 데이터가 일치하는지 확인합니다.
 - **테스트 완료** — macOS에서 156개, iPhone 시뮬레이터에서 155개의 Swift Testing 테스트가 마스킹 우회 시도, 조작된 저장 파일, NaN과 오버플로 입력, README의 모든 예제, 그리고 사용할 수 있는 환경에서의 온디바이스 모델 답변을 다룹니다.

@@ -41,7 +41,8 @@ dependencies, and nothing leaves the device unless your app sends it.
 - **Redaction you can reverse** — eight kinds of personal data become placeholders such as
   `[EMAIL_1]` that a model can still refer to, and `restoringOriginals(in:)` puts the values
   back into its answer. Card numbers and IBANs must pass their check digits, and full-width
-  digits, zero-width characters and unusual separators do not hide a value.
+  digits, zero-width characters and groups split by spaces, tabs, dashes, dots, slashes,
+  underscores or one line break do not hide a value.
 - **Three embedders, or your own** — a hashing embedder that works everywhere with no model,
   Apple's sentence embedding, and Apple's contextual embedding; conform to `TextEmbedder` to
   plug in a Core ML or server model.
