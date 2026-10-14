@@ -18,10 +18,17 @@ public struct KeywordIndex: Hashable, Sendable {
     private var lengths: [String: Int] = [:]
     private var totalLength = 0
 
+    static let defaultTermSaturation = 1.2
+    static let defaultLengthNormalization = 0.75
+
     /// Creates an empty index with the usual BM25 parameters (k1 = 1.2, b = 0.75).
+    ///
+    /// - Parameters:
+    ///   - termSaturation: k1, 0 or more. NaN, infinite or negative values use 1.2.
+    ///   - lengthNormalization: b, from 0 to 1; values outside are clamped, NaN uses 0.75.
     public init(termSaturation: Double = 1.2, lengthNormalization: Double = 0.75) {
-        self.termSaturation = termSaturation
-        self.lengthNormalization = lengthNormalization
+        self.termSaturation = termSaturation.isFinite && termSaturation >= 0 ? termSaturation : Self.defaultTermSaturation
+        self.lengthNormalization = lengthNormalization.isNaN ? Self.defaultLengthNormalization : min(max(lengthNormalization, 0), 1)
     }
 
     /// The number of indexed texts.

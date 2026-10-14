@@ -104,7 +104,11 @@ public actor KnowledgeBase {
             let passages = chunker.chunks(of: text).map(\.text)
             var embeddings: [[Float]] = []
             for passage in passages {
-                embeddings.append(try await embedder.embed(passage))
+                let embedding = try await embedder.embed(passage)
+                // Checked here, before anything is stored, so a bad vector cannot leave a
+                // document half indexed.
+                try vectors.validate(embedding)
+                embeddings.append(embedding)
             }
             prepared.append((StoredDocument(id: document.id, metadata: document.metadata, passages: passages), embeddings))
         }

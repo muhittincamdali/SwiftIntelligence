@@ -8,9 +8,19 @@ enum VectorMath {
     }
 
     /// The vector scaled to length 1, or unchanged when it is all zeros.
+    ///
+    /// The vector is first divided by its largest magnitude, so the sum of squares cannot
+    /// overflow to infinity for very large values (which would turn every element into 0).
     static func normalized(_ vector: [Float]) -> [Float] {
-        let length = sqrt(vDSP.sumOfSquares(vector))
-        return length > 0 ? vDSP.divide(vector, length) : vector
+        let largest = vDSP.maximumMagnitude(vector)
+        guard largest > 0, largest.isFinite else { return vector }
+        let scaled = vDSP.divide(vector, largest)
+        return vDSP.divide(scaled, sqrt(vDSP.sumOfSquares(scaled)))
+    }
+
+    /// Whether every element is a finite number (no NaN, no infinity).
+    static func isFinite(_ vector: [Float]) -> Bool {
+        vector.allSatisfy(\.isFinite)
     }
 
     /// The cosine similarity, from -1 to 1; 0 when either vector is all zeros.

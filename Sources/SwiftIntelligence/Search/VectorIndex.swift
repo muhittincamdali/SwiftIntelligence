@@ -16,6 +16,8 @@ public struct ScoredID: Hashable, Sendable {
 public enum IndexError: Error, Hashable, Sendable {
     /// A vector's length differs from the index's dimension.
     case dimensionMismatch(expected: Int, actual: Int)
+    /// A vector contains NaN or an infinite value, which has no direction to compare.
+    case nonFiniteValue
 }
 
 /// Exact nearest-neighbor search by cosine similarity over vectors kept in memory.
@@ -32,8 +34,11 @@ public struct VectorIndex: Hashable, Sendable {
     private var rows: [Float] = []
     private var positions: [String: Int] = [:]
 
+    /// Creates an empty index.
+    ///
+    /// - Parameter dimension: The length of every vector. Values below 1 are raised to 1.
     public init(dimension: Int) {
-        self.dimension = dimension
+        self.dimension = max(1, dimension)
     }
 
     /// The number of vectors.
@@ -44,11 +49,10 @@ public struct VectorIndex: Hashable, Sendable {
 
     /// Adds `vector` under `id`, replacing any vector stored under it before.
     ///
-    /// - Throws: ``IndexError/dimensionMismatch(expected:actual:)``.
+    /// - Throws: ``IndexError/dimensionMismatch(expected:actual:)`` or
+    ///   ``IndexError/nonFiniteValue``.
     public mutating func insert(_ vector: [Float], for id: String) throws {
-        guard vector.count == dimension else {
-            throw IndexError.dimensionMismatch(expected: dimension, actual: vector.count)
-        }
+        try validate(vector)
         let row = VectorMath.normalized(vector)
         if let position = positions[id] {
             rows.replaceSubrange(position * dimension..<(position + 1) * dimension, with: row)
@@ -84,11 +88,10 @@ public struct VectorIndex: Hashable, Sendable {
     /// - Parameters:
     ///   - limit: The most results to return.
     ///   - isIncluded: Leaves out identifiers for which it returns `false`.
-    /// - Throws: ``IndexError/dimensionMismatch(expected:actual:)``.
+    /// - Throws: ``IndexError/dimensionMismatch(expected:actual:)`` or
+    ///   ``IndexError/nonFiniteValue``.
     public func search(_ query: [Float], limit: Int, where isIncluded: (String) -> Bool = { _ in true }) throws -> [ScoredID] {
-        guard query.count == dimension else {
-            throw IndexError.dimensionMismatch(expected: dimension, actual: query.count)
-        }
+        try validate(query)
         guard limit > 0, !ids.isEmpty else { return [] }
         let scores = similarities(to: VectorMath.normalized(query))
         return ids.indices
@@ -96,6 +99,14 @@ public struct VectorIndex: Hashable, Sendable {
             .sorted { scores[$0] != scores[$1] ? scores[$0] > scores[$1] : $0 < $1 }
             .prefix(limit)
             .map { ScoredID(id: ids[$0], score: Double(scores[$0])) }
+    }
+
+    /// Throws when `vector` cannot be stored or searched for: wrong length, NaN or infinity.
+    public func validate(_ vector: [Float]) throws {
+        guard vector.count == dimension else {
+            throw IndexError.dimensionMismatch(expected: dimension, actual: vector.count)
+        }
+        guard VectorMath.isFinite(vector) else { throw IndexError.nonFiniteValue }
     }
 
     /// rows (count × dimension) × query (dimension × 1).
@@ -114,9 +125,15 @@ extension VectorIndex: Codable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         dimension = try container.decode(Int.self, forKey: .dimension)
+        guard dimension > 0 else {
+            throw DecodingError.dataCorruptedError(forKey: .dimension, in: container, debugDescription: "Dimension \(dimension) is not positive.")
+        }
         let ids = try container.decode([String].self, forKey: .ids)
         let data = try container.decode(Data.self, forKey: .vectors)
-        guard data.count == ids.count * dimension * MemoryLayout<Float>.size else {
+        // Checked arithmetic: a crafted file with a huge dimension must fail, not trap.
+        let (floats, floatsOverflow) = ids.count.multipliedReportingOverflow(by: dimension)
+        let (bytes, bytesOverflow) = floats.multipliedReportingOverflow(by: MemoryLayout<Float>.size)
+        guard !floatsOverflow, !bytesOverflow, data.count == bytes else {
             throw DecodingError.dataCorruptedError(forKey: .vectors, in: container, debugDescription: "Vector data does not match \(ids.count) × \(dimension) floats.")
         }
         let positions = Dictionary(ids.enumerated().map { ($0.element, $0.offset) }, uniquingKeysWith: { first, _ in first })
@@ -125,7 +142,11 @@ extension VectorIndex: Codable {
         }
         // The rows were normalized when they were inserted; normalizing again would change
         // the last bits of every value.
-        self.rows = data.withUnsafeBytes { Array($0.bindMemory(to: Float.self)) }
+        let rows = data.withUnsafeBytes { Array($0.bindMemory(to: Float.self)) }
+        guard VectorMath.isFinite(rows) else {
+            throw DecodingError.dataCorruptedError(forKey: .vectors, in: container, debugDescription: "Vector data contains NaN or infinity.")
+        }
+        self.rows = rows
         self.ids = ids
         self.positions = positions
     }

@@ -38,6 +38,7 @@ public struct TextAnalyzer: Sendable {
 
     /// The most likely languages of `text`, most likely first.
     public func languageGuesses(for text: String, maximum: Int = 3) -> [LanguageGuess] {
+        guard maximum > 0 else { return [] }
         let recognizer = NLLanguageRecognizer()
         recognizer.processString(text)
         return recognizer.languageHypotheses(withMaximum: maximum)

@@ -18,10 +18,14 @@ public struct HashingEmbedder: TextEmbedder, Hashable {
     /// Creates an embedder.
     ///
     /// - Parameter dimension: The vector length. Larger vectors have fewer collisions between
-    ///   unrelated words. Values below 16 are raised to 16.
+    ///   unrelated words. Values are kept between 16 and 65,536.
     public init(dimension: Int = 512) {
-        self.dimension = max(16, dimension)
+        self.dimension = min(max(Self.dimensionRange.lowerBound, dimension), Self.dimensionRange.upperBound)
     }
+
+    /// Past 65,536 slots collisions are already rare, and every vector would take more than
+    /// 256 KB.
+    static let dimensionRange = 16...65_536
 
     public func embed(_ text: String) async throws -> [Float] {
         vector(for: text)
