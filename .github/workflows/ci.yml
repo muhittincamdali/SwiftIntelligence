@@ -1,0 +1,20 @@
+# Managed by the repository kit (muhittincamdali/.github). Edit the inputs, keep the structure.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  swift:
+    permissions:
+      contents: read
+    uses: muhittincamdali/.github/.github/workflows/swift-ci.yml@85ec2fa95f3607e09168f14b744bd3154fdc7d43 # v1.1.0
+    with:
+      platforms: '["iOS","macOS"]'
+      scheme: SwiftIntelligence
+      test-on-simulator: true
