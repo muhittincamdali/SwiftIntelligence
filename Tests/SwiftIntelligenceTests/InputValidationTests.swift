@@ -61,6 +61,8 @@ struct InputValidationTests {
         #"{"dimension":9223372036854775807,"ids":["a"],"vectors":"AAAAAA=="}"#,
         #"{"dimension":1,"ids":["a"],"vectors":"AADAfw=="}"#,
         #"{"dimension":1,"ids":["a"],"vectors":"AACAfw=="}"#,
+        #"{"dimension":1,"ids":["a"],"vectors":"5rFhfw=="}"#,       // 3e38, finite but not unit length
+        #"{"dimension":2,"ids":["a"],"vectors":"AAAAPwAAAD8="}"#,   // [0.5, 0.5]
     ])
     func craftedVectorData(json: String) {
         #expect(throws: DecodingError.self) { try JSONDecoder().decode(VectorIndex.self, from: Data(json.utf8)) }

@@ -42,8 +42,8 @@ own documents, on the device. No 1.x API was kept.
 - `TextAnalyzer` (language, language guesses, sentiment, names, keywords, sentences) and
   `TextChunker` (sentence-based passages with overlap).
 - Input checks at every public entry point: NaN and infinite vectors are rejected, crafted
-  saved data with impossible sizes fails to decode instead of trapping, and out-of-range
-  numbers are clamped as documented.
+  saved data with impossible sizes or vectors that are not unit length fails to decode instead
+  of trapping or returning empty searches, and out-of-range numbers are clamped as documented.
 - DocC catalog with the articles Getting Started, Searching Documents, Answering Questions and
   Redacting Personal Data, published to GitHub Pages by the Documentation workflow.
 - `Examples/KnowledgeDemo`, an iOS and macOS app whose `ReadmeSamples.swift` holds the README

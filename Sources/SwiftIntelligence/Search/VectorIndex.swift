@@ -147,9 +147,26 @@ extension VectorIndex: Codable {
         guard VectorMath.isFinite(rows) else {
             throw DecodingError.dataCorruptedError(forKey: .vectors, in: container, debugDescription: "Vector data contains NaN or infinity.")
         }
+        guard Self.rowsHaveUnitLength(rows, dimension: dimension) else {
+            throw DecodingError.dataCorruptedError(forKey: .vectors, in: container, debugDescription: "Vector data contains a row that is not unit length.")
+        }
         self.rows = rows
         self.ids = ids
         self.positions = positions
+    }
+
+    /// How far the squared length of a saved row may be from 1. Rows written by
+    /// ``insert(_:for:)`` are within about 1e-6 of it, whatever the dimension.
+    private static let unitLengthTolerance: Float = 1e-3
+
+    /// Whether every row has unit length or is all zeros, as ``insert(_:for:)`` leaves it.
+    /// Scores assume unit rows: a crafted row of huge values would overflow every similarity
+    /// to infinity or NaN and drop out of the results without an error.
+    private static func rowsHaveUnitLength(_ rows: [Float], dimension: Int) -> Bool {
+        stride(from: 0, to: rows.count, by: dimension).allSatisfy { start in
+            let squaredLength = vDSP.sumOfSquares(rows[start..<start + dimension])
+            return squaredLength == 0 || abs(squaredLength - 1) <= unitLengthTolerance
+        }
     }
 
     /// Vectors are written as raw 32-bit floats (base64 in JSON), about a third of the size of
