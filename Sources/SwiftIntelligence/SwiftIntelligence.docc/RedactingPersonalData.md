@@ -67,6 +67,9 @@ Matching looks at a folded copy of the text and reports the original values and 
   underscores, or broken over two lines. Card numbers may follow other digit groups such as an
   order number; IBANs may be in upper or lower case and follow each other or a code that looks
   like one.
+- Email addresses may use every character RFC 5322 allows before the "@" ("o'brien",
+  "first/last"), a quoted local part, up to three spaces around the "@", or ideographic full
+  stops ("example。com") between the labels of the domain.
 - Overlapping matches are merged, so no part of either stays visible.
 
 It does not find data that is spelled out ("jane at example dot com", "four one one one"),

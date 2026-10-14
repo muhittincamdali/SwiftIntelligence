@@ -5,8 +5,8 @@ import Foundation
 ///
 /// Folding stops the simple ways of slipping a value past a pattern: full-width and other
 /// compatibility forms ("４１１１", "＠"), invisible format characters inside a value (zero-width
-/// spaces, soft hyphens, direction marks), accents, typographic dashes and unusual spaces
-/// between digit groups.
+/// spaces, soft hyphens, direction marks), accents, typographic dashes, unusual spaces
+/// between digit groups and ideographic full stops between the labels of a domain.
 struct FoldedText {
     enum Strength {
         /// Removes format characters and applies NFKC. Letters keep their accents, so the
@@ -127,7 +127,7 @@ struct FoldedText {
                 case .lineSeparator, .paragraphSeparator:
                     scalars.append("\n")
                 default:
-                    scalars.append(scalar == minusSign ? "-" : scalar)
+                    scalars.append(punctuationFolds[scalar] ?? scalar)
                 }
             }
             folded = String(scalars)
@@ -135,6 +135,8 @@ struct FoldedText {
         return folded == String(character) ? nil : folded
     }
 
-    /// U+2212 is a math symbol, not a dash, but is typed between digit groups all the same.
-    private static let minusSign: Unicode.Scalar = "\u{2212}"
+    /// Punctuation that compatibility mapping keeps but that stands in for ASCII all the same:
+    /// U+2212 MINUS SIGN is typed between digit groups, and U+3002 IDEOGRAPHIC FULL STOP
+    /// (also the folded form of the half-width U+FF61) between the labels of a domain.
+    private static let punctuationFolds: [Unicode.Scalar: Unicode.Scalar] = ["\u{2212}": "-", "\u{3002}": "."]
 }

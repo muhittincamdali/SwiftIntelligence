@@ -60,9 +60,31 @@ struct RedactionBypassTests {
         "jose\u{0301}@example.com",
         "josé@exämple.com",
         "用户@例子.广告",
+        "o'brien@example.com",
+        "first/last@example.com",
+        "a!b#c$d%e&f*g+h=i?j^k_l`m{n|o}p~q@example.com",
+        "\"jane doe\"@example.com",
+        "\"jane@home\"@example.com",
+        "jane @ example.com",
+        "jane\t@\texample.com",
+        "jane@example。com",
+        "jane@example｡co｡uk",
     ])
     func emailVariants(email: String) {
         #expect(redacted("Mail \(email) now", kinds: [.emailAddress]) == "Mail [EMAIL] now")
+    }
+
+    @Test("leaves quote marks around an address in the text")
+    func emailInQuotes() {
+        #expect(redacted("Mail 'jane@example.com' or `bob@example.com`", kinds: [.emailAddress]) == "Mail '[EMAIL]' or `[EMAIL]`")
+        #expect(redacted("He said \"hi\" to jane@example.com", kinds: [.emailAddress]) == "He said \"hi\" to [EMAIL]")
+    }
+
+    @Test("leaves an at sign without an address readable")
+    func emailLookAlikes() {
+        for text in ["Meet @ noon.", "5 @ 3.99 each", "@ example.com", "x @    example.com"] {
+            #expect(redacted(text, kinds: [.emailAddress]) == text)
+        }
     }
 
     @Test("redacts the end of a local part longer than the RFC limit instead of none of it")
@@ -215,6 +237,8 @@ struct FoldedTextTests {
         #expect(FoldedText("４１\u{200B}–ｅ\u{0301}\u{00A0}x", strength: .full).text == "41-e x")
         #expect(FoldedText("Ma\u{200B}ría", strength: .compatibility).text == "María")
         #expect(FoldedText("plain ascii", strength: .full).text == "plain ascii")
+        #expect(FoldedText("a。b｡c", strength: .full).text == "a.b.c")
+        #expect(FoldedText("a。b", strength: .compatibility).text == "a。b")
     }
 
     @Test("maps folded ranges back to whole original characters")

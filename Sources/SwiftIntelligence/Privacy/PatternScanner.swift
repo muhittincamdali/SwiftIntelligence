@@ -6,11 +6,18 @@ import Foundation
 /// The patterns run on a ``FoldedText`` and every quantifier is bounded, so the time per input
 /// character is bounded too, whatever the text looks like.
 enum PatternScanner {
-    /// The part of an email address after the "@", with RFC 5321 label limits.
-    private static let emailDomain = pattern(#"@[\p{L}\p{N}\-]{1,63}(?:\.[\p{L}\p{N}\-]{1,63}){0,8}\.\p{L}{2,63}"#)
+    /// The part of an email address after the "@", with RFC 5321 label limits. Up to three
+    /// spaces or tabs may follow the "@" ("jane @ example.com").
+    private static let emailDomain = pattern(#"@[ \t]{0,3}[\p{L}\p{N}\-]{1,63}(?:\.[\p{L}\p{N}\-]{1,63}){0,8}\.\p{L}{2,63}"#)
     /// RFC 5321 allows 64 characters before the "@".
     private static let maximumLocalPartLength = 64
-    private static let localPartCharacters = CharacterSet.letters.union(.decimalDigits).union(CharacterSet(charactersIn: "._%+-"))
+    /// Spaces or tabs allowed between the local part and the "@".
+    private static let maximumSpacesBeforeAt = 3
+    /// Letters, digits and every other character RFC 5322 allows in an unquoted local part.
+    private static let localPartCharacters = CharacterSet.letters.union(.decimalDigits)
+        .union(CharacterSet(charactersIn: "!#$%&'*+-/=?^_`{|}~."))
+    /// Quote marks that open a quotation in prose more often than they start an address.
+    private static let leadingQuotes = CharacterSet(charactersIn: "'`")
     /// Up to three spaces, tabs, hyphens, dots, slashes or underscores, or one line break with
     /// up to three spaces or tabs on each side. Shared by card numbers and IBANs, so a value
     /// cannot hide behind a separator that only one of the two patterns knows.
@@ -56,16 +63,42 @@ enum PatternScanner {
             searchStart = at.location + 1
             let domain = emailDomain.firstMatch(in: text, options: .anchored, range: NSRange(location: at.location, length: string.length - at.location))
             guard let domain else { continue }
-            var start = at.location
-            let earliest = max(ranges.last.map { $0.location + $0.length } ?? 0, at.location - maximumLocalPartLength)
-            while start > earliest, let scalar = Unicode.Scalar(string.character(at: start - 1)), localPartCharacters.contains(scalar) {
-                start -= 1
-            }
-            guard start < at.location else { continue }
+            let previousEnd = ranges.last.map { $0.location + $0.length } ?? 0
+            guard let start = localPartStart(before: at.location, in: string, notBefore: previousEnd) else { continue }
             ranges.append(NSRange(location: start, length: domain.range.location + domain.range.length - start))
             searchStart = domain.range.location + domain.range.length
         }
         return ranges
+    }
+
+    /// Where the local part before the "@" at `at` starts, or `nil` when there is none. Reads
+    /// backward over up to three spaces or tabs, then either a quoted local part
+    /// ("\"jane doe\"@…") or unquoted local-part characters, at most 64 UTF-16 units.
+    private static func localPartStart(before at: Int, in string: NSString, notBefore previousEnd: Int) -> Int? {
+        var end = at
+        while end > previousEnd, at - end < maximumSpacesBeforeAt, isSpaceOrTab(string.character(at: end - 1)) {
+            end -= 1
+        }
+        let earliest = max(previousEnd, end - maximumLocalPartLength)
+        if end > earliest, string.character(at: end - 1) == quotationMark {
+            var start = end - 1
+            while start > earliest, string.character(at: start - 1) != quotationMark { start -= 1 }
+            if start > earliest { return start - 1 }
+        }
+        var start = end
+        while start > earliest, let scalar = Unicode.Scalar(string.character(at: start - 1)), localPartCharacters.contains(scalar) {
+            start -= 1
+        }
+        while start < end, let scalar = Unicode.Scalar(string.character(at: start)), leadingQuotes.contains(scalar) {
+            start += 1
+        }
+        return start < end ? start : nil
+    }
+
+    private static let quotationMark = unichar(UInt8(ascii: "\""))
+
+    private static func isSpaceOrTab(_ character: unichar) -> Bool {
+        character == unichar(UInt8(ascii: " ")) || character == unichar(UInt8(ascii: "\t"))
     }
 
     /// Within each run of digit groups, the longest run of whole groups that has 13 to 19

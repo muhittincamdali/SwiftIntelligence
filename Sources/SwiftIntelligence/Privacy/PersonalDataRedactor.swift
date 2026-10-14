@@ -17,6 +17,8 @@ import NaturalLanguage
 ///   marks) are ignored, and the replacement covers them.
 /// - Card numbers and IBANs may be grouped with spaces, tabs, hyphens, typographic dashes,
 ///   dots, slashes or underscores, or broken over two lines; IBANs may be in any case.
+/// - Email addresses may use every character RFC 5322 allows before the "@", a quoted local
+///   part, spaces around the "@", or ideographic full stops between the labels of the domain.
 /// - Overlapping matches are merged, so no part of any of them stays in the text.
 ///
 /// It does not find data that is spelled out ("jane at example dot com", "four one one one")
