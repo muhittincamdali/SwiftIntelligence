@@ -49,7 +49,7 @@ public struct Keyword: Hashable, Sendable {
     }
 }
 
-/// Everything ``TextAnalyzer/analyze(_:)`` finds in one pass.
+/// Everything ``TextAnalyzer/analyze(_:keywordLimit:)`` finds in one pass.
 public struct TextAnalysis: Hashable, Sendable {
     /// The dominant language, or `nil` when the text is too short or mixed to tell.
     public let language: NLLanguage?

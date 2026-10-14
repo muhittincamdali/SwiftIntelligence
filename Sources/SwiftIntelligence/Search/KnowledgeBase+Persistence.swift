@@ -42,8 +42,10 @@ extension KnowledgeBase {
 
     /// Writes the knowledge base to `url`.
     ///
-    /// - Parameter options: How to write; atomic by default. On iOS, add
-    ///   `.completeFileProtection` to keep the file encrypted while the device is locked.
+    /// - Parameters:
+    ///   - url: The file to write; it is replaced if it exists.
+    ///   - options: How to write; atomic by default. On iOS, add `.completeFileProtection` to
+    ///     keep the file encrypted while the device is locked.
     public func save(to url: URL, options: Data.WritingOptions = [.atomic]) throws {
         try dataRepresentation().write(to: url, options: options)
     }
@@ -51,6 +53,7 @@ extension KnowledgeBase {
     /// Restores a knowledge base from ``dataRepresentation()``.
     ///
     /// - Parameters:
+    ///   - data: Data from ``dataRepresentation()``.
     ///   - embedder: Must be the embedder the data was saved with (the same
     ///     ``TextEmbedder/identifier``); its vectors are compared with the saved ones.
     ///   - chunker: Splits documents added from now on.
@@ -74,6 +77,13 @@ extension KnowledgeBase {
     }
 
     /// Reads a knowledge base saved with ``save(to:options:)``.
+    ///
+    /// - Parameters:
+    ///   - url: The file written by ``save(to:options:)``.
+    ///   - embedder: Must be the embedder the file was saved with.
+    ///   - chunker: Splits documents added from now on.
+    ///   - redactor: Redacts documents added from now on.
+    /// - Throws: The errors of ``init(data:embedder:chunker:redactor:)``, or a file error.
     public init(
         contentsOf url: URL,
         embedder: any TextEmbedder = HashingEmbedder(),

@@ -156,6 +156,7 @@ public actor KnowledgeBase {
     /// The passages that best match `query`, best first.
     ///
     /// - Parameters:
+    ///   - query: What to look for: a question, keywords or a code.
     ///   - limit: The most passages to return.
     ///   - mode: How to rank; ``SearchMode/hybrid`` by default.
     ///   - metadata: Only documents whose metadata contains all of these key-value pairs.

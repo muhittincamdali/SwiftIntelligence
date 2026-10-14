@@ -86,6 +86,7 @@ public struct VectorIndex: Hashable, Sendable {
     /// similarity (-1 to 1) as the score.
     ///
     /// - Parameters:
+    ///   - query: The vector to compare with; any length other than zero.
     ///   - limit: The most results to return.
     ///   - isIncluded: Leaves out identifiers for which it returns `false`.
     /// - Throws: ``IndexError/dimensionMismatch(expected:actual:)`` or

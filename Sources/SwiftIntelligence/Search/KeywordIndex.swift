@@ -60,6 +60,7 @@ public struct KeywordIndex: Hashable, Sendable {
     /// The texts that contain words of `query`, best match first, with their BM25 score.
     ///
     /// - Parameters:
+    ///   - query: The words to look for.
     ///   - limit: The most results to return.
     ///   - isIncluded: Leaves out identifiers for which it returns `false`.
     public func search(_ query: String, limit: Int, where isIncluded: (String) -> Bool = { _ in true }) -> [ScoredID] {

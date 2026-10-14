@@ -66,7 +66,7 @@ extension KnowledgeBase {
     }
 }
 
-/// A Foundation Models tool that lets a ``LanguageModelSession`` search a ``KnowledgeBase``
+/// A Foundation Models tool that lets a `LanguageModelSession` search a ``KnowledgeBase``
 /// on its own, when a conversation needs facts from your documents.
 ///
 /// ```swift
