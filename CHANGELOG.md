@@ -35,7 +35,9 @@ own documents, on the device. No 1.x API was kept.
   card numbers (Luhn), IBANs (mod 97 and country lengths), IP addresses and names, with
   placeholders that `RedactedText.restoringOriginals(in:)` reverses. Matching runs on a folded
   copy of the text, so full-width characters, invisible format characters, typographic dashes
-  and spaces, line breaks inside card numbers and overlapping matches do not leave data visible.
+  and spaces, tabs, slashes, underscores and line breaks inside card numbers and IBANs, quoted
+  or punctuated email local parts, spaces around the "@" and overlapping matches do not leave
+  data visible.
 - `TextAnalyzer` (language, language guesses, sentiment, names, keywords, sentences) and
   `TextChunker` (sentence-based passages with overlap).
 - Input checks at every public entry point: NaN and infinite vectors are rejected, crafted
