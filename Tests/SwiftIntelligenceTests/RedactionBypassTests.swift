@@ -101,7 +101,7 @@ struct RedactionBypassTests {
         #expect(result.first?.value.contains("０１３２") == true)
     }
 
-    @Test("finds a name with an invisible character inside")
+    @Test("finds a name with an invisible character inside", .enabled(if: SystemModels.hasNameTagger, "needs the NaturalLanguage name model"))
     func nameWithFormatCharacter() {
         let matches = PersonalDataRedactor(kinds: [.personName]).matches(in: "Yesterday Ma\u{200B}ria Garcia met John Smith.")
         #expect(matches.map(\.value) == ["Ma\u{200B}ria Garcia", "John Smith"])

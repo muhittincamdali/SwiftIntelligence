@@ -82,7 +82,7 @@ struct PersonalDataRedactorTests {
         #expect(kinds(in: "Room 4512 on floor 3.", only: [.phoneNumber]).isEmpty)
     }
 
-    @Test("finds people's names")
+    @Test("finds people's names", .enabled(if: SystemModels.hasNameTagger, "needs the NaturalLanguage name model"))
     func names() {
         let values = PersonalDataRedactor(kinds: [.personName]).matches(in: "Yesterday Maria Garcia met John Smith.").map(\.value)
         #expect(values == ["Maria Garcia", "John Smith"])

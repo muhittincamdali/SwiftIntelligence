@@ -30,7 +30,7 @@ struct TextAnalyzerTests {
         #expect(guesses.map(\.probability) == guesses.map(\.probability).sorted(by: >))
     }
 
-    @Test("scores positive and negative text on opposite sides of zero")
+    @Test("scores positive and negative text on opposite sides of zero", .enabled(if: SystemModels.hasSentimentModel, "needs the NaturalLanguage sentiment model"))
     func sentiment() throws {
         let positive = try #require(analyzer.sentiment(of: "I love this app. It is fast, beautiful and a joy to use."))
         let negative = try #require(analyzer.sentiment(of: "This is terrible. It crashes all the time and I hate it."))
@@ -44,7 +44,7 @@ struct TextAnalyzerTests {
         #expect(analyzer.sentiment(of: "") == nil)
     }
 
-    @Test("finds people, places and organizations with their ranges")
+    @Test("finds people, places and organizations with their ranges", .enabled(if: SystemModels.hasNameTagger, "needs the NaturalLanguage name model"))
     func entities() {
         let text = "Tim Cook said Apple will open a new office in Berlin next year."
         let entities = analyzer.entities(in: text)
@@ -62,7 +62,7 @@ struct TextAnalyzerTests {
         #expect(sentences == ["First sentence.", "Second one?", "Third!"])
     }
 
-    @Test("counts nouns in their dictionary form, most frequent first")
+    @Test("counts nouns in their dictionary form, most frequent first", .enabled(if: SystemModels.hasPartOfSpeechTagger, "needs the NaturalLanguage part-of-speech model"))
     func keywords() {
         let text = "The invoice is late. Two invoices were paid. The customer asked about the invoice and the delivery."
         let keywords = analyzer.keywords(in: text, limit: 3)
@@ -76,7 +76,7 @@ struct TextAnalyzerTests {
         #expect(analyzer.keywords(in: "Invoices and invoices.", limit: 0).isEmpty)
     }
 
-    @Test("bundles every result in analyze")
+    @Test("bundles every result in analyze", .enabled(if: SystemModels.hasNameTagger, "needs the NaturalLanguage name model"), .enabled(if: SystemModels.hasPartOfSpeechTagger, "needs the NaturalLanguage part-of-speech model"))
     func analyze() {
         let analysis = analyzer.analyze("Apple opened a store in Paris. People loved the store.")
         #expect(analysis.language == .english)
