@@ -14,11 +14,11 @@ Generated from the current benchmark artifact tree.
 
 | Snapshot | Type | Git Ref | Commit | Generated | Archived | Provenance | Score | Avg (s) | Workloads | Source |
 | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
-| `v1.2.2` | release | `v1.2.2` | `56bf6db83fcb` | `2026-04-15T13:26:36Z` | `2026-04-15T13:27:33Z` | `local-directory` | 55.51 | 0.0786 | 25 | [summary](../../Benchmarks/Results/releases/v1.2.2/benchmark-summary.md) |
+| `v1.2.2` | release | `v1.2.2` | `52fc543f2257` | `2026-04-15T13:26:36Z` | `2026-04-15T13:27:33Z` | `local-directory` | 55.51 | 0.0786 | 25 | [summary](../../Benchmarks/Results/releases/v1.2.2/benchmark-summary.md) |
 | `latest` | latest | `latest` | `n/a` | `2026-04-15T13:26:36Z` | `n/a` | `local-directory` | 55.51 | 0.0786 | 25 | [summary](../../Benchmarks/Results/latest/benchmark-summary.md) |
-| `v1.2.1` | release | `v1.2.1` | `699df19bf219` | `2026-04-15T13:00:40Z` | `2026-04-15T13:01:36Z` | `local-directory` | 55.55 | 0.0785 | 25 | [summary](../../Benchmarks/Results/releases/v1.2.1/benchmark-summary.md) |
-| `iphone-baseline-2026-04-07` | release | `iphone-baseline-2026-04-07` | `1b63ab3b42c3` | `2026-04-07T15:01:01Z` | `2026-04-07T15:02:30Z` | `physical-device-test` | 38.59 | 0.0793 | 25 | [summary](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/benchmark-summary.md) |
-| `20260402T052611Z-initial-baseline` | release | `20260402T052611Z-initial-baseline` | `1b63ab3b42c3` | `2026-04-02T01:14:14Z` | `2026-04-02T02:30:23Z` | `local-directory` | 56.47 | 0.0767 | 25 | [summary](../../Benchmarks/Results/releases/20260402T052611Z-initial-baseline/benchmark-summary.md) |
+| `v1.2.1` | release | `v1.2.1` | `63c602ac1518` | `2026-04-15T13:00:40Z` | `2026-04-15T13:01:36Z` | `local-directory` | 55.55 | 0.0785 | 25 | [summary](../../Benchmarks/Results/releases/v1.2.1/benchmark-summary.md) |
+| `iphone-baseline-2026-04-07` | release | `iphone-baseline-2026-04-07` | `2769d56bd898` | `2026-04-07T15:01:01Z` | `2026-04-07T15:02:30Z` | `physical-device-test` | 38.59 | 0.0793 | 25 | [summary](../../Benchmarks/Results/releases/iphone-baseline-2026-04-07/benchmark-summary.md) |
+| `20260402T052611Z-initial-baseline` | release | `20260402T052611Z-initial-baseline` | `2769d56bd898` | `2026-04-02T01:14:14Z` | `2026-04-02T02:30:23Z` | `local-directory` | 56.47 | 0.0767 | 25 | [summary](../../Benchmarks/Results/releases/20260402T052611Z-initial-baseline/benchmark-summary.md) |
 
 ## Environment Matrix
 

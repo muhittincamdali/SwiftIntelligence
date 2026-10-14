@@ -2,7 +2,7 @@
   "archivedAt": "2026-04-15T13:27:33Z",
   "snapshotName": "v1.2.2",
   "gitRef": "v1.2.2",
-  "gitCommit": "56bf6db83fcb8269e1dae5fe9f1e1249be34c80c",
+  "gitCommit": "52fc543f225704860ccda3bf603f24e7451c4727",
   "sourceArtifactsDirectory": "Benchmarks/Results/latest",
   "archivedArtifactsDirectory": "Benchmarks/Results/releases/v1.2.2",
   "provenance": {

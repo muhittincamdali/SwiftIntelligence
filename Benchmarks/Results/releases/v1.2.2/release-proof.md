@@ -3,7 +3,7 @@
 - Evidence bundle: `Benchmarks/Results/releases/v1.2.2`
 - Snapshot name: `v1.2.2`
 - Git ref: `v1.2.2`
-- Git commit: `56bf6db83fcb8269e1dae5fe9f1e1249be34c80c`
+- Git commit: `52fc543f225704860ccda3bf603f24e7451c4727`
 - Benchmark profile: `standard`
 - Benchmark run generated at: `2026-04-15T13:26:36Z`
 - Evidence archived at: `2026-04-15T13:27:33Z`

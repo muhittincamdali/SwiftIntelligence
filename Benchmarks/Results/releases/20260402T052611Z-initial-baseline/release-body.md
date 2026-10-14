@@ -33,7 +33,7 @@ _No numbered CHANGELOG section matched this bundle, so this section documents th
 
 - Release: `20260402T052611Z-initial-baseline`
 - Evidence bundle: `Benchmarks/Results/releases/20260402T052611Z-initial-baseline`
-- Git commit: `1b63ab3b42c35b002f8b4d4282a22c748d14008a`
+- Git commit: `2769d56bd8984eda29e6ded0a24790f1a415dc93`
 - Benchmark profile: `standard`
 - Benchmark run generated at: `2026-04-02T01:14:14Z`
 - Evidence archived at: `2026-04-02T02:30:23Z`
@@ -73,7 +73,7 @@ _No numbered CHANGELOG section matched this bundle, so this section documents th
 - Evidence bundle: `Benchmarks/Results/releases/20260402T052611Z-initial-baseline`
 - Snapshot name: `20260402T052611Z-initial-baseline`
 - Git ref: `20260402T052611Z-initial-baseline`
-- Git commit: `1b63ab3b42c35b002f8b4d4282a22c748d14008a`
+- Git commit: `2769d56bd8984eda29e6ded0a24790f1a415dc93`
 - Benchmark profile: `standard`
 - Benchmark run generated at: `2026-04-02T01:14:14Z`
 - Evidence archived at: `2026-04-02T02:30:23Z`

@@ -79,7 +79,7 @@
       "name": "metadata.json",
       "relativePath": "Benchmarks/Results/releases/20260402T052611Z-initial-baseline/metadata.json",
       "size": 1114,
-      "sha256": "6c38a0061c82e12853fdb1210c20eb3f9fcf655e3ae215c9326827424fc95702"
+      "sha256": "e4c78811cf3e0bb79268860f01ac0ba05912490a835e82c48e9d35ef0530b40b"
     },
     {
       "name": "public-proof-status.json",
@@ -103,19 +103,19 @@
       "name": "release-body.md",
       "relativePath": "Benchmarks/Results/releases/20260402T052611Z-initial-baseline/release-body.md",
       "size": 7724,
-      "sha256": "4c5d4a0c00b868cb6342f5761eb5562af043b21942e4981f7629f333c7072aad"
+      "sha256": "f15476d3e2e3b6c584199365be23e143be33ed16b46c29aebef0802d94f9b088"
     },
     {
       "name": "release-notes-proof.md",
       "relativePath": "Benchmarks/Results/releases/20260402T052611Z-initial-baseline/release-notes-proof.md",
       "size": 6245,
-      "sha256": "6e18f55f1e3089babe1453801d2b2cdb8a1088cef77213593f328a8331f43b6f"
+      "sha256": "bc14cb50843bac2a1c24fe9afea0a309d26e9b57d4460d3e7598d50bd343decd"
     },
     {
       "name": "release-proof.md",
       "relativePath": "Benchmarks/Results/releases/20260402T052611Z-initial-baseline/release-proof.md",
       "size": 857,
-      "sha256": "13f992aa9a5c5ae6bec9ae06dbd08311c5d764255c4b70ac87d6ea8085b6e9a4"
+      "sha256": "be1ad0c5f0ed6ad245d1f335a5247a53d99e9f7799401e3e675e8558a888c4af"
     }
   ]
 }
