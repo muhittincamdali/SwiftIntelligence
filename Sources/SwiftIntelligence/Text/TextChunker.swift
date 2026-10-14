@@ -91,6 +91,14 @@ public struct TextChunker: Hashable, Sendable {
                 pieces.append(word)
             }
         }
+        // Word tokens leave out punctuation; give each piece the text up to the next one (the
+        // last piece: up to the end of the sentence) when that still fits.
+        for index in pieces.indices {
+            let end = index + 1 < pieces.count ? pieces[index + 1].lowerBound : range.upperBound
+            if let extended = trimmed(pieces[index].lowerBound..<end, in: text), length(extended, in: text) <= maximumLength {
+                pieces[index] = extended
+            }
+        }
         return pieces
     }
 

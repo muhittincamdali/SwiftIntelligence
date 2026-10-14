@@ -46,6 +46,12 @@ struct TextChunkerTests {
         #expect(chunks.allSatisfy { $0.text.count <= 10 })
     }
 
+    @Test("keeps the punctuation of a sentence that is split between words")
+    func punctuationInSplitSentence() {
+        let chunks = TextChunker(maximumLength: 16, overlap: 0).chunks(of: "Apples, pears and plums, all ripe.")
+        #expect(chunks.map(\.text) == ["Apples, pears", "and plums, all", "ripe."])
+    }
+
     @Test("reports each passage's range in the source text")
     func ranges() {
         let source = "  First part here.\n\nSecond part here.  "
