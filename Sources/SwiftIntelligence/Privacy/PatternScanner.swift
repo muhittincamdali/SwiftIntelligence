@@ -6,12 +6,18 @@ import Foundation
 /// The patterns run on a ``FoldedText`` and every quantifier is bounded, so the time per input
 /// character is bounded too, whatever the text looks like.
 enum PatternScanner {
-    /// The part of an email address after the "@", with RFC 5321 label limits. Up to three
-    /// spaces or tabs may follow the "@" ("jane @ example.com").
-    private static let emailDomain = pattern(#"@[ \t]{0,3}[\p{L}\p{N}\-]{1,63}(?:\.[\p{L}\p{N}\-]{1,63}){0,8}\.\p{L}{2,63}"#)
+    /// The part of an email address after the "@": a domain with RFC 5321 label limits, or an
+    /// address literal ("[192.0.2.1]", "[IPv6:2001:db8::1]"). Up to three spaces or tabs, or
+    /// one line break with up to three on each side, may follow the "@"; up to three spaces or
+    /// tabs may stand before each dot ("example .com").
+    private static let emailDomain = pattern(
+        #"@[ \t]{0,3}(?:\R[ \t]{0,3})?"#
+            + #"(?:\[(?:IPv6:)?[0-9A-F:.]{2,45}\]"#
+            + #"|[\p{L}\p{N}\-]{1,63}(?:[ \t]{0,3}\.[\p{L}\p{N}\-]{1,63}){0,8}[ \t]{0,3}\.\p{L}{2,63})"#
+    )
     /// RFC 5321 allows 64 characters before the "@".
     private static let maximumLocalPartLength = 64
-    /// Spaces or tabs allowed between the local part and the "@".
+    /// Spaces or tabs allowed between the local part and the "@", on each side of a line break.
     private static let maximumSpacesBeforeAt = 3
     /// Letters, digits and every other character RFC 5322 allows in an unquoted local part.
     private static let localPartCharacters = CharacterSet.letters.union(.decimalDigits)
@@ -72,12 +78,14 @@ enum PatternScanner {
     }
 
     /// Where the local part before the "@" at `at` starts, or `nil` when there is none. Reads
-    /// backward over up to three spaces or tabs, then either a quoted local part
-    /// ("\"jane doe\"@…") or unquoted local-part characters, at most 64 UTF-16 units.
+    /// backward over up to three spaces or tabs, or one line break with up to three on each
+    /// side, then either a quoted local part ("\"jane doe\"@…") or unquoted local-part
+    /// characters, at most 64 UTF-16 units.
     private static func localPartStart(before at: Int, in string: NSString, notBefore previousEnd: Int) -> Int? {
-        var end = at
-        while end > previousEnd, at - end < maximumSpacesBeforeAt, isSpaceOrTab(string.character(at: end - 1)) {
-            end -= 1
+        var end = startOfSpaces(before: at, in: string, notBefore: previousEnd)
+        let lineBreakStart = startOfLineBreak(before: end, in: string, notBefore: previousEnd)
+        if lineBreakStart < end {
+            end = startOfSpaces(before: lineBreakStart, in: string, notBefore: previousEnd)
         }
         let earliest = max(previousEnd, end - maximumLocalPartLength)
         if end > earliest, string.character(at: end - 1) == quotationMark {
@@ -86,8 +94,8 @@ enum PatternScanner {
             if start > earliest { return start - 1 }
         }
         var start = end
-        while start > earliest, let scalar = Unicode.Scalar(string.character(at: start - 1)), localPartCharacters.contains(scalar) {
-            start -= 1
+        while let (scalar, width) = scalar(endingAt: start, in: string, notBefore: earliest), localPartCharacters.contains(scalar) {
+            start -= width
         }
         while start < end, let scalar = Unicode.Scalar(string.character(at: start)), leadingQuotes.contains(scalar) {
             start += 1
@@ -95,7 +103,41 @@ enum PatternScanner {
         return start < end ? start : nil
     }
 
+    /// The Unicode scalar that ends at UTF-16 offset `end` and its length in UTF-16 units, or
+    /// `nil` when it would start before `limit`. Reads a surrogate pair as one scalar, so a
+    /// local part with characters outside the Basic Multilingual Plane ("𠀀") is read whole.
+    private static func scalar(endingAt end: Int, in string: NSString, notBefore limit: Int) -> (Unicode.Scalar, Int)? {
+        guard end > limit else { return nil }
+        let last = string.character(at: end - 1)
+        if let scalar = Unicode.Scalar(last) { return (scalar, 1) }
+        guard end - 1 > limit, UTF16.isTrailSurrogate(last) else { return nil }
+        let first = string.character(at: end - 2)
+        guard UTF16.isLeadSurrogate(first) else { return nil }
+        let value = 0x10000 + (UInt32(first) - 0xD800) << 10 + (UInt32(last) - 0xDC00)
+        return Unicode.Scalar(value).map { ($0, 2) }
+    }
+
+    /// The start of the up to three spaces or tabs that end at `end`, not before `limit`.
+    private static func startOfSpaces(before end: Int, in string: NSString, notBefore limit: Int) -> Int {
+        var start = end
+        while start > limit, end - start < maximumSpacesBeforeAt, isSpaceOrTab(string.character(at: start - 1)) {
+            start -= 1
+        }
+        return start
+    }
+
+    /// The start of the line break that ends at `end` ("\r\n" counts as one), or `end` when
+    /// there is none.
+    private static func startOfLineBreak(before end: Int, in string: NSString, notBefore limit: Int) -> Int {
+        guard end > limit, let last = Unicode.Scalar(string.character(at: end - 1)), CharacterSet.newlines.contains(last) else {
+            return end
+        }
+        let isCRLF = last == "\n" && end - 1 > limit && string.character(at: end - 2) == carriageReturn
+        return isCRLF ? end - 2 : end - 1
+    }
+
     private static let quotationMark = unichar(UInt8(ascii: "\""))
+    private static let carriageReturn = unichar(UInt8(ascii: "\r"))
 
     private static func isSpaceOrTab(_ character: unichar) -> Bool {
         character == unichar(UInt8(ascii: " ")) || character == unichar(UInt8(ascii: "\t"))

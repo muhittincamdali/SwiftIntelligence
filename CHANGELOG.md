@@ -36,7 +36,8 @@ own documents, on the device. No 1.x API was kept.
   placeholders that `RedactedText.restoringOriginals(in:)` reverses. Matching runs on a folded
   copy of the text, so full-width characters, invisible format characters, typographic dashes
   and spaces, tabs, slashes, underscores and line breaks inside card numbers and IBANs, quoted
-  or punctuated email local parts, spaces around the "@" and overlapping matches do not leave
+  or punctuated email local parts, spaces or a line break around the "@", spaces before a dot
+  of the domain, address literals ("jane@[192.0.2.1]") and overlapping matches do not leave
   data visible.
 - `TextAnalyzer` (language, language guesses, sentiment, names, keywords, sentences) and
   `TextChunker` (sentence-based passages with overlap).

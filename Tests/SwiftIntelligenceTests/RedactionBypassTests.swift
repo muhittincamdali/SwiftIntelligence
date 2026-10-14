@@ -69,9 +69,19 @@ struct RedactionBypassTests {
         "jane\t@\texample.com",
         "jane@example。com",
         "jane@example｡co｡uk",
+        "jane\n@example.com",
+        "jane@\nexample.com",
+        "jane \r\n @example.com",
+        "jane@example .com",
+        "jane@mail\t.example .com",
+        "𠀀𠀁@example.com",
+        "ab𠀀cd@example.com",
+        "jane@[192.0.2.1]",
+        "jane@[IPv6:2001:db8::1]",
     ])
     func emailVariants(email: String) {
         #expect(redacted("Mail \(email) now", kinds: [.emailAddress]) == "Mail [EMAIL] now")
+        #expect(PersonalDataRedactor(replacement: .tag).redact("Mail \(email) now").text == "Mail [EMAIL] now")
     }
 
     @Test("leaves quote marks around an address in the text")
@@ -82,7 +92,7 @@ struct RedactionBypassTests {
 
     @Test("leaves an at sign without an address readable")
     func emailLookAlikes() {
-        for text in ["Meet @ noon.", "5 @ 3.99 each", "@ example.com", "x @    example.com"] {
+        for text in ["Meet @ noon.", "5 @ 3.99 each", "@ example.com", "x @    example.com", "x\n\n@example.com", "Ping @team. See you"] {
             #expect(redacted(text, kinds: [.emailAddress]) == text)
         }
     }
@@ -220,6 +230,7 @@ struct RedactionBypassTests {
             String(repeating: "DE89\n", count: 40_000),
             String(repeating: "AB12 / ", count: 30_000),
             String(repeating: "1:", count: 100_000),
+            String(repeating: "a\n@b .", count: 40_000),
         ]
         let redactor = PersonalDataRedactor(kinds: [.emailAddress, .paymentCardNumber, .iban, .ipAddress])
         let clock = ContinuousClock()
