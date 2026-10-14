@@ -17,17 +17,19 @@ struct QuickStartView: View {
     var body: some View {
         Text(answer)
             .padding()
-            .task {
-                do {
-                    let knowledge = KnowledgeBase()
-                    try await knowledge.add("You can return any item within 30 days of delivery for a full refund.", id: "returns")
-                    try await knowledge.add("Every laptop comes with a two-year warranty against defects.", id: "warranty")
-                    let results = try await knowledge.search("How do I return an item for a refund?")
-                    answer = results.first?.text ?? "Nothing found"
-                } catch {
-                    answer = "Search failed: \(error)"
-                }
-            }
+            .task { answer = await Self.bestMatch() }
+    }
+
+    static func bestMatch() async -> String {
+        do {
+            let knowledge = KnowledgeBase()
+            try await knowledge.add("You can return any item within 30 days of delivery for a full refund.", id: "returns")
+            try await knowledge.add("Every laptop comes with a two-year warranty against defects.", id: "warranty")
+            let results = try await knowledge.search("How do I return an item for a refund?")
+            return results.first?.text ?? "Nothing found"
+        } catch {
+            return "Search failed: \(error)"
+        }
     }
 }
 
