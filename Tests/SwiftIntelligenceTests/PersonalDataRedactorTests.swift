@@ -128,15 +128,15 @@ struct PersonalDataRedactorTests {
         #expect(result.matches.isEmpty)
     }
 
-    @Test("keeps the longer of two overlapping matches")
+    @Test("merges a match inside a longer one into the longer one")
     func overlaps() {
         let text = "x 4111 1111 1111 1111 y"
         let card = text.range(of: "4111 1111 1111 1111")!
         let part = text.range(of: "4111 1111")!
-        let kept = PersonalDataRedactor.withoutOverlaps([
+        let kept = PersonalDataRedactor.merged([
             PersonalDataMatch(kind: .phoneNumber, value: "4111 1111", range: part),
             PersonalDataMatch(kind: .paymentCardNumber, value: "4111 1111 1111 1111", range: card),
-        ])
+        ], in: text)
         #expect(kept.map(\.kind) == [.paymentCardNumber])
     }
 
@@ -144,10 +144,10 @@ struct PersonalDataRedactorTests {
     func priorityTie() {
         let text = "4111111111111111"
         let range = text.startIndex..<text.endIndex
-        let kept = PersonalDataRedactor.withoutOverlaps([
+        let kept = PersonalDataRedactor.merged([
             PersonalDataMatch(kind: .phoneNumber, value: text, range: range),
             PersonalDataMatch(kind: .paymentCardNumber, value: text, range: range),
-        ])
+        ], in: text)
         #expect(kept.map(\.kind) == [.paymentCardNumber])
     }
 }

@@ -2,76 +2,144 @@ import Foundation
 
 /// The regular-expression half of ``PersonalDataRedactor``: email addresses, card numbers,
 /// IBANs and IP addresses, each candidate confirmed by a validity check.
+///
+/// The patterns run on a ``FoldedText`` and every quantifier is bounded, so the time per input
+/// character is bounded too, whatever the text looks like.
 enum PatternScanner {
-    private static let email = pattern(#"[A-Z0-9._%+-]+@[A-Z0-9-]+(?:\.[A-Z0-9-]+)*\.[A-Z]{2,}"#)
-    /// 13 to 19 digits, optionally grouped with single spaces or hyphens.
-    private static let cardNumber = pattern(#"(?<!\d)\d(?:[ -]?\d){12,18}(?!\d)"#)
+    /// The part of an email address after the "@", with RFC 5321 label limits.
+    private static let emailDomain = pattern(#"@[\p{L}\p{N}\-]{1,63}(?:\.[\p{L}\p{N}\-]{1,63}){0,8}\.\p{L}{2,63}"#)
+    /// RFC 5321 allows 64 characters before the "@".
+    private static let maximumLocalPartLength = 64
+    private static let localPartCharacters = CharacterSet.letters.union(.decimalDigits).union(CharacterSet(charactersIn: "._%+-"))
+    /// Digit groups joined by up to three spaces, hyphens, dots, slashes or underscores, or by
+    /// one line break. Card numbers are looked for inside each run.
+    private static let digitRun = pattern(#"(?<!\d)\d{1,19}(?:(?:[ \t\-./_]{1,3}|[ \t]{0,3}\R[ \t]{0,3})\d{1,19}){0,18}(?!\d)"#)
+    private static let digitGroup = pattern(#"\d+"#)
     /// A country code, two check digits and up to 30 letters or digits, optionally in groups.
-    private static let iban = pattern(#"\b[A-Z]{2}\d{2}(?: ?[A-Z0-9]){11,30}\b"#)
+    private static let iban = pattern(#"\b[A-Z]{2}[0-9]{2}(?:[ \-.]?[A-Z0-9]){11,30}"#)
     private static let ipv4 = pattern(#"(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?!\d|\.\d)"#)
     private static let ipv6 = pattern(#"(?<![0-9A-F:])(?:[0-9A-F]{0,4}:){2,7}[0-9A-F]{0,4}(?![0-9A-F:])"#)
 
-    static func matches(in text: String, kinds: Set<PersonalDataKind>) -> [PersonalDataMatch] {
-        var matches: [PersonalDataMatch] = []
+    private static let cardDigits = 13...19
+
+    static func matches(in folded: FoldedText, kinds: Set<PersonalDataKind>) -> [PersonalDataMatch] {
+        var found: [(PersonalDataKind, NSRange)] = []
         if kinds.contains(.emailAddress) {
-            matches += scan(email, in: text, kind: .emailAddress) { _ in true }
+            found += emailAddresses(in: folded.text).map { (.emailAddress, $0) }
         }
         if kinds.contains(.paymentCardNumber) {
-            matches += scan(cardNumber, in: text, kind: .paymentCardNumber) { value in
-                Checksums.passesLuhn(value.compactMap(\.wholeNumberValue))
-            }
+            found += cardNumbers(in: folded.text).map { (.paymentCardNumber, $0) }
         }
         if kinds.contains(.iban) {
-            matches += ibanMatches(in: text)
+            found += candidates(iban, in: folded.text).compactMap { validIBAN(in: $0, of: folded.text) }.map { (.iban, $0) }
         }
         if kinds.contains(.ipAddress) {
-            matches += scan(ipv4, in: text, kind: .ipAddress) { isAddress($0, family: AF_INET) }
-            matches += scan(ipv6, in: text, kind: .ipAddress) { isAddress($0, family: AF_INET6) }
+            let addresses = candidates(ipv4, in: folded.text).filter { isAddress($0, in: folded.text, family: AF_INET) }
+                + candidates(ipv6, in: folded.text).filter { isAddress($0, in: folded.text, family: AF_INET6) }
+            found += addresses.map { (.ipAddress, $0) }
         }
-        return matches
+        return found.compactMap { kind, range in folded.match(kind, at: range) }
+    }
+
+    /// Starts from each "@" instead of from every character, so text without addresses is
+    /// read once: the domain is matched forward from the "@", the local part read backward.
+    static func emailAddresses(in text: String) -> [NSRange] {
+        let string = text as NSString
+        var ranges: [NSRange] = []
+        var searchStart = 0
+        while searchStart < string.length {
+            let at = string.range(of: "@", range: NSRange(location: searchStart, length: string.length - searchStart))
+            guard at.location != NSNotFound else { break }
+            searchStart = at.location + 1
+            let domain = emailDomain.firstMatch(in: text, options: .anchored, range: NSRange(location: at.location, length: string.length - at.location))
+            guard let domain else { continue }
+            var start = at.location
+            let earliest = max(ranges.last.map { $0.location + $0.length } ?? 0, at.location - maximumLocalPartLength)
+            while start > earliest, let scalar = Unicode.Scalar(string.character(at: start - 1)), localPartCharacters.contains(scalar) {
+                start -= 1
+            }
+            guard start < at.location else { continue }
+            ranges.append(NSRange(location: start, length: domain.range.location + domain.range.length - start))
+            searchStart = domain.range.location + domain.range.length
+        }
+        return ranges
+    }
+
+    /// Within each run of digit groups, the longest run of whole groups that has 13 to 19
+    /// digits and passes the Luhn check, scanning from the left. Whole groups only, so "Order 12
+    /// 4111 1111 1111 1111" finds the card after the order number.
+    static func cardNumbers(in text: String) -> [NSRange] {
+        let string = text as NSString
+        var ranges: [NSRange] = []
+        for run in candidates(digitRun, in: text) {
+            let groups = digitGroup.matches(in: text, range: run).map { group in
+                (range: group.range, digits: string.substring(with: group.range).compactMap(\.wholeNumberValue))
+            }
+            var first = 0
+            while first < groups.count {
+                var digits: [Int] = []
+                var bestLast: Int?
+                for last in first..<groups.count {
+                    digits += groups[last].digits
+                    if digits.count > cardDigits.upperBound { break }
+                    if cardDigits.contains(digits.count), Checksums.passesLuhn(digits) { bestLast = last }
+                }
+                guard let last = bestLast else {
+                    first += 1
+                    continue
+                }
+                ranges.append(NSUnionRange(groups[first].range, groups[last].range))
+                first = last + 1
+            }
+        }
+        return ranges
     }
 
     /// The pattern can run past the end of an IBAN into a following code or word ("… 3000 IS
-    /// DUE"), so each candidate is shortened group by group until the check digits match.
-    private static func ibanMatches(in text: String) -> [PersonalDataMatch] {
-        candidates(iban, in: text).compactMap { range in
-            var end = range.upperBound
-            while end > range.lowerBound {
-                let compact = text[range.lowerBound..<end].filter { $0 != " " }
-                if Checksums.passesIBAN(compact) {
-                    return PersonalDataMatch(kind: .iban, value: String(text[range.lowerBound..<end]), range: range.lowerBound..<end)
-                }
-                guard let space = text[range.lowerBound..<end].lastIndex(of: " ") else { return nil }
-                end = space
+    /// DUE", "…3000REF"), so the candidate is cut to the IBAN length of its country. For a
+    /// country missing from the table it is shortened one character at a time until the check
+    /// digits match: at most 30 tries, each a short mod-97 loop.
+    private static func validIBAN(in range: NSRange, of text: String) -> NSRange? {
+        let candidate = (text as NSString).substring(with: range)
+        // UTF-16 end offset after each letter or digit.
+        var ends: [Int] = []
+        var characters: [Character] = []
+        var offset = 0
+        for character in candidate {
+            offset += character.utf16.count
+            if character.isLetter || character.isNumber {
+                characters.append(character)
+                ends.append(offset)
             }
-            return nil
         }
-    }
-
-    private static func scan(
-        _ expression: NSRegularExpression,
-        in text: String,
-        kind: PersonalDataKind,
-        isValid: (String) -> Bool
-    ) -> [PersonalDataMatch] {
-        candidates(expression, in: text).compactMap { range in
-            let value = String(text[range])
-            return isValid(value) ? PersonalDataMatch(kind: kind, value: value, range: range) : nil
+        let country = String(characters.prefix(2)).uppercased()
+        let lengths = Checksums.ibanLengths[country].map { [$0] } ?? Array((15...34).reversed())
+        for length in lengths where length <= characters.count {
+            if Checksums.passesIBAN(String(characters.prefix(length))) {
+                return NSRange(location: range.location, length: ends[length - 1])
+            }
         }
+        return nil
     }
 
-    private static func candidates(_ expression: NSRegularExpression, in text: String) -> [Range<String.Index>] {
-        let all = NSRange(text.startIndex..<text.endIndex, in: text)
-        return expression.matches(in: text, range: all).compactMap { Range($0.range, in: text) }
+    private static func candidates(_ expression: NSRegularExpression, in text: String) -> [NSRange] {
+        expression.matches(in: text, range: NSRange(location: 0, length: (text as NSString).length)).map(\.range)
     }
 
-    private static func isAddress(_ value: String, family: Int32) -> Bool {
+    private static func isAddress(_ range: NSRange, in text: String, family: Int32) -> Bool {
         var buffer = in6_addr()
-        return value.withCString { inet_pton(family, $0, &buffer) } == 1
+        return (text as NSString).substring(with: range).withCString { inet_pton(family, $0, &buffer) } == 1
     }
 
     private static func pattern(_ source: String) -> NSRegularExpression {
         // The patterns are constants; a typo is a programming error caught by the tests.
         try! NSRegularExpression(pattern: source, options: [.caseInsensitive])
+    }
+}
+
+extension FoldedText {
+    /// A match at `range` of the folded text, with the value and range of the original text.
+    func match(_ kind: PersonalDataKind, at range: NSRange) -> PersonalDataMatch? {
+        originalRange(of: range).map { PersonalDataMatch(kind: kind, value: String(originalText[$0]), range: $0) }
     }
 }

@@ -68,9 +68,24 @@ public struct RedactedText: Hashable, Sendable {
 
     /// Puts the original values back into `text`, for example into a model's answer that
     /// quotes a placeholder such as `[EMAIL_1]`.
+    ///
+    /// The text is read once from left to right, so a restored value is never read again as a
+    /// placeholder. Placeholders this redaction did not create are left as they are.
     public func restoringOriginals(in text: String) -> String {
-        originals.keys.sorted { $0.count > $1.count }.reduce(text) { result, placeholder in
-            result.replacingOccurrences(of: placeholder, with: originals[placeholder]!)
+        guard !originals.isEmpty else { return text }
+        let string = text as NSString
+        var output = ""
+        var cursor = 0
+        for match in Self.placeholderPattern.matches(in: text, range: NSRange(location: 0, length: string.length)) {
+            guard let original = originals[string.substring(with: match.range)] else { continue }
+            output += string.substring(with: NSRange(location: cursor, length: match.range.location - cursor))
+            output += original
+            cursor = match.range.location + match.range.length
         }
+        output += string.substring(from: cursor)
+        return output
     }
+
+    /// A placeholder such as `[EMAIL_12]`.
+    static let placeholderPattern = try! NSRegularExpression(pattern: #"\[[A-Z]+_[0-9]{1,9}\]"#)
 }
