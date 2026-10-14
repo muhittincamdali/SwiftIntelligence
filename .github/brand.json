@@ -1,0 +1,109 @@
+{
+  "name": "SwiftIntelligence",
+  "repository": "muhittincamdali/SwiftIntelligence",
+  "tagline": {
+    "en": "On-device search, answers and redaction for your app's text, built on Apple's frameworks.",
+    "tr": "Uygulamanızın metinleri için cihaz üzerinde arama, yanıtlar ve maskeleme, Apple çerçeveleriyle.",
+    "zh-CN": "基于 Apple 框架，为应用中的文本提供设备端搜索、问答和脱敏。",
+    "ja": "Apple のフレームワークで、アプリのテキストをデバイス上で検索・回答・マスキング。",
+    "ko": "Apple 프레임워크로 앱의 텍스트를 기기에서 검색하고, 답하고, 가립니다.",
+    "es": "Búsqueda, respuestas y anonimización en el dispositivo para el texto de tu app, con los frameworks de Apple.",
+    "de": "Suche, Antworten und Schwärzung auf dem Gerät für die Texte deiner App, mit Apples Frameworks.",
+    "fr": "Recherche, réponses et masquage sur l’appareil pour les textes de votre app, avec les frameworks d’Apple.",
+    "pt-BR": "Busca, respostas e anonimização no dispositivo para os textos do seu app, com os frameworks da Apple.",
+    "ru": "Поиск, ответы и маскирование данных на устройстве для текстов вашего приложения на фреймворках Apple."
+  },
+  "tags": {
+    "en": [
+      "Swift 6",
+      "iOS · macOS",
+      "On-device",
+      "No dependencies"
+    ],
+    "tr": [
+      "Swift 6",
+      "iOS · macOS",
+      "Cihaz üzerinde",
+      "Bağımlılık yok"
+    ],
+    "zh-CN": [
+      "Swift 6",
+      "iOS · macOS",
+      "设备端",
+      "无依赖"
+    ],
+    "ja": [
+      "Swift 6",
+      "iOS · macOS",
+      "オンデバイス",
+      "依存関係なし"
+    ],
+    "ko": [
+      "Swift 6",
+      "iOS · macOS",
+      "온디바이스",
+      "의존성 없음"
+    ],
+    "es": [
+      "Swift 6",
+      "iOS · macOS",
+      "En el dispositivo",
+      "Sin dependencias"
+    ],
+    "de": [
+      "Swift 6",
+      "iOS · macOS",
+      "Auf dem Gerät",
+      "Keine Abhängigkeiten"
+    ],
+    "fr": [
+      "Swift 6",
+      "iOS · macOS",
+      "Sur l’appareil",
+      "Sans dépendance"
+    ],
+    "pt-BR": [
+      "Swift 6",
+      "iOS · macOS",
+      "No dispositivo",
+      "Sem dependências"
+    ],
+    "ru": [
+      "Swift 6",
+      "iOS · macOS",
+      "На устройстве",
+      "Без зависимостей"
+    ]
+  },
+  "motif": "code",
+  "buttons": [
+    "start",
+    "docs",
+    "examples"
+  ],
+  "links": {
+    "docs": "https://muhittincamdali.github.io/SwiftIntelligence/documentation/swiftintelligence/",
+    "examples": "Examples/"
+  },
+  "languages": [
+    "en",
+    "tr",
+    "zh-CN",
+    "ja",
+    "ko",
+    "es",
+    "de",
+    "fr",
+    "pt-BR",
+    "ru"
+  ],
+  "docc": {
+    "targets": [
+      "SwiftIntelligence"
+    ]
+  },
+  "socialTheme": "dark",
+  "badgeOverrides": {
+    "version": "2.0.0"
+  }
+}
