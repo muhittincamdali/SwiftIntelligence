@@ -45,30 +45,54 @@ public struct TextChunker: Hashable, Sendable {
     /// The passages of `text`, in order. Empty or whitespace-only text has none.
     public func chunks(of text: String) -> [TextChunk] {
         let pieces = sentenceRanges(in: text).flatMap { splitIfTooLong($0, in: text) }
+        let offsets = characterOffsets(of: pieces, in: text)
         var chunks: [TextChunk] = []
         var start = 0
         while start < pieces.count {
             var end = start
-            while end + 1 < pieces.count, length(pieces[start].lowerBound..<pieces[end + 1].upperBound, in: text) <= maximumLength {
+            while end + 1 < pieces.count, offsets[end + 1].upper - offsets[start].lower <= maximumLength {
                 end += 1
             }
             let range = pieces[start].lowerBound..<pieces[end].upperBound
             chunks.append(TextChunk(text: String(text[range]), range: range))
             guard end + 1 < pieces.count else { break }
-            start = nextStart(after: end, previousStart: start, pieces: pieces, in: text)
+            start = nextStart(after: end, previousStart: start, offsets: offsets)
         }
         return chunks
     }
 
     /// The first piece of the next passage: up to `overlap` pieces back, as long as the
     /// passage still has room for at least one new piece and moves forward.
-    private func nextStart(after end: Int, previousStart: Int, pieces: [Range<String.Index>], in text: String) -> Int {
+    private func nextStart(after end: Int, previousStart: Int, offsets: [PieceOffsets]) -> Int {
         var start = end + 1
         while start > previousStart + 1, end + 1 - (start - 1) <= overlap,
-              length(pieces[start - 1].lowerBound..<pieces[end + 1].upperBound, in: text) <= maximumLength {
+              offsets[end + 1].upper - offsets[start - 1].lower <= maximumLength {
             start -= 1
         }
         return start
+    }
+
+    /// Character offsets of a piece's bounds in the text.
+    private struct PieceOffsets {
+        let lower: Int
+        let upper: Int
+    }
+
+    /// Counted once, in order, so the length of a run of pieces is a subtraction. Measuring
+    /// each candidate passage with `distance` walked its text again and made long documents
+    /// quadratic when `maximumLength` is large.
+    private func characterOffsets(of pieces: [Range<String.Index>], in text: String) -> [PieceOffsets] {
+        var offsets: [PieceOffsets] = []
+        offsets.reserveCapacity(pieces.count)
+        var index = text.startIndex
+        var offset = 0
+        for piece in pieces {
+            let lower = offset + text.distance(from: index, to: piece.lowerBound)
+            offset = lower + length(piece, in: text)
+            offsets.append(PieceOffsets(lower: lower, upper: offset))
+            index = piece.upperBound
+        }
+        return offsets
     }
 
     /// Sentence ranges with surrounding whitespace removed.
@@ -84,12 +108,20 @@ public struct TextChunker: Hashable, Sendable {
         tokenizer.string = text
         let words = tokenizer.tokens(for: range).flatMap { cutToMaximum($0, in: text) }
         var pieces: [Range<String.Index>] = []
+        // The length of the last piece, kept up to date so that it is not measured again for
+        // every word.
+        var lastLength = 0
         for word in words {
-            if let last = pieces.last, length(last.lowerBound..<word.upperBound, in: text) <= maximumLength {
-                pieces[pieces.count - 1] = last.lowerBound..<word.upperBound
-            } else {
-                pieces.append(word)
+            if let last = pieces.last {
+                let joinedLength = lastLength + text.distance(from: last.upperBound, to: word.upperBound)
+                if joinedLength <= maximumLength {
+                    pieces[pieces.count - 1] = last.lowerBound..<word.upperBound
+                    lastLength = joinedLength
+                    continue
+                }
             }
+            pieces.append(word)
+            lastLength = length(word, in: text)
         }
         // Word tokens leave out punctuation; give each piece the text up to the next one (the
         // last piece: up to the end of the sentence) when that still fits.

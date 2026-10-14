@@ -70,6 +70,19 @@ struct TextChunkerTests {
         #expect(chunks.allSatisfy { $0.text.count <= 120 })
     }
 
+    @Test("chunks long text in linear time, whatever the maximum length")
+    func longInput() {
+        let sentences = String(repeating: "This is one short sentence. ", count: 20_000)
+        let words = String(repeating: "word ", count: 60_000)
+        let clock = ContinuousClock()
+        for (text, maximumLength) in [(sentences, Int.max), (sentences, 100_000), (words, 200_000), (words, 1_000)] {
+            var chunks: [TextChunk] = []
+            let elapsed = clock.measure { chunks = TextChunker(maximumLength: maximumLength, overlap: 1).chunks(of: text) }
+            #expect(elapsed < .seconds(1), "took \(elapsed) at maximum length \(maximumLength)")
+            #expect(chunks.allSatisfy { $0.text.count <= maximumLength })
+        }
+    }
+
     @Test("clamps invalid settings")
     func clamping() {
         let chunker = TextChunker(maximumLength: 0, overlap: -3)
