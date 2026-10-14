@@ -6,7 +6,10 @@ import Foundation
 /// Adding a document splits it into passages with a ``TextChunker``, optionally redacts
 /// personal data with a ``PersonalDataRedactor``, and indexes every passage twice: as a vector
 /// from the ``TextEmbedder`` for search by meaning, and by its words for keyword search.
-/// ``search(_:limit:mode:matching:)`` returns the best passages.
+/// ``search(_:limit:mode:matching:)`` returns the best passages;
+/// ``answer(_:limit:mode:matching:model:)`` has Apple's on-device model answer from them, and
+/// ``groundedPrompt(for:limit:mode:matching:passageBudget:)`` builds the same prompt for any
+/// other model.
 ///
 /// ```swift
 /// let knowledge = KnowledgeBase()
