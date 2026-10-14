@@ -4,12 +4,35 @@
 import Foundation
 import NaturalLanguage
 import SwiftIntelligence
+import SwiftUI
 #if canImport(FoundationModels)
 import FoundationModels
 #endif
 
+// MARK: Quick start, step 3 (named ContentView in the README)
+
+struct QuickStartView: View {
+    @State private var answer = "Searching…"
+
+    var body: some View {
+        Text(answer)
+            .padding()
+            .task {
+                do {
+                    let knowledge = KnowledgeBase()
+                    try await knowledge.add("You can return any item within 30 days of delivery for a full refund.", id: "returns")
+                    try await knowledge.add("Every laptop comes with a two-year warranty against defects.", id: "warranty")
+                    let results = try await knowledge.search("How do I return an item for a refund?")
+                    answer = results.first?.text ?? "Nothing found"
+                } catch {
+                    answer = "Search failed: \(error)"
+                }
+            }
+    }
+}
+
 enum ReadmeSamples {
-    // MARK: Quick start
+    // MARK: Search
 
     static func quickStart() async throws -> [SearchResult] {
         let knowledge = KnowledgeBase()

@@ -17,6 +17,16 @@ struct ReadmeSamplesTests {
         #expect(results.first?.text.hasPrefix("You can return any item within 30 days") == true)
     }
 
+    @Test("quick start view's search shows the returns policy")
+    func quickStartView() async throws {
+        // The same two texts and question as QuickStartView, which shows the first result.
+        let knowledge = KnowledgeBase()
+        try await knowledge.add("You can return any item within 30 days of delivery for a full refund.", id: "returns")
+        try await knowledge.add("Every laptop comes with a two-year warranty against defects.", id: "warranty")
+        let results = try await knowledge.search("How do I return an item for a refund?")
+        #expect(results.first?.text == "You can return any item within 30 days of delivery for a full refund.")
+    }
+
     @Test("redaction sample replaces and restores")
     func redact() {
         let redacted = ReadmeSamples.redact()
