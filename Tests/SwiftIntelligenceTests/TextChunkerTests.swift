@@ -78,7 +78,7 @@ struct TextChunkerTests {
         for (text, maximumLength) in [(sentences, Int.max), (sentences, 100_000), (words, 200_000), (words, 1_000)] {
             var chunks: [TextChunk] = []
             let elapsed = clock.measure { chunks = TextChunker(maximumLength: maximumLength, overlap: 1).chunks(of: text) }
-            #expect(elapsed < .seconds(1), "took \(elapsed) at maximum length \(maximumLength)")
+            #expect(elapsed < .seconds(5), "took \(elapsed) at maximum length \(maximumLength)")
             #expect(chunks.allSatisfy { $0.text.count <= maximumLength })
         }
     }

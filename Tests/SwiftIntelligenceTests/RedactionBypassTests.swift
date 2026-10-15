@@ -222,21 +222,33 @@ struct RedactionBypassTests {
 
     @Test("scans long adversarial text in linear time")
     func longInput() {
-        let runs = [
-            String(repeating: "a", count: 200_000),
-            String(repeating: "1 ", count: 100_000),
-            String(repeating: "a.", count: 100_000) + "@",
-            String(repeating: "DE89 ", count: 40_000),
-            String(repeating: "DE89\n", count: 40_000),
-            String(repeating: "AB12 / ", count: 30_000),
-            String(repeating: "1:", count: 100_000),
-            String(repeating: "a\n@b .", count: 40_000),
+        // Each unit is repeated n and 4n times. Quadratic scanning would take about 16 times as
+        // long for the larger text, linear scanning about 4 times. Comparing the two runs keeps
+        // the test independent of how fast the machine and the build configuration are.
+        let units: [(prefix: String, unit: String, suffix: String, count: Int)] = [
+            ("", "a", "", 50_000),
+            ("", "1 ", "", 25_000),
+            ("", "a.", "@", 25_000),
+            ("", "DE89 ", "", 10_000),
+            ("", "DE89\n", "", 10_000),
+            ("", "AB12 / ", "", 8_000),
+            ("", "1:", "", 25_000),
+            ("", "a\n@b .", "", 10_000),
         ]
         let redactor = PersonalDataRedactor(kinds: [.emailAddress, .paymentCardNumber, .iban, .ipAddress])
         let clock = ContinuousClock()
-        for text in runs {
-            let elapsed = clock.measure { _ = redactor.matches(in: text) }
-            #expect(elapsed < .seconds(10), "took \(elapsed) for \(text.prefix(8))…")
+        let measurable = Duration.milliseconds(50)
+        for entry in units {
+            func scanTime(_ count: Int) -> Duration {
+                let text = entry.prefix + String(repeating: entry.unit, count: count) + entry.suffix
+                return clock.measure { _ = redactor.matches(in: text) }
+            }
+            let small = scanTime(entry.count)
+            let large = scanTime(entry.count * 4)
+            // Runs shorter than the floor cannot be compared reliably and are fast enough anyway.
+            guard large > measurable else { continue }
+            let ratio = large / max(small, measurable)
+            #expect(ratio < 9, "4x the text took \(ratio)x as long for \(entry.unit.debugDescription)")
         }
     }
 }
