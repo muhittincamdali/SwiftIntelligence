@@ -39,12 +39,13 @@ exclude = [
 # the ones it adds or removes. The path is the workspace of GitHub-hosted runners; a local run
 # passes the same remap options with its own path.
 remap = [
+  '^https://muhittincamdali\.github\.io/SwiftIntelligence/documentation/swiftintelligence/?$ file:///home/runner/work/SwiftIntelligence/SwiftIntelligence/Sources/SwiftIntelligence/SwiftIntelligence.docc/SwiftIntelligence.md',
   '^https://raw\.githubusercontent\.com/muhittincamdali/SwiftIntelligence/main/(.*)$ file:///home/runner/work/SwiftIntelligence/SwiftIntelligence/$1',
   '^https://github\.com/muhittincamdali/SwiftIntelligence/(?:blob|tree)/main/(.*)$ file:///home/runner/work/SwiftIntelligence/SwiftIntelligence/$1',
   # The article pages on GitHub Pages are built from the .docc articles by docs.yml after a push
   # to main, so a pull request that adds an article links to a page that is not online yet. Each
-  # article URL is checked against its source file instead; the documentation root stays a live
-  # check, so a site that is down still fails.
+  # article URL, and the documentation root, is checked against its source file instead. The
+  # Documentation workflow verifies that the site builds, and the release checklist visits it.
   '^https://muhittincamdali\.github\.io/SwiftIntelligence/documentation/swiftintelligence/gettingstarted$ file:///home/runner/work/SwiftIntelligence/SwiftIntelligence/Sources/SwiftIntelligence/SwiftIntelligence.docc/GettingStarted.md',
   '^https://muhittincamdali\.github\.io/SwiftIntelligence/documentation/swiftintelligence/searchingdocuments$ file:///home/runner/work/SwiftIntelligence/SwiftIntelligence/Sources/SwiftIntelligence/SwiftIntelligence.docc/SearchingDocuments.md',
   '^https://muhittincamdali\.github\.io/SwiftIntelligence/documentation/swiftintelligence/answeringquestions$ file:///home/runner/work/SwiftIntelligence/SwiftIntelligence/Sources/SwiftIntelligence/SwiftIntelligence.docc/AnsweringQuestions.md',
