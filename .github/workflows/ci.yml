@@ -1,79 +1,20 @@
+# Managed by the repository kit (muhittincamdali/.github). Edit the inputs, keep the structure.
 name: CI
 
 on:
   push:
-    branches: [main, develop]
-  pull_request:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
-concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+permissions: {}
 
 jobs:
-  package:
-    name: Swift Package Build and Test
-    runs-on: macos-14
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Show Swift Version
-        run: swift --version
-
-      - name: Build
-        run: swift build
-
-      - name: Validate Flagship Demo
-        run: bash Scripts/validate-flagship-demo.sh
-
-      - name: Validate Flagship Media Policy
-        run: bash Scripts/validate-flagship-media-assets.sh
-
-      - name: Validate SmartTranslator Media Policy
-        run: bash Scripts/validate-flagship-media-assets.sh Documentation/smarttranslator-media-policy.json Documentation/Assets/SmartTranslator-Demo/README.md
-
-      - name: Validate VoiceAssistant Media Policy
-        run: bash Scripts/validate-flagship-media-assets.sh Documentation/voiceassistant-media-policy.json Documentation/Assets/VoiceAssistant-Demo/README.md
-
-      - name: Validate README Localizations
-        run: bash Scripts/validate-readme-localizations.sh
-
-      - name: Validate README Visual Assets
-        run: bash Scripts/validate-readme-visual-assets.sh
-
-      - name: Validate Showcase Visual Assets
-        run: bash Scripts/validate-showcase-visual-assets.sh
-
-      - name: Validate Comparison Visual Assets
-        run: bash Scripts/validate-comparison-visual-assets.sh
-
-      - name: Validate Documentation Visual Assets
-        run: bash Scripts/validate-docs-visual-assets.sh
-
-      - name: Validate Visual Copy Density
-        run: bash Scripts/validate-visual-copy-density.sh
-
-      - name: Validate Examples
-        run: bash Scripts/validate-examples.sh
-
-      - name: Test
-        run: swift test
-
-      - name: Benchmark Smoke Profile
-        run: bash Scripts/run-benchmarks.sh smoke Benchmarks/Results/ci-smoke
-
-      - name: Validate Proof Surfaces
-        run: bash Scripts/validate-proof-surfaces.sh
-
-      - name: Upload Benchmark Smoke Artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: benchmark-smoke-artifacts
-          path: |
-            Benchmarks/Results/ci-smoke/benchmark-report.json
-            Benchmarks/Results/ci-smoke/benchmark-summary.md
-            Benchmarks/Results/ci-smoke/environment.json
-          if-no-files-found: error
+  swift:
+    permissions:
+      contents: read
+    uses: muhittincamdali/.github/.github/workflows/swift-ci.yml@85ec2fa95f3607e09168f14b744bd3154fdc7d43 # v1.1.0
+    with:
+      platforms: '["iOS","macOS"]'
+      scheme: SwiftIntelligence
+      test-on-simulator: true

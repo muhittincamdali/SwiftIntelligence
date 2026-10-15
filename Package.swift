@@ -1,211 +1,23 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.2
 import PackageDescription
 
 let package = Package(
     name: "SwiftIntelligence",
-    defaultLocalization: "en",
     platforms: [
-        .iOS(.v17),
-        .macOS(.v14),
-        .watchOS(.v10),
-        .tvOS(.v17),
-        .visionOS(.v1)
+        .iOS(.v18),
+        .macOS(.v15)
     ],
     products: [
-        // Core modules
-        .library(
-            name: "SwiftIntelligenceCore",
-            targets: ["SwiftIntelligenceCore"]
-        ),
-        .library(
-            name: "SwiftIntelligenceML",
-            targets: ["SwiftIntelligenceML"]
-        ),
-        .library(
-            name: "SwiftIntelligenceNLP",
-            targets: ["SwiftIntelligenceNLP"]
-        ),
-        .library(
-            name: "SwiftIntelligenceVision",
-            targets: ["SwiftIntelligenceVision"]
-        ),
-        .library(
-            name: "SwiftIntelligenceSpeech",
-            targets: ["SwiftIntelligenceSpeech"]
-        ),
-        
-        // Advanced modules
-        .library(
-            name: "SwiftIntelligenceReasoning",
-            targets: ["SwiftIntelligenceReasoning"]
-        ),
-        .library(
-            name: "SwiftIntelligencePrivacy",
-            targets: ["SwiftIntelligencePrivacy"]
-        ),
-        
-        // Infrastructure modules
-        .library(
-            name: "SwiftIntelligenceNetwork",
-            targets: ["SwiftIntelligenceNetwork"]
-        ),
-        .library(
-            name: "SwiftIntelligenceCache",
-            targets: ["SwiftIntelligenceCache"]
-        ),
-        .library(
-            name: "SwiftIntelligenceMetrics",
-            targets: ["SwiftIntelligenceMetrics"]
-        ),
-        
-        // Performance and Testing
-        .library(
-            name: "SwiftIntelligenceBenchmarks",
-            targets: ["SwiftIntelligenceBenchmarks"]
-        ),
-        .executable(
-            name: "Benchmarks",
-            targets: ["Benchmarks"]
-        )
-    ],
-    dependencies: [
-        .package(path: "../SwiftAI")
+        .library(name: "SwiftIntelligence", targets: ["SwiftIntelligence"])
     ],
     targets: [
-        // MARK: - Core Module
         .target(
-            name: "SwiftIntelligenceCore",
-            dependencies: ["CSwiftIntelligenceSupport"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
+            name: "SwiftIntelligence",
+            path: "Sources/SwiftIntelligence"
         ),
-        
-        // MARK: - AI/ML Modules
-        .target(
-            name: "SwiftIntelligenceML",
-            dependencies: ["SwiftIntelligenceCore", "SwiftAI"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        .target(
-            name: "SwiftIntelligenceNLP",
-            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceML", "SwiftAI"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        .target(
-            name: "SwiftIntelligenceVision",
-            dependencies: ["CSwiftIntelligenceSupport", "SwiftIntelligenceCore", "SwiftIntelligenceML", "SwiftAI"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        .target(
-            name: "SwiftIntelligenceSpeech",
-            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceNLP"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-
-        .target(
-            name: "SwiftIntelligenceReasoning",
-            dependencies: ["SwiftIntelligenceCore", "SwiftIntelligenceML", "SwiftAI"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        // MARK: - Infrastructure Modules
-        .target(
-            name: "SwiftIntelligencePrivacy",
-            dependencies: ["SwiftIntelligenceCore"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        .target(
-            name: "SwiftIntelligenceNetwork",
-            dependencies: ["SwiftIntelligenceCore"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        .target(
-            name: "SwiftIntelligenceCache",
-            dependencies: ["SwiftIntelligenceCore"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        .target(
-            name: "SwiftIntelligenceMetrics",
-            dependencies: ["CSwiftIntelligenceSupport", "SwiftIntelligenceCore"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        .target(
-            name: "SwiftIntelligenceBenchmarks",
-            dependencies: ["CSwiftIntelligenceSupport", "SwiftIntelligenceCore"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-
-        .target(
-            name: "CSwiftIntelligenceSupport",
-            path: "Sources/CSwiftIntelligenceSupport",
-            publicHeadersPath: "include"
-        ),
-
-        .executableTarget(
-            name: "Benchmarks",
-            dependencies: ["SwiftIntelligenceBenchmarks"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        ),
-        
-        // MARK: - Test Targets
         .testTarget(
-            name: "SwiftIntelligenceCoreTests",
-            dependencies: ["SwiftIntelligenceCore"]
-        ),
-        
-        .testTarget(
-            name: "SwiftIntelligenceMLTests",
-            dependencies: ["SwiftIntelligenceML"]
-        ),
-        
-        .testTarget(
-            name: "SwiftIntelligenceNLPTests",
-            dependencies: ["SwiftIntelligenceNLP"]
-        ),
-        
-        .testTarget(
-            name: "SwiftIntelligenceVisionTests",
-            dependencies: ["SwiftIntelligenceVision"]
-        ),
-        
-        .testTarget(
-            name: "SwiftIntelligenceSpeechTests",
-            dependencies: ["SwiftIntelligenceSpeech"]
-        ),
-
-        .testTarget(
-            name: "SwiftIntelligenceBenchmarksDeviceTests",
-            dependencies: ["SwiftIntelligenceBenchmarks"]
+            name: "SwiftIntelligenceTests",
+            dependencies: ["SwiftIntelligence"]
         )
     ]
 )

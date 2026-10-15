@@ -1,72 +1,41 @@
 # Security Policy
 
-SwiftIntelligence is an actively stabilized modular package. Security reporting should focus on issues in the active package graph, not historical umbrella APIs or inactive products.
+## Supported versions
 
-## Supported Scope
-
-We prioritize security fixes for the current modular products shipped from `Package.swift`:
-
-- `SwiftIntelligenceCore`
-- `SwiftIntelligenceML`
-- `SwiftIntelligenceNLP`
-- `SwiftIntelligenceVision`
-- `SwiftIntelligenceSpeech`
-- `SwiftIntelligenceReasoning`
-- `SwiftIntelligencePrivacy`
-- `SwiftIntelligenceNetwork`
-- `SwiftIntelligenceCache`
-- `SwiftIntelligenceMetrics`
-
-## Report a Vulnerability
-
-- Do not open a public GitHub issue.
-- Prefer GitHub Security Advisories:
-  [Report a vulnerability](https://github.com/muhittincamdali/SwiftIntelligence/security/advisories)
-- If private advisory reporting is unavailable, email:
-  `security@swiftintelligence.dev`
-
-## What to Include
-
-- affected module
-- impact
-- reproduction steps
-- proof of concept or code sample
-- version / branch / commit if known
-- any suggested mitigation
-
-## Current Security Posture
-
-This repository aims for privacy-first, mostly on-device processing, but not every security/privacy claim historically written in the repo should be treated as universally guaranteed across all modules and all example code.
-
-Treat the following as current guidance:
-
-- validate all external input at app boundaries
-- do not expose secrets in examples, tests, or benchmark artifacts
-- do not assume inactive products are maintained
-- review privacy-sensitive flows before enabling network transport
-- keep CodeQL, dependency review, and OpenSSF Scorecard definitions maintained and active; use repo-local validation as the maintainer-side floor, not as a substitute for broken public CI
-- treat benchmark, example, and release artifacts as part of the trusted supply-chain surface
-
-## Security Operations Matrix
-
-| Surface | Current policy |
+| Version | Supported |
 | --- | --- |
-| Vulnerability intake | Prefer GitHub Security Advisories |
-| Public issues | Do not use for vulnerabilities |
-| Sensitive examples | Never commit secrets, tokens, or production credentials |
-| Privacy-sensitive benchmark output | Treat as trusted release surface, not disposable scratch data |
-| GitHub-hosted security workflows | Keep definitions current and active; live GitHub results should stay truthful and green on `main` |
-| Local maintainer gate | `bash Scripts/prepare-release.sh` remains the canonical repo-side validation floor |
+| 2.x | Yes |
+| 1.x | No (a different, retired code base) |
 
-## Response Expectations
+## Reporting a vulnerability
 
-Security reports are reviewed as quickly as possible, but no hard SLA is promised in this file.
+Do not open a public issue. Report it privately as described in the
+[shared security policy](https://github.com/muhittincamdali/.github/blob/main/SECURITY.md):
+through **Report a vulnerability** on this repository's **Security** tab, or by email. Include
+the version, the platform, the smallest input that shows the problem (with made-up personal
+data) and what you expected. You get a reply within seven days; fixes are released as a patch
+version and noted in the [changelog](CHANGELOG.md).
 
-## Disclosure
+## What counts as a vulnerability here
 
-Please allow time for triage, remediation, validation, and release preparation before public disclosure.
+- **Redaction bypasses**: personal data of a kind that `PersonalDataRedactor` claims to find
+  (see the "What it catches" section of the Redacting Personal Data article) that stays
+  visible, fully or in part, in `redact(_:)` output or in a `KnowledgeBase` that uses a
+  redactor.
+- **Crashes or hangs on input**: any public API that traps, or takes time that grows faster
+  than linearly with the input, on text, numbers or saved data, including files passed to
+  `KnowledgeBase(contentsOf:)`.
+- **Restoring values into the wrong place**: `restoringOriginals(in:)` putting a value where
+  the redaction did not create its placeholder.
 
-## Security-Related Docs
+## Known limits (not vulnerabilities)
 
-- [Documentation/Security.md](Documentation/Security.md)
-- [SUPPORT.md](SUPPORT.md)
+- Data that is spelled out ("jane at example dot com"), split by ordinary words, or invalid by
+  its own rules (a card number with a wrong check digit) is not found.
+- Name detection is statistical and may miss names, especially outside English; the iOS
+  simulator has no name model.
+- A language model can follow instructions written inside your documents. `GroundedPrompt`
+  tells the model to treat sources as data, but no prompt guarantees it; do not give a session
+  that reads untrusted documents tools that act for the user.
+- A saved knowledge base is not encrypted by the package; pass `.completeFileProtection` to
+  `save(to:options:)` on iOS, or store it in an encrypted location.

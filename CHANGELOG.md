@@ -1,76 +1,101 @@
 # Changelog
 
-## Unreleased
+All notable changes to this project are documented in this file.
 
-- post-1.2.2 changes will be tracked here
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.2.2 - 2026-04-15
+## [Unreleased]
 
-- moved push-facing Swift analysis to a fast deterministic guard and kept full CodeQL scans on schedule/manual triggers
-- documented the new GitHub workflow policy so hosted push health and full security scanning stay truthful
-- refreshed the patch release evidence chain and GitHub release surfaces after the workflow hardening change
+## [2.0.0] - 2026-10-15
 
-## 1.2.1 - 2026-04-15
+A rewrite. The 1.x package had grown to 16 modules and about 50,000 lines, most of which
+returned simulated results (random confidences, fixed sentences, provider stubs), and the June
+2026 commits left a manifest that no longer resolved. 2.0.0 is one library target with a
+smaller, working scope: search, question answering, redaction and text analysis for an app's
+own documents, on the device. No 1.x API was kept.
 
-- tightened the README first-screen repo-fit narrative and reduced top-level decision repetition
-- unified flagship and secondary demo media into one canonical README demo gallery
-- strengthened GitHub presentation quality with visual snapshot and copy-density anti-regression gates
-- tightened docs, trust, showcase, and comparison routing so public narrative stays shorter and more consistent
-- refreshed the patch release evidence chain and GitHub release surfaces to match the current live repository state
+### Added
 
-## 1.2.0 - 2026-04-08
+- `KnowledgeBase`: an actor that chunks, optionally redacts, embeds and indexes documents, and
+  searches them in `semantic`, `keyword` or `hybrid` mode with metadata filters. Batches are
+  added atomically; replacing a document keeps its place.
+- Saving and restoring a knowledge base: `dataRepresentation()`, `save(to:options:)`,
+  `init(data:…)` and `init(contentsOf:…)`, with checks for the embedder, the format version and
+  the consistency of the saved data (`KnowledgeBaseError`).
+- Answers: `GroundedPrompt` and `GroundedAnswer` (citations such as `[1]`, `[1, 3]`),
+  `KnowledgeBase.groundedPrompt(for:…)` for any model, and on iOS 26 and macOS 26
+  `KnowledgeBase.answer(_:…)` with Apple's on-device model and `KnowledgeSearchTool` for
+  Foundation Models sessions (`AnswerError`).
+- Embeddings: the `TextEmbedder` protocol, `HashingEmbedder` (no model, deterministic),
+  `SentenceEmbedder` (`NLEmbedding`) and `ContextualEmbedder` (`NLContextualEmbedding`).
+- Indexes and ranking: `VectorIndex` (exact cosine search with Accelerate, `Codable`),
+  `KeywordIndex` (BM25) and `RankFusion` (reciprocal rank fusion).
+- `PersonalDataRedactor` for email addresses, phone numbers, links, postal addresses, payment
+  card numbers (Luhn), IBANs (mod 97 and country lengths), IP addresses and names, with
+  placeholders that `RedactedText.restoringOriginals(in:)` reverses. Matching runs on a folded
+  copy of the text, so full-width characters, invisible format characters, typographic dashes
+  and spaces, tabs, slashes, underscores and line breaks inside card numbers and IBANs, quoted
+  or punctuated email local parts, spaces or a line break around the "@", spaces before a dot
+  of the domain, address literals ("jane@[192.0.2.1]") and overlapping matches do not leave
+  data visible.
+- `TextAnalyzer` (language, language guesses, sentiment, names, keywords, sentences) and
+  `TextChunker` (sentence-based passages with overlap).
+- Input checks at every public entry point: NaN and infinite vectors are rejected, crafted
+  saved data with impossible sizes or vectors that are not unit length fails to decode instead
+  of trapping or returning empty searches, and out-of-range numbers are clamped as documented.
+- DocC catalog with the articles Getting Started, Searching Documents, Answering Questions and
+  Redacting Personal Data, published to GitHub Pages by the Documentation workflow.
+- `Examples/KnowledgeDemo`, an iOS and macOS app whose `ReadmeSamples.swift` holds the README
+  code, which the tests run; README screenshots captured from it by
+  `scripts/capture-example-screens.sh`.
+- Swift Testing suites that run on macOS and an iPhone simulator; tests that need a system
+  model the simulator lacks are skipped there with the reason.
+- `.spi.yml` for the Swift Package Index.
 
-- stabilized the active modular package graph and kept `swift test` green
-- refreshed README and getting-started guides to match the current modular API surface
-- aligned Swift Package Index metadata with real package targets
-- rewrote legacy examples and added `validate-examples.sh` as a CI gate
-- simplified CI to a trustworthy `swift build` plus example validation plus `swift test` gate
-- tightened release and documentation workflows around benchmark evidence and scripted release validation
-- added benchmark artifact schema/profile validation and linked release gating to `standard` benchmark evidence
-- made CI run and publish `smoke` benchmark artifacts, and made tag releases regenerate `standard` artifacts before validation
-- added CodeQL, dependency review, and OpenSSF Scorecard workflows to harden code scanning and supply-chain review
-- added a positioning/comparison document grounded in current Apple docs and GitHub competitor data
-- added module-level comparison pages for NLP, Vision, Speech, and Privacy
-- added a showcase page that ties flagship demo flows to current benchmark evidence
-- added a generated proof snapshot script and documentation surface derived from benchmark artifacts
-- added immutable benchmark evidence archiving and release-proof notes for tagged releases
-- added generated benchmark history and latest-vs-release comparison pages
-- added generated benchmark methodology and environment matrix pages
-- added release-bundle benchmark delta notes against the previous immutable evidence set
-- added generated benchmark timeline and release benchmark matrix pages
-- added release-notes-proof bundles and generated release proof timeline pages
-- added changelog validation and scripted release-note generation from curated release sections
-- added version-surface validation for README installation snippets and release tags
-- added artifact manifest and checksum generation for benchmark and release evidence bundles
-- added benchmark regression threshold policy and release gate validation
-- added generated benchmark readiness report for device coverage and publication checklist status
-- added generated release-candidate action plan derived from benchmark readiness
-- added normalized device metadata, device matrix policy, and a generated device-evidence plan for missing iPhone/iPad capture waves
-- added device evidence audit/matrix generation and an external benchmark evidence import script
-- added benchmark export packaging plus export/import transfer-chain validation
-- added immutable evidence provenance reporting and release provenance validation
-- made device-aware benchmark capture able to emit transfer archives directly
-- added generated device capture packets plus release-gated packet validation for missing device classes
-- added generated device evidence intake surfaces and issue-ready packet payloads
-- added a generated release blocker summary wired into roadmap, status, and benchmark docs
-- added generated public proof status surfaces for allowed vs blocked release/distribution claims
-- wired public proof status into release validation, evidence bundles, and release notes
-- added generated device evidence queue surfaces and validation
-- added generated device evidence handoff surfaces plus a transport archive for missing-device operator delivery
-- wired the device evidence handoff package into immutable release bundles and release assets
-- added release-evidence asset validation so missing-device handoff files are enforced inside archived bundles
-- added `hydrate-release-evidence-assets.sh` to backfill older immutable bundles to the current release-asset policy
-- added a release workflow asset policy plus validation so GitHub uploads cannot drift from the immutable evidence schema
-- added device-evidence issue schema validation so packet-local `issue-fields.json` cannot drift from the GitHub form
-- centralized packet issue defaults in `device-evidence-form-policy.json`
-- added `complete-device-evidence-wave.sh` so the full pending iPhone+iPad import wave can be closed with one command
-- fixed release automation to emit a valid Swift Package Manager version snippet
-- added `validate-flagship-demo.sh` so the strongest demo path can be smoke-checked independently
-- wired flagship demo validation into CI and generated proof surfaces
-- added a dedicated IntelligentCamera demo guide with fastest run path and failure signals
-- aligned GitHub description and topic metadata with the current Apple on-device AI positioning
+### Changed
 
-## 1.0.0 - 2025-01-15
+- **Breaking:** one `SwiftIntelligence` library instead of the 1.x module products; iOS 18 and
+  macOS 15 minimum; Swift tools 6.2 and the Swift 6 language mode. tvOS, watchOS and visionOS
+  are no longer declared because the package is not built or tested for them.
+- CI runs through the shared workflows in `muhittincamdali/.github` (build and tests on macOS,
+  iOS builds and simulator tests, DocC to GitHub Pages, link and wording checks), plus a
+  repository workflow that builds the example app. Actions are pinned to commit SHAs.
 
-- initial release
-- shipped the first public multi-module SwiftIntelligence package
+### Removed
+
+- The 1.x modules and their documentation, benchmarks, demo apps, templates, fastlane lanes,
+  Makefile and CocoaPods podspec, and the release workflow that rebuilt GitHub releases from
+  scripts that no longer existed.
+- The local code of conduct and support page; the shared ones in `muhittincamdali/.github`
+  apply.
+
+## [1.2.2] - 2026-04-15
+
+Last release of the 1.x modular package (workflow and release-note changes only). Its code is
+at the `v1.2.2` tag.
+
+## [1.2.1] - 2026-04-15
+
+README and demo gallery changes of the 1.x package.
+
+## [1.2.0] - 2026-04-08
+
+Package graph, examples and CI changes of the 1.x package, and benchmark tooling that 2.0.0
+removed.
+
+## [1.1.0] - 2025-08-16
+
+Second 1.x release.
+
+## [1.0.0] - 2025-08-15
+
+First public release of the 1.x multi-module package.
+
+[Unreleased]: https://github.com/muhittincamdali/SwiftIntelligence/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/muhittincamdali/SwiftIntelligence/compare/v1.2.2...v2.0.0
+[1.2.2]: https://github.com/muhittincamdali/SwiftIntelligence/compare/v1.2.1...v1.2.2
+[1.2.1]: https://github.com/muhittincamdali/SwiftIntelligence/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/muhittincamdali/SwiftIntelligence/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/muhittincamdali/SwiftIntelligence/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/muhittincamdali/SwiftIntelligence/releases/tag/v1.0.0

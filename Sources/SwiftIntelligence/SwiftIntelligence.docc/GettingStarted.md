@@ -1,352 +1,81 @@
-# Getting Started with SwiftIntelligence
+# Getting Started
 
-Learn how to integrate SwiftIntelligence into your app and start using AI/ML capabilities.
+Add the package, index a few documents and search them.
 
-@Metadata {
-    @PageImage(purpose: icon, source: "getting-started-icon")
-    @PageColor(blue)
-}
+## Add the package
 
-## Overview
-
-SwiftIntelligence makes it easy to add powerful AI and machine learning capabilities to your Apple platform apps. This guide will walk you through the initial setup and basic usage.
-
-## Installation
-
-### Swift Package Manager
-
-The recommended way to install SwiftIntelligence is through Swift Package Manager.
-
-#### Using Xcode
-
-1. In Xcode, select **File → Add Package Dependencies**
-2. Enter the repository URL:
-   ```
-   https://github.com/muhittincamdali/SwiftIntelligence
-   ```
-3. Select the version rule (e.g., "Up to Next Major Version")
-4. Choose the modules you need
-5. Click **Add Package**
-
-#### Using Package.swift
-
-Add SwiftIntelligence to your `Package.swift` file:
+In Xcode choose **File > Add Package Dependencies…**, paste
+`https://github.com/muhittincamdali/SwiftIntelligence.git` into the search field at the top
+right, leave **Dependency Rule** at **Up to Next Major Version** from `2.0.0`, choose
+**Add Package**, and in the next sheet add the **SwiftIntelligence** library to your app
+target. Use 2.0.0 or later: the 1.x releases had a different, unrelated API. In a package, add
+it to `Package.swift` instead:
 
 ```swift
-// swift-tools-version: 5.9
-import PackageDescription
-
-let package = Package(
-    name: "YourApp",
-    platforms: [
-        .iOS(.v17),
-        .macOS(.v14)
-    ],
-    dependencies: [
-        .package(
-            url: "https://github.com/muhittincamdali/SwiftIntelligence",
-            from: "1.2.2"
-        )
-    ],
-    targets: [
-        .target(
-            name: "YourApp",
-            dependencies: ["SwiftIntelligence"]
-        )
-    ]
-)
+dependencies: [
+    .package(url: "https://github.com/muhittincamdali/SwiftIntelligence.git", from: "2.0.0")
+],
+targets: [
+    .target(name: "MyApp", dependencies: [
+        .product(name: "SwiftIntelligence", package: "SwiftIntelligence")
+    ])
+]
 ```
 
-## Basic Setup
+The package needs Swift 6.2 tools (Xcode 26 or later) and runs on iOS 18 and macOS 15.
+Answers from the on-device model need iOS 26 or macOS 26 with Apple Intelligence turned on.
 
-### Import the Framework
+## Index and search
+
+A ``KnowledgeBase`` is an actor, so call it with `await` from any task:
 
 ```swift
 import SwiftIntelligence
+
+let knowledge = KnowledgeBase()
+try await knowledge.add("You can return any item within 30 days of delivery for a full refund.", id: "returns")
+try await knowledge.add("Orders ship within two business days; delivery takes three to five days.", id: "shipping")
+try await knowledge.add("Every laptop comes with a two-year warranty against defects.", id: "warranty")
+
+let results = try await knowledge.search("How do I return an item for a refund?")
+print(results.first?.documentID ?? "nothing found")  // returns
 ```
 
-### Initialize the Engine
+Each ``SearchResult`` names its document, the passage and a score. Adding a document with an
+identifier that is already there replaces it; ``KnowledgeBase/remove(id:)`` deletes one.
+
+## Keep the index between launches
+
+Embedding documents takes time, so save the knowledge base and read it back on the next
+launch:
 
 ```swift
-@main
-struct MyApp: App {
-    init() {
-        Task {
-            do {
-                // Initialize SwiftIntelligence
-                try await IntelligenceEngine.shared.initialize()
-                print("SwiftIntelligence initialized successfully")
-            } catch {
-                print("Failed to initialize: \(error)")
-            }
-        }
-    }
-    
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
-}
+let file = URL.applicationSupportDirectory.appending(path: "knowledge.plist")
+try await knowledge.save(to: file)
+
+// On the next launch:
+let restored = try KnowledgeBase(contentsOf: file)
 ```
 
-## Your First AI Feature
+Restore it with the same embedder; a different one throws
+``KnowledgeBaseError/embedderMismatch(saved:current:)`` because its vectors would not compare.
 
-Let's create a simple sentiment analysis feature:
+## Analyze a text
+
+``TextAnalyzer`` reads the language, sentiment, names and keywords of a single text:
 
 ```swift
-import SwiftUI
-import SwiftIntelligence
-
-struct SentimentAnalyzerView: View {
-    @State private var inputText = ""
-    @State private var sentiment: String = ""
-    @State private var isAnalyzing = false
-    
-    var body: some View {
-        VStack(spacing: 20) {
-            Text("Sentiment Analyzer")
-                .font(.largeTitle)
-                .bold()
-            
-            TextEditor(text: $inputText)
-                .frame(height: 100)
-                .padding(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray.opacity(0.5))
-                )
-            
-            Button(action: analyzeSentiment) {
-                if isAnalyzing {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                } else {
-                    Text("Analyze Sentiment")
-                }
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(inputText.isEmpty || isAnalyzing)
-            
-            if !sentiment.isEmpty {
-                Text(sentiment)
-                    .font(.headline)
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(8)
-            }
-        }
-        .padding()
-    }
-    
-    func analyzeSentiment() {
-        isAnalyzing = true
-        
-        Task {
-            do {
-                let nlpEngine = try await IntelligenceEngine.shared
-                    .getNaturalLanguageEngine()
-                
-                let result = try await nlpEngine.analyzeSentiment(inputText)
-                
-                await MainActor.run {
-                    switch result.sentiment {
-                    case .positive:
-                        sentiment = "😊 Positive (confidence: \(Int(result.confidence * 100))%)"
-                    case .negative:
-                        sentiment = "😔 Negative (confidence: \(Int(result.confidence * 100))%)"
-                    case .neutral:
-                        sentiment = "😐 Neutral (confidence: \(Int(result.confidence * 100))%)"
-                    }
-                    isAnalyzing = false
-                }
-            } catch {
-                await MainActor.run {
-                    sentiment = "Error: \(error.localizedDescription)"
-                    isAnalyzing = false
-                }
-            }
-        }
-    }
-}
+let analysis = TextAnalyzer().analyze("Tim Cook presented the new iPhone in Cupertino. The audience loved it.")
+analysis.language              // .english
+analysis.entities.map(\.text)  // ["Tim Cook", "Cupertino"]
 ```
 
-## Configuration Options
+The name, sentiment and keyword features use NaturalLanguage models that Macs and devices
+have but the iOS simulator does not; there they return no names, `nil` sentiment and no
+keywords.
 
-SwiftIntelligence can be configured to suit your app's needs:
+## Next steps
 
-```swift
-// Create custom configuration
-let config = IntelligenceConfiguration(
-    enabledEngines: [.nlp, .vision, .speech],
-    privacyLevel: .high,
-    performanceProfile: .balanced,
-    cachingPolicy: .automatic,
-    loggingLevel: .info
-)
-
-// Apply configuration
-try await IntelligenceEngine.shared.configure(with: config)
-```
-
-### Configuration Profiles
-
-#### Development
-```swift
-let devConfig = IntelligenceConfiguration.development
-// Verbose logging, all engines enabled
-```
-
-#### Production
-```swift
-let prodConfig = IntelligenceConfiguration.production
-// Optimized performance, minimal logging
-```
-
-#### Testing
-```swift
-let testConfig = IntelligenceConfiguration.testing
-// Predictable behavior for unit tests
-```
-
-## Permissions
-
-Some features require specific permissions:
-
-### Speech Recognition
-
-Add to `Info.plist`:
-```xml
-<key>NSSpeechRecognitionUsageDescription</key>
-<string>This app uses speech recognition to process voice commands.</string>
-
-<key>NSMicrophoneUsageDescription</key>
-<string>This app needs microphone access for speech recognition.</string>
-```
-
-### Camera (for Vision features)
-
-```xml
-<key>NSCameraUsageDescription</key>
-<string>This app uses the camera for image analysis.</string>
-```
-
-### Photo Library
-
-```xml
-<key>NSPhotoLibraryUsageDescription</key>
-<string>This app analyzes photos from your library.</string>
-```
-
-## Error Handling
-
-SwiftIntelligence uses Swift's error handling:
-
-```swift
-do {
-    let result = try await nlpEngine.analyzeText(text)
-    // Handle successful result
-} catch IntelligenceError.engineNotInitialized {
-    // Handle initialization error
-} catch IntelligenceError.processingFailed(let reason) {
-    // Handle processing error
-    print("Processing failed: \(reason)")
-} catch {
-    // Handle other errors
-    print("Unexpected error: \(error)")
-}
-```
-
-## Best Practices
-
-### 1. Initialize Early
-
-Initialize SwiftIntelligence during app startup to avoid delays:
-
-```swift
-@main
-struct MyApp: App {
-    init() {
-        Task {
-            try? await IntelligenceEngine.shared.initialize()
-        }
-    }
-}
-```
-
-### 2. Handle Errors Gracefully
-
-Always provide fallback behavior:
-
-```swift
-func processText(_ text: String) async -> String {
-    do {
-        let result = try await nlpEngine.analyzeText(text)
-        return result.summary
-    } catch {
-        // Fallback to basic processing
-        return text.prefix(100) + "..."
-    }
-}
-```
-
-### 3. Use Appropriate Quality of Service
-
-```swift
-Task(priority: .userInitiated) {
-    // High-priority AI tasks
-}
-
-Task(priority: .background) {
-    // Low-priority batch processing
-}
-```
-
-### 4. Monitor Performance
-
-```swift
-let metrics = await IntelligenceEngine.shared.getPerformanceMetrics()
-print("Average inference time: \(metrics.averageInferenceTime)ms")
-```
-
-## Next Steps
-
-- Explore <doc:BasicConcepts> to understand the framework architecture
-- Check out <doc:Tutorials> for more detailed examples
-- Review <doc:BestPractices> for production deployment
-- See <doc:APIReference> for complete documentation
-
-## Sample Projects
-
-We provide several sample projects demonstrating various features:
-
-- **ChatBot**: Natural language conversation app
-- **ImageAnalyzer**: Computer vision demonstration
-- **VoiceAssistant**: Speech recognition and synthesis
-- **SmartCamera**: Real-time object detection
-
-Find them in the [Examples](https://github.com/muhittincamdali/SwiftIntelligence/tree/main/Examples) directory.
-
-## Troubleshooting
-
-### Common Issues
-
-**Framework not initializing**
-- Ensure you're using the correct minimum OS versions
-- Check that you've added required permissions to Info.plist
-
-**Poor performance**
-- Use appropriate performance profile in configuration
-- Consider using background queues for heavy processing
-- Enable caching for repeated operations
-
-**Memory issues**
-- The framework automatically manages memory
-- For large datasets, use streaming APIs when available
-
-## Getting Help
-
-- **Documentation**: [Documentation Hub](https://github.com/muhittincamdali/SwiftIntelligence/tree/main/Documentation)
-- **Issues**: [GitHub Issues](https://github.com/muhittincamdali/SwiftIntelligence/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/muhittincamdali/SwiftIntelligence/discussions)
-- **Stack Overflow**: Tag your questions with `swiftintelligence`
+- <doc:SearchingDocuments> explains the search modes and how to choose an embedder.
+- <doc:AnsweringQuestions> adds answers from the on-device model.
+- <doc:RedactingPersonalData> removes personal data before it is indexed or sent to a model.

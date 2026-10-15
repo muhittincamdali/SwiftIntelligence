@@ -1,18 +1,7 @@
-# Swift Package Index Configuration
-# https://swiftpackageindex.com/add-a-package
-
 version: 1
-
-metadata:
-  documentation_targets:
-    - SwiftIntelligenceCore
-    - SwiftIntelligenceML
-    - SwiftIntelligenceNLP
-    - SwiftIntelligenceVision
-    - SwiftIntelligenceSpeech
-    - SwiftIntelligenceReasoning
-    - SwiftIntelligencePrivacy
-    - SwiftIntelligenceNetwork
-    - SwiftIntelligenceCache
-    - SwiftIntelligenceMetrics
-    - SwiftIntelligenceBenchmarks
+builder:
+  configs:
+    - platform: ios
+      scheme: SwiftIntelligence
+      documentation_targets: [SwiftIntelligence]
+    - platform: macos-spm

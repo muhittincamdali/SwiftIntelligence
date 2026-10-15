@@ -1,83 +1,48 @@
-# SwiftIntelligence Examples Hub
+# Examples
 
-This page exists to answer one practical question:
+## KnowledgeDemo
 
-**What should I run first, and which demos are actually mature enough to trust?**
+A small iOS and macOS app that runs the package on eight help-center articles:
 
-## Best first path
+- **Search**: semantic, keyword and hybrid ranking of the articles, with the scores.
+- **Ask**: an answer from Apple's on-device model with the cited articles. Where the model is
+  not available (Apple Intelligence off, an unsupported device, or iOS 18 and macOS 15) the
+  screen shows the grounded prompt instead, which you can send to any model.
+- **Redact**: personal data replaced while you type, with placeholders, tags or a mask.
+- **Analyze**: language, sentiment, names and keywords of a text.
 
-If you only evaluate one example first, use [IntelligentCamera](DemoApps/IntelligentCamera/README.md).
-Validation command: `bash Scripts/validate-flagship-demo.sh`
-Why: strongest multi-module story, best current media/proof support, and the clearest repo-wide evaluator path.
+It uses the package from this checkout (a local package reference to `../..`), so it always
+shows the current code. It searches with Apple's sentence embedding where the system has it and
+with the hashing embedder elsewhere; the search screen names the one in use.
 
-## Example maturity map
+Run it:
 
-| Example | Flow | Maturity | Best use |
-| --- | --- | --- | --- |
-| [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | `Vision -> NLP -> Privacy` | flagship | evaluate the strongest current repo story |
-| [SmartTranslator](DemoApps/SmartTranslator/README.md) | `NLP -> Privacy -> Speech` | maintained secondary | evaluate text-to-output workflow composition |
-| [VoiceAssistant](DemoApps/VoiceAssistant/README.md) | `NLP -> Privacy -> Speech` | maintained secondary | evaluate assistant-style response flows |
-| `DemoApps/PersonalAITutor/PersonalAITutorApp.swift` | tutor-style workflow | source-validated | inspect package coverage, not flagship polish |
-| `DemoApps/ARCreativeStudio/ARCreativeStudioApp.swift` | vision-heavy creative workflow | source-validated | inspect breadth, not best-first onboarding |
-| [BasicUsage.swift](BasicUsage.swift) | minimal API surface | compile-validated | understand smallest integration path |
-| [AdvancedFeatures.swift](AdvancedFeatures.swift) | broader feature sample | compile-validated | inspect more APIs quickly |
-| `ServerIntegration/AIServiceClient.swift` | network-adjacent support | compile-validated | inspect integration helper surface |
+1. Open `Examples/KnowledgeDemo/KnowledgeDemo.xcodeproj` in Xcode 26 or later.
+2. Choose the **KnowledgeDemo** scheme and an iPhone simulator or **My Mac** as the run
+   destination.
+3. Press **Run** (⌘R).
 
-This page is the canonical demo decision surface. README and Showcase should point back here instead of duplicating large decision tables. Start with `IntelligentCamera` unless you are specifically evaluating a text-first flow, assistant-style UX, or the smallest compile-only sample.
+From the command line:
 
-## Choose by product lane
+```sh
+cd Examples/KnowledgeDemo
+xcodebuild build -scheme KnowledgeDemo -destination 'generic/platform=iOS Simulator'
+xcodebuild build -scheme KnowledgeDemo -destination 'platform=macOS'
+```
 
-| If your question starts with... | Open this demo first | Compare first |
-| --- | --- | --- |
-| `Can the vision lane close a real product path?` | [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | [Vision vs Apple Vision](../Documentation/Comparisons/Vision-vs-AppleVision.md) |
-| `Can the NLP lane produce user-visible value?` | [SmartTranslator](DemoApps/SmartTranslator/README.md) | [NLP vs Apple NaturalLanguage](../Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
-| `Can the speech lane drive assistant-style output?` | [VoiceAssistant](DemoApps/VoiceAssistant/README.md) | [Speech vs Apple Speech](../Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
-| `Can the privacy lane show up in a real workflow?` | [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | [Privacy vs CryptoKit + Security](../Documentation/Comparisons/Privacy-vs-CryptoKit-Security.md) |
+The iOS simulator has no NaturalLanguage name, sentiment or part-of-speech models, so the
+Analyze screen shows dashes there and the redactor finds no names; run on a Mac or a device to
+see them. The on-device language model works in the simulator when the Mac running it has Apple
+Intelligence turned on.
 
-## What is actually validated
+The README samples live in
+[`KnowledgeDemo/ReadmeSamples.swift`](KnowledgeDemo/KnowledgeDemo/ReadmeSamples.swift). The
+README copies its code from that file, and the package's test target runs the same file through
+the symlink `Tests/SwiftIntelligenceTests/ReadmeSamples.swift`.
 
-- `bash Scripts/validate-flagship-demo.sh`
-  - smoke-checks the strongest maintained path
-- `bash Scripts/validate-examples.sh`
-  - compile-checks the full example set against the active package graph
+The README screenshots are taken from this app by
+[`scripts/capture-example-screens.sh`](../scripts/capture-example-screens.sh).
 
-Validation truth:
-
-- `IntelligentCamera` is the only example with full flagship media, proof narrative, and strongest onboarding
-- `SmartTranslator` and `VoiceAssistant` now also have real screenshots, recordings, and media policies
-- the secondary demos are still below flagship polish, but they are no longer source-only surfaces
-
-## Secondary Demo Previews
-
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="DemoApps/SmartTranslator/README.md">
-        <img src="../Documentation/Assets/SmartTranslator-Demo/smarttranslator-success.png" alt="SmartTranslator preview" />
-      </a>
-      <p><strong>SmartTranslator</strong><br />Language analysis, redacted preview, translated output, spoken result.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="DemoApps/VoiceAssistant/README.md">
-        <img src="../Documentation/Assets/VoiceAssistant-Demo/voiceassistant-success.png" alt="VoiceAssistant preview" />
-      </a>
-      <p><strong>VoiceAssistant</strong><br />Intent-style command analysis, response generation, redacted preview, spoken output.</p>
-    </td>
-  </tr>
-</table>
-
-## Demo decision matrix
-
-| Demo | Best for | Not for | Compare first |
-| --- | --- | --- | --- |
-| [IntelligentCamera](DemoApps/IntelligentCamera/README.md) | strongest evaluator path and repo-wide story | smallest example path or text-only evaluation | [Vision vs Apple Vision](../Documentation/Comparisons/Vision-vs-AppleVision.md) |
-| [SmartTranslator](DemoApps/SmartTranslator/README.md) | text-heavy user-visible flows | flagship proof or runtime-level evaluation | [NLP vs Apple NaturalLanguage](../Documentation/Comparisons/NLP-vs-NaturalLanguage.md) |
-| [VoiceAssistant](DemoApps/VoiceAssistant/README.md) | assistant-style response UI | speech-recognition leadership or agent claims | [Speech vs Apple Speech](../Documentation/Comparisons/Speech-vs-AppleSpeech.md) |
-
-## Narrative and proof
-
-- [Showcase](../Documentation/Showcase.md)
-- [Flagship demo pack](../Documentation/Generated/Flagship-Demo-Pack.md)
-- [Competitive Matrix](../Documentation/Comparisons/Competitive-Matrix.md)
-
-Use the demo guides for media details. Use `Showcase` for narrative proof and `Flagship demo pack` for the strongest maintained release-facing demo surface.
+The project file is made with [XcodeGen](https://github.com/yonaskolb/XcodeGen) from
+[`project.yml`](KnowledgeDemo/project.yml) and committed, so you only need XcodeGen after
+editing `project.yml`.
