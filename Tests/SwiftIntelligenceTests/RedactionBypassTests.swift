@@ -244,18 +244,28 @@ struct RedactionBypassTests {
         let redactor = PersonalDataRedactor(kinds: [.emailAddress, .paymentCardNumber, .iban, .ipAddress])
         let measurable = Duration.milliseconds(50)
         for entry in units {
-            func scanTime(_ count: Int) -> Duration {
-                let text = entry.prefix + String(repeating: entry.unit, count: count) + entry.suffix
-                // CPU time of this thread: other tests run in parallel on a small shared runner,
-                // and wall-clock time would count their load against this scan.
-                return (0..<3).map { _ in threadCPUTime { _ = redactor.matches(in: text) } }.min() ?? .zero
+            func text(_ count: Int) -> String {
+                entry.prefix + String(repeating: entry.unit, count: count) + entry.suffix
             }
-            let small = scanTime(entry.count)
-            let large = scanTime(entry.count * 4)
+            let smallText = text(entry.count)
+            let largeText = text(entry.count * 4)
+            // CPU time of this thread: other tests run in parallel on a small shared runner, and
+            // wall-clock time would count their load against this scan. On a virtual runner the
+            // host can still pause the thread mid-scan, and that pause counts as CPU time, so the
+            // sizes take turns: a pause then lands on one sample of either size, and the fastest
+            // of three samples per size leaves it out.
+            var small: [Duration] = []
+            var large: [Duration] = []
+            for _ in 0..<3 {
+                small.append(threadCPUTime { _ = redactor.matches(in: smallText) })
+                large.append(threadCPUTime { _ = redactor.matches(in: largeText) })
+            }
+            let fastestSmall = small.min() ?? .zero
+            let fastestLarge = large.min() ?? .zero
             // Runs shorter than the floor cannot be compared reliably and are fast enough anyway.
-            guard large > measurable else { continue }
-            let ratio = large / max(small, measurable)
-            #expect(ratio < 9, "4x the text took \(ratio)x as long for \(entry.unit.debugDescription)")
+            guard fastestLarge > measurable else { continue }
+            let ratio = fastestLarge / max(fastestSmall, measurable)
+            #expect(ratio < 9, "4x the text took \(ratio)x as long (\(fastestSmall) vs \(fastestLarge)) for \(entry.unit.debugDescription)")
         }
     }
 }
