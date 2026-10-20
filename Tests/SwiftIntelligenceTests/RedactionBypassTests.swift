@@ -241,7 +241,8 @@ struct RedactionBypassTests {
         for entry in units {
             func scanTime(_ count: Int) -> Duration {
                 let text = entry.prefix + String(repeating: entry.unit, count: count) + entry.suffix
-                return clock.measure { _ = redactor.matches(in: text) }
+                // Best of three: a scheduler pause on a shared runner inflates one sample, not all.
+                return (0..<3).map { _ in clock.measure { _ = redactor.matches(in: text) } }.min() ?? .zero
             }
             let small = scanTime(entry.count)
             let large = scanTime(entry.count * 4)
