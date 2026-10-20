@@ -2,6 +2,12 @@ import Foundation
 import Testing
 @testable import SwiftIntelligence
 
+private func threadCPUTime(_ work: () -> Void) -> Duration {
+    let start = clock_gettime_nsec_np(CLOCK_THREAD_CPUTIME_ID)
+    work()
+    return .nanoseconds(clock_gettime_nsec_np(CLOCK_THREAD_CPUTIME_ID) - start)
+}
+
 /// Variations of personal data that must still be redacted, and look-alikes that must not be.
 @Suite("Redaction bypass")
 struct RedactionBypassTests {
@@ -236,13 +242,13 @@ struct RedactionBypassTests {
             ("", "a\n@b .", "", 10_000),
         ]
         let redactor = PersonalDataRedactor(kinds: [.emailAddress, .paymentCardNumber, .iban, .ipAddress])
-        let clock = ContinuousClock()
         let measurable = Duration.milliseconds(50)
         for entry in units {
             func scanTime(_ count: Int) -> Duration {
                 let text = entry.prefix + String(repeating: entry.unit, count: count) + entry.suffix
-                // Best of three: a scheduler pause on a shared runner inflates one sample, not all.
-                return (0..<3).map { _ in clock.measure { _ = redactor.matches(in: text) } }.min() ?? .zero
+                // CPU time of this thread: other tests run in parallel on a small shared runner,
+                // and wall-clock time would count their load against this scan.
+                return (0..<3).map { _ in threadCPUTime { _ = redactor.matches(in: text) } }.min() ?? .zero
             }
             let small = scanTime(entry.count)
             let large = scanTime(entry.count * 4)
